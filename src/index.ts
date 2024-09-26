@@ -1,30 +1,28 @@
+import HelloExample from "@/hello.svelte";
+import "@/index.scss";
+import SettingExample from "@/setting-example.svelte";
 import {
-  Plugin,
-  showMessage,
-  confirm,
-  Dialog,
-  Menu,
-  openTab,
   adaptHotkey,
-  getFrontend,
-  getBackend,
-  IModel,
-  Protyle,
-  openWindow,
-  IOperation,
+  confirm,
   Constants,
-  openMobileFileById,
-  lockScreen,
+  Dialog,
+  getBackend,
+  getFrontend,
   ICard,
   ICardData,
+  IModel,
+  IOperation,
+  lockScreen,
+  Menu,
+  openMobileFileById,
+  openTab,
+  openWindow,
+  Plugin,
+  Protyle,
+  showMessage,
 } from "siyuan";
-import "@/index.scss";
-
-import HelloExample from "@/hello.svelte";
-import SettingExample from "@/setting-example.svelte";
-
-import { SettingUtils } from "./libs/setting-utils";
 import { svelteDialog } from "./libs/dialog";
+import { SettingUtils } from "./libs/setting-utils";
 
 const STORAGE_NAME = "menu-config";
 const TAB_TYPE = "custom_tab";
@@ -473,20 +471,6 @@ export default class PluginSample extends Plugin {
   }
 
   private showDialog() {
-    // let dialog = new Dialog({
-    //     title: `SiYuan ${Constants.SIYUAN_VERSION}`,
-    //     content: `<div id="helloPanel" class="b3-dialog__content"></div>`,
-    //     width: this.isMobile ? "92vw" : "720px",
-    //     destroyCallback() {
-    //         // hello.$destroy();
-    //     },
-    // });
-    // new HelloExample({
-    //     target: dialog.element.querySelector("#helloPanel"),
-    //     props: {
-    //         app: this.app,
-    //     }
-    // });
     svelteDialog({
       title: `SiYuan ${Constants.SIYUAN_VERSION}`,
       width: this.isMobile ? "92vw" : "720px",

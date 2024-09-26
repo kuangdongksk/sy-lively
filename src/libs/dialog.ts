@@ -168,6 +168,7 @@ export const svelteDialog = (args: {
   let container = document.createElement("div");
   container.style.display = "contents";
   let component = args.constructor(container);
+
   simpleDialog({
     ...args,
     ele: container,

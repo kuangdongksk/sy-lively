@@ -1,17 +1,10 @@
 {
-  "name": "plugin-sample-vite-svelte",
+  "name": "sy-access-controller",
   "author": "frostime",
   "url": "https://github.com/siyuan-note/plugin-sample-vite-svelte",
   "version": "0.3.5",
   "minAppVersion": "3.0.12",
-  "backends": [
-    "windows",
-    "linux",
-    "darwin",
-    "docker",
-    "ios",
-    "android"
-  ],
+  "backends": ["windows", "linux", "darwin", "docker", "ios", "android"],
   "frontends": [
     "desktop",
     "mobile",
@@ -32,11 +25,7 @@
     "zh_CN": "README_zh_CN.md"
   },
   "funding": {
-    "custom": [
-      ""
-    ]
+    "custom": [""]
   },
-  "keywords": [
-    "plugin", "sample", "插件样例"
-  ]
+  "keywords": ["plugin", "sample", "插件样例"]
 }
