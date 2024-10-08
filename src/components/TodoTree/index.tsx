@@ -3,13 +3,24 @@ import { 顶级节点 } from "@/constant/状态配置";
 import { string2stringArr } from "@/utils/拼接与拆解";
 import type { TreeDataNode, TreeProps } from "antd";
 import { Tree } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import 事项, { I事项Props } from "./components/事项";
+
+export type TreeNode = TreeDataNode & {
+  key: string;
+  title: string;
+} & I事项Props;
 
 export interface ITodoTreeProps {
-  data: (TreeDataNode & { key: string })[];
+  data?: TreeNode[];
 }
 function TodoTree(props: ITodoTreeProps) {
+  const { data } = props;
   const [gData, setGData] = useState(TodoTree初始值);
+
+  useEffect(() => {
+    setGData(data);
+  }, [data]);
 
   const onDragEnter: TreeProps["onDragEnter"] = (info) => {
     console.log("🚀 ~ TodoTree ~ info:", info);
@@ -72,7 +83,7 @@ function TodoTree(props: ITodoTreeProps) {
   };
 
   return (
-    <Tree<{ key: string }>
+    <Tree<TreeNode>
       className="draggableTree"
       allowDrop={({ dragNode, dropNode, dropPosition }) => {
         if (dragNode.key.includes(顶级节点)) {
@@ -96,11 +107,19 @@ function TodoTree(props: ITodoTreeProps) {
 
         return true;
       }}
-      draggable
       blockNode
+      checkable
+      draggable
+      treeData={gData}
       onDragEnter={onDragEnter}
       onDrop={onDrop}
-      treeData={gData}
+      titleRender={(node) => {
+        if (node.key.includes(顶级节点)) {
+          return <>{node.title}</>;
+        }
+
+        return <事项 {...node} />;
+      }}
     />
   );
 }
