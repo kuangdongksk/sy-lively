@@ -2,6 +2,7 @@ import { getFrontend, Plugin } from "siyuan";
 export const PluginId = "lively_SaSa";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import React from "react";
 
 const DOCK_TYPE = "dock_tab";
 
@@ -16,7 +17,23 @@ export default class PluginSample extends Plugin {
     this.addTab({
       type: "tab",
       init: () => {
-        console.log("🚀 ~ PluginSample ~ this.addTab ~ tab:", this);
+        //   if (this.isMobile) {
+        //     this.element.innerHTML = `
+        //     <div id="${PluginId}"></div>
+        //   `;
+        //   } else {
+        //     this.element.innerHTML = `
+        //     <div id="${PluginId}"></div>
+        //   `;
+        //   }
+
+        // 手动挂载 React 组件
+        const rootElement = document.getElementById(PluginId);
+        console.log("🚀 ~ PluginSample ~ onload ~ rootElement:", rootElement);
+        if (rootElement) {
+          const root = ReactDOM.createRoot(rootElement);
+          root.render(<App />);
+        }
       },
     });
 
@@ -54,7 +71,11 @@ export default class PluginSample extends Plugin {
         console.log("🚀 ~ PluginSample ~ onload ~ rootElement:", rootElement);
         if (rootElement) {
           const root = ReactDOM.createRoot(rootElement);
-          root.render(<App />);
+          root.render(
+            <React.StrictMode>
+              <App />
+            </React.StrictMode>
+          );
         }
       },
       destroy() {
