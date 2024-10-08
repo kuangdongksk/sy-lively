@@ -24,7 +24,7 @@ export default class PluginSample extends Plugin {
     this.addDock({
       config: {
         position: "LeftBottom",
-        size: { width: 200, height: 0 },
+        size: { width: 360, height: 0 },
         icon: "iconFace",
         title: "Custom Dock",
         hotkey: "⌥⌘W",
@@ -69,23 +69,24 @@ export default class PluginSample extends Plugin {
 
   onLayoutReady() {
     const tabDiv = document.createElement("div");
+    tabDiv.style.width = "100%";
+    tabDiv.style.height = "100%";
     tabDiv.id = PluginId;
     // 添加自定义页签
     this.addTab({
       type: TAB_TYPE,
       init() {
         this.element.appendChild(tabDiv);
-        console.log(this.element);
         if (tabDiv) {
           const root = ReactDOM.createRoot(tabDiv);
           root.render(<App />);
         }
       },
       beforeDestroy() {
-        console.log("before destroy tab:", TAB_TYPE);
+        console.log("🚀 ~ PluginSample ~ beforeDestroy ~ beforeDestroy:");
       },
       destroy() {
-        console.log("destroy tab:", TAB_TYPE);
+        console.log("🚀 ~ PluginSample ~ destroy ~ destroy:");
       },
     });
 
