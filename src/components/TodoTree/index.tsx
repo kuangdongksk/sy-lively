@@ -1,9 +1,14 @@
 import { TodoTree初始值 } from "@/constant/初始值";
+import { 顶级节点 } from "@/constant/状态配置";
+import { string2stringArr } from "@/utils/拼接与拆解";
 import type { TreeDataNode, TreeProps } from "antd";
 import { Tree } from "antd";
 import React, { useState } from "react";
 
-function TodoTree() {
+export interface ITodoTreeProps {
+  data: (TreeDataNode & { key: string })[];
+}
+function TodoTree(props: ITodoTreeProps) {
   const [gData, setGData] = useState(TodoTree初始值);
 
   const onDragEnter: TreeProps["onDragEnter"] = (info) => {
@@ -67,8 +72,30 @@ function TodoTree() {
   };
 
   return (
-    <Tree
+    <Tree<{ key: string }>
       className="draggableTree"
+      allowDrop={({ dragNode, dropNode, dropPosition }) => {
+        if (dragNode.key.includes(顶级节点)) {
+          if (dropPosition === 0) {
+            // 顶级节点不允许拖拽到顶级节点内
+            return false;
+          }
+        } else {
+          if (dropNode.key.includes(顶级节点) && dropPosition !== 0) {
+            // 子节点不允许与顶级节点同级
+            return false;
+          }
+          if (
+            string2stringArr(dropNode.key)[0] !==
+            string2stringArr(dragNode.key)[0]
+          ) {
+            // 子节点不允许拖拽到其他顶级节点内
+            return false;
+          }
+        }
+
+        return true;
+      }}
       draggable
       blockNode
       onDragEnter={onDragEnter}
