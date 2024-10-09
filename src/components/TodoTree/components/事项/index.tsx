@@ -10,7 +10,7 @@ export interface I事项Props {
   开始时间: string;
   结束时间: string;
   状态: 事项状态;
-  重复: TCorn;
+  重复: TCorn | false;
 }
 
 function 事项(props: I事项Props) {

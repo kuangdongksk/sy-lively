@@ -8,12 +8,13 @@ import 事项, { I事项Props } from "./components/事项";
 
 export type TreeNode = TreeDataNode & {
   key: string;
-  title: string;
+  子项?: TreeNode[];
 } & I事项Props;
 
 export interface ITodoTreeProps {
   data?: TreeNode[];
 }
+
 function TodoTree(props: ITodoTreeProps) {
   const { data } = props;
   const [gData, setGData] = useState(TodoTree初始值);
@@ -110,6 +111,7 @@ function TodoTree(props: ITodoTreeProps) {
       blockNode
       checkable
       draggable
+      fieldNames={{ title: "名称", key: "key", children: "子项" }}
       treeData={gData}
       onDragEnter={onDragEnter}
       onDrop={onDrop}
