@@ -117,7 +117,7 @@ function TodoTree(props: ITodoTreeProps) {
       onDrop={onDrop}
       titleRender={(node) => {
         if (node.key.includes(顶级节点)) {
-          return <>{node.title}</>;
+          return <>{node.名称}</>;
         }
 
         return <事项 {...node} />;
