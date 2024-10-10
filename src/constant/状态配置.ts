@@ -1,4 +1,4 @@
-export const 分隔符 = "分";
+export const 分隔符 = "$分$";
 
 //#region 用户状态
 

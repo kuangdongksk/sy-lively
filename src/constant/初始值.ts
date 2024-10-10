@@ -28,7 +28,7 @@ export const TodoTree初始值: ({
     子项: [
       {
         id: nanoid(),
-        key: stringArr2string([重复中, "1"]),
+        key: stringArr2string([重复中, "1", nanoid()]),
         checkable: true,
         名称: "重复中-1",
         重要程度: 1,
@@ -40,7 +40,7 @@ export const TodoTree初始值: ({
       },
       {
         id: nanoid(),
-        key: stringArr2string([重复中, "1"]),
+        key: stringArr2string([重复中, "1", nanoid()]),
         checkable: true,
         名称: "重复中-1",
         重要程度: 1,
