@@ -1,11 +1,9 @@
-import TodoTree from "@/components/任务树";
-import 新建ToDo from "./components/新建ToDo";
+import 任务树 from "@/components/任务树";
 
 function Home() {
   return (
     <div>
-      <新建ToDo />
-      <TodoTree />
+      <任务树 />
     </div>
   );
 }

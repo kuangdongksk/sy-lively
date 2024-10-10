@@ -3,7 +3,7 @@ import { stringArr2string } from "@/utils/拼接与拆解";
 import { 事项状态, 已完成, 进行中, 重复中, 顶级节点 } from "./状态配置";
 import { nanoid } from "nanoid";
 import dayjs from "dayjs";
-import { I事项Props } from "@/components/任务树/components/事项";
+import { I事项Props, T层级 } from "@/components/任务树/components/事项";
 
 const 顶级节点公共属性 = {
   重要程度: NaN,
@@ -12,9 +12,11 @@ const 顶级节点公共属性 = {
   结束时间: dayjs(NaN),
   重复: undefined,
   checkable: false,
+  子项: [],
+  层级: 0 as T层级,
 };
 
-export const TodoTree初始值: ({
+export const 任务树初始值: ({
   id: string;
   key: string;
   名称: string;
@@ -37,7 +39,8 @@ export const TodoTree初始值: ({
         开始时间: dayjs(),
         结束时间: dayjs(),
         状态: 事项状态.重复中,
-        重复: undefined,
+        重复: "undefined",
+        层级: 1,
       },
       {
         id: nanoid(),
@@ -49,7 +52,8 @@ export const TodoTree初始值: ({
         开始时间: dayjs(),
         结束时间: dayjs(),
         状态: 事项状态.重复中,
-        重复: undefined,
+        重复: "undefined",
+        层级: 1,
       },
     ],
   },
@@ -68,3 +72,5 @@ export const TodoTree初始值: ({
     ...顶级节点公共属性,
   },
 ];
+
+export const 各层级数量初始值 = [3, 2, 0, 0, 0, 0];
