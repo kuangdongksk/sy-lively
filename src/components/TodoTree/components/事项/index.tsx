@@ -21,6 +21,7 @@ function 事项(props: I事项Props) {
         display: "flex",
       }}
     >
+      <div>{id}</div>
       <div>{名称}</div>
       <div>{重要程度}</div>
       <div>{紧急程度}</div>

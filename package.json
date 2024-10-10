@@ -31,6 +31,7 @@
     "vite-plugin-zip-pack": "^1.0.5"
   },
   "dependencies": {
+    "@ant-design/colors": "^7.1.0",
     "@ant-design/icons": "^5.5.1",
     "@types/react": "^18.3.11",
     "@vitejs/plugin-react": "^4.3.2",

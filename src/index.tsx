@@ -1,12 +1,21 @@
+import { ThemeProvider } from "antd-style";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { getFrontend, openTab, Plugin } from "siyuan";
 import App from "./App";
+import { 暗色主题 } from "./theme/暗色";
 export const PluginId = "lively_SaSa";
 
 const DOCK_TYPE = "dock_tab";
 const TAB_TYPE = "custom_tab";
 
+const REACT_ROOT = (
+  <React.StrictMode>
+    <ThemeProvider defaultAppearance="dark" theme={暗色主题}>
+      <App />
+    </ThemeProvider>
+  </React.StrictMode>
+);
 export default class PluginSample extends Plugin {
   private isMobile: boolean;
 
@@ -44,21 +53,13 @@ export default class PluginSample extends Plugin {
           dock.element.innerHTML = `
             <div id="${PluginId}"></div>
           `;
-        } else {
-          dock.element.innerHTML = `
-            <div id="${PluginId}"></div>
-          `;
         }
 
         // 手动挂载 React 组件
         const rootElement = document.getElementById(PluginId);
         if (rootElement) {
           const root = ReactDOM.createRoot(rootElement);
-          root.render(
-            <React.StrictMode>
-              <App />
-            </React.StrictMode>
-          );
+          root.render(REACT_ROOT);
         }
       },
       destroy() {
@@ -72,6 +73,7 @@ export default class PluginSample extends Plugin {
     tabDiv.style.width = "100%";
     tabDiv.style.height = "100%";
     tabDiv.id = PluginId;
+
     // 添加自定义页签
     this.addTab({
       type: TAB_TYPE,
@@ -79,7 +81,7 @@ export default class PluginSample extends Plugin {
         this.element.appendChild(tabDiv);
         if (tabDiv) {
           const root = ReactDOM.createRoot(tabDiv);
-          root.render(<App />);
+          root.render(REACT_ROOT);
         }
       },
       beforeDestroy() {
