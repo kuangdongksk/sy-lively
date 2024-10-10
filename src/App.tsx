@@ -1,7 +1,4 @@
-import {
-  DesktopOutlined,
-  PieChartOutlined
-} from "@ant-design/icons";
+import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
 import { Layout, Menu, MenuProps } from "antd";
 import { useState } from "react";
 import 主页 from "./pages/主页";
@@ -29,9 +26,16 @@ function App() {
         height: "100%",
       }}
     >
-      <Sider>
-        <h3>喧嚣</h3>
-
+      <Sider style={{ background: "#2f3437", width: "150px" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <h3>喧嚣</h3>
+        </div>
         <Menu
           defaultSelectedKeys={["主页"]}
           mode="inline"
@@ -43,7 +47,7 @@ function App() {
         />
       </Sider>
       <Layout>
-        <Header></Header>
+        <Header>又是新的一天！</Header>
         <Content>{navMap[current]}</Content>
         <Footer>Footer</Footer>
       </Layout>
