@@ -1,16 +1,17 @@
-import { TreeNode } from "@/components/TodoTree";
+import { TreeNode } from "@/components/任务树";
 import { stringArr2string } from "@/utils/拼接与拆解";
 import { 事项状态, 已完成, 进行中, 重复中, 顶级节点 } from "./状态配置";
 import { nanoid } from "nanoid";
 import dayjs from "dayjs";
-import { I事项Props } from "@/components/TodoTree/components/事项";
+import { I事项Props } from "@/components/任务树/components/事项";
 
 const 顶级节点公共属性 = {
   重要程度: NaN,
   紧急程度: NaN,
-  开始时间: dayjs(NaN).format("YYYY-MM-DD"),
-  结束时间: dayjs(NaN).format("YYYY-MM-DD"),
+  开始时间: dayjs(NaN),
+  结束时间: dayjs(NaN),
   重复: undefined,
+  checkable: false,
 };
 
 export const TodoTree初始值: ({
@@ -33,8 +34,8 @@ export const TodoTree初始值: ({
         名称: "重复中-1",
         重要程度: 1,
         紧急程度: 1,
-        开始时间: dayjs().format("YYYY-MM-DD"),
-        结束时间: dayjs().format("YYYY-MM-DD"),
+        开始时间: dayjs(),
+        结束时间: dayjs(),
         状态: 事项状态.重复中,
         重复: undefined,
       },
@@ -45,8 +46,8 @@ export const TodoTree初始值: ({
         名称: "重复中-1",
         重要程度: 1,
         紧急程度: 1,
-        开始时间: dayjs().format("YYYY-MM-DD"),
-        结束时间: dayjs().format("YYYY-MM-DD"),
+        开始时间: dayjs(),
+        结束时间: dayjs(),
         状态: 事项状态.重复中,
         重复: undefined,
       },

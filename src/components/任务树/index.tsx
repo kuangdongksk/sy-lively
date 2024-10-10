@@ -1,12 +1,17 @@
 import { TodoTree初始值 } from "@/constant/初始值";
-import { 顶级节点 } from "@/constant/状态配置";
-import { string2stringArr } from "@/utils/拼接与拆解";
+import { 事项状态, 顶级节点 } from "@/constant/状态配置";
+import { string2stringArr, stringArr2string } from "@/utils/拼接与拆解";
 import type { TreeDataNode, TreeProps } from "antd";
-import { Tree } from "antd";
+import { Button, Tree } from "antd";
 import React, { useEffect, useState } from "react";
 import 事项, { I事项Props } from "./components/事项";
+import { PlusCircleOutlined } from "@ant-design/icons";
+import { nanoid } from "nanoid";
+import dayjs from "dayjs";
+import { 任务树样式 } from "./index.style";
 
 export type TreeNode = TreeDataNode & {
+  id: string;
   key: string;
   子项?: TreeNode[];
 } & I事项Props;
@@ -15,17 +20,16 @@ export interface ITodoTreeProps {
   data?: TreeNode[];
 }
 
-function TodoTree(props: ITodoTreeProps) {
+function 任务树(props: ITodoTreeProps) {
   const { data } = props;
+  const { styles } = 任务树样式();
   const [gData, setGData] = useState(TodoTree初始值);
 
   useEffect(() => {
     setGData(data);
   }, [data]);
 
-  const onDragEnter: TreeProps["onDragEnter"] = (info) => {
-    console.log("🚀 ~ TodoTree ~ info:", info);
-  };
+  const onDragEnter: TreeProps["onDragEnter"] = (info) => {};
 
   return (
     <Tree<TreeNode>
@@ -56,24 +60,50 @@ function TodoTree(props: ITodoTreeProps) {
       checkable
       draggable
       fieldNames={{ title: "名称", key: "key", children: "子项" }}
+      showIcon={false}
+      showLine
       treeData={gData}
       onDragEnter={onDragEnter}
       onDrop={(info) => onDrop(info, gData, setGData)}
       titleRender={(node) => {
         if (node.key.includes(顶级节点)) {
-          return <h4>{node.名称}</h4>;
+          return (
+            <div className={styles.分类标题}>
+              <h4>{node.名称}</h4>
+              <Button
+                icon={<PlusCircleOutlined />}
+                size="small"
+                type="link"
+                onClick={() => {
+                  const id = nanoid();
+                  const 状态 = string2stringArr(node.key)[0];
+                  node.子项.unshift({
+                    id,
+                    key: stringArr2string([状态, "1", nanoid()]),
+                    checkable: true,
+                    名称: "重复中-1",
+                    重要程度: 1,
+                    紧急程度: 1,
+                    开始时间: dayjs(),
+                    结束时间: dayjs(),
+                    状态: 事项状态[状态],
+                    重复: undefined,
+                  });
+                  setGData(gData);
+                }}
+              />
+            </div>
+          );
         }
-
         return <事项 {...node} />;
       }}
     />
   );
 }
 
-export default TodoTree;
+export default 任务树;
 
 function onDrop(info, gData, setGData) {
-  console.log("🚀 ~ TodoTree ~ info:", info);
   const dropKey = info.node.key;
   const dragKey = info.dragNode.key;
   const dropPos = info.node.pos.split("-");
