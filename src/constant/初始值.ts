@@ -1,5 +1,5 @@
-import { TreeNode } from "@/pages/主页/components/任务树";
-import { I事项, T层级 } from "@/pages/主页/components/任务树/components/事项";
+import { TreeNode } from "@/pages/主页/components/事项树";
+import { I事项, T层级 } from "@/pages/主页/components/事项树/components/事项";
 import { stringArr2string } from "@/utils/拼接与拆解";
 import dayjs from "dayjs";
 import { 事项状态, 已完成, 进行中, 重复中, 顶级节点 } from "./状态配置";

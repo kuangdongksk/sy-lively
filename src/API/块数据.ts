@@ -1,0 +1,160 @@
+import { EAPI } from "@/constant/API路径";
+import { fetchSyncPost } from "siyuan";
+
+/**
+ * 插入块
+ * @param options - 包含以下属性的对象：
+ *   - dataType: 待插入数据类型，值可选择 markdown 或者 dom
+ *   - data: 待插入的数据
+ *   - nextID: 后一个块的 ID，用于锚定插入位置
+ *   - previousID: 前一个块的 ID，用于锚定插入位置
+ *   - parentID: 父块 ID，用于锚定插入位置
+ *
+ * nextID、previousID、parentID 三个参数必须至少存在一个有值，
+ * 优先级为 nextID > previousID > parentID
+ * @returns 插入块的结果
+ */
+export function 插入块(options: {
+  dataType: "markdown" | "dom";
+  data: string;
+  nextID?: string;
+  previousID?: string;
+  parentID?: string;
+}) {
+  return fetchSyncPost(EAPI.插入块, options);
+}
+
+/**
+ * 插入前置子块
+ * @param options - 包含以下属性的对象：
+ *   - dataType: 待插入数据类型，值可选择 markdown 或者 dom
+ *   - data: 待插入的数据
+ *   - parentID: 父块 ID
+ * @returns 插入块的结果
+ */
+export function 插入前置子块(options: {
+  dataType: "markdown" | "dom";
+  data: string;
+  parentID: string;
+}) {
+  return fetchSyncPost(EAPI.插入前置子块, options);
+}
+
+/**
+ * 插入后置子块
+ * @param options - 包含以下属性的对象：
+ *   - dataType: 待插入数据类型，值可选择 markdown 或者 dom
+ *   - data: 待插入的数据
+ *   - parentID: 父块 ID
+ * @returns 插入块的结果
+ */
+export function 插入后置子块(options: {
+  dataType: "markdown" | "dom";
+  data: string;
+  parentID: string;
+}) {
+  return fetchSyncPost(EAPI.插入后置子块, options);
+}
+
+/**
+ * 更新块
+ * @param options - 包含以下属性的对象：
+ *   - id: 待更新块的 ID
+ *   - dataType: 待更新数据类型，值可选择 markdown 或者 dom
+ *   - data: 待更新的数据
+ * @returns 更新块的结果
+ */
+export function 更新块(options: {
+  id: string;
+  dataType: "markdown" | "dom";
+  data: string;
+}) {
+  return fetchSyncPost(EAPI.更新块, options);
+}
+
+/**
+ * 删除块
+ * @param options - 包含以下属性的对象：
+ *   - id: 待删除块的 ID
+ * @returns 删除块的结果
+ */
+export function 删除块(options: { id: string }) {
+  return fetchSyncPost(EAPI.删除块, options);
+}
+
+/**
+ * 移动块
+ * @param options - 包含以下属性的对象：
+ *   - id: 待移动块的 ID
+ *   - parentID: 父块的 ID，用于锚定插入位置
+ *   - previousID: 后一个块的 ID，用于锚定插入位置（可选）
+ * @returns 移动块的结果
+ */
+export function 移动块(options: {
+  id: string;
+  previousID?: string;
+  parentID?: string;
+}) {
+  return fetchSyncPost(EAPI.移动块, options);
+}
+
+/**
+ * 获取块 Kramdown 源码
+ * @param options - 包含以下属性的对象：
+ *   - id: 待获取块的 ID
+ * @returns 块的 Kramdown 源码
+ */
+export function 获取块Kramdown源码(options: { id: string }) {
+  return fetchSyncPost(EAPI.获取块kramdown源码, options);
+}
+
+/**
+ * 获取子块
+ * @param options - 包含以下属性的对象：
+ *   - id: 父块的 ID
+ * 标题下方块也算作子块
+ * @returns 子块列表
+ */
+export function 获取子块(options: { id: string }) {
+  return fetchSyncPost(EAPI.获取子块, options);
+}
+
+/**
+ * 转移块引用
+ * @param options - 包含以下属性的对象：
+ *   - fromID: 定义块 ID
+ *   - toID: 目标块 ID
+ *   - refIDs: 指向定义块 ID 的引用所在块 ID，可选，如果不指定，所有指向定义块 ID 的引用块 ID 都会被转移
+ * @returns 转移块引用的结果
+ */
+export function 转移块引用(options: {
+  fromID: string;
+  toID: string;
+  refIDs?: string[];
+}) {
+  return fetchSyncPost(EAPI.转移块引用, options);
+}
+
+/**
+ * 设置块属性
+ * @param options - 包含以下属性的对象：
+ *   - id: 待设置块的 ID
+ *   - attrs: 待设置的属性
+ * @returns 设置块属性的结果
+ */
+export function 设置块属性(options: {
+  id: string;
+  attrs: { [key: string]: string };
+}) {
+  return fetchSyncPost(EAPI.设置块属性, options);
+}
+
+/**
+ * 获取块属性
+ * @param options - 包含以下属性的对象：
+ *   - id: 待获取块的 ID
+ * @returns 块的属性
+ */
+export function 获取块属性(options: { id: string }) {
+  return fetchSyncPost(EAPI.获取块属性, options);
+}
