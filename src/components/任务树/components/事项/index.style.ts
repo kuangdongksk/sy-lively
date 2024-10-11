@@ -1,6 +1,8 @@
 import { createStyles } from "antd-style";
 
 export const use事项样式 = createStyles(({ token, css }) => {
+  token;
+  css;
   return {
     事项: {
       display: "flex",

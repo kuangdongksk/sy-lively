@@ -1,13 +1,15 @@
+import { 事项数据 } from "@/jotai/事项数据";
 import { stringArr2string } from "@/utils/拼接与拆解";
 import { green, red } from "@ant-design/colors";
 import { CopyOutlined, EditOutlined } from "@ant-design/icons";
+import { useBoolean } from "ahooks";
 import { Button, DatePicker, Input, Select } from "antd";
 import { Dayjs } from "dayjs";
+import { useAtom } from "jotai";
 import { 事项状态 } from "../../../../constant/状态配置";
 import 数字标签 from "../数字标签";
+import 添加子项 from "../添加子项";
 import { use事项样式 } from "./index.style";
-import { useState } from "react";
-import { useBoolean } from "ahooks";
 
 const { RangePicker } = DatePicker;
 const 程度选项数组 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => ({
@@ -17,9 +19,10 @@ const 程度选项数组 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => ({
 
 export type TCorn = string;
 export type T层级 = 0 | 1 | 2 | 3 | 4 | 5;
-
-export interface I事项Props {
+export interface I事项 {
   id: string;
+  key: string;
+  checkable: boolean;
   名称: string;
   重要程度: number;
   紧急程度: number;
@@ -28,20 +31,25 @@ export interface I事项Props {
   状态: 事项状态;
   重复: TCorn | false;
   层级: T层级;
+  父项: string;
+  子项: I事项[];
+}
+
+export interface I事项Props {
+  事项: I事项;
 }
 
 function 事项(props: I事项Props) {
-  const { id, 名称, 重要程度, 紧急程度, 开始时间, 结束时间 } = props;
-
+  const { 事项 } = props;
+  const { id, 名称, 重要程度, 紧急程度, 开始时间, 结束时间 } = 事项;
+  const [数据, 令数据为] = useAtom(事项数据);
   const { styles } = use事项样式();
 
   const [不可编辑名称, { toggle: 切换名称编辑状态 }] = useBoolean(true);
 
   return (
     <div className={styles.事项}>
-      <div
-        className={styles.标题}
-      >
+      <div className={styles.标题}>
         {不可编辑名称 ? (
           <>
             <Button
@@ -69,12 +77,14 @@ function 事项(props: I事项Props) {
             defaultValue={名称}
             variant={"outlined"}
             onChange={(e) => {
-              console.log(e.target.value);
+              事项.名称 = e.target.value;
+              令数据为([...数据]);
             }}
             onBlur={切换名称编辑状态}
           />
         )}
         <span className={styles.id文本}>#{id.slice(0, 6)}</span>
+        <添加子项 节点={事项} />
       </div>
       <div className={styles.程度}>
         <Select<number>

@@ -1,34 +1,29 @@
-import { 任务树初始值 } from "@/constant/初始值";
-import { 事项状态, 顶级节点 } from "@/constant/状态配置";
-import { string2stringArr, stringArr2string } from "@/utils/拼接与拆解";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { 顶级节点 } from "@/constant/状态配置";
+import { 事项数据 } from "@/jotai/事项数据";
+import { string2stringArr } from "@/utils/拼接与拆解";
 import type { TreeDataNode } from "antd";
-import { Button, Tree } from "antd";
-import dayjs from "dayjs";
-import { nanoid } from "nanoid";
-import React, { useEffect, useState } from "react";
-import 事项, { I事项Props } from "./components/事项";
+import { Tree } from "antd";
+import { useAtom } from "jotai";
+import React, { useEffect } from "react";
+import 事项, { I事项 } from "./components/事项";
+import 添加子项 from "./components/添加子项";
 import { 任务树样式 } from "./index.style";
+import { convertTo树 } from "./tools";
 
 export type TreeNode = TreeDataNode & {
   id: string;
   key: string;
   子项?: TreeNode[];
-} & I事项Props;
+} & I事项;
 
-export interface ITodoTreeProps {
-  data?: TreeNode[];
-}
-
-function 任务树(props: ITodoTreeProps) {
-  const { data } = props;
+function 任务树() {
   const { styles } = 任务树样式();
 
-  const [数据, 令数据为] = useState(任务树初始值);
+  const [数据, 令数据为] = useAtom(事项数据);
 
   useEffect(() => {
-    data && 令数据为(data);
-  }, [data]);
+    console.log("🚀 ~ 数据:", 数据);
+  }, [数据]);
 
   return (
     <Tree<TreeNode>
@@ -57,11 +52,16 @@ function 任务树(props: ITodoTreeProps) {
       }}
       blockNode
       checkable
+      defaultExpandParent
       draggable
       fieldNames={{ title: "名称", key: "key", children: "子项" }}
       showIcon={false}
       showLine
-      treeData={数据}
+      treeData={[...convertTo树(数据)]}
+      //
+      onCheck={(checkedKeys, e) => {
+        console.log("🚀 ~ checkedKeys, e:", checkedKeys, e);
+      }}
       onDragEnter={() => {}}
       onDrop={(info) => onDrop(info, 数据, 令数据为)}
       titleRender={(node) => {
@@ -69,37 +69,11 @@ function 任务树(props: ITodoTreeProps) {
           return (
             <div className={styles.分类标题}>
               <h4>{node.名称}</h4>
-              <Button
-                icon={<PlusCircleOutlined />}
-                size="small"
-                type="link"
-                onClick={() => {
-                  const id = nanoid();
-                  const 状态 = string2stringArr(node.key)[0];
-                  const 名称 = "未命名";
-                  node.子项 = [
-                    {
-                      id,
-                      key: stringArr2string([状态, 名称, id]),
-                      checkable: true,
-                      名称,
-                      重要程度: 1,
-                      紧急程度: 1,
-                      开始时间: dayjs(),
-                      结束时间: dayjs(),
-                      状态: 事项状态[状态],
-                      重复: undefined,
-                      层级: 1,
-                    },
-                    ...node.子项,
-                  ];
-                  令数据为([...数据]);
-                }}
-              />
+              <添加子项 节点={node} key={node.key} />
             </div>
           );
         }
-        return <事项 {...node} />;
+        return <事项 事项={{ ...node }} />;
       }}
     />
   );
