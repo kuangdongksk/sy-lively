@@ -4,20 +4,46 @@ import ReactDOM from "react-dom/client";
 import { getFrontend, openTab, Plugin } from "siyuan";
 import App from "./App";
 import { 暗色主题 } from "./theme/暗色";
+import { E数据索引 } from "./constant/系统码";
 export const PluginId = "lively_SaSa";
 
 const DOCK_TYPE = "dock_tab";
 const TAB_TYPE = "custom_tab";
 
-const REACT_ROOT = (
-  <React.StrictMode>
-    <ThemeProvider defaultAppearance="dark" theme={暗色主题}>
-      <App />
-    </ThemeProvider>
-  </React.StrictMode>
-);
 export default class PluginSample extends Plugin {
   private isMobile: boolean;
+
+  private REACT_ROOT = (
+    <React.StrictMode>
+      <ThemeProvider defaultAppearance="dark" theme={暗色主题}>
+        <App
+          loadData={async (key: E数据索引) => {
+            let data;
+            try {
+              data = await this.loadData(key);
+            } catch (error) {
+              console.log(
+                "🚀 ~ AccessControllerPlugin ~ getData ~ error:",
+                error
+              );
+              return null;
+            }
+            return data;
+          }}
+          saveData={async (key: E数据索引, value: any) => {
+            try {
+              await this.saveData(key, value);
+            } catch (error) {
+              console.log(
+                "🚀 ~ AccessControllerPlugin ~ saveData ~ error:",
+                error
+              );
+            }
+          }}
+        />
+      </ThemeProvider>
+    </React.StrictMode>
+  );
 
   async onload() {
     this.isMobile =
@@ -59,7 +85,7 @@ export default class PluginSample extends Plugin {
         const rootElement = document.getElementById(PluginId);
         if (rootElement) {
           const root = ReactDOM.createRoot(rootElement);
-          root.render(REACT_ROOT);
+          root.render(this.REACT_ROOT);
         }
       },
       destroy() {
@@ -74,6 +100,7 @@ export default class PluginSample extends Plugin {
     tabDiv.style.height = "100%";
     tabDiv.id = PluginId;
 
+    const AppRoot = this.REACT_ROOT;
     // 添加自定义页签
     this.addTab({
       type: TAB_TYPE,
@@ -81,7 +108,7 @@ export default class PluginSample extends Plugin {
         this.element.appendChild(tabDiv);
         if (tabDiv) {
           const root = ReactDOM.createRoot(tabDiv);
-          root.render(REACT_ROOT);
+          root.render(AppRoot);
         }
       },
       beforeDestroy() {

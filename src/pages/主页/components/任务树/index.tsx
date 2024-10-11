@@ -1,4 +1,6 @@
+import { 任务树初始值 } from "@/constant/初始值";
 import { 顶级节点 } from "@/constant/状态配置";
+import { E数据索引 } from "@/constant/系统码";
 import { 事项数据 } from "@/jotai/事项数据";
 import { string2stringArr } from "@/utils/拼接与拆解";
 import type { TreeDataNode } from "antd";
@@ -15,11 +17,30 @@ export type TreeNode = TreeDataNode & {
   key: string;
   子项?: TreeNode[];
 } & I事项;
+export interface I任务树Props {
+  加载数据: (key: E数据索引) => Promise<any>;
+  保存数据: (key: E数据索引, value: any) => Promise<void>;
+}
 
-function 任务树() {
+function 任务树(props: I任务树Props) {
+  const { 加载数据, 保存数据 } = props;
   const { styles } = 任务树样式();
 
   const [数据, 令数据为] = useAtom(事项数据);
+
+  useEffect(() => {
+    加载数据(E数据索引.事项数据).then((value) => {
+      if (!value) {
+        令数据为(任务树初始值);
+        return;
+      }
+      令数据为(value);
+    });
+  }, []);
+
+  useEffect(() => {
+    保存数据(E数据索引.事项数据, 数据);
+  }, [数据]);
 
   return (
     <Tree<TreeNode>
@@ -43,7 +64,6 @@ function 任务树() {
             return false;
           }
         }
-
         return true;
       }}
       blockNode
@@ -55,9 +75,7 @@ function 任务树() {
       showLine
       treeData={[...convertTo树(数据)]}
       //
-      onCheck={(checkedKeys, e) => {
-        console.log("🚀 ~ checkedKeys, e:", checkedKeys, e);
-      }}
+      onCheck={(checkedKeys, e) => {}}
       onDragEnter={() => {}}
       onDrop={(info) => onDrop(info, 数据, 令数据为)}
       titleRender={(node) => {

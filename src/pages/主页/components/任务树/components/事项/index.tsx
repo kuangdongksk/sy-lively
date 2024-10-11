@@ -4,7 +4,7 @@ import { green, red } from "@ant-design/colors";
 import { CopyOutlined, EditOutlined } from "@ant-design/icons";
 import { useBoolean } from "ahooks";
 import { Button, DatePicker, Input, Select } from "antd";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { useAtom } from "jotai";
 import { 事项状态 } from "../../../../../../constant/状态配置";
 import 数字标签 from "../数字标签";
@@ -26,8 +26,8 @@ export interface I事项 {
   名称: string;
   重要程度: number;
   紧急程度: number;
-  开始时间: Dayjs;
-  结束时间: Dayjs;
+  开始时间: number;
+  结束时间: number;
   状态: 事项状态;
   重复: TCorn | false;
   层级: T层级;
@@ -77,7 +77,7 @@ function 事项(props: I事项Props) {
             defaultValue={名称}
             variant={"outlined"}
             onChange={(e) => {
-              事项.名称 = e.target.value;
+              数据.find((item) => item.id === id).名称 = e.target.value;
               令数据为([...数据]);
             }}
             onBlur={切换名称编辑状态}
@@ -98,6 +98,10 @@ function 事项(props: I事项Props) {
           optionRender={({ value }) => {
             return <数字标签 num={Number(value)} 颜色数组={green} />;
           }}
+          onChange={(value) => {
+            数据.find((item) => item.id === id).重要程度 = value;
+            令数据为([...数据]);
+          }}
         />
         <Select<number>
           className={styles.选择器}
@@ -110,15 +114,28 @@ function 事项(props: I事项Props) {
           optionRender={({ value }) => {
             return <数字标签 num={Number(value)} 颜色数组={red} />;
           }}
+          onChange={(value) => {
+            数据.find((item) => item.id === id).紧急程度 = value;
+            令数据为([...数据]);
+          }}
         />
       </div>
       <div className={styles.时间}>
         <RangePicker
           allowEmpty
-          defaultValue={[开始时间, 结束时间]}
+          defaultValue={[dayjs(开始时间), dayjs(结束时间)]}
           placeholder={["开始时间", "结束时间"]}
           showTime
           variant="borderless"
+          onChange={(value) => {
+            数据.find((item) => item.id === id).开始时间 = dayjs(
+              value[0]
+            ).valueOf();
+            数据.find((item) => item.id === id).结束时间 = dayjs(
+              value[1]
+            ).valueOf();
+            令数据为([...数据]);
+          }}
         />
       </div>
     </div>

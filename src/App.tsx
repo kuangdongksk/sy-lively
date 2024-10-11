@@ -3,16 +3,25 @@ import { Layout, Menu, MenuProps } from "antd";
 import { useState } from "react";
 import 主页 from "./pages/主页";
 import 日历 from "./pages/日历";
+import { E数据索引 } from "./constant/系统码";
 
 const { Header, Footer, Sider, Content } = Layout;
 type MenuItem = Required<MenuProps>["items"][number];
 
 type TNav = "主页" | "日历";
-function App() {
+
+export interface IAppProps {
+  loadData: (key: E数据索引) => Promise<any>;
+  saveData: (key: E数据索引, value: any) => Promise<void>;
+}
+
+function App(props: IAppProps) {
+  const { loadData, saveData } = props;
   const navMap = {
-    主页: <主页 />,
+    主页: <主页 加载数据={loadData} 保存数据={saveData} />,
     日历: <日历 />,
   };
+
   const [current, setCurrent] = useState<TNav>("主页");
 
   const menuList: MenuItem[] = [

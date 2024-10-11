@@ -15,7 +15,7 @@ function 添加子项(props: { 节点: TreeNode }) {
   const [数据, 令数据为] = useAtom(事项数据);
   return (
     <>
-      {节点.层级 < 5 && (
+      {节点.层级 < 5 && 节点.状态 !== 事项状态.已完成 && (
         <Button
           icon={<PlusCircleOutlined />}
           size="small"
@@ -30,10 +30,10 @@ function 添加子项(props: { 节点: TreeNode }) {
               key: stringArr2string([状态, 名称, id]),
               checkable: true,
               名称,
-              重要程度: 1,
-              紧急程度: 1,
+              重要程度: 5,
+              紧急程度: 5,
               开始时间: dayjs(),
-              结束时间: dayjs(),
+              结束时间: dayjs().add(1, "hour"),
               状态: 事项状态[状态],
               重复: undefined,
               层级,
