@@ -39,44 +39,44 @@ function 事项(props: I事项Props) {
 
   return (
     <div className={styles.事项}>
-      <div className={styles.标题}>
-        <Button size="small" type="link">
-          {不可编辑名称 ? (
-            <>
-              <Button
-                size="small"
-                type="link"
-                icon={<CopyOutlined />}
-                onClick={() => {
-                  navigator.clipboard.writeText(
-                    stringArr2string([名称, `#${id}`])
-                  );
-                }}
-              />
-              <Button
-                size="small"
-                type="link"
-                icon={<EditOutlined />}
-                onClick={切换名称编辑状态}
-              />
-              <span className="">{名称}</span>
-            </>
-          ) : (
-            <Input
-              className=""
-              defaultValue={名称}
-              variant={"outlined"}
-              onChange={(e) => {
-                console.log(e.target.value);
+      <div
+        className={styles.标题}
+      >
+        {不可编辑名称 ? (
+          <>
+            <Button
+              size="small"
+              type="link"
+              icon={<CopyOutlined />}
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  stringArr2string([名称, `#${id}`])
+                );
               }}
-              onBlur={切换名称编辑状态}
             />
-          )}
-
-          <span className={styles.id文本}>#{id.slice(0, 6)}</span>
-        </Button>
+            <Button
+              size="small"
+              type="link"
+              icon={<EditOutlined />}
+              onClick={切换名称编辑状态}
+            />
+            <span className="">{名称}</span>
+          </>
+        ) : (
+          <Input
+            autoFocus
+            className=""
+            defaultValue={名称}
+            variant={"outlined"}
+            onChange={(e) => {
+              console.log(e.target.value);
+            }}
+            onBlur={切换名称编辑状态}
+          />
+        )}
+        <span className={styles.id文本}>#{id.slice(0, 6)}</span>
       </div>
-      <div>
+      <div className={styles.程度}>
         <Select<number>
           className={styles.选择器}
           defaultValue={重要程度}
@@ -102,7 +102,7 @@ function 事项(props: I事项Props) {
           }}
         />
       </div>
-      <div>
+      <div className={styles.时间}>
         <RangePicker
           allowEmpty
           defaultValue={[开始时间, 结束时间]}
