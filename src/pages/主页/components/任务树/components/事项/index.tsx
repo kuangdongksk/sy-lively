@@ -6,7 +6,7 @@ import { useBoolean } from "ahooks";
 import { Button, DatePicker, Input, Select } from "antd";
 import { Dayjs } from "dayjs";
 import { useAtom } from "jotai";
-import { 事项状态 } from "../../../../constant/状态配置";
+import { 事项状态 } from "../../../../../../constant/状态配置";
 import 数字标签 from "../数字标签";
 import 添加子项 from "../添加子项";
 import { use事项样式 } from "./index.style";

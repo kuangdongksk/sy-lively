@@ -1,4 +1,4 @@
-import 任务树 from "@/components/任务树";
+import 任务树 from "@/pages/主页/components/任务树";
 
 function Home() {
   return (

@@ -21,10 +21,6 @@ function 任务树() {
 
   const [数据, 令数据为] = useAtom(事项数据);
 
-  useEffect(() => {
-    console.log("🚀 ~ 数据:", 数据);
-  }, [数据]);
-
   return (
     <Tree<TreeNode>
       className="draggableTree"
