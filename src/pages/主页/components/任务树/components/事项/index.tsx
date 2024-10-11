@@ -4,7 +4,7 @@ import { green, red } from "@ant-design/colors";
 import { CopyOutlined, EditOutlined } from "@ant-design/icons";
 import { useBoolean } from "ahooks";
 import { Button, DatePicker, Input, Select } from "antd";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { 事项状态 } from "../../../../../../constant/状态配置";
 import 数字标签 from "../数字标签";

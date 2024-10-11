@@ -9,11 +9,7 @@ export interface I主页Props {
 function Home(props: I主页Props) {
   const { 加载数据, 保存数据 } = props;
 
-  return (
-    <div>
-      <任务树 加载数据={加载数据} 保存数据={保存数据} />
-    </div>
-  );
+  return <任务树 加载数据={加载数据} 保存数据={保存数据} />;
 }
 
 export default Home;
