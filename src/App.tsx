@@ -27,7 +27,7 @@ function App() {
     设置: <设置 />,
   };
 
-  const [current, setCurrent] = useState<TNav>("设置");
+  const [当前, 令当前为] = useState<TNav>("设置");
   const [目录, 设置目录] = useState([
     { key: "设置", icon: <SettingOutlined />, label: "设置" },
   ]);
@@ -42,7 +42,8 @@ function App() {
         });
         目录.unshift({ key: "主页", icon: <HomeOutlined />, label: "主页" });
         设置目录([...目录]);
-        设置用户设置(data);
+        令当前为("主页");
+        设置用户设置(JSON.parse(data[0].value));
       }
     });
   }, []);
@@ -54,18 +55,18 @@ function App() {
           <h3>喧嚣</h3>
         </div>
         <Menu
-          defaultValue={current}
+          defaultValue={当前}
           mode="inline"
           inlineCollapsed={true}
           items={目录}
           onSelect={(data) => {
-            setCurrent(data.key as TNav);
+            令当前为(data.key as TNav);
           }}
         />
       </Sider>
       <Layout className={styles.主体}>
         <Header>又是新的一天！</Header>
-        <Content className={styles.内容}>{navMap[current]}</Content>
+        <Content className={styles.内容}>{navMap[当前]}</Content>
         <Footer>{dayjs().format("YYYY年MM月DD日")}</Footer>
       </Layout>
     </Layout>

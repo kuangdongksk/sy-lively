@@ -12,11 +12,20 @@ export function SQL(sql: E常用SQL): Promise<IWebSocketData> {
   });
 }
 
-export function 获取日记文档(
+export function 获取日记根文档(
   笔记本ID: string,
   日记文档名称: string
 ): Promise<IWebSocketData> {
   return fetchSyncPost("/api/query/sql", {
     stmt: `SELECT * FROM blocks WHERE box='${笔记本ID}' AND type='d' AND content='${日记文档名称}'`,
+  });
+}
+
+export function 获取日期对应的日记文档(
+  笔记本ID: string,
+  日期日记路径: string
+): Promise<IWebSocketData> {
+  return fetchSyncPost("/api/query/sql", {
+    stmt: `SELECT * FROM blocks WHERE box='${笔记本ID}' AND type='d' AND hpath='${日期日记路径}'`,
   });
 }
