@@ -7,7 +7,7 @@ function 事项DOM(props: { 事项: I事项 }) {
   const { 事项 } = props;
 
   const attribute = {
-    [E块属性名称.事项]: 事项.id,
+    [E块属性名称.事项]: JSON.stringify(事项),
   };
 
   return (

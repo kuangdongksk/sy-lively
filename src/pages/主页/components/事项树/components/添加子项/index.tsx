@@ -55,6 +55,7 @@ function 添加子项(props: { 节点: TreeNode }) {
                   data: TSX2HTML(<事项DOM 事项={新事项} />),
                   parentID: 文档ID,
                 }).then((value) => {
+                  console.log("🚀 ~ value:", value);
                   数据.push(新事项);
                   令数据为([...数据]);
                 });

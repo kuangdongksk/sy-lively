@@ -24,12 +24,10 @@ function 任务树() {
 
   useEffect(() => {
     SQL(E常用SQL.获取所有事项).then(({ data }) => {
-      console.log("🚀 ~ SQL ~ value:", data);
-      // if (!value) {
-      //   令数据为(任务树初始值);
-      //   return;
-      // }
-      // 令数据为(value);
+      令数据为([
+        ...数据,
+        ...data.map(({ value }) => JSON.parse(value) as TreeNode),
+      ]);
     });
   }, []);
 
@@ -66,7 +64,7 @@ function 任务树() {
       showLine
       treeData={[...convertTo树(数据)]}
       //
-      onCheck={(checkedKeys, e) => {}}
+      // onCheck={(checkedKeys, e) => {}}
       onDragEnter={() => {}}
       onDrop={(info) => onDrop(info, 数据, 令数据为)}
       titleRender={(node) => {
