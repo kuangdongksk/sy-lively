@@ -1,6 +1,9 @@
 import { 获取日期对应的日记文档, 获取日记根文档 } from "@/API/SQL";
+import { 设置块属性 } from "@/API/块数据";
 import { 通过Markdown创建文档 } from "@/API/文档";
 import { 获取笔记本配置 } from "@/API/笔记本";
+import { E块属性名称 } from "@/constant/系统码";
+import { I用户设置 } from "@/types/喧嚣";
 import { Dayjs } from "dayjs";
 
 /**
@@ -10,18 +13,16 @@ import { Dayjs } from "dayjs";
  */
 export async function 获取笔记本下的日记根文档(
   笔记本ID: string
-): Promise<{ id: string }[]> {
+): Promise<{ id: string }> {
   const value = await 获取笔记本配置(笔记本ID);
   const 日记文档名称 = value.data.conf.dailyNoteSavePath.split("/")[1];
   const { data } = await 获取日记根文档(笔记本ID, 日记文档名称);
   if (data.length === 0) {
-    return [
-      {
-        id: (await 通过Markdown创建文档(笔记本ID, `/${日记文档名称}`, "")).data,
-      },
-    ];
+    return {
+      id: (await 通过Markdown创建文档(笔记本ID, `/${日记文档名称}`, "")).data,
+    };
   }
-  return data;
+  return data[0];
 }
 
 /**
@@ -46,4 +47,24 @@ export async function 获取笔记本下的对应日期的日记文档(
     };
   }
   return data[0];
+}
+
+/**
+ * 更新用户设置
+ */
+export async function 更新用户设置(
+  当前用户设置: I用户设置,
+  新的用户设置: Partial<I用户设置>
+) {
+  await 设置块属性({
+    id: 当前用户设置.日记根文档ID,
+    attrs: {
+      [E块属性名称.用户设置]: JSON.stringify({
+        ...当前用户设置,
+        ...新的用户设置,
+      }),
+    },
+  });
+
+  return;
 }

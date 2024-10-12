@@ -27,23 +27,43 @@ function 设置() {
     <Form>
       <Form.Item label="笔记本">
         <Select<string>
-          defaultValue={用户设置.笔记本}
+          defaultValue={用户设置.笔记本ID}
           options={笔记本列表}
           onChange={(笔记本ID) => {
-            获取笔记本下的日记根文档(笔记本ID).then((data) => {
-              设置块属性({
-                id: data[0].id,
-                attrs: {
-                  [E块属性名称.用户设置]: JSON.stringify({
-                    笔记本: 笔记本ID,
-                  }),
-                },
-              }).then(() => {
-                //TODO: 更改用户设置
-                令用户设置为({
-                  笔记本: 笔记本ID,
-                });
+            if (用户设置.笔记本ID === 笔记本ID) return;
+
+            const 更新设置 = () => {
+              获取笔记本下的日记根文档(笔记本ID).then(({ id }) => {
+                const 日记根文档ID = id;
+                const 新的用户设置 = {
+                  ...用户设置,
+                  笔记本ID,
+                  是否使用中: true,
+                  日记根文档ID,
+                };
+                设置块属性({
+                  id,
+                  attrs: {
+                    [E块属性名称.用户设置]: JSON.stringify(新的用户设置),
+                  },
+                }).then(() => 令用户设置为(新的用户设置));
               });
+            };
+            if (用户设置.笔记本ID === "") {
+              更新设置();
+              return;
+            }
+
+            设置块属性({
+              id: 用户设置.日记根文档ID,
+              attrs: {
+                [E块属性名称.用户设置]: JSON.stringify({
+                  ...用户设置,
+                  是否使用中: false,
+                }),
+              },
+            }).then(() => {
+              更新设置();
             });
           }}
         />
