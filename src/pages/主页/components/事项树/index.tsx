@@ -23,8 +23,8 @@ function 任务树() {
   const [数据, 令数据为] = useAtom(事项数据);
 
   useEffect(() => {
-    SQL(E常用SQL.获取所有事项).then((value) => {
-      console.log("🚀 ~ SQL ~ value:", value);
+    SQL(E常用SQL.获取所有事项).then(({ data }) => {
+      console.log("🚀 ~ SQL ~ value:", data);
       // if (!value) {
       //   令数据为(任务树初始值);
       //   return;

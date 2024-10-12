@@ -3,7 +3,8 @@ import { fetchSyncPost, IWebSocketData } from "siyuan";
 
 export enum E常用SQL {
   获取用户设置 = `SELECT * FROM attributes WHERE name='${E块属性名称.用户设置}'`,
-  获取所有事项 = `SELECT * FROM attributes WHERE name='${E块属性名称.事项}'`, // AND value='task'
+  获取所有事项 = `SELECT b.* FROM blocks b JOIN attributes a ON b.id = a.block_id
+                  WHERE a.name = '${E块属性名称.事项}'`, // AND value='task'
 }
 
 export function SQL(sql: E常用SQL): Promise<IWebSocketData> {

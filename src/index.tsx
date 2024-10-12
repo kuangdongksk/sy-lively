@@ -4,7 +4,6 @@ import ReactDOM from "react-dom/client";
 import { getFrontend, openTab, Plugin } from "siyuan";
 import App from "./App";
 import { 暗色主题 } from "./theme/暗色";
-import { E数据索引 } from "./constant/系统码";
 export const PluginId = "lively_SaSa";
 
 const DOCK_TYPE = "dock_tab";
@@ -16,31 +15,7 @@ export default class PluginSample extends Plugin {
   private REACT_ROOT = (
     <React.StrictMode>
       <ThemeProvider defaultAppearance="dark" theme={暗色主题}>
-        <App
-          loadData={async (key: E数据索引) => {
-            let data;
-            try {
-              data = await this.loadData(key);
-            } catch (error) {
-              console.log(
-                "🚀 ~ AccessControllerPlugin ~ getData ~ error:",
-                error
-              );
-              return null;
-            }
-            return data;
-          }}
-          saveData={async (key: E数据索引, value: any) => {
-            try {
-              await this.saveData(key, value);
-            } catch (error) {
-              console.log(
-                "🚀 ~ AccessControllerPlugin ~ saveData ~ error:",
-                error
-              );
-            }
-          }}
-        />
+        <App />
       </ThemeProvider>
     </React.StrictMode>
   );
