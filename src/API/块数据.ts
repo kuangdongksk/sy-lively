@@ -115,8 +115,8 @@ export function 获取块Kramdown源码(options: { id: string }) {
  * 标题下方块也算作子块
  * @returns 子块列表
  */
-export function 获取子块(options: { id: string }) {
-  return fetchSyncPost(EAPI.获取子块, options);
+export function 获取子块(id: string) {
+  return fetchSyncPost(EAPI.获取子块, { id });
 }
 
 /**

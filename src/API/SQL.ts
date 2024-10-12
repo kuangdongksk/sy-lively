@@ -11,3 +11,12 @@ export function SQL(sql: E常用SQL): Promise<IWebSocketData> {
     stmt: sql,
   });
 }
+
+export function 获取日记文档(
+  笔记本ID: string,
+  日记文档名称: string
+): Promise<IWebSocketData> {
+  return fetchSyncPost("/api/query/sql", {
+    stmt: `SELECT * FROM blocks WHERE box='${笔记本ID}' AND type='d' AND content='${日记文档名称}'`,
+  });
+}
