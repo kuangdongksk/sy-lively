@@ -38,7 +38,7 @@ function 弹窗表单<TFormValue>(props: I弹窗表单Props<TFormValue>) {
     >
       <Form
         labelCol={{
-          xs: { span: 24 },
+          xs: { span: 16 },
           sm: { span: 8 },
         }}
         wrapperCol={{
