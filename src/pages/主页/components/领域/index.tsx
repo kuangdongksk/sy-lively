@@ -85,7 +85,11 @@ function 领域() {
                     });
                   }}
                 />
-                <Button icon={<UndoOutlined />} onClick={加载数据} />
+                <Button
+                  icon={<UndoOutlined />}
+                  type="link"
+                  onClick={加载数据}
+                />
               </>
             ),
           },
