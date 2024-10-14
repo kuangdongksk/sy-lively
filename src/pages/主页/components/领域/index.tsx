@@ -1,8 +1,8 @@
 import { Table } from "antd";
 import { useLocation } from "react-router-dom";
-import { 分类列配置, 列配置 } from "./constant";
-import { I事项 } from "../事项树/components/事项";
 import { I领域 } from "../..";
+import { I事项 } from "../事项树/components/事项";
+import { 分类列配置, 列配置 } from "./constant";
 
 function 领域() {
   const { state } = useLocation() as {
@@ -10,7 +10,7 @@ function 领域() {
   };
 
   return (
-    <div>
+    <>
       <Table
         columns={分类列配置}
         dataSource={state.分类}
@@ -20,7 +20,7 @@ function 领域() {
           },
         }}
       />
-    </div>
+    </>
   );
 }
 
