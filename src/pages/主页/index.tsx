@@ -5,7 +5,19 @@ import { Button, Card, Form, Input, List } from "antd";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { 更新用户设置 } from "../设置/tools";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+
+export interface I分类 {
+  名称: string;
+  ID: string;
+  描述: string;
+}
+export interface I领域 {
+  名称: string;
+  ID: string;
+  描述: string;
+  分类: I分类[];
+}
 
 function 主页() {
   const 导航到 = useNavigate();
@@ -54,7 +66,7 @@ function 主页() {
               if (item.ID === "添加领域") {
                 令弹窗状态为("添加");
                 return;
-              } 
+              }
               导航到("/主页/领域", { state: item });
             }}
           >
@@ -62,7 +74,7 @@ function 主页() {
           </List.Item>
         )}
       />
-
+      <Outlet />
       <弹窗表单
         弹窗标题={"领域"}
         弹窗状态={弹窗状态}

@@ -3,27 +3,30 @@ import {
   HomeOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu } from "antd";
+import { Breadcrumb, Layout, Menu } from "antd";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { E常用SQL, SQL } from "./API/SQL";
 import { useAppStyle } from "./App.style";
 import { 用户设置Atom } from "./jotai/用户设置";
-import { Outlet, useNavigate } from "react-router-dom";
 
 const { Header, Footer, Sider, Content } = Layout;
 
 function App() {
-  const { styles } = useAppStyle();
+  const 当前位置 = useLocation();
   const 导航到 = useNavigate();
   const [, 设置用户设置] = useAtom(用户设置Atom);
 
+  const { styles } = useAppStyle();
+  const [加载中, 令加载中为] = useState(true);
   const [目录, 设置目录] = useState([
     { key: "设置", icon: <SettingOutlined />, label: "设置" },
   ]);
 
   useEffect(() => {
+    导航到("/设置");
     SQL(E常用SQL.获取用户设置).then(({ data }) => {
       if (data.length !== 0) {
         const 启用的用户设置 = data.filter(
@@ -37,9 +40,10 @@ function App() {
         });
         目录.unshift({ key: "主页", icon: <HomeOutlined />, label: "主页" });
         设置目录([...目录]);
-
+        导航到("/主页");
         设置用户设置(JSON.parse(启用的用户设置.value));
       }
+      令加载中为(false);
     });
   }, []);
 
@@ -59,7 +63,15 @@ function App() {
         />
       </Sider>
       <Layout className={styles.主体}>
-        <Header>又是新的一天！</Header>
+        <Header>
+          <Breadcrumb
+            items={decodeURI(当前位置.pathname)
+              .split("/")
+              .map((item) => ({
+                title: item,
+              }))}
+          />
+        </Header>
         <Content className={styles.内容}>
           <Outlet />
         </Content>
