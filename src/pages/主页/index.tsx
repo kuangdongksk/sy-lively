@@ -1,17 +1,11 @@
 import { 通过Markdown创建文档 } from "@/API/文档";
 import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
 import { 用户设置Atom } from "@/jotai/用户设置";
-import { Button, Card, Form, Input, List, Row, Space, Spin } from "antd";
+import { Button, Card, Form, Input, List, Spin } from "antd";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import { 更新用户设置 } from "../设置/tools";
 import { Outlet, useNavigate } from "react-router-dom";
-import {
-  CloseOutlined,
-  MinusCircleOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
-import { 设置块属性 } from "@/API/块数据";
+import { 更新用户设置 } from "../设置/tools";
 
 export interface I分类 {
   名称: string;

@@ -6,7 +6,7 @@ import { 用户设置Atom } from "@/jotai/用户设置";
 import { 获取笔记本下的对应日期的日记文档 } from "@/pages/设置/tools";
 import { TSX2HTML } from "@/utils/DOM";
 import { stringArr2string } from "@/utils/拼接与拆解";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { PlusCircleOutlined, UndoOutlined } from "@ant-design/icons";
 import { Button, Table } from "antd";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
@@ -27,6 +27,7 @@ function 领域() {
 
   const 加载数据 = () => {
     SQL(E常用SQL.获取所有事项).then(({ data }) => {
+      console.log("🚀 ~ SQL ~ data:", data);
       data.filter((item) => item.value.includes(state.ID));
       令事项数据为(data.map((item) => JSON.parse(item.value)));
     });
@@ -45,46 +46,47 @@ function 领域() {
             title: "操作",
             key: "operation",
             render: (value) => (
-              <Button
-                icon={<PlusCircleOutlined />}
-                type="link"
-                onClick={() => {
-                  const 分类 = value;
-                  const id = nanoid();
-                  const 名称 = "未命名";
-                  const 层级 = 1 as T层级;
+              <>
+                <Button
+                  icon={<PlusCircleOutlined />}
+                  type="link"
+                  onClick={() => {
+                    const 分类 = value;
+                    const id = nanoid();
+                    const 名称 = "未命名";
+                    const 层级 = 1 as T层级;
 
-                  // TODO 应该想办法将块和事项连接起来
-                  获取笔记本下的对应日期的日记文档(
-                    用户设置.笔记本ID,
-                    dayjs()
-                  ).then(({ id: 文档ID }) => {
-                    const 新事项 = {
-                      id,
-                      key: stringArr2string([事项状态.未开始, 名称, id]),
-                      checkable: true,
-                      名称,
-                      重要程度: 5,
-                      紧急程度: 5,
-                      开始时间: dayjs().valueOf(),
-                      结束时间: dayjs().add(1, "hour").valueOf(),
-                      状态: 事项状态.未开始,
-                      重复: undefined,
-                      层级,
-                      子项: [],
-                      父项: 分类.ID,
-                      领域: state.ID,
-                    };
-                    插入前置子块({
-                      dataType: "dom",
-                      data: TSX2HTML(<事项DOM 事项={新事项} />),
-                      parentID: 文档ID,
-                    }).then((value) => {
-                      加载数据();
+                    // TODO 应该想办法将块和事项连接起来
+                    获取笔记本下的对应日期的日记文档(
+                      用户设置.笔记本ID,
+                      dayjs()
+                    ).then(({ id: 文档ID }) => {
+                      const 新事项 = {
+                        id,
+                        key: stringArr2string([事项状态.未开始, 名称, id]),
+                        checkable: true,
+                        名称,
+                        重要程度: 5,
+                        紧急程度: 5,
+                        开始时间: dayjs().valueOf(),
+                        结束时间: dayjs().add(1, "hour").valueOf(),
+                        状态: 事项状态.未开始,
+                        重复: undefined,
+                        层级,
+                        子项: [],
+                        父项: 分类.ID,
+                        领域: state.ID,
+                      };
+                      插入前置子块({
+                        dataType: "dom",
+                        data: TSX2HTML(<事项DOM 事项={新事项} />),
+                        parentID: 文档ID,
+                      });
                     });
-                  });
-                }}
-              />
+                  }}
+                />
+                <Button icon={<UndoOutlined />} onClick={加载数据} />
+              </>
             ),
           },
         ]}
