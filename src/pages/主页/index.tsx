@@ -28,7 +28,7 @@ export interface I领域 {
 function 主页() {
   const 导航到 = useNavigate();
 
-  const [用户设置] = useAtom(用户设置Atom);
+  const [用户设置, 令用户设置为] = useAtom(用户设置Atom);
   const [弹窗状态, 令弹窗状态为] = useState<T弹窗状态>(undefined);
   const [创建中, 令创建中为] = useState<string | undefined>();
 
@@ -98,48 +98,6 @@ function 主页() {
             <Form.Item name="领域描述" label="领域描述">
               <Input.TextArea autoSize={{ minRows: 1 }} />
             </Form.Item>
-            <Form.Item label="分类">
-              <Form.List name={"分类"}>
-                {(subFields, subOpt) => (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      rowGap: 16,
-                    }}
-                  >
-                    {subFields.map((subField) => (
-                      <Space key={subField.key}>
-                        <Form.Item
-                          noStyle
-                          name={[subField.name, "名称"]}
-                          required
-                        >
-                          <Input type="text" placeholder="分类名称" />
-                        </Form.Item>
-                        <Form.Item noStyle name={[subField.name, "描述"]}>
-                          <Input.TextArea
-                            autoSize={{ minRows: 1 }}
-                            placeholder="分类描述"
-                          />
-                        </Form.Item>
-                        <MinusCircleOutlined
-                          onClick={() => {
-                            subOpt.remove(subField.name);
-                          }}
-                        />
-                      </Space>
-                    ))}
-                    <Button
-                      icon={<PlusOutlined />}
-                      type="dashed"
-                      onClick={() => subOpt.add()}
-                      block
-                    />
-                  </div>
-                )}
-              </Form.List>
-            </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">
                 提交
@@ -157,53 +115,56 @@ function 主页() {
             描述: string;
           }[];
         }) => {
-          const 新建领域 = (领域文档ID: string) => {
+          const 新建领域 = () => {
             通过Markdown创建文档(
               用户设置.笔记本ID,
               `/领域/${value.领域名称}`,
               ""
             ).then(({ data: 领域文档ID }) => {
-              value.分类?.forEach((分类) => {
-                通过Markdown创建文档(
-                  用户设置.笔记本ID,
-                  `/领域/${value.领域名称}/${分类.名称}}`,
-                  ""
-                ).then(({ data }) => {
-                  const 之前的领域设置 = 用户设置.领域设置;
-                  const 之前的分类设置 = 之前的领域设置.分类;
+              通过Markdown创建文档(
+                用户设置.笔记本ID,
+                `/领域/${value.领域名称}/杂项`,
+                ""
+              ).then(({ data }) => {
+                const 之前的领域设置 = 用户设置.领域设置;
 
-                  更新用户设置(用户设置, {
-                    领域设置: [
-                      ...用户设置.领域设置,
-                      {
-                        ID: 领域文档ID,
-                        名称: value.领域名称,
-                        描述: value.领域描述,
-                        分类: [
-                          ...之前的分类设置,
-                          {
-                            ID: data,
-                            ...分类,
-                          },
-                        ],
-                      },
-                    ],
-                  });
+                更新用户设置(用户设置, {
+                  领域设置: [
+                    ...之前的领域设置,
+                    {
+                      ID: 领域文档ID,
+                      名称: value.领域名称,
+                      描述: value.领域描述,
+                      分类: [
+                        {
+                          ID: data,
+                          名称: "杂项",
+                          描述: "系统默认创建",
+                        },
+                      ],
+                    },
+                  ],
                 });
+                令用户设置为({
+                  ...用户设置,
+                  领域设置: [
+                    ...之前的领域设置,
+                    {
+                      ID: 领域文档ID,
+                      名称: value.领域名称,
+                      描述: value.领域描述,
+                      分类: [
+                        {
+                          ID: data,
+                          名称: "杂项",
+                          描述: "系统默认创建",
+                        },
+                      ],
+                    },
+                  ],
+                });
+                令弹窗状态为(undefined);
               });
-
-              更新用户设置(用户设置, {
-                领域设置: [
-                  ...用户设置.领域设置,
-                  {
-                    ID: data,
-                    名称: value.领域名称,
-                    描述: value.领域描述,
-                    分类: [],
-                  },
-                ],
-              });
-              令弹窗状态为(undefined);
             });
           };
 
@@ -213,7 +174,8 @@ function 主页() {
                 更新用户设置(用户设置, {
                   领域文档ID: data,
                 }).then(() => {
-                  新建领域(data);
+
+                  新建领域();
                 });
               }
             );
