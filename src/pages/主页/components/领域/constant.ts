@@ -1,4 +1,7 @@
-export const 分类列配置 = [
+import { ColumnsType } from "antd/es/table";
+import { I事项 } from "../事项树/components/事项";
+
+export const 分类列配置: ColumnsType = [
   {
     title: "分类名称",
     key: "名称",
@@ -6,7 +9,7 @@ export const 分类列配置 = [
   },
 ];
 
-export const 列配置 = [
+export const 列配置: ColumnsType<I事项> = [
   {
     title: "名称",
     key: "名称",
