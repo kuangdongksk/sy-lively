@@ -1,6 +1,5 @@
 import { E块属性名称 } from "@/constant/系统码";
 import { I事项 } from "@/pages/主页/components/事项树/components/事项";
-import { 生成块ID } from "@/utils/DOM";
 import dayjs from "dayjs";
 
 function 事项DOM(props: { 事项: I事项 }) {
@@ -13,28 +12,38 @@ function 事项DOM(props: { 事项: I事项 }) {
   return (
     <div
       data-node-id={事项.id}
-      data-node-index="0"
+      data-node-index="1"
       data-type="NodeSuperBlock"
       className="sb"
+      updated="20241015160845"
       data-sb-layout="row"
-      style={{ backgroundColor: "var(--b3-font-background13)" }}
       {...attribute}
     >
-      <div data-node-id={生成块ID()} data-type="NodeParagraph" className="p">
+      <div
+        data-node-id="20241015160845-mnb7txf"
+        data-type="NodeParagraph"
+        className="p"
+        updated="20241015160845"
+      >
         <div contentEditable="true" spellCheck="false">
-          未命名
+          {事项.名称}
           <span data-type="a" data-href="">
-            #{事项.id.slice(0, 6)}
+            {事项.id.slice(-6)}
           </span>
           重要程度{事项.重要程度} 紧急程度{事项.紧急程度} 开始时间
-          {dayjs(事项.开始时间).format("YYYY-MM-DD HH:mm:ss")} 结束时间
-          {dayjs(事项.结束时间).format("YYYY-MM-DD HH:mm:ss")}
+          {dayjs(事项.开始时间).format("YYYY-MM-DD HH:mm:ss")}
+          结束时间{dayjs(事项.结束时间).format("YYYY-MM-DD HH:mm:ss")}
         </div>
         <div className="protyle-attr" contentEditable="false">
           ​
         </div>
       </div>
-      <div data-node-id={生成块ID()} data-type="NodeParagraph" className="p">
+      <div
+        data-node-id="20241015160845-rc18rtf"
+        data-type="NodeParagraph"
+        className="p"
+        updated="20241015160845"
+      >
         <div contentEditable="true" spellCheck="false">
           事项详情...
         </div>

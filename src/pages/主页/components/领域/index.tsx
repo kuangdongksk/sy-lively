@@ -1,11 +1,10 @@
-import { E常用SQL, SQL, 根据ID获取块 } from "@/API/SQL";
-import { 插入前置子块, 更新块, 设置块属性 } from "@/API/块数据";
+import { E常用SQL, SQL } from "@/API/SQL";
+import { 插入前置子块, 更新块 } from "@/API/块数据";
+import 事项DOM from "@/components/模板/事项DOM";
 import { E事项状态 } from "@/constant/状态配置";
-import { E块属性名称 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/jotai/用户设置";
 import { 获取笔记本下的对应日期的日记文档 } from "@/pages/设置/tools";
-import { markDown创建, markDown更新, TSX2HTML, 生成块ID } from "@/utils/DOM";
-import { 睡眠 } from "@/utils/异步";
+import { markDown创建, TSX2HTML, 生成块ID } from "@/utils/DOM";
 import { stringArr2string } from "@/utils/拼接与拆解";
 import { DeleteOutlined, EditOutlined, UndoOutlined } from "@ant-design/icons";
 import { EditableProTable } from "@ant-design/pro-components";
@@ -17,8 +16,6 @@ import { useLocation } from "react-router-dom";
 import { I领域 } from "../..";
 import { I事项, T层级 } from "../事项树/components/事项";
 import { 列配置 } from "./constant";
-import { nanoid } from "nanoid";
-import 事项DOM from "@/components/模板/事项DOM";
 
 const 所有 = "所有";
 
@@ -138,49 +135,26 @@ function 领域() {
           },
           onSave: async (key, 事项) => {
             let 块ID;
-            块ID = 事项.id;
             if (事项.更新时间 !== 事项.创建时间) {
+              块ID = 事项.id;
             } else {
               const { id: 日记文档ID } = await 获取笔记本下的对应日期的日记文档(
                 用户设置.笔记本ID,
                 dayjs()
               );
-              await 插入前置子块({
-                dataType: "dom",
-                data: TSX2HTML(<事项DOM 事项={事项} />),
-                parentID: 日记文档ID,
-              });
 
-              return;
-              // await 插入前置子块({
-              //   dataType: "markdown",
-              //   data: markDown创建(事项),
-              //   parentID: 日记文档ID,
-              // }).then(({ data }) => {
-              //   块ID = data;
-              // });
+              await 插入前置子块({
+                dataType: "markdown",
+                data: markDown创建(事项),
+                parentID: 日记文档ID,
+              }).then(({ data }) => {
+                console.log("🚀 ~ onSave: ~ data:", data);
+                块ID = data[0].doOperations[0].id;
+              });
             }
 
             const 新的事项 = { ...事项, id: 块ID };
 
-            // 设置块属性({
-            //   id: 块ID,
-            //   attrs: {
-            //     [E块属性名称.事项]: JSON.stringify(新的事项),
-            //   },
-            // });
-
-            // const { data: 块数据 } = await 根据ID获取块(块ID);
-            // 更新块({
-            //   id: 新的事项.id,
-            //   data: markDown更新(块数据[0].markdown, 新的事项),
-            //   dataType: "markdown",
-            // });
-            await 根据ID获取块(块ID);
-            console.log(
-              "🚀 ~ onSave: ~ await 根据ID获取块(块ID):",
-              await 根据ID获取块(块ID)
-            );
             await 更新块({
               id: 块ID,
               data: TSX2HTML(<事项DOM 事项={新的事项} />),
