@@ -1,6 +1,5 @@
 import { I事项 } from "@/pages/主页/components/事项树/components/事项";
 import dayjs from "dayjs";
-import { nanoid } from "nanoid";
 import ReactDOM from "react-dom";
 
 export function TSX2HTML(组件: React.JSX.Element) {
@@ -35,5 +34,14 @@ export function markDown更新(markdown: string, 事项: I事项): string {
 }
 
 export function 生成块ID() {
-  return `${dayjs().format("YYYYMMDDHHmmss")}-${nanoid(7)}`;
+  return `${dayjs().format("YYYYMMDDHHmmss")}-${生成随机字符(7)}`;
+}
+
+export function 生成随机字符(length: number): string {
+  const letter = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += letter.charAt(Math.floor(Math.random() * letter.length));
+  }
+  return result;
 }

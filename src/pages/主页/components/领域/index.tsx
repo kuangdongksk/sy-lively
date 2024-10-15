@@ -1,15 +1,14 @@
-import { E常用SQL, SQL, 根据ID获取块 } from "@/API/SQL";
+import { E常用SQL, SQL } from "@/API/SQL";
 import { 插入前置子块, 更新块, 获取块Kramdown源码 } from "@/API/块数据";
-import 事项DOM from "@/components/模板/事项DOM";
 import { E事项状态 } from "@/constant/状态配置";
+import { E时间格式化 } from "@/constant/配置常量";
 import { 用户设置Atom } from "@/jotai/用户设置";
 import { 获取笔记本下的对应日期的日记文档 } from "@/pages/设置/tools";
-import { markDown创建, TSX2HTML, 生成块ID } from "@/utils/DOM";
+import { markDown创建, 生成块ID } from "@/utils/DOM";
 import { stringArr2string } from "@/utils/拼接与拆解";
 import { DeleteOutlined, EditOutlined, UndoOutlined } from "@ant-design/icons";
 import { EditableProTable } from "@ant-design/pro-components";
 import { Button, Tabs } from "antd";
-import $ from "cash-dom";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
@@ -17,6 +16,7 @@ import { useLocation } from "react-router-dom";
 import { I领域 } from "../..";
 import { I事项, T层级 } from "../事项树/components/事项";
 import { 列配置 } from "./constant";
+import { getKDown } from "@/components/模板/Kdown";
 
 const 所有 = "所有";
 
@@ -136,60 +136,25 @@ function 领域() {
             });
           },
           onSave: async (key, 事项) => {
-            const 容器 = document.createElement("div");
-            let 块ID;
-            let 块DOM;
-            if (事项.更新时间 !== 事项.创建时间) {
-              块ID = 事项.id;
-            } else {
+            let 块ID = 事项.id;
+            const 是新建的 = 事项.更新时间 === 事项.创建时间;
+            if (是新建的) {
               const { id: 日记文档ID } = await 获取笔记本下的对应日期的日记文档(
                 用户设置.笔记本ID,
                 dayjs()
               );
-
               await 插入前置子块({
                 dataType: "markdown",
-                data: markDown创建(事项),
+                data: getKDown(事项),
                 parentID: 日记文档ID,
-              }).then(({ data }) => {
-                console.log("🚀 ~ onSave: ~ data:", data);
-                块ID = data[0].doOperations[0].id;
-
-                const html = data[0].doOperations[0].data;
-                容器.innerHTML = html;
-                console.log(
-                  "🚀 ~ onSave: ~ $(容器).find('[data-type]'):",
-                  $(容器).find(".p")
-                );
+              });
+            } else {
+              await 更新块({
+                id: 块ID,
+                data: getKDown(事项),
+                dataType: "markdown",
               });
             }
-
-            console.log(
-              "🚀 ~ onSave: ~ 获取块Kramdown源码(块ID):",
-              await 获取块Kramdown源码(块ID)
-            );
-
-            console.log(
-              "🚀 ~ onSave: ~ 根据ID获取块(块ID):",
-              await 根据ID获取块(块ID)
-            );
-
-            const 新的事项 = { ...事项, id: 块ID };
-
-            // await 更新块({
-            //   id: 块ID,
-            //   data: TSX2HTML(<事项DOM 事项={新的事项} />),
-            //   dataType: "dom",
-            // });
-
-            await 更新块({
-              id: 块ID,
-              data: `{{{row\n未命名23[i36ib3]()重要程度999 紧急程度5 开始时间2024-10-15 17:34:03结束时间2024-10-15 18:34:03
-{: id="20241015160845-mnb7txf" updated="20241015160845"}\n\n事项详情...
-{: updated="20241015160845" id="20241015160845-rc18rtf"}\n\n}}}
-{: custom-plugin-lively-things="&#123;&quot;名称&quot;:&quot;未命名23&quot;,&quot;重要程度&quot;:5,&quot;紧急程度&quot;:999,&quot;开始时间&quot;:1728984843034,&quot;结束时间&quot;:1728988443034,&quot;状态&quot;:&quot;u未开始&quot;,&quot;层级&quot;:1,&quot;id&quot;:&quot;20241015173405-vi36ib3&quot;,&quot;key&quot;:&quot;u未开始$分$未命名$分$20241015173403-9HKPpZ2&quot;,&quot;子项&quot;:[],&quot;父项&quot;:&quot;20241014171826-82ny1ia&quot;,&quot;领域&quot;:&quot;20241014171825-lc34u7z&quot;,&quot;创建时间&quot;:1728984843034,&quot;更新时间&quot;:1728985699714,&quot;index&quot;:0&#125;" id="20241015173405-vi36ib3" updated="20241015160845"}`,
-              dataType: "markdown",
-            });
           },
         }}
       />

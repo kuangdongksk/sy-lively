@@ -20,7 +20,6 @@ function App() {
   const [, 设置用户设置] = useAtom(用户设置Atom);
 
   const { styles } = useAppStyle();
-  const [加载中, 令加载中为] = useState(true);
   const [目录, 设置目录] = useState([
     { key: "设置", icon: <SettingOutlined />, label: "设置" },
   ]);
@@ -43,7 +42,6 @@ function App() {
         导航到("/主页");
         设置用户设置(JSON.parse(启用的用户设置.value));
       }
-      令加载中为(false);
     });
   }, []);
 

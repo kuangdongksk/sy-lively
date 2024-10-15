@@ -33,6 +33,7 @@ export interface I事项 {
   层级: T层级;
   父项: string;
   子项: I事项[];
+  领域: string;
   创建时间: number;
   更新时间: number;
 }
