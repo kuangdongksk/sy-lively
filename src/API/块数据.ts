@@ -127,18 +127,18 @@ export function 移动块(options: {
 
 /**
  * 获取块 Kramdown 源码
- * @param options - 包含以下属性的对象：
- *   - id: 待获取块的 ID
+ * @param id: 待获取块的 ID
  * @returns 块的 Kramdown 源码
  */
-export function 获取块Kramdown源码(options: { id: string }) {
-  return fetchSyncPost(EAPI.获取块kramdown源码, options);
+export function 获取块Kramdown源码(id: string) {
+  return fetchSyncPost(EAPI.获取块kramdown源码, {
+    id,
+  });
 }
 
 /**
  * 获取子块
- * @param options - 包含以下属性的对象：
- *   - id: 父块的 ID
+ * @param id: 父块的 ID
  * 标题下方块也算作子块
  * @returns 子块列表
  */
