@@ -1,5 +1,6 @@
 import { I事项 } from "@/pages/主页/components/事项树/components/事项";
 import dayjs from "dayjs";
+import { nanoid } from "nanoid";
 import ReactDOM from "react-dom";
 
 export function TSX2HTML(组件: React.JSX.Element) {
@@ -31,4 +32,8 @@ export function markDown更新(markdown: string, 事项: I事项): string {
     事项详情;
 
   return 新的事项;
+}
+
+export function 生成块ID() {
+  return `${dayjs().format("YYYYMMDDHHmmss")}-${nanoid(7)}`;
 }
