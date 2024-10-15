@@ -14,6 +14,12 @@ export function SQL(sql: E常用SQL): Promise<IWebSocketData> {
   });
 }
 
+export function 根据ID获取块(id: string): Promise<IWebSocketData> {
+  return fetchSyncPost("/api/query/sql", {
+    stmt: `SELECT * FROM blocks WHERE id='${id}'`,
+  });
+}
+
 export function 获取日记根文档(
   笔记本ID: string,
   日记文档名称: string

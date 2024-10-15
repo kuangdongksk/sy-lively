@@ -6,7 +6,7 @@ import { useBoolean } from "ahooks";
 import { Button, DatePicker, Input, Select } from "antd";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
-import { 事项状态 } from "../../../../../../constant/状态配置";
+import { E事项状态 } from "../../../../../../constant/状态配置";
 import 数字标签 from "../数字标签";
 import 添加子项 from "../添加子项";
 import { use事项样式 } from "./index.style";
@@ -20,19 +20,21 @@ const 程度选项数组 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => ({
 export type TCorn = string;
 export type T层级 = 0 | 1 | 2 | 3 | 4 | 5;
 export interface I事项 {
-  id: string;
-  key: string;
-  checkable: boolean;
   名称: string;
   重要程度: number;
   紧急程度: number;
   开始时间: number;
   结束时间: number;
-  状态: 事项状态;
+  状态: E事项状态;
   重复: TCorn | false;
+  //
+  id: string;
+  key: string;
   层级: T层级;
   父项: string;
   子项: I事项[];
+  创建时间: number;
+  更新时间: number;
 }
 
 export interface I事项Props {

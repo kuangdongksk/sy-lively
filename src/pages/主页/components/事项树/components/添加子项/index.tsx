@@ -1,5 +1,5 @@
 import { 插入前置子块 } from "@/API/块数据";
-import 事项DOM from "@/components/事项DOM";
+import 事项DOM from "@/components/模板/事项DOM";
 import { 事项状态 } from "@/constant/状态配置";
 import { 事项数据 } from "@/jotai/事项数据";
 import { 用户设置Atom } from "@/jotai/用户设置";

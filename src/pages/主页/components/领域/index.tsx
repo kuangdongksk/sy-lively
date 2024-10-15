@@ -1,12 +1,12 @@
-import { E常用SQL, SQL } from "@/API/SQL";
-import { 插入前置子块 } from "@/API/块数据";
-import 事项DOM from "@/components/事项DOM";
+import { E常用SQL, SQL, 根据ID获取块 } from "@/API/SQL";
+import { 插入前置子块, 更新块, 获取子块 } from "@/API/块数据";
+import 事项DOM from "@/components/模板/事项DOM";
 import { E事项状态 } from "@/constant/状态配置";
 import { 用户设置Atom } from "@/jotai/用户设置";
 import { 获取笔记本下的对应日期的日记文档 } from "@/pages/设置/tools";
-import { TSX2HTML } from "@/utils/DOM";
+import { markDown更新, TSX2HTML } from "@/utils/DOM";
 import { stringArr2string } from "@/utils/拼接与拆解";
-import { UndoOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, UndoOutlined } from "@ant-design/icons";
 import { EditableProTable } from "@ant-design/pro-components";
 import { Button, Tabs } from "antd";
 import dayjs from "dayjs";
@@ -78,30 +78,21 @@ function 领域() {
           {
             title: "操作",
             valueType: "option",
-            render: (_, row) => [
-              <a
-                key="delete"
-                onClick={() => {
-                  // const tableDataSource = formRef.current?.getFieldValue(
-                  //   "table"
-                  // ) as DataSourceType[];
-                  // formRef.current?.setFieldsValue({
-                  //   table: tableDataSource.filter(
-                  //     (item) => item.id !== row?.id
-                  //   ),
-                  // });
-                }}
-              >
-                移除
-              </a>,
-              <a
+            render: (text, record, _, action) => [
+              <Button
                 key="edit"
+                type="link"
+                icon={<EditOutlined />}
                 onClick={() => {
-                  // actionRef.current?.startEditable(row.id);
+                  action?.startEditable?.(record.id, record);
                 }}
-              >
-                编辑
-              </a>,
+              />,
+              <Button
+                key="delete"
+                type="link"
+                icon={<DeleteOutlined />}
+                onClick={() => {}}
+              />,
             ],
           },
         ]}
@@ -114,9 +105,6 @@ function 领域() {
             const 名称 = "未命名";
             const 层级 = 1 as T层级;
             const 新事项 = {
-              id,
-              key: stringArr2string([E事项状态.未开始, 名称, id]),
-              checkable: true,
               名称,
               重要程度: 5,
               紧急程度: 5,
@@ -125,9 +113,14 @@ function 领域() {
               状态: E事项状态.未开始,
               重复: undefined,
               层级,
+
+              id,
+              key: stringArr2string([E事项状态.未开始, 名称, id]),
               子项: [],
               父项: 页签键 === 所有 ? state.分类[0].ID : 页签键,
               领域: state.ID,
+              创建时间: dayjs().valueOf(),
+              更新时间: dayjs().valueOf(),
             };
 
             return 新事项;
@@ -137,36 +130,34 @@ function 领域() {
         editable={{
           type: "single",
           editableKeys,
-          onChange: setEditableRowKeys,
-          onSave: async (key, row) => {
-            获取笔记本下的对应日期的日记文档(用户设置.笔记本ID, dayjs()).then(
-              ({ id: 文档ID }) => {
-                插入前置子块({
-                  dataType: "dom",
-                  data: TSX2HTML(<事项DOM 事项={row} />),
-                  parentID: 文档ID,
-                }).then(() => row);
-              }
-            );
+          onChange: (keys, rows: I事项[]) => {
+            setEditableRowKeys(keys);
+            rows.forEach((row) => {
+              row.更新时间 = dayjs().valueOf();
+            });
           },
-          actionRender: (row, config, defaultDom) => {
-            return [
-              defaultDom.save,
-              defaultDom.delete,
-              defaultDom.cancel,
-              <a
-                key="set"
-                onClick={() => {
-                  console.log(config.index);
-                  // i++;
-                  // editorFormRef.current?.setRowData?.(config.index!, {
-                  //   title: "动态设置的title" + i,
-                  // });
-                }}
-              >
-                动态设置此项
-              </a>,
-            ];
+          onSave: async (key, 事项) => {
+            if (事项.更新时间 !== 事项.创建时间) {
+              根据ID获取块(事项.id).then(({ data }) => {
+                // 然后解析markdown,再通过markdown解析出事项
+                markDown更新(data[0].markdown, 事项);
+                更新块({
+                  id: 事项.id,
+                  data: markDown更新(data[0].markdown, 事项),
+                  dataType: "markdown",
+                });
+              });
+            } else {
+              获取笔记本下的对应日期的日记文档(用户设置.笔记本ID, dayjs()).then(
+                ({ id: 文档ID }) => {
+                  插入前置子块({
+                    dataType: "dom",
+                    data: TSX2HTML(<事项DOM 事项={事项} />),
+                    parentID: 文档ID,
+                  });
+                }
+              );
+            }
           },
         }}
       />
