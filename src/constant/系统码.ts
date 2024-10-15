@@ -7,6 +7,7 @@ export enum E块属性名称 {
   用户设置 = `${属性前缀}userSettings`,
   领域设置 = `${属性前缀}${领域}`,
   事项 = `${属性前缀}things`,
+  日记前缀 = `${自定义}-dailynote-`
 }
 
 export enum E数据索引 {

@@ -36,8 +36,35 @@ export function 插入前置子块(options: {
   dataType: "markdown" | "dom";
   data: string;
   parentID: string;
-}) {
-  return fetchSyncPost(EAPI.插入前置子块, options);
+}): Promise<{
+  data: {
+    doOperations: {
+      action: "insert";
+      data: string;
+      id: string;
+      parentID: string;
+      previousID: string;
+      nextID: string;
+      retData: null;
+      blockIDs: null;
+      blockID: string;
+      deckID: "";
+      avID: "";
+      srcIDs: null;
+      srcs: null;
+      isDetached: false;
+      ignoreFillFilter: false;
+      name: string;
+      type: string;
+      format: string;
+      keyID: string;
+      rowID: string;
+      isTwoWay: false;
+      backRelationKeyID: string;
+    }[];
+  }[];
+}> {
+  return fetchSyncPost(EAPI.插入前置子块, options) as any;
 }
 
 /**

@@ -7,6 +7,7 @@ export enum EAPI {
 
   //#region 文档
   通过Markdown创建文档 = "/api/filetree/createDocWithMd",
+  创建日记文档 = "/api/filetree/createDailyNote",
   //#endregion
 
   //#region 块 https://docs.siyuan-note.club/zh-Hans/reference/api/kernel/#%E5%9D%97

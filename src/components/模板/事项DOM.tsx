@@ -1,26 +1,18 @@
-import { E块属性名称 } from "@/constant/系统码";
 import { I事项 } from "@/pages/主页/components/事项树/components/事项";
 import dayjs from "dayjs";
-import { nanoid } from "nanoid";
 
 function 事项DOM(props: { 事项: I事项 }) {
   const { 事项 } = props;
 
-  const attribute = {
-    [E块属性名称.事项]: JSON.stringify(事项),
-  };
-
   return (
     <div
-      data-node-id={事项.id}
       data-node-index="0"
       data-type="NodeSuperBlock"
       className="sb"
       data-sb-layout="row"
       style={{ backgroundColor: "var(--b3-font-background13)" }}
-      {...attribute}
     >
-      <div data-node-id={nanoid()} data-type="NodeParagraph" className="p">
+      <div data-type="NodeParagraph" className="p">
         <div contentEditable="true" spellCheck="false">
           未命名
           <span data-type="a" data-href="">
@@ -34,7 +26,7 @@ function 事项DOM(props: { 事项: I事项 }) {
           ​
         </div>
       </div>
-      <div data-node-id={nanoid()} data-type="NodeParagraph" className="p">
+      <div data-type="NodeParagraph" className="p">
         <div contentEditable="true" spellCheck="false">
           事项详情...
         </div>
