@@ -1,10 +1,10 @@
 import { E常用SQL, SQL } from "@/API/SQL";
-import { 插入前置子块, 更新块, 获取块Kramdown源码 } from "@/API/块数据";
+import { 插入前置子块, 更新块 } from "@/API/块数据";
+import { getKDown } from "@/components/模板/Kdown";
 import { E事项状态 } from "@/constant/状态配置";
-import { E时间格式化 } from "@/constant/配置常量";
 import { 用户设置Atom } from "@/jotai/用户设置";
 import { 获取笔记本下的对应日期的日记文档 } from "@/pages/设置/tools";
-import { markDown创建, 生成块ID } from "@/utils/DOM";
+import { 生成块ID } from "@/utils/DOM";
 import { stringArr2string } from "@/utils/拼接与拆解";
 import { DeleteOutlined, EditOutlined, UndoOutlined } from "@ant-design/icons";
 import { EditableProTable } from "@ant-design/pro-components";
@@ -16,7 +16,6 @@ import { useLocation } from "react-router-dom";
 import { I领域 } from "../..";
 import { I事项, T层级 } from "../事项树/components/事项";
 import { 列配置 } from "./constant";
-import { getKDown } from "@/components/模板/Kdown";
 
 const 所有 = "所有";
 
@@ -77,7 +76,7 @@ function 领域() {
             title: "操作",
             valueType: "option",
             fixed: "right",
-            render: (text, record, _, action) => [
+            render: (_text, record, _, action) => [
               <Button
                 key="edit"
                 type="link"
@@ -135,7 +134,7 @@ function 领域() {
               row.更新时间 = dayjs().valueOf();
             });
           },
-          onSave: async (key, 事项) => {
+          onSave: async (_key, 事项) => {
             let 块ID = 事项.id;
             const 是新建的 = 事项.更新时间 === 事项.创建时间;
             if (是新建的) {
