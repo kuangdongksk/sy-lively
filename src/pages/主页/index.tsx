@@ -24,7 +24,7 @@ function 主页() {
 
   const [用户设置, 令用户设置为] = useAtom(用户设置Atom);
   const [弹窗状态, 令弹窗状态为] = useState<T弹窗状态>(undefined);
-  const [创建中, 令创建中为] = useState<string | undefined>();
+  const [创建中] = useState<string | undefined>();
 
   const [领域列表, 令领域列表为] = useState([
     {

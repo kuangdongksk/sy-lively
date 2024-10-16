@@ -1,7 +1,7 @@
 import { E事项状态 } from "@/constant/状态配置";
 import { ProColumns } from "@ant-design/pro-components";
 import { ColumnsType } from "antd/es/table";
-import { I事项 } from "../事项树/components/事项";
+import { I事项 } from "../components/事项树/components/事项";
 
 const 程度 = {
   0: 0,

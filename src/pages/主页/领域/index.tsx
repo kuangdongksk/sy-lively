@@ -11,8 +11,8 @@ import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { I领域 } from "../..";
-import { I事项, T层级 } from "../事项树/components/事项";
+import { I领域 } from "..";
+import { I事项, T层级 } from "../components/事项树/components/事项";
 import { 列配置 } from "./constant";
 import { 等待持久化完成 } from "@/API/Sqlite";
 
