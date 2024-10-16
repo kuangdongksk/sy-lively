@@ -1,48 +1,49 @@
-import { 获取块Kramdown源码 } from "@/API/块数据";
 import { E时间格式化 } from "@/constant/配置常量";
 import { I事项 } from "@/pages/主页/components/事项树/components/事项";
-import { 生成块ID } from "@/utils/DOM";
 import dayjs from "dayjs";
+import {
+  TKramdownAttr,
+  生成段落块,
+  生成超级块,
+  生成超级块Kramdown带属性,
+} from "./基础";
 
-export function 生成超级块(事项: I事项) {
-  const 第一行 = `${事项.名称}[${事项.ID.slice(0, 6)}]()重要程度${
+export function 根据事项生成信息块(事项: I事项) {
+  return `${事项.名称}[${事项.ID.slice(0, 6)}]()重要程度${
     事项.重要程度
   } 紧急程度${事项.紧急程度} 开始时间${dayjs(事项.开始时间).format(
     E时间格式化.日记格式
-  )}结束时间${dayjs(事项.结束时间).format(
-    E时间格式化.日记格式
-  )}\n{: id="${生成块ID()}" updated="${dayjs().format(E时间格式化.思源时间)}"}`;
-
-  const 内容区 = `事项详情...\n{: updated="${dayjs().format(
-    E时间格式化.思源时间
-  )}" id="${生成块ID()}"}`;
-
-  const 超级块 = `{{{row\n${第一行}\n\n${内容区}\n\n}}}\n`;
-  const 超级块的属性 = `{: custom-plugin-lively-things="&#123;&quot;名称&quot;:&quot;${
-    事项.名称
-  }&quot;,&quot;重要程度&quot;:${事项.重要程度},&quot;紧急程度&quot;:${
-    事项.紧急程度
-  },&quot;开始时间&quot;:${事项.开始时间},&quot;结束时间&quot;:${
-    事项.结束时间
-  },&quot;状态&quot;:&quot;${事项.状态}&quot;,&quot;层级&quot;:${
-    事项.层级
-  },&quot;ID&quot;:&quot;${事项.ID}&quot;,&quot;key&quot;:&quot;${
-    事项.key
-  }&quot;,&quot;父项ID&quot;:&quot;${
-    事项.父项ID
-  }&quot;,&quot;领域ID&quot;:&quot;${事项.领域ID}&quot;,&quot;创建时间&quot;:${
-    事项.创建时间
-  },&quot;更新时间&quot;:${事项.更新时间},&quot;index&quot;:0&#125;" id="${
-    事项.ID
-  }" updated="${dayjs().format(E时间格式化.思源时间)}"}`;
-
-  return 超级块 + 超级块的属性;
+  )}结束时间${dayjs(事项.结束时间).format(E时间格式化.日记格式)}`;
 }
 
-export async function 更新超级块(事项: I事项): Promise<string> {
-  console.log(
-    "🚀 ~ 获取块Kramdown源码(事项.ID);:",
-    await 获取块Kramdown源码(事项.ID)
+export function 生成事项块Kramdown(事项: I事项) {
+  const 信息块 = 生成段落块(根据事项生成信息块(事项), 事项.标题区ID);
+
+  const 内容区 = 生成超级块Kramdown带属性(
+    [
+      生成段落块("从这里开始(这一行内容可以更改"),
+      生成段落块("不要写在超级块外边(这一行内容可以更改"),
+    ],
+    事项.内容区ID
   );
-  return "";
+
+  const 事项块 = 生成超级块([信息块, 内容区]);
+  console.log("🚀 ~ 生成事项块Kramdown ~ 事项块:", 事项块);
+
+  return 事项块 + "\n" + 根据事项生成属性(事项);
+}
+
+export function 根据事项生成属性(事项: I事项): TKramdownAttr {
+  const 属性字符串 = Object.entries(事项)
+    .map(([key, value]) => {
+      if (typeof value === "number") {
+        return `&quot;${key}&quot;:${value}`;
+      }
+      return `&quot;${key}&quot;:&quot;${value}&quot;`;
+    })
+    .join(",");
+
+  return `{: custom-plugin-lively-things="&#123;${属性字符串}&#125;" id="${
+    事项.ID
+  }" updated="${dayjs().format(E时间格式化.思源时间)}"}`;
 }
