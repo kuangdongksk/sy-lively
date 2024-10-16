@@ -3,7 +3,7 @@ import { I事项 } from "@/pages/主页/components/事项树/components/事项";
 import { 生成块ID } from "@/utils/DOM";
 import dayjs from "dayjs";
 
-export function getKDown(事项: I事项) {
+export function 生成超级块(事项: I事项) {
   const 第一行 = `${事项.名称}[${事项.id.slice(0, 6)}]()重要程度${
     事项.重要程度
   } 紧急程度${事项.紧急程度} 开始时间${dayjs(事项.开始时间).format(

@@ -1,6 +1,6 @@
 import { E常用SQL, SQL } from "@/API/SQL";
 import { 插入前置子块, 更新块 } from "@/API/块数据";
-import { getKDown } from "@/components/模板/Kdown";
+import { 生成超级块 } from "@/components/模板/Kramdown/超级块";
 import { E事项状态 } from "@/constant/状态配置";
 import { 用户设置Atom } from "@/jotai/用户设置";
 import { 获取笔记本下的对应日期的日记文档 } from "@/pages/设置/tools";
@@ -144,13 +144,13 @@ function 领域() {
               );
               await 插入前置子块({
                 dataType: "markdown",
-                data: getKDown(事项),
+                data: 生成超级块(事项),
                 parentID: 日记文档ID,
               });
             } else {
               await 更新块({
                 id: 块ID,
-                data: getKDown(事项),
+                data: 生成超级块(事项),
                 dataType: "markdown",
               });
             }

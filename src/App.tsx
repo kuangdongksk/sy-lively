@@ -14,7 +14,7 @@ import { 用户设置Atom } from "./jotai/用户设置";
 
 const { Header, Footer, Sider, Content } = Layout;
 
-function App() {
+async function App() {
   const 当前位置 = useLocation();
   const 导航到 = useNavigate();
   const [, 设置用户设置] = useAtom(用户设置Atom);
