@@ -1,11 +1,13 @@
 import { E常用SQL, SQL } from "@/API/SQL";
 import { 等待持久化完成 } from "@/API/Sqlite";
+import { 用户设置Atom } from "@/jotai/用户设置";
 import { I事项, T层级 } from "@/pages/主页/components/事项树/components/事项";
 import { 生成事项 } from "@/tools/事项";
 import { DeleteOutlined, EditOutlined, UndoOutlined } from "@ant-design/icons";
 import { EditableProTable } from "@ant-design/pro-components";
 import { Button, Tabs } from "antd";
 import dayjs from "dayjs";
+import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { I领域 } from "..";
@@ -15,6 +17,8 @@ import { 新建事项块, 更新事项块 } from "./tools";
 const 所有 = "所有";
 
 function 领域详情() {
+  const [用户设置] = useAtom(用户设置Atom);
+
   const { state } = useLocation() as {
     state: I领域;
   };
@@ -61,6 +65,7 @@ function 领域详情() {
         ]}
         onChange={令页签键为}
       />
+
       <EditableProTable<I事项>
         columns={[
           ...列配置,
@@ -113,12 +118,12 @@ function 领域详情() {
           onSave: async (_key, 事项) => {
             const 是新建的 = 事项.更新时间 === 事项.创建时间;
             if (是新建的) {
-              await 新建事项块(事项);
+              await 新建事项块(事项, 用户设置);
             } else {
               await 更新事项块(事项);
             }
 
-            等待持久化完成().then(() => 加载数据());
+            // 等待持久化完成().then(() => 加载数据());
           },
         }}
       />

@@ -26,11 +26,11 @@ export function 生成超级块(事项: I事项) {
     事项.结束时间
   },&quot;状态&quot;:&quot;${事项.状态}&quot;,&quot;层级&quot;:${
     事项.层级
-  },&quot;id&quot;:&quot;${事项.ID}&quot;,&quot;key&quot;:&quot;${
+  },&quot;ID&quot;:&quot;${事项.ID}&quot;,&quot;key&quot;:&quot;${
     事项.key
-  }&quot;,&quot;子项&quot;:[],&quot;父项&quot;:&quot;${
+  }&quot;,&quot;父项ID&quot;:&quot;${
     事项.父项ID
-  }&quot;,&quot;领域&quot;:&quot;${事项.领域ID}&quot;,&quot;创建时间&quot;:${
+  }&quot;,&quot;领域ID&quot;:&quot;${事项.领域ID}&quot;,&quot;创建时间&quot;:${
     事项.创建时间
   },&quot;更新时间&quot;:${事项.更新时间},&quot;index&quot;:0&#125;" id="${
     事项.ID
