@@ -27,13 +27,17 @@ export interface I事项 {
   结束时间: number;
   状态: E事项状态;
   重复: TCorn | false;
-  //
-  id: string;
+
+  // ID就是超级块ID
+  ID: string;
   key: string;
   层级: T层级;
-  父项: string;
-  子项: I事项[];
-  领域: string;
+  // 对于顶级（0级）父项ID就是分类ID
+  父项ID: string;
+  领域ID: string;
+  标题区ID: string;
+  内容区ID: string;
+  嵌入块ID: string;
   创建时间: number;
   更新时间: number;
 }

@@ -1,11 +1,9 @@
 import { E常用SQL, SQL } from "@/API/SQL";
 import { 插入前置子块, 更新块 } from "@/API/块数据";
 import { 生成超级块 } from "@/components/模板/Kramdown/超级块";
-import { E事项状态 } from "@/constant/状态配置";
 import { 用户设置Atom } from "@/jotai/用户设置";
 import { 获取笔记本下的对应日期的日记文档 } from "@/pages/设置/tools";
-import { 生成块ID } from "@/utils/DOM";
-import { stringArr2string } from "@/utils/拼接与拆解";
+import { 生成事项 } from "@/tools/事项";
 import { DeleteOutlined, EditOutlined, UndoOutlined } from "@ant-design/icons";
 import { EditableProTable } from "@ant-design/pro-components";
 import { Button, Tabs } from "antd";
@@ -99,27 +97,11 @@ function 领域() {
         recordCreatorProps={{
           position: "top",
           record: () => {
-            const id = 生成块ID();
-            const 名称 = "未命名";
-            const 层级 = 1 as T层级;
-            const 新事项 = {
-              名称,
-              重要程度: 5,
-              紧急程度: 5,
-              开始时间: dayjs().valueOf(),
-              结束时间: dayjs().add(1, "hour").valueOf(),
-              状态: E事项状态.未开始,
-              重复: undefined,
-              层级,
-
-              id,
-              key: stringArr2string([E事项状态.未开始, 名称, id]),
-              子项: [],
-              父项: 页签键 === 所有 ? state.分类[0].ID : 页签键,
-              领域: state.ID,
-              创建时间: dayjs().valueOf(),
-              更新时间: dayjs().valueOf(),
-            };
+            const 新事项 = 生成事项({
+              层级: 1 as T层级,
+              领域ID: state.ID,
+              父项ID: 页签键 === "所有" ? state.分类[0].ID : 页签键,
+            });
 
             return 新事项;
           },
@@ -135,7 +117,7 @@ function 领域() {
             });
           },
           onSave: async (_key, 事项) => {
-            let 块ID = 事项.id;
+            let 块ID = 事项.ID;
             const 是新建的 = 事项.更新时间 === 事项.创建时间;
             if (是新建的) {
               const { id: 日记文档ID } = await 获取笔记本下的对应日期的日记文档(

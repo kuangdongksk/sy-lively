@@ -1,6 +1,6 @@
 import { 插入前置子块 } from "@/API/块数据";
-import 事项DOM from "@/components/模板/事项DOM";
-import { 事项状态 } from "@/constant/状态配置";
+import 事项DOM from "@/components/模板/DOM/事项DOM";
+import { E事项状态 } from "@/constant/状态配置";
 import { 事项数据 } from "@/jotai/事项数据";
 import { 用户设置Atom } from "@/jotai/用户设置";
 import { 获取笔记本下的对应日期的日记文档 } from "@/pages/设置/tools";
@@ -21,7 +21,7 @@ function 添加子项(props: { 节点: TreeNode }) {
   const [数据, 令数据为] = useAtom(事项数据);
   return (
     <>
-      {节点.层级 < 5 && 节点.状态 !== 事项状态.已完成 && (
+      {节点.层级 < 5 && 节点.状态 !== E事项状态.已完成 && (
         <Button
           icon={<PlusCircleOutlined />}
           size="small"
@@ -44,7 +44,7 @@ function 添加子项(props: { 节点: TreeNode }) {
                   紧急程度: 5,
                   开始时间: dayjs().valueOf(),
                   结束时间: dayjs().add(1, "hour").valueOf(),
-                  状态: 事项状态[状态],
+                  状态: E事项状态[状态],
                   重复: undefined,
                   层级,
                   子项: [],
