@@ -19,8 +19,11 @@ const router = createHashRouter([
       },
       {
         path: "领域",
-        element: <领域 />,
         children: [
+          {
+            index: true,
+            element: <领域 />,
+          },
           {
             path: "领域详情",
             element: <领域详情 />,

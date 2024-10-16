@@ -1,11 +1,11 @@
 import { 设置块属性 } from "@/API/块数据";
+import { 获取笔记本下的日记根文档 } from "@/API/文档/获取";
 import { 列出笔记本 } from "@/API/笔记本";
 import { E块属性名称 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/jotai/用户设置";
 import { Form, Select } from "antd";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import { 获取笔记本下的日记根文档 } from "./tools";
 
 function 设置() {
   const [用户设置, 令用户设置为] = useAtom(用户设置Atom);

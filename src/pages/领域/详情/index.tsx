@@ -1,26 +1,20 @@
 import { E常用SQL, SQL } from "@/API/SQL";
 import { 等待持久化完成 } from "@/API/Sqlite";
-import { 插入前置子块, 更新块 } from "@/API/块数据";
-import { 生成超级块 } from "@/components/模板/Kramdown/超级块";
-import { 用户设置Atom } from "@/jotai/用户设置";
-import { 获取笔记本下的对应日期的日记文档 } from "@/pages/设置/tools";
+import { I事项, T层级 } from "@/pages/主页/components/事项树/components/事项";
 import { 生成事项 } from "@/tools/事项";
 import { DeleteOutlined, EditOutlined, UndoOutlined } from "@ant-design/icons";
 import { EditableProTable } from "@ant-design/pro-components";
 import { Button, Tabs } from "antd";
 import dayjs from "dayjs";
-import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { I领域 } from "..";
-import { I事项, T层级 } from "../../components/事项树/components/事项";
 import { 列配置 } from "../constant";
+import { 新建事项块, 更新事项块 } from "./tools";
 
 const 所有 = "所有";
 
 function 领域详情() {
-  const [用户设置] = useAtom(用户设置Atom);
-
   const { state } = useLocation() as {
     state: I领域;
   };
@@ -106,7 +100,7 @@ function 领域详情() {
             return 新事项;
           },
         }}
-        rowKey="id"
+        rowKey="ID"
         editable={{
           type: "single",
           editableKeys,
@@ -117,24 +111,11 @@ function 领域详情() {
             });
           },
           onSave: async (_key, 事项) => {
-            let 块ID = 事项.ID;
             const 是新建的 = 事项.更新时间 === 事项.创建时间;
             if (是新建的) {
-              const { id: 日记文档ID } = await 获取笔记本下的对应日期的日记文档(
-                用户设置.笔记本ID,
-                dayjs()
-              );
-              await 插入前置子块({
-                dataType: "markdown",
-                data: 生成超级块(事项),
-                parentID: 日记文档ID,
-              });
+              await 新建事项块(事项);
             } else {
-              await 更新块({
-                id: 块ID,
-                data: 生成超级块(事项),
-                dataType: "markdown",
-              });
+              await 更新事项块(事项);
             }
 
             等待持久化完成().then(() => 加载数据());

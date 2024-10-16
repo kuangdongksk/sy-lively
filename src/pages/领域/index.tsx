@@ -1,4 +1,4 @@
-import { 通过Markdown创建文档 } from "@/API/文档";
+import { 通过Markdown创建文档 } from "@/API/文档/创建";
 import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
 import { 用户设置Atom } from "@/jotai/用户设置";
 import { 更新用户设置 } from "@/pages/设置/tools";
