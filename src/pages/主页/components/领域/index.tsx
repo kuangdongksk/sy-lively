@@ -14,6 +14,7 @@ import { useLocation } from "react-router-dom";
 import { I领域 } from "../..";
 import { I事项, T层级 } from "../事项树/components/事项";
 import { 列配置 } from "./constant";
+import { 等待持久化完成 } from "@/API/Sqlite";
 
 const 所有 = "所有";
 
@@ -30,7 +31,6 @@ function 领域() {
 
   const 加载数据 = () => {
     SQL(E常用SQL.获取所有事项).then(({ data }) => {
-      console.log("🚀 ~ SQL ~ data:", data);
       data.filter((item) => item.value.includes(state.ID));
       令事项数据为(data.map((item) => JSON.parse(item.value)));
     });
@@ -42,7 +42,7 @@ function 领域() {
 
   useEffect(() => {
     加载数据();
-    if (页签键 === "所有") {
+    if (页签键 === 所有) {
     } else {
       事项数据.filter((item) => item.父项 === 页签键);
       令事项数据为(事项数据);
@@ -57,8 +57,8 @@ function 领域() {
         }
         items={[
           {
-            key: "所有",
-            label: "所有",
+            key: 所有,
+            label: 所有,
           },
           ...state.分类.map((分类) => ({
             key: 分类.ID,
@@ -80,7 +80,7 @@ function 领域() {
                 type="link"
                 icon={<EditOutlined />}
                 onClick={() => {
-                  action?.startEditable?.(record.id, record);
+                  action?.startEditable?.(record.ID, record);
                 }}
               />,
               <Button
@@ -100,7 +100,7 @@ function 领域() {
             const 新事项 = 生成事项({
               层级: 1 as T层级,
               领域ID: state.ID,
-              父项ID: 页签键 === "所有" ? state.分类[0].ID : 页签键,
+              父项ID: 页签键 === 所有 ? state.分类[0].ID : 页签键,
             });
 
             return 新事项;
@@ -136,6 +136,8 @@ function 领域() {
                 dataType: "markdown",
               });
             }
+
+            等待持久化完成().then(() => 加载数据());
           },
         }}
       />
