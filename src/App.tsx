@@ -1,5 +1,6 @@
 import {
   CalendarOutlined,
+  HeatMapOutlined,
   HomeOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
@@ -14,32 +15,31 @@ import { 用户设置Atom } from "./jotai/用户设置";
 
 const { Header, Footer, Sider, Content } = Layout;
 
+const C目录 = [
+  { key: "主页", icon: <HomeOutlined />, label: "主页" },
+  { key: "领域", icon: <HeatMapOutlined />, label: "领域" },
+  { key: "日历", icon: <CalendarOutlined />, label: "日历" },
+  { key: "设置", icon: <SettingOutlined />, label: "设置" },
+];
+
 function App() {
   const 当前位置 = useLocation();
   const 导航到 = useNavigate();
   const [, 设置用户设置] = useAtom(用户设置Atom);
 
   const { styles } = useAppStyle();
-  const [目录, 设置目录] = useState([
-    { key: "设置", icon: <SettingOutlined />, label: "设置" },
-  ]);
+  const [目录, 设置目录] = useState([C目录[3]]);
 
   useEffect(() => {
     导航到("/设置");
     SQL(E常用SQL.获取用户设置).then(({ data }) => {
       if (data.length !== 0) {
         const 启用的用户设置 = data.filter(
-          (item) => JSON.parse(item.value).是否使用中
+          (item: { value: string }) => JSON.parse(item.value).是否使用中
         )[0];
 
-        目录.unshift({
-          key: "日历",
-          icon: <CalendarOutlined />,
-          label: "日历",
-        });
-        目录.unshift({ key: "主页", icon: <HomeOutlined />, label: "主页" });
-        设置目录([...目录]);
-        导航到("/主页");
+        设置目录(C目录);
+        导航到("/领域");
         设置用户设置(JSON.parse(启用的用户设置.value));
       }
     });

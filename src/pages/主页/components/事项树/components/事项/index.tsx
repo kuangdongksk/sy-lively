@@ -48,7 +48,7 @@ export interface I事项Props {
 
 function 事项(props: I事项Props) {
   const { 事项 } = props;
-  const { id, 名称, 重要程度, 紧急程度, 开始时间, 结束时间 } = 事项;
+  const { ID, 名称, 重要程度, 紧急程度, 开始时间, 结束时间 } = 事项;
   const [数据, 令数据为] = useAtom(事项数据);
   const { styles } = use事项样式();
 
@@ -65,7 +65,7 @@ function 事项(props: I事项Props) {
               icon={<CopyOutlined />}
               onClick={() => {
                 navigator.clipboard.writeText(
-                  stringArr2string([名称, `#${id}`])
+                  stringArr2string([名称, `#${ID}`])
                 );
               }}
             />
@@ -84,13 +84,13 @@ function 事项(props: I事项Props) {
             defaultValue={名称}
             variant={"outlined"}
             onChange={(e) => {
-              数据.find((item) => item.id === id).名称 = e.target.value;
+              数据.find((item) => item.ID === ID).名称 = e.target.value;
               令数据为([...数据]);
             }}
             onBlur={切换名称编辑状态}
           />
         )}
-        <span className={styles.id文本}>#{id.slice(0, 6)}</span>
+        <span className={styles.id文本}>#{ID.slice(0, 6)}</span>
         <添加子项 节点={事项} />
       </div>
       <div className={styles.程度}>
@@ -106,7 +106,7 @@ function 事项(props: I事项Props) {
             return <数字标签 num={Number(value)} 颜色数组={green} />;
           }}
           onChange={(value) => {
-            数据.find((item) => item.id === id).重要程度 = value;
+            数据.find((item) => item.ID === ID).重要程度 = value;
             令数据为([...数据]);
           }}
         />
@@ -122,7 +122,7 @@ function 事项(props: I事项Props) {
             return <数字标签 num={Number(value)} 颜色数组={red} />;
           }}
           onChange={(value) => {
-            数据.find((item) => item.id === id).紧急程度 = value;
+            数据.find((item) => item.ID === ID).紧急程度 = value;
             令数据为([...数据]);
           }}
         />
@@ -135,10 +135,10 @@ function 事项(props: I事项Props) {
           showTime
           variant="borderless"
           onChange={(value) => {
-            数据.find((item) => item.id === id).开始时间 = dayjs(
+            数据.find((item) => item.ID === ID).开始时间 = dayjs(
               value[0]
             ).valueOf();
-            数据.find((item) => item.id === id).结束时间 = dayjs(
+            数据.find((item) => item.ID === ID).结束时间 = dayjs(
               value[1]
             ).valueOf();
             令数据为([...数据]);

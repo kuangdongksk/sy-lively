@@ -1,4 +1,5 @@
 import { E常用SQL, SQL } from "@/API/SQL";
+import { 等待持久化完成 } from "@/API/Sqlite";
 import { 插入前置子块, 更新块 } from "@/API/块数据";
 import { 生成超级块 } from "@/components/模板/Kramdown/超级块";
 import { 用户设置Atom } from "@/jotai/用户设置";
@@ -12,13 +13,12 @@ import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { I领域 } from "..";
-import { I事项, T层级 } from "../components/事项树/components/事项";
-import { 列配置 } from "./constant";
-import { 等待持久化完成 } from "@/API/Sqlite";
+import { I事项, T层级 } from "../../components/事项树/components/事项";
+import { 列配置 } from "../constant";
 
 const 所有 = "所有";
 
-function 领域() {
+function 领域详情() {
   const [用户设置] = useAtom(用户设置Atom);
 
   const { state } = useLocation() as {
@@ -145,4 +145,4 @@ function 领域() {
   );
 }
 
-export default 领域;
+export default 领域详情;
