@@ -5,7 +5,7 @@ import {
   TKramdownAttr,
   生成段落块,
   生成超级块,
-  生成超级块Kramdown带属性,
+  生成超级块带属性,
 } from "./基础";
 
 export function 根据事项生成信息块(事项: I事项) {
@@ -19,7 +19,7 @@ export function 根据事项生成信息块(事项: I事项) {
 export function 生成事项块Kramdown(事项: I事项) {
   const 信息块 = 生成段落块(根据事项生成信息块(事项), 事项.标题区ID);
 
-  const 内容区 = 生成超级块Kramdown带属性(
+  const 内容区 = 生成超级块带属性(
     [
       生成段落块("从这里开始(这一行内容可以更改"),
       生成段落块("不要写在超级块外边(这一行内容可以更改"),
@@ -28,7 +28,6 @@ export function 生成事项块Kramdown(事项: I事项) {
   );
 
   const 事项块 = 生成超级块([信息块, 内容区]);
-  console.log("🚀 ~ 生成事项块Kramdown ~ 事项块:", 事项块);
 
   return 事项块 + "\n" + 根据事项生成属性(事项);
 }

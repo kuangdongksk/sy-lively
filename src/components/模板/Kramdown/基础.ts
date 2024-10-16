@@ -28,14 +28,9 @@ export function 生成超级块(Kramdown内容数组: string[]): TKramdown块 {
   return `{{{row\n${Kramdown内容数组.join("\n\n")}\n\n}}}`;
 }
 
-export function 生成超级块Kramdown带属性(
+export function 生成超级块带属性(
   Kramdown内容数组: TKramdown[],
   id?: string
 ) {
   return `${生成超级块(Kramdown内容数组)}\n${生成基本属性(id)}`;
 }
-
-export function 生成带属性的块Kramdown(
-  块Kramdown: TKramdown,
-  属性: { id: string; updated: number; [key: string]: any }
-) {}
