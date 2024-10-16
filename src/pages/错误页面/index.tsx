@@ -1,17 +1,19 @@
 import { Button } from "antd";
 import { useNavigate, useRouteError } from "react-router-dom";
+import { useStyle } from "./index.styles";
 
 function 错误页面() {
   const 导航到 = useNavigate();
   const error = useRouteError() as {
     data: string;
   };
+
+  const { styles } = useStyle();
   console.log("🚀 ~ ErrorPage ~ error:", error);
 
   return (
-    <div id="error-page">
-      <h1>Oops!</h1>
-      <p>Sorry, an unexpected error has occurred.</p>
+    <div id="error-page" className={styles.错误页面}>
+      <h1>页面出错了！!</h1>
       <p>{decodeURI(error.data)}</p>
 
       <Button
