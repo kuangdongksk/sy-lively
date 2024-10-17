@@ -1,6 +1,6 @@
 import { E常用SQL, SQL } from "@/API/SQL";
 import { 顶级节点 } from "@/constant/状态配置";
-import { 事项数据 } from "@/jotai/事项数据";
+import { 事项数据 } from "@/store/事项数据";
 import { string2stringArr } from "@/utils/拼接与拆解";
 import type { TreeDataNode } from "antd";
 import { Tree } from "antd";

@@ -1,8 +1,8 @@
 import { 插入前置子块 } from "@/API/块数据";
 import 事项DOM from "@/components/模板/DOM/事项DOM";
 import { E事项状态 } from "@/constant/状态配置";
-import { 事项数据 } from "@/jotai/事项数据";
-import { 用户设置Atom } from "@/jotai/用户设置";
+import { 事项数据 } from "@/store/事项数据";
+import { 用户设置Atom } from "@/store/用户设置";
 import { 获取笔记本下的对应日期的日记文档 } from "@/pages/设置/tools";
 import { TSX2HTML } from "@/utils/DOM";
 import { string2stringArr, stringArr2string } from "@/utils/拼接与拆解";

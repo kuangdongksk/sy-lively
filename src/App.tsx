@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { E常用SQL, SQL } from "./API/SQL";
 import { useAppStyle } from "./App.style";
-import { 用户设置Atom } from "./jotai/用户设置";
+import { 用户设置Atom } from "./store/用户设置";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -44,7 +44,7 @@ function App() {
         导航到("/设置");
       }
     });
-  }, [用户设置.笔记本ID]);
+  }, [用户设置]);
 
   return (
     <Layout className={styles.App}>

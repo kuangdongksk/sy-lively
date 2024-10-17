@@ -1,4 +1,4 @@
-import { 事项数据 } from "@/jotai/事项数据";
+import { 事项数据 } from "@/store/事项数据";
 import { stringArr2string } from "@/utils/拼接与拆解";
 import { green, red } from "@ant-design/colors";
 import { CopyOutlined, EditOutlined } from "@ant-design/icons";

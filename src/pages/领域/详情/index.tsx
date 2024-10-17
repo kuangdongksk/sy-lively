@@ -1,5 +1,5 @@
 import { E常用SQL, SQL } from "@/API/SQL";
-import { 用户设置Atom } from "@/jotai/用户设置";
+import { 用户设置Atom } from "@/store/用户设置";
 import { I事项, T层级 } from "@/pages/主页/components/事项树/components/事项";
 import { 生成事项 } from "@/tools/事项";
 import { DeleteOutlined, EditOutlined, UndoOutlined } from "@ant-design/icons";
