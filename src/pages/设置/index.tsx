@@ -7,7 +7,7 @@ import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 
 function 设置() {
-  const [用户设置] = useAtom(用户设置Atom);
+  const [用户设置, 设置用户设置] = useAtom(用户设置Atom);
 
   const [笔记本列表, 令笔记本列表为] = useState([]);
 
@@ -35,9 +35,13 @@ function 设置() {
                 ({ id: 日记根文档ID }) => {
                   更新用户设置(
                     {
-                      笔记本ID,
-                      是否使用中: true,
-                      日记根文档ID,
+                      当前用户设置: 用户设置,
+                      更改的用户设置: {
+                        笔记本ID,
+                        是否使用中: true,
+                        日记根文档ID,
+                      },
+                      设置用户设置,
                     },
                     日记根文档ID
                   );
@@ -51,7 +55,11 @@ function 设置() {
             }
 
             更新用户设置({
-              是否使用中: false,
+              当前用户设置: 用户设置,
+              更改的用户设置: {
+                是否使用中: false,
+              },
+              设置用户设置,
             }).then(() => {
               更新设置();
             });

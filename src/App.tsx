@@ -36,14 +36,18 @@ function App() {
         const 启用的用户设置 = data.filter(
           (item: { value: string }) => JSON.parse(item.value).是否使用中
         )[0];
-
-        设置目录(C目录);
-        导航到("/领域");
         设置用户设置(JSON.parse(启用的用户设置.value));
+        导航到("/领域");
       } else {
         导航到("/设置");
       }
     });
+  }, []);
+
+  useEffect(() => {
+    if (用户设置.是否使用中) {
+      设置目录(C目录);
+    }
   }, [用户设置]);
 
   return (
