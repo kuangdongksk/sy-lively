@@ -32,17 +32,14 @@ export async function 更新用户设置(
 
 export async function 更新领域设置(配置: {
   新的领域设置: I领域[];
-  设置领域设置: (新的领域设置: I领域[]) => void;
   领域文档ID: string;
 }) {
-  const { 新的领域设置, 设置领域设置, 领域文档ID } = 配置;
+  const { 新的领域设置, 领域文档ID } = 配置;
 
   await 设置块属性({
     id: 领域文档ID,
     attrs: {
       [E块属性名称.领域设置]: JSON.stringify(新的领域设置),
     },
-  }).then(() => {
-    设置领域设置(新的领域设置);
   });
 }
