@@ -1,7 +1,9 @@
 import { E常用SQL, SQL } from "@/API/SQL";
-import { 用户设置Atom } from "@/store/用户设置";
+import { 思源协议 } from "@/constant/系统码";
 import { I事项, T层级 } from "@/pages/主页/components/事项树/components/事项";
+import { 用户设置Atom } from "@/store/用户设置";
 import { 生成事项 } from "@/tools/事项";
+import { 睡眠 } from "@/utils/异步";
 import { DeleteOutlined, EditOutlined, UndoOutlined } from "@ant-design/icons";
 import { EditableProTable } from "@ant-design/pro-components";
 import { Button, Tabs } from "antd";
@@ -12,7 +14,6 @@ import { useLocation } from "react-router-dom";
 import { I领域 } from "..";
 import { 列配置 } from "../constant";
 import { 新建事项块, 更新事项块 } from "./tools";
-import { 睡眠 } from "@/utils/异步";
 
 const 所有 = "所有";
 
@@ -27,8 +28,8 @@ function 领域详情() {
   const [事项数据, 令事项数据为] = useState([]);
   const [页签键, 令页签键为] = useState(所有);
 
-  const 加载数据 = () => {
-    SQL(E常用SQL.获取所有事项).then(({ data }) => {
+  const 加载数据 = async () => {
+    await SQL(E常用SQL.获取所有事项).then(({ data }) => {
       data.filter((item) => item.value.includes(state.ID));
       令事项数据为(data.map((item) => JSON.parse(item.value)));
     });
@@ -39,12 +40,13 @@ function 领域详情() {
   }, []);
 
   useEffect(() => {
-    加载数据();
-    if (页签键 === 所有) {
-    } else {
-      事项数据.filter((item) => item.父项 === 页签键);
-      令事项数据为(事项数据);
-    }
+    加载数据().then(() => {
+      if (页签键 === 所有) {
+      } else {
+        事项数据.filter((item) => item.父项 === 页签键);
+        令事项数据为(事项数据);
+      }
+    });
   }, [页签键]);
 
   return (
@@ -102,7 +104,15 @@ function 领域详情() {
           },
         ]}
         value={事项数据}
-        headerTitle="可编辑表格"
+        headerTitle={
+          页签键 === 所有 ? (
+            "所有"
+          ) : (
+            <a href={思源协议 + 页签键}>
+              {state.分类.find((item) => item.ID === 页签键)?.名称}
+            </a>
+          )
+        }
         recordCreatorProps={{
           position: "top",
           record: () => {
