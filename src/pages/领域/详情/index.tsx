@@ -49,6 +49,7 @@ function 领域详情() {
   return (
     <>
       <Tabs
+        type="editable-card"
         tabBarExtraContent={
           <Button icon={<UndoOutlined />} type="link" onClick={加载数据} />
         }
@@ -56,13 +57,22 @@ function 领域详情() {
           {
             key: 所有,
             label: 所有,
+            closable: false,
           },
           ...state.分类.map((分类) => ({
             key: 分类.ID,
             label: 分类.名称,
+            closable: false,
           })),
         ]}
         onChange={令页签键为}
+        onEdit={(key, action) => {
+          if (action === "add") {
+            // 令页签键为(key);
+          } else {
+            // 令页签键为(所有);
+          }
+        }}
       />
 
       <EditableProTable<I事项>
