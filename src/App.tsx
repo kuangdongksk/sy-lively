@@ -12,6 +12,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { E常用SQL, SQL } from "./API/SQL";
 import { useAppStyle } from "./App.style";
 import { 用户设置Atom } from "./store/用户设置";
+import { 调试 } from "./tools/调试";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -49,6 +50,10 @@ function App() {
       设置目录(C目录);
     }
   }, [用户设置]);
+
+  useEffect(() => {
+    调试(false);
+  });
 
   return (
     <Layout className={styles.App}>
