@@ -31,7 +31,6 @@ function 设置() {
           options={笔记本列表}
           onChange={(笔记本ID) => {
             if (用户设置.笔记本ID === 笔记本ID) return;
-
             const 更新设置 = () => {
               获取笔记本下的日记根文档(笔记本ID).then(({ id }) => {
                 const 日记根文档ID = id;
@@ -41,6 +40,7 @@ function 设置() {
                   是否使用中: true,
                   日记根文档ID,
                 };
+
                 设置块属性({
                   id,
                   attrs: {
@@ -49,6 +49,7 @@ function 设置() {
                 }).then(() => 令用户设置为(新的用户设置));
               });
             };
+
             if (用户设置.笔记本ID === "") {
               更新设置();
               return;

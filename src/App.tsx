@@ -25,13 +25,12 @@ const C目录 = [
 function App() {
   const 当前位置 = useLocation();
   const 导航到 = useNavigate();
-  const [, 设置用户设置] = useAtom(用户设置Atom);
+  const [用户设置, 设置用户设置] = useAtom(用户设置Atom);
 
   const { styles } = useAppStyle();
   const [目录, 设置目录] = useState([C目录[3]]);
 
   useEffect(() => {
-    导航到("/设置");
     SQL(E常用SQL.获取用户设置).then(({ data }) => {
       if (data.length !== 0) {
         const 启用的用户设置 = data.filter(
@@ -41,9 +40,11 @@ function App() {
         设置目录(C目录);
         导航到("/领域");
         设置用户设置(JSON.parse(启用的用户设置.value));
+      } else {
+        导航到("/设置");
       }
     });
-  }, []);
+  }, [用户设置.笔记本ID]);
 
   return (
     <Layout className={styles.App}>

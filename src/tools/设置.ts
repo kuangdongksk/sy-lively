@@ -21,5 +21,3 @@ export async function 更新用户设置(
 
   return;
 }
-
-
