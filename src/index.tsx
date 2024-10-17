@@ -32,40 +32,16 @@ export default class PluginSample extends Plugin {
         <path d="M20 13.333c0-0.733 0.6-1.333 1.333-1.333s1.333 0.6 1.333 1.333c0 0.733-0.6 1.333-1.333 1.333s-1.333-0.6-1.333-1.333zM10.667 12h6.667v-2.667h-6.667v2.667zM29.333 10v9.293l-3.76 1.253-2.24 7.453h-7.333v-2.667h-2.667v2.667h-7.333c0 0-3.333-11.28-3.333-15.333s3.28-7.333 7.333-7.333h6.667c1.213-1.613 3.147-2.667 5.333-2.667 1.107 0 2 0.893 2 2 0 0.28-0.053 0.533-0.16 0.773-0.187 0.453-0.347 0.973-0.427 1.533l3.027 3.027h2.893zM26.667 12.667h-1.333l-4.667-4.667c0-0.867 0.12-1.72 0.347-2.547-1.293 0.333-2.347 1.293-2.787 2.547h-8.227c-2.573 0-4.667 2.093-4.667 4.667 0 2.507 1.627 8.867 2.68 12.667h2.653v-2.667h8v2.667h2.68l2.067-6.867 3.253-1.093v-4.707z"></path>
         </symbol>`);
 
-    this.addDock({
-      config: {
-        position: "LeftBottom",
-        size: { width: 360, height: 0 },
-        icon: "iconFace",
-        title: "Custom Dock",
-        hotkey: "⌥⌘W",
-      },
-      data: {
-        text: "This is my custom dock",
-      },
-      type: DOCK_TYPE,
-      resize() {
-        console.log(DOCK_TYPE + " resize");
-      },
-      update() {
-        console.log(DOCK_TYPE + " update");
-      },
-      init: (dock) => {
+    this.addTopBar({
+      icon: "iconCalendar", // 使用图标库中的图标，可以在工作空间/conf/appearance/icons/index.html中查看内置图标
+      title: "喧嚣-日程管理",
+      position: "left",
+      callback: () => {
         if (this.isMobile) {
-          dock.element.innerHTML = `
-            <div id="${PluginId}"></div>
-          `;
+          return;
+        } else {
+          this.打开页签();
         }
-
-        // 手动挂载 React 组件
-        const rootElement = document.getElementById(PluginId);
-        if (rootElement) {
-          const root = ReactDOM.createRoot(rootElement);
-          root.render(this.REACT_ROOT);
-        }
-      },
-      destroy() {
-        console.log("destroy dock:", DOCK_TYPE);
       },
     });
   }
@@ -91,19 +67,7 @@ export default class PluginSample extends Plugin {
         console.log("🚀 ~ PluginSample ~ beforeDestroy ~ beforeDestroy:");
       },
       destroy() {
-        console.log("🚀 ~ PluginSample ~ destroy ~ destroy:");
-      },
-    });
-
-    openTab({
-      app: this.app,
-      custom: {
-        icon: "iconFace",
-        title: "喧嚣",
-        data: {
-          text: "数据",
-        },
-        id: this.name + TAB_TYPE,
+        this.element.removeChild(tabDiv);
       },
     });
   }
@@ -111,4 +75,15 @@ export default class PluginSample extends Plugin {
   async onunload() {}
 
   uninstall() {}
+
+  打开页签() {
+    openTab({
+      app: this.app,
+      custom: {
+        icon: "iconFace",
+        title: "喧嚣",
+        id: this.name + TAB_TYPE,
+      },
+    });
+  }
 }
