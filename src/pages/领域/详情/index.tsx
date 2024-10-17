@@ -12,6 +12,7 @@ import { useLocation } from "react-router-dom";
 import { I领域 } from "..";
 import { 列配置 } from "../constant";
 import { 新建事项块, 更新事项块 } from "./tools";
+import { 睡眠 } from "@/utils/异步";
 
 const 所有 = "所有";
 
@@ -132,6 +133,8 @@ function 领域详情() {
               await 更新事项块(事项);
             }
 
+            await 睡眠(1000);
+            加载数据();
             // 等待持久化完成().then(() => 加载数据());
           },
         }}

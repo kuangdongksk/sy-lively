@@ -3,6 +3,7 @@ import { 通过Markdown创建文档 } from "@/API/文档/创建";
 import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
 import { 用户设置Atom, 领域设置Atom } from "@/store/用户设置";
 import { 更新用户设置, 更新领域设置 } from "@/tools/设置";
+import { 睡眠 } from "@/utils/异步";
 import { Button, Card, Form, Input, List, Spin } from "antd";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
@@ -123,7 +124,7 @@ function 领域() {
                 用户设置.笔记本ID,
                 `/领域/${value.领域名称}/杂项`,
                 ""
-              ).then(({ data }) => {
+              ).then(async ({ data }) => {
                 const 新的领域设置 = [
                   ...领域设置,
                   {
@@ -140,7 +141,14 @@ function 领域() {
                   },
                 ];
 
-                更新领域设置({ 新的领域设置, 设置领域设置, 领域文档ID });
+                更新领域设置({
+                  新的领域设置,
+                  设置领域设置,
+                  领域文档ID: 用户设置.领域文档ID,
+                });
+
+                await 睡眠(1000);
+                获取领域列表();
                 令弹窗状态为(undefined);
               });
             });
