@@ -32,13 +32,16 @@ export const 分类列配置: ColumnsType = [
 
 export const 列配置: ProColumns<I事项>[] = [
   {
-    title: "名称",
-    key: "名称",
     dataIndex: "名称",
+    key: "名称",
+    title: "名称",
     formItemProps: () => {
       return {
         rules: [{ required: true, message: "此项为必填项" }],
       };
+    },
+    render: (_dom, record) => {
+      return <a href={思源协议 + record.ID}>{record.名称}</a>;
     },
     // width: 100,
   },
