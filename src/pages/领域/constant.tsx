@@ -4,6 +4,7 @@ import { ProColumns } from "@ant-design/pro-components";
 import { ColumnsType } from "antd/es/table";
 import { I事项 } from "../主页/components/事项树/components/事项";
 import 数字标签 from "../主页/components/事项树/components/数字标签";
+import { 思源协议 } from "@/constant/系统码";
 
 const 程度 = {
   0: 0,
@@ -20,9 +21,12 @@ const 程度 = {
 
 export const 分类列配置: ColumnsType = [
   {
-    title: "分类名称",
-    key: "名称",
     dataIndex: "名称",
+    key: "名称",
+    title: "分类名称",
+    render: (_dom, record) => {
+      return <a href={思源协议 + record.id}>{record.名称}</a>;
+    },
   },
 ];
 

@@ -69,7 +69,7 @@ function 领域详情() {
           })),
         ]}
         onChange={令页签键为}
-        onEdit={(key, action) => {
+        onEdit={(_key, action) => {
           if (action === "add") {
             // 令页签键为(key);
           } else {
