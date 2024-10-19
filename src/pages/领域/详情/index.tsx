@@ -14,6 +14,7 @@ import { useLocation } from "react-router-dom";
 import { I领域 } from "..";
 import { 列配置 } from "../constant";
 import { 新建事项块, 更新事项块 } from "./tools";
+import { 获取指定领域下的事项 } from "@/API/事项";
 
 const 所有 = "所有";
 
@@ -29,16 +30,8 @@ function 领域详情() {
   const [页签键, 令页签键为] = useState(所有);
 
   const 加载数据 = async () => {
-    await SQL(E常用SQL.获取所有事项).then(({ data }) => {
-      const 事项数据: I事项[] = data.map((item: { value: string }) =>
-        JSON.parse(item.value)
-      );
-
-      令事项数据为(
-        事项数据.filter((item: I事项) => {
-          return item.领域ID === state.ID;
-        })
-      );
+    await 获取指定领域下的事项(state.ID).then((data) => {
+      令事项数据为(data);
     });
   };
 
