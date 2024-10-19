@@ -36,6 +36,7 @@ export interface I事项 {
   父项ID: string;
   领域ID: string;
   标题区ID: string;
+  信息区ID: string;
   内容区ID: string;
   嵌入块ID: string;
   创建时间: number;

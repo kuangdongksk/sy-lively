@@ -37,7 +37,7 @@ function 领域详情() {
 
   useEffect(() => {
     加载数据();
-  }, []);
+  }, [state.ID]);
 
   useEffect(() => {
     加载数据().then(() => {

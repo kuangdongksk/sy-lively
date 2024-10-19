@@ -26,6 +26,7 @@ export function 生成事项(
     ID,
     key: stringArr2string([E事项状态.未开始, 名称, ID]),
     标题区ID: 生成块ID(),
+    信息区ID: 生成块ID(),
     内容区ID: 生成块ID(),
     嵌入块ID: 生成块ID(),
     创建时间: dayjs().valueOf(),

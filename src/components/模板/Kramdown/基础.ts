@@ -20,6 +20,20 @@ export function 生成基本属性(id?: string): TKramdownAttr {
 
 //#endregion
 
+export function 生成标题快(参数: {
+  标题: string;
+  层级: number;
+  id?: string;
+}): TKramdown {
+  const { 标题, 层级, id } = 参数;
+
+  return `${"#".repeat(层级)} ${标题}\n${生成基本属性(id)}`;
+}
+
+export function 生成引用块(内容: string, id?: string): TKramdown {
+  return `> ${内容}\n> ${生成基本属性(id)}`;
+}
+
 export function 生成段落块(内容: string, id?: string): TKramdown {
   return `${内容}\n${生成基本属性(id)}`;
 }
@@ -28,9 +42,6 @@ export function 生成超级块(Kramdown内容数组: string[]): TKramdown块 {
   return `{{{row\n${Kramdown内容数组.join("\n\n")}\n\n}}}`;
 }
 
-export function 生成超级块带属性(
-  Kramdown内容数组: TKramdown[],
-  id?: string
-) {
+export function 生成超级块带属性(Kramdown内容数组: TKramdown[], id?: string) {
   return `${生成超级块(Kramdown内容数组)}\n${生成基本属性(id)}`;
 }
