@@ -30,8 +30,15 @@ function 领域详情() {
 
   const 加载数据 = async () => {
     await SQL(E常用SQL.获取所有事项).then(({ data }) => {
-      data.filter((item) => item.value.includes(state.ID));
-      令事项数据为(data.map((item) => JSON.parse(item.value)));
+      const 事项数据: I事项[] = data.map((item: { value: string }) =>
+        JSON.parse(item.value)
+      );
+
+      令事项数据为(
+        事项数据.filter((item: I事项) => {
+          return item.领域ID === state.ID;
+        })
+      );
     });
   };
 
