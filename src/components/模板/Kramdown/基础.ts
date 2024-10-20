@@ -20,7 +20,7 @@ export function 生成基本属性(id?: string): TKramdownAttr {
 
 //#endregion
 
-export function 生成标题快(参数: {
+export function 生成标题块(参数: {
   标题: string;
   层级: number;
   id?: string;

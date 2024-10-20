@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import {
   TKramdownAttr,
   生成引用块,
-  生成标题快,
+  生成标题块,
   生成段落块,
   生成超级块,
   生成超级块带属性,
@@ -21,7 +21,7 @@ export function 根据事项生成信息块(事项: I事项) {
 export function 生成事项块Kramdown(事项: I事项) {
   const { 名称, 层级, 标题区ID, 信息区ID, 内容区ID } = 事项;
 
-  const 标题块 = 生成标题快({
+  const 标题块 = 生成标题块({
     标题: 名称,
     层级: 层级,
     id: 标题区ID,

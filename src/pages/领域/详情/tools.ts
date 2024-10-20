@@ -1,6 +1,9 @@
 import { 插入前置子块, 插入后置子块, 更新块, 设置块属性 } from "@/API/块数据";
 import { 获取笔记本下的对应日期的日记文档 } from "@/API/文档/获取";
-import { 生成段落块 } from "@/components/模板/Kramdown/基础";
+import {
+  生成引用块,
+  生成标题块
+} from "@/components/模板/Kramdown/基础";
 import { 生成嵌入块Kramdown } from "@/components/模板/Kramdown/嵌入快";
 import {
   根据事项生成信息块,
@@ -39,10 +42,20 @@ export async function 更新事项块(事项: I事项) {
         [E块属性名称.事项]: JSON.stringify(事项),
       },
     }),
-    // 更新标题块
+    // 更新标题块、信息快
     更新块({
       id: 事项.标题区ID,
-      data: 生成段落块(根据事项生成信息块(事项), 事项.内容区ID),
+      data: 生成标题块({
+        标题: 事项.名称,
+        层级: 事项.层级,
+        id: 事项.标题区ID,
+      }),
+      dataType: "markdown",
+    }),
+
+    更新块({
+      id: 事项.信息区ID,
+      data: 生成引用块(根据事项生成信息块(事项), 事项.信息区ID),
       dataType: "markdown",
     }),
   ]);
