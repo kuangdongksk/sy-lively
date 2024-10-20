@@ -1,4 +1,4 @@
-import { E常用SQL, SQL } from "@/API/SQL";
+import { 获取指定领域下的事项 } from "@/API/事项";
 import { 思源协议 } from "@/constant/系统码";
 import { I事项, T层级 } from "@/pages/主页/components/事项树/components/事项";
 import { 用户设置Atom } from "@/store/用户设置";
@@ -14,7 +14,6 @@ import { useLocation } from "react-router-dom";
 import { I领域 } from "..";
 import { 列配置 } from "../constant";
 import { 新建事项块, 更新事项块 } from "./tools";
-import { 获取指定领域下的事项 } from "@/API/事项";
 
 const 所有 = "所有";
 
