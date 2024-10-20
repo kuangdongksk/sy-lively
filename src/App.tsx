@@ -52,7 +52,7 @@ function App() {
   }, [用户设置]);
 
   useEffect(() => {
-    调试(false);
+    调试(true);
   });
 
   return (

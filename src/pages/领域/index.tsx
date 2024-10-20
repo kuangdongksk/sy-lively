@@ -99,21 +99,14 @@ function 领域() {
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">
-                提交
+                添加
               </Button>
             </Form.Item>
           </Spin>
         }
         弹窗确认={() => 令弹窗状态为(undefined)}
         弹窗取消={() => 令弹窗状态为(undefined)}
-        提交表单={(value: {
-          领域名称: string;
-          领域描述: string;
-          分类: {
-            名称: string;
-            描述: string;
-          }[];
-        }) => {
+        提交表单={(value: { 领域名称: string; 领域描述: string }) => {
           const 新建领域 = (领域根文档ID: string) => {
             通过Markdown创建文档(
               用户设置.笔记本ID,
@@ -125,8 +118,9 @@ function 领域() {
                 `/领域/${value.领域名称}/杂项`,
                 ""
               ).then(async ({ data }) => {
-                const 旧的领域设置 = 领域列表;
-                旧的领域设置.pop();
+                const 旧的领域设置 = 领域列表.filter((item) => {
+                  return item.名称 !== "添加领域";
+                });
 
                 const 新的领域设置 = [
                   ...旧的领域设置,

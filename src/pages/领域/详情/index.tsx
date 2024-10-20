@@ -4,9 +4,14 @@ import { I事项, T层级 } from "@/pages/主页/components/事项树/components
 import { 用户设置Atom } from "@/store/用户设置";
 import { 生成事项 } from "@/tools/事项";
 import { 睡眠 } from "@/utils/异步";
-import { DeleteOutlined, EditOutlined, UndoOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  PlusCircleOutlined,
+  UndoOutlined,
+} from "@ant-design/icons";
 import { EditableProTable } from "@ant-design/pro-components";
-import { Button, Tabs } from "antd";
+import { Button, Form, Input, Tabs } from "antd";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
@@ -14,6 +19,9 @@ import { useLocation } from "react-router-dom";
 import { I领域 } from "..";
 import { 列配置 } from "../constant";
 import { 新建事项块, 更新事项块 } from "./tools";
+import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
+import { 通过Markdown创建文档 } from "@/API/文档/创建";
+import { 更新领域设置 } from "@/tools/设置";
 
 const 所有 = "所有";
 
@@ -27,6 +35,8 @@ function 领域详情() {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>(() => []);
   const [事项数据, 令事项数据为] = useState([]);
   const [页签键, 令页签键为] = useState(所有);
+
+  const [弹窗状态, 令弹窗状态为] = useState<T弹窗状态>(undefined);
 
   const 加载数据 = async () => {
     await 获取指定领域下的事项(state.ID).then((data) => {
@@ -53,7 +63,14 @@ function 领域详情() {
       <Tabs
         type="editable-card"
         tabBarExtraContent={
-          <Button icon={<UndoOutlined />} type="link" onClick={加载数据} />
+          <>
+            <Button icon={<UndoOutlined />} type="link" onClick={加载数据} />
+            <Button
+              icon={<PlusCircleOutlined />}
+              type="link"
+              onClick={() => 令弹窗状态为("添加")}
+            />
+          </>
         }
         items={[
           {
@@ -68,13 +85,6 @@ function 领域详情() {
           })),
         ]}
         onChange={令页签键为}
-        onEdit={(_key, action) => {
-          if (action === "add") {
-            // 令页签键为(key);
-          } else {
-            // 令页签键为(所有);
-          }
-        }}
       />
 
       <EditableProTable<I事项>
@@ -146,6 +156,59 @@ function 领域详情() {
             加载数据();
             // 等待持久化完成().then(() => 加载数据());
           },
+        }}
+      />
+
+      <弹窗表单
+        弹窗标题="分类"
+        弹窗状态={弹窗状态}
+        表单配置={{
+          initialValues: undefined,
+        }}
+        表单内容={
+          <>
+            <Form.Item name="分类名称" label="分类名称" required>
+              <Input />
+            </Form.Item>
+            <Form.Item name="分类描述" label="分类描述" required>
+              <Input.TextArea />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                添加
+              </Button>
+            </Form.Item>
+          </>
+        }
+        弹窗取消={() => 令弹窗状态为(undefined)}
+        提交表单={(value: { 分类名称: string; 分类描述: string }) => {
+          // const { 分类名称, 分类描述 } = value;
+          // 通过Markdown创建文档(
+          //   用户设置.笔记本ID,
+          //   `/领域/${state.名称}/${分类名称}`,
+          //   ""
+          // ).then(async ({ data }) => {
+          //   const 旧的分类设置 = state.分类.filter(
+          //     (item) => item.名称 !== 所有
+          //   );
+          //   const 新的领域设置 = [
+          //     ...旧的领域设置,
+          //     {
+          //       ...state,
+          //       分类: [...旧的分类设置,{
+          //         分类名称
+          //       }],
+          //     },
+          //   ];
+          //   更新领域设置({
+          //     新的领域设置,
+          //     领域文档ID: 领域根文档ID,
+          //   });
+          //   睡眠(1000).then(() => {
+          //     加载数据();
+          //     令弹窗状态为(undefined);
+          //   });
+          // });
         }}
       />
     </>

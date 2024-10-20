@@ -11,7 +11,7 @@ export interface I弹窗表单Props<TFormValue> {
   };
   表单内容: ReactNode;
   //
-  弹窗确认: (() => void) | (() => Promise<void>);
+  弹窗确认?: (() => void) | (() => Promise<void>);
   弹窗取消: (() => void) | (() => Promise<void>);
   提交表单:
     | ((value: TFormValue) => void)
@@ -38,8 +38,8 @@ function 弹窗表单<TFormValue>(props: I弹窗表单Props<TFormValue>) {
     >
       <Form
         labelCol={{
-          xs: { span: 16 },
-          sm: { span: 8 },
+          xs: { span: 8 },
+          sm: { span: 4 },
         }}
         wrapperCol={{
           xs: { span: 24 },
