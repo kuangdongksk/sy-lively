@@ -65,4 +65,16 @@ export default class SQL助手 {
       JSON.parse(item.value)
     ) as I事项[];
   }
+
+  public static async 获取指定分类下的事项(分类ID: string): Promise<I事项[]> {
+    const sql = `SELECT * FROM attributes WHERE name='${E块属性名称.事项}' AND value LIKE '%${分类ID}%'`;
+
+    const { data: sqlData } = await fetchSyncPost("/api/query/sql", {
+      stmt: sql,
+    });
+
+    return sqlData.map((item: { value: string }) =>
+      JSON.parse(item.value)
+    ) as I事项[];
+  }
 }
