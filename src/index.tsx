@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import { getFrontend, openTab, Plugin } from "siyuan";
 import router from "./router";
+import { 亮色主题 } from "./theme/亮色";
 import { 暗色主题 } from "./theme/暗色";
 export const PluginId = "lively_SaSa";
 
@@ -15,7 +16,15 @@ export default class PluginSample extends Plugin {
 
   private REACT_ROOT = (
     <React.StrictMode>
-      <ThemeProvider defaultAppearance="dark" theme={暗色主题}>
+      <ThemeProvider
+        defaultThemeMode={"auto"}
+        theme={(appearance) => {
+          if (appearance === "light") {
+            return 亮色主题;
+          }
+          return 暗色主题;
+        }}
+      >
         <RouterProvider router={router} />
       </ThemeProvider>
     </React.StrictMode>

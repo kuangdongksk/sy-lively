@@ -14,12 +14,12 @@ export const 暗色主题: ThemeConfig = {
     wireframe: true,
   },
   algorithm: theme.darkAlgorithm,
-  components: {
-    Layout: {
-      siderBg: "rgba(0,21,41,0)",
-      triggerBg: "rgba(0,33,64,0)",
-      lightTriggerColor: "rgba(0,0,0,0)",
-      headerBg: "#2f3437",
-    },
-  },
+  // components: {
+  //   Layout: {
+  //     siderBg: "rgba(0,21,41,0)",
+  //     triggerBg: "rgba(0,33,64,0)",
+  //     lightTriggerColor: "rgba(0,0,0,0)",
+  //     headerBg: "#2f3437",
+  //   },
+  // },
 };

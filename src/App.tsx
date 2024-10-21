@@ -4,9 +4,9 @@ import {
   HomeOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu } from "antd";
+import { Breadcrumb, Layout, Menu, Segmented } from "antd";
+import { useThemeMode } from "antd-style";
 import dayjs from "dayjs";
-import "dayjs/locale/zh-cn";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -15,9 +15,13 @@ import SQL助手, { E常用SQL } from "./class/SQL助手";
 import { 用户设置Atom } from "./store/用户设置";
 import { 开启调试, 调试 } from "./tools/调试";
 
-dayjs.locale("zh-cn");
-
 const { Header, Footer, Sider, Content } = Layout;
+
+const C主题 = [
+  { label: "自动", value: "auto" },
+  { label: "亮色", value: "light" },
+  { label: "暗色", value: "dark" },
+];
 
 const C目录 = [
   { key: "主页", icon: <HomeOutlined />, label: "主页" },
@@ -30,6 +34,8 @@ function App() {
   const 当前位置 = useLocation();
   const 导航到 = useNavigate();
   const [用户设置, 设置用户设置] = useAtom(用户设置Atom);
+
+  const { themeMode, setThemeMode } = useThemeMode();
 
   const { styles } = useAppStyle();
   const [目录, 设置目录] = useState([C目录[3]]);
@@ -74,13 +80,18 @@ function App() {
         />
       </Sider>
       <Layout className={styles.主体}>
-        <Header>
+        <Header className={styles.顶栏}>
           <Breadcrumb
             items={decodeURI(当前位置.pathname)
               .split("/")
               .map((item) => ({
                 title: item,
               }))}
+          />
+          <Segmented
+            value={themeMode}
+            onChange={setThemeMode}
+            options={C主题}
           />
         </Header>
         <Content className={styles.内容}>

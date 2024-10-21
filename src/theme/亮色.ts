@@ -1,4 +1,4 @@
-import { ThemeConfig } from "antd";
+import { theme, ThemeConfig } from "antd";
 
 export const 亮色主题: ThemeConfig = {
   token: {
@@ -12,4 +12,5 @@ export const 亮色主题: ThemeConfig = {
     sizeStep: 4,
     wireframe: true,
   },
+  algorithm: theme.defaultAlgorithm,
 };

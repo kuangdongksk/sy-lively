@@ -2,7 +2,6 @@ import CL文档 from "@/API/文档";
 import SQL助手, { E常用SQL } from "@/class/SQL助手";
 import { 思源协议 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/store/用户设置";
-import { JavaOutlined } from "@ant-design/icons";
 import { Badge, Button, Calendar, List, Tooltip } from "antd";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
