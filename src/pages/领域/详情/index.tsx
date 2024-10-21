@@ -1,4 +1,4 @@
-import SQL助手 from "@/API/SQL";
+import SQL助手 from "@/class/SQL助手";
 import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
 import { 思源协议 } from "@/constant/系统码";
 import { I事项, T层级 } from "@/pages/主页/components/事项树/components/事项";

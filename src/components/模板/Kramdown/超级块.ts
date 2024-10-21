@@ -1,14 +1,8 @@
+import Kramdown助手, { TKramdownAttr } from "@/class/Kramdown助手";
+import { E块属性名称 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
 import { I事项 } from "@/pages/主页/components/事项树/components/事项";
 import dayjs from "dayjs";
-import {
-  TKramdownAttr,
-  生成引用块,
-  生成标题块,
-  生成段落块,
-  生成超级块,
-  生成超级块带属性,
-} from "./基础";
 
 export function 根据事项生成信息块(事项: I事项) {
   return `#${事项.ID.slice(-6)}  重要程度：${事项.重要程度}  紧急程度：${
@@ -21,22 +15,22 @@ export function 根据事项生成信息块(事项: I事项) {
 export function 生成事项块Kramdown(事项: I事项) {
   const { 名称, 层级, 标题区ID, 信息区ID, 内容区ID } = 事项;
 
-  const 标题块 = 生成标题块({
+  const 标题块 = Kramdown助手.生成标题块({
     标题: 名称,
     层级: 层级,
     id: 标题区ID,
   });
-  const 信息块 = 生成引用块(根据事项生成信息块(事项), 信息区ID);
+  const 信息块 = Kramdown助手.生成引用块(根据事项生成信息块(事项), 信息区ID);
 
-  const 内容区 = 生成超级块带属性(
+  const 内容区 = Kramdown助手.生成超级块带属性(
     [
-      生成段落块("从这里开始(这一行内容可以更改"),
-      生成段落块("不要写在超级块外边(这一行内容可以更改"),
+      Kramdown助手.生成段落块("从这里开始(这一行内容可以更改"),
+      Kramdown助手.生成段落块("不要写在超级块外边(这一行内容可以更改"),
     ],
     内容区ID
   );
 
-  const 事项块 = 生成超级块([标题块, 信息块, 内容区]);
+  const 事项块 = Kramdown助手.生成超级块([标题块, 信息块, 内容区]);
 
   return 事项块 + "\n" + 根据事项生成属性(事项);
 }
@@ -51,7 +45,7 @@ export function 根据事项生成属性(事项: I事项): TKramdownAttr {
     })
     .join(",");
 
-  return `{: custom-plugin-lively-things="&#123;${属性字符串}&#125;" id="${
+  return `{: ${E块属性名称.事项}="&#123;${属性字符串}&#125;" id="${
     事项.ID
   }" updated="${dayjs().format(E时间格式化.思源时间)}"}`;
 }

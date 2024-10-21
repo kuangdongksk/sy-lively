@@ -1,4 +1,4 @@
-import SQL助手, { E常用SQL } from "@/API/SQL";
+import SQL助手, { E常用SQL } from "@/class/SQL助手";
 import { 顶级节点 } from "@/constant/状态配置";
 import { 事项数据 } from "@/store/事项数据";
 import { string2stringArr } from "@/utils/拼接与拆解";

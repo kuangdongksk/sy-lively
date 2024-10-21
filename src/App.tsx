@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import SQL助手, { E常用SQL } from "./API/SQL";
+import SQL助手, { E常用SQL } from "./class/SQL助手";
 import { useAppStyle } from "./App.style";
 import { 用户设置Atom } from "./store/用户设置";
 import { 开启调试, 调试 } from "./tools/调试";

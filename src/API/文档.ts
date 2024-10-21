@@ -4,7 +4,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { fetchSyncPost } from "siyuan";
 import { 设置块属性 } from "./块数据";
 import { 获取笔记本配置 } from "./笔记本";
-import SQL助手 from "./SQL";
+import SQL助手 from "../class/SQL助手";
 
 export default class CL文档 {
   public static 通过Markdown创建(

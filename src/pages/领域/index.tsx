@@ -1,4 +1,4 @@
-import SQL助手 from "@/API/SQL";
+import SQL助手 from "@/class/SQL助手";
 import { 设置块属性 } from "@/API/块数据";
 import CL文档 from "@/API/文档";
 import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
