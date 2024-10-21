@@ -1,4 +1,5 @@
-import { 获取指定领域下的事项 } from "@/API/事项";
+import SQL from "@/API/SQL";
+import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
 import { 思源协议 } from "@/constant/系统码";
 import { I事项, T层级 } from "@/pages/主页/components/事项树/components/事项";
 import { 用户设置Atom } from "@/store/用户设置";
@@ -16,12 +17,9 @@ import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { I领域 } from "..";
+import { I分类, I领域 } from "..";
 import { 列配置 } from "../constant";
 import { 新建事项块, 更新事项块 } from "./tools";
-import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
-import { 通过Markdown创建文档 } from "@/API/文档/创建";
-import { 更新领域设置 } from "@/tools/设置";
 
 const 所有 = "所有";
 
@@ -32,14 +30,20 @@ function 领域详情() {
     state: I领域;
   };
 
+  const [分类, 令分类为] = useState<I分类[]>([]);
+  const [弹窗状态, 令弹窗状态为] = useState<T弹窗状态>(undefined);
+
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>(() => []);
+
   const [事项数据, 令事项数据为] = useState([]);
   const [页签键, 令页签键为] = useState(所有);
 
-  const [弹窗状态, 令弹窗状态为] = useState<T弹窗状态>(undefined);
-
   const 加载数据 = async () => {
-    await 获取指定领域下的事项(state.ID).then((data) => {
+    await SQL.获取指定领域下的分类(state.ID).then(({ data }) => {
+      令分类为(data.map((item: { value: string }) => JSON.parse(item.value)));
+    });
+
+    await SQL.获取指定领域下的事项(state.ID).then((data) => {
       令事项数据为(data);
     });
   };
@@ -75,12 +79,12 @@ function 领域详情() {
         items={[
           {
             key: 所有,
-            label: 所有,
+            label: "所有",
             closable: false,
           },
-          ...state.分类.map((分类) => ({
-            key: 分类.ID,
-            label: 分类.名称,
+          ...分类.map((item) => ({
+            key: item.ID,
+            label: item.名称,
             closable: false,
           })),
         ]}
@@ -118,7 +122,7 @@ function 领域详情() {
             "所有"
           ) : (
             <a href={思源协议 + 页签键}>
-              {state.分类.find((item) => item.ID === 页签键)?.名称}
+              {分类.find((item) => item.ID === 页签键)?.名称}
             </a>
           )
         }
@@ -128,7 +132,7 @@ function 领域详情() {
             const 新事项 = 生成事项({
               层级: 1 as T层级,
               领域ID: state.ID,
-              父项ID: 页签键 === 所有 ? state.分类[0].ID : 页签键,
+              父项ID: 页签键 === 所有 ? 分类?.[0]?.ID : 页签键,
             });
 
             return 新事项;
