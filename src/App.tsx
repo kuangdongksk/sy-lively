@@ -6,13 +6,16 @@ import {
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu } from "antd";
 import dayjs from "dayjs";
+import "dayjs/locale/zh-cn";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import SQL助手, { E常用SQL } from "./class/SQL助手";
 import { useAppStyle } from "./App.style";
+import SQL助手, { E常用SQL } from "./class/SQL助手";
 import { 用户设置Atom } from "./store/用户设置";
 import { 开启调试, 调试 } from "./tools/调试";
+
+dayjs.locale("zh-cn");
 
 const { Header, Footer, Sider, Content } = Layout;
 

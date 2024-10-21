@@ -1,4 +1,4 @@
-import { ThemeConfig } from "antd";
+import { theme, ThemeConfig } from "antd";
 
 // https://ant-design.antgroup.com/theme-editor-cn#component-color
 export const 暗色主题: ThemeConfig = {
@@ -12,8 +12,8 @@ export const 暗色主题: ThemeConfig = {
     borderRadius: 10,
     sizeStep: 4,
     wireframe: true,
-    colorPrimaryBg: "#211a1b66",
   },
+  algorithm: theme.darkAlgorithm,
   components: {
     Layout: {
       siderBg: "rgba(0,21,41,0)",
