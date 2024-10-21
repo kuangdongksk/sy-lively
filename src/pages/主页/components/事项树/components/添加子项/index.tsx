@@ -3,7 +3,6 @@ import 事项DOM from "@/components/模板/DOM/事项DOM";
 import { E事项状态 } from "@/constant/状态配置";
 import { 事项数据 } from "@/store/事项数据";
 import { 用户设置Atom } from "@/store/用户设置";
-import { 获取笔记本下的对应日期的日记文档 } from "@/pages/设置/tools";
 import { TSX2HTML } from "@/utils/DOM";
 import { string2stringArr, stringArr2string } from "@/utils/拼接与拆解";
 import { PlusCircleOutlined } from "@ant-design/icons";
@@ -13,6 +12,7 @@ import { useAtom } from "jotai";
 import { nanoid } from "nanoid";
 import { TreeNode } from "../..";
 import { 层级增加 } from "../../tools";
+import CL文档 from "@/API/文档";
 
 function 添加子项(props: { 节点: TreeNode }) {
   const { 节点 } = props;
@@ -32,8 +32,7 @@ function 添加子项(props: { 节点: TreeNode }) {
             const 名称 = "未命名";
             const 层级 = 层级增加(节点.层级);
 
-            // TODO 应该想办法将块和事项连接起来
-            获取笔记本下的对应日期的日记文档(用户设置.笔记本ID, dayjs()).then(
+            CL文档.获取对应日期的日记文档(用户设置.笔记本ID, dayjs()).then(
               ({ id: 文档ID }) => {
                 const 新事项 = {
                   id,

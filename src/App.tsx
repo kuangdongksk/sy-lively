@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import SQL, { E常用SQL } from "./API/SQL";
+import SQL助手, { E常用SQL } from "./API/SQL";
 import { useAppStyle } from "./App.style";
 import { 用户设置Atom } from "./store/用户设置";
 import { 开启调试, 调试 } from "./tools/调试";
@@ -32,7 +32,7 @@ function App() {
   const [目录, 设置目录] = useState([C目录[3]]);
 
   useEffect(() => {
-    SQL.常用(E常用SQL.获取用户设置).then(({ data }) => {
+    SQL助手.常用(E常用SQL.获取用户设置).then(({ data }) => {
       if (data.length !== 0) {
         const 启用的用户设置 = data.filter(
           (item: { value: string }) => JSON.parse(item.value).是否使用中

@@ -1,6 +1,6 @@
-import SQL from "@/API/SQL";
+import SQL助手 from "@/API/SQL";
 import { 设置块属性 } from "@/API/块数据";
-import { 通过Markdown创建文档 } from "@/API/文档/创建";
+import CL文档 from "@/API/文档";
 import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
 import { E块属性名称 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/store/用户设置";
@@ -41,7 +41,7 @@ function 领域() {
 
   const 获取领域列表 = () => {
     if (用户设置.领域文档ID === "") return;
-    SQL.获取笔记本下的领域设置(用户设置.笔记本ID).then(({ data }) => {
+    SQL助手.获取笔记本下的领域设置(用户设置.笔记本ID).then(({ data }) => {
       令领域列表为(
         data
           .map((item: { value: string }) => JSON.parse(item.value))
@@ -113,7 +113,7 @@ function 领域() {
         弹窗取消={() => 令弹窗状态为(undefined)}
         提交表单={(value: { 领域名称: string; 领域描述: string }) => {
           const 新建领域 = () => {
-            通过Markdown创建文档(
+            CL文档.通过Markdown创建(
               用户设置.笔记本ID,
               `/领域/${value.领域名称}`,
               ""
@@ -130,7 +130,7 @@ function 领域() {
                 },
               });
 
-              通过Markdown创建文档(
+              CL文档.通过Markdown创建(
                 用户设置.笔记本ID,
                 `/领域/${value.领域名称}/杂项`,
                 ""
@@ -155,7 +155,7 @@ function 领域() {
           };
 
           if (用户设置.领域文档ID === "") {
-            通过Markdown创建文档(用户设置.笔记本ID, `/领域`, "").then(
+            CL文档.通过Markdown创建(用户设置.笔记本ID, `/领域`, "").then(
               ({ data }) => {
                 更新用户设置({
                   当前用户设置: 用户设置,

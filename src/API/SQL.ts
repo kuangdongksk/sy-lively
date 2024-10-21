@@ -9,34 +9,28 @@ export enum E常用SQL {
                   WHERE a.name = '${E块属性名称.事项}'`,
 }
 
-export function 根据ID获取块(id: string): Promise<IWebSocketData> {
-  return fetchSyncPost("/api/query/sql", {
-    stmt: `SELECT * FROM blocks WHERE id='${id}'`,
-  });
-}
-
-export function 获取日记根文档(
-  笔记本ID: string,
-  日记文档名称: string
-): Promise<IWebSocketData> {
-  return fetchSyncPost("/api/query/sql", {
-    stmt: `SELECT * FROM blocks WHERE box='${笔记本ID}' AND type='d' AND content='${日记文档名称}'`,
-  });
-}
-
-export function 获取日期对应的日记文档(
-  笔记本ID: string,
-  日期日记路径: string
-): Promise<IWebSocketData> {
-  return fetchSyncPost("/api/query/sql", {
-    stmt: `SELECT * FROM blocks WHERE box='${笔记本ID}' AND type='d' AND hpath='${日期日记路径}'`,
-  });
-}
-
-export default class SQL {
+export default class SQL助手 {
   public static 常用(sql: E常用SQL) {
     return fetchSyncPost("/api/query/sql", {
       stmt: sql,
+    });
+  }
+
+  public static 获取日记根文档(
+    笔记本ID: string,
+    日记文档名称: string
+  ): Promise<IWebSocketData> {
+    return fetchSyncPost("/api/query/sql", {
+      stmt: `SELECT * FROM blocks WHERE box='${笔记本ID}' AND type='d' AND content='${日记文档名称}'`,
+    });
+  }
+
+  public static 获取日期对应的日记文档(
+    笔记本ID: string,
+    日期日记路径: string
+  ): Promise<IWebSocketData> {
+    return fetchSyncPost("/api/query/sql", {
+      stmt: `SELECT * FROM blocks WHERE box='${笔记本ID}' AND type='d' AND hpath='${日期日记路径}'`,
     });
   }
 

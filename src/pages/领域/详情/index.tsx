@@ -1,4 +1,4 @@
-import SQL from "@/API/SQL";
+import SQL助手 from "@/API/SQL";
 import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
 import { 思源协议 } from "@/constant/系统码";
 import { I事项, T层级 } from "@/pages/主页/components/事项树/components/事项";
@@ -39,11 +39,11 @@ function 领域详情() {
   const [页签键, 令页签键为] = useState(所有);
 
   const 加载数据 = async () => {
-    await SQL.获取指定领域下的分类(state.ID).then(({ data }) => {
+    await SQL助手.获取指定领域下的分类(state.ID).then(({ data }) => {
       令分类为(data.map((item: { value: string }) => JSON.parse(item.value)));
     });
 
-    await SQL.获取指定领域下的事项(state.ID).then((data) => {
+    await SQL助手.获取指定领域下的事项(state.ID).then((data) => {
       令事项数据为(data);
     });
   };
