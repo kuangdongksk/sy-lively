@@ -1,7 +1,7 @@
 {
   "name": "sy-lively",
   "author": "kuangdongksk",
-  "url": "https://github.com/siyuan-note/plugin-sample-vite-svelte",
+  "url": "https://github.com/kuangdongksk/sy-lively",
   "version": "0.0.1",
   "minAppVersion": "3.0.18",
   "backends": ["windows", "linux", "darwin", "docker", "ios", "android"],
@@ -13,11 +13,11 @@
     "desktop-window"
   ],
   "displayName": {
-    "en_US": "Plugin sample with vite and svelte",
+    "en_US": "sy-lively",
     "zh_CN": "喧嚣"
   },
   "description": {
-    "en_US": "SiYuan plugin sample with vite and svelte",
+    "en_US": "Calendar management plugin",
     "zh_CN": "日程管理插件"
   },
   "readme": {
@@ -27,5 +27,5 @@
   "funding": {
     "custom": [""]
   },
-  "keywords": ["plugin", "sample", "插件样例"]
+  "keywords": ["plugin", "日程", "日程管理"]
 }
