@@ -23,8 +23,8 @@ export interface I事项 {
   名称: string;
   重要程度: number;
   紧急程度: number;
-  开始时间: number;
-  结束时间: number;
+  开始时间: string;
+  结束时间: string;
   状态: E事项状态;
   重复: TCorn | false;
 
@@ -39,8 +39,8 @@ export interface I事项 {
   信息区ID: string;
   内容区ID: string;
   嵌入块ID: string;
-  创建时间: number;
-  更新时间: number;
+  创建时间: string;
+  更新时间: string;
 }
 
 export interface I事项Props {

@@ -7,6 +7,7 @@ import {
   生成事项块Kramdown,
 } from "@/components/模板/Kramdown/超级块";
 import { E块属性名称 } from "@/constant/系统码";
+import { E时间格式化 } from "@/constant/配置常量";
 import { I事项 } from "@/pages/主页/components/事项树/components/事项";
 import { I用户设置 } from "@/types/喧嚣";
 import dayjs from "dayjs";
@@ -20,7 +21,7 @@ export async function 新建事项块(事项: I事项, 用户设置: I用户设�
 
   const { id: 日记文档ID } = await CL文档.获取对应日期的日记文档(
     用户设置.笔记本ID,
-    dayjs(事项.开始时间)
+    dayjs(事项.开始时间, E时间格式化.思源时间)
   );
 
   await 插入前置子块({

@@ -1,12 +1,11 @@
 import CL文档 from "@/API/文档";
-import SQL助手, { E常用SQL } from "@/class/SQL助手";
+import SQL助手 from "@/class/SQL助手";
 import { 思源协议 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/store/用户设置";
 import { Badge, Button, Calendar, List, Tooltip } from "antd";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import { I事项 } from "../主页/components/事项树/components/事项";
 import { useStyle } from "./index.style";
 
 function 日历() {
@@ -16,21 +15,14 @@ function 日历() {
 
   const [当月事项, 令当月事项为] = useState([]);
 
-  const 获取当月事项 = () => {
-    SQL助手.常用(E常用SQL.获取所有事项).then(({ data }) => {
-      console.log("🚀 ~ SQL助手.常用 ~ data:", data);
-      令当月事项为(
-        data
-          .map(({ value }) => JSON.parse(value) as I事项)
-          .filter(({ 开始时间 }) => {
-            return dayjs(开始时间).isSame(dayjs(), "month");
-          })
-      );
+  const 获取当月事项 = (日期) => {
+    SQL助手.根据开始时间获取当月事项(日期).then((data) => {
+      令当月事项为(data);
     });
   };
 
   useEffect(() => {
-    获取当月事项();
+    获取当月事项(dayjs());
   }, []);
 
   return (
@@ -40,6 +32,7 @@ function 日历() {
         const 当天事项 = 当月事项.filter(({ 开始时间 }) =>
           dayjs(开始时间).isSame(value, "day")
         );
+
         return (
           <div className={styles.天}>
             <div className={styles.天头部}>
@@ -79,6 +72,7 @@ function 日历() {
         );
       }}
       onPanelChange={获取当月事项}
+      onChange={获取当月事项}
     />
   );
 }

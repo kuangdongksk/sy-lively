@@ -3,6 +3,7 @@ import CL文档 from "@/API/文档";
 import SQL助手 from "@/class/SQL助手";
 import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
 import { E块属性名称, 思源协议 } from "@/constant/系统码";
+import { E时间格式化 } from "@/constant/配置常量";
 import { I事项, T层级 } from "@/pages/主页/components/事项树/components/事项";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 生成事项 } from "@/tools/事项";
@@ -152,7 +153,7 @@ function 领域详情() {
           onChange: (keys, rows: I事项[]) => {
             setEditableRowKeys(keys);
             rows.forEach((row) => {
-              row.更新时间 = dayjs().valueOf();
+              row.更新时间 = dayjs().format(E时间格式化.思源时间);
             });
           },
           onSave: async (_key, 事项) => {

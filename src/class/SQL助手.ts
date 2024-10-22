@@ -1,5 +1,7 @@
 import { E块属性名称 } from "@/constant/系统码";
+import { E时间格式化 } from "@/constant/配置常量";
 import { I事项 } from "@/pages/主页/components/事项树/components/事项";
+import dayjs, { Dayjs } from "dayjs";
 import { fetchSyncPost, IWebSocketData } from "siyuan";
 
 export enum E常用SQL {
@@ -76,5 +78,22 @@ export default class SQL助手 {
     return sqlData.map((item: { value: string }) =>
       JSON.parse(item.value)
     ) as I事项[];
+  }
+
+  public static async 根据开始时间获取当月事项(日期: Dayjs): Promise<I事项[]> {
+    const 开始时间 = dayjs(日期).format(E时间格式化.思源时间).slice(0, 6);
+    const sql = `SELECT * FROM attributes WHERE name='${E块属性名称.事项}' AND value LIKE '%"开始时间":"${开始时间}%'`;
+
+    return fetchSyncPost("/api/query/sql", {
+      stmt: sql,
+    }).then(({ msg, data }) => {
+      console.log("🚀 ~ SQL助手 ~ msg:", msg);
+      if (!data) {
+        return [];
+      }
+      return data.map((item: { value: string }) =>
+        JSON.parse(item.value)
+      ) as I事项[];
+    });
   }
 }
