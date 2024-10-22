@@ -1,4 +1,4 @@
-import { ThemeConfig } from "antd";
+import { theme, ThemeConfig } from "antd";
 
 // https://ant-design.antgroup.com/theme-editor-cn#component-color
 export const 暗色主题: ThemeConfig = {
@@ -12,14 +12,14 @@ export const 暗色主题: ThemeConfig = {
     borderRadius: 10,
     sizeStep: 4,
     wireframe: true,
-    colorPrimaryBg: "#211a1b66",
   },
-  components: {
-    Layout: {
-      siderBg: "rgba(0,21,41,0)",
-      triggerBg: "rgba(0,33,64,0)",
-      lightTriggerColor: "rgba(0,0,0,0)",
-      headerBg: "#2f3437",
-    },
-  },
+  algorithm: theme.darkAlgorithm,
+  // components: {
+  //   Layout: {
+  //     siderBg: "rgba(0,21,41,0)",
+  //     triggerBg: "rgba(0,33,64,0)",
+  //     lightTriggerColor: "rgba(0,0,0,0)",
+  //     headerBg: "#2f3437",
+  //   },
+  // },
 };

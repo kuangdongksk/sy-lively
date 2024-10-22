@@ -1,4 +1,4 @@
-import react from '@vitejs/plugin-react';
+import react from "@vitejs/plugin-react";
 import fg from "fast-glob";
 import minimist from "minimist";
 import { resolve } from "path";
@@ -12,9 +12,6 @@ const args = minimist(process.argv.slice(2));
 const isWatch = args.watch || args.w || false;
 const devDistDir = "dev";
 const distDir = isWatch ? devDistDir : "dist";
-
-console.log("isWatch=>", isWatch);
-console.log("distDir=>", distDir);
 
 export default defineConfig({
   resolve: {

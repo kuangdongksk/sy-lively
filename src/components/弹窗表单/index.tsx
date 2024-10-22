@@ -1,5 +1,6 @@
 import { Form, Modal } from "antd";
 import { ReactNode } from "react";
+import { 弹窗表单样式 } from "./index.style";
 
 export type T弹窗状态 = "添加" | "编辑" | undefined;
 
@@ -19,6 +20,7 @@ export interface I弹窗表单Props<TFormValue> {
 }
 
 function 弹窗表单<TFormValue>(props: I弹窗表单Props<TFormValue>) {
+  const { styles } = 弹窗表单样式();
   const {
     弹窗标题,
     弹窗状态,
@@ -37,14 +39,8 @@ function 弹窗表单<TFormValue>(props: I弹窗表单Props<TFormValue>) {
       onCancel={弹窗取消}
     >
       <Form
-        labelCol={{
-          xs: { span: 8 },
-          sm: { span: 4 },
-        }}
-        wrapperCol={{
-          xs: { span: 24 },
-          sm: { span: 16 },
-        }}
+        labelCol={{ span: 4 }}
+        className={styles.表单}
         initialValues={initialValues}
         onFinish={提交表单}
       >

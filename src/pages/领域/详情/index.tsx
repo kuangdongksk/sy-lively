@@ -1,6 +1,9 @@
-import SQL from "@/API/SQL";
+import { 设置块属性 } from "@/API/块数据";
+import CL文档 from "@/API/文档";
+import SQL助手 from "@/class/SQL助手";
 import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
-import { 思源协议 } from "@/constant/系统码";
+import { E块属性名称, 思源协议 } from "@/constant/系统码";
+import { E时间格式化 } from "@/constant/配置常量";
 import { I事项, T层级 } from "@/pages/主页/components/事项树/components/事项";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 生成事项 } from "@/tools/事项";
@@ -32,6 +35,7 @@ function 领域详情() {
 
   const [分类, 令分类为] = useState<I分类[]>([]);
   const [弹窗状态, 令弹窗状态为] = useState<T弹窗状态>(undefined);
+  const [事项加载中, 令事项加载中为] = useState(false);
 
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>(() => []);
 
@@ -39,27 +43,27 @@ function 领域详情() {
   const [页签键, 令页签键为] = useState(所有);
 
   const 加载数据 = async () => {
-    await SQL.获取指定领域下的分类(state.ID).then(({ data }) => {
+    await SQL助手.获取指定领域下的分类(state.ID).then(({ data }) => {
       令分类为(data.map((item: { value: string }) => JSON.parse(item.value)));
     });
+  };
 
-    await SQL.获取指定领域下的事项(state.ID).then((data) => {
+  const 加载事项数据 = async () => {
+    令事项加载中为(true);
+    const ID = 页签键 === 所有 ? state.ID : 页签键;
+    await SQL助手.获取指定分类下的事项(ID).then((data) => {
       令事项数据为(data);
     });
+    令事项加载中为(false);
   };
 
   useEffect(() => {
     加载数据();
+    加载事项数据();
   }, [state.ID]);
 
   useEffect(() => {
-    加载数据().then(() => {
-      if (页签键 === 所有) {
-      } else {
-        事项数据.filter((item) => item.父项 === 页签键);
-        令事项数据为(事项数据);
-      }
-    });
+    加载事项数据();
   }, [页签键]);
 
   return (
@@ -89,6 +93,9 @@ function 领域详情() {
           })),
         ]}
         onChange={令页签键为}
+        onEdit={(_event, action) => {
+          if (action === "add") 令弹窗状态为("添加");
+        }}
       />
 
       <EditableProTable<I事项>
@@ -116,6 +123,7 @@ function 领域详情() {
             ],
           },
         ]}
+        loading={事项加载中}
         value={事项数据}
         headerTitle={
           页签键 === 所有 ? (
@@ -145,7 +153,7 @@ function 领域详情() {
           onChange: (keys, rows: I事项[]) => {
             setEditableRowKeys(keys);
             rows.forEach((row) => {
-              row.更新时间 = dayjs().valueOf();
+              row.更新时间 = dayjs().format(E时间格式化.思源时间);
             });
           },
           onSave: async (_key, 事项) => {
@@ -186,33 +194,29 @@ function 领域详情() {
         }
         弹窗取消={() => 令弹窗状态为(undefined)}
         提交表单={(value: { 分类名称: string; 分类描述: string }) => {
-          // const { 分类名称, 分类描述 } = value;
-          // 通过Markdown创建文档(
-          //   用户设置.笔记本ID,
-          //   `/领域/${state.名称}/${分类名称}`,
-          //   ""
-          // ).then(async ({ data }) => {
-          //   const 旧的分类设置 = state.分类.filter(
-          //     (item) => item.名称 !== 所有
-          //   );
-          //   const 新的领域设置 = [
-          //     ...旧的领域设置,
-          //     {
-          //       ...state,
-          //       分类: [...旧的分类设置,{
-          //         分类名称
-          //       }],
-          //     },
-          //   ];
-          //   更新领域设置({
-          //     新的领域设置,
-          //     领域文档ID: 领域根文档ID,
-          //   });
-          //   睡眠(1000).then(() => {
-          //     加载数据();
-          //     令弹窗状态为(undefined);
-          //   });
-          // });
+          const { 分类名称, 分类描述 } = value;
+          CL文档.通过Markdown创建(
+            用户设置.笔记本ID,
+            `/领域/${state.名称}/${分类名称}`,
+            ""
+          ).then(async ({ data }) => {
+            设置块属性({
+              id: data,
+              attrs: {
+                [E块属性名称.分类]: JSON.stringify({
+                  名称: 分类名称,
+                  ID: data,
+                  描述: 分类描述,
+                  领域ID: state.ID,
+                } as I分类),
+              },
+            });
+
+            睡眠(1000).then(() => {
+              加载数据();
+              令弹窗状态为(undefined);
+            });
+          });
         }}
       />
     </>

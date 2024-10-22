@@ -17,6 +17,10 @@ export const useAppStyle = createStyles(({ token }) => {
       textAlign: "center",
     },
     主体: {},
+    顶栏: {
+      display: "flex",
+      justifyContent: "space-between",
+    },
     内容: {
       padding: 24,
       margin: 24,
