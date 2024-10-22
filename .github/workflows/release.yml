@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - "v*"
+      - "R*" # 添加以R开头的标签模式
+      - "P*" # 添加以P开头的标签模式
 
 jobs:
   build:
