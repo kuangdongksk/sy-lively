@@ -1,12 +1,11 @@
-import { E事项状态 } from "@/constant/状态配置";
+import { 思源协议 } from "@/constant/系统码";
+import { E时间格式化 } from "@/constant/配置常量";
 import { green, red } from "@ant-design/colors";
 import { ProColumns } from "@ant-design/pro-components";
 import { ColumnsType } from "antd/es/table";
+import dayjs from "dayjs";
 import { I事项 } from "../主页/components/事项树/components/事项";
 import 数字标签 from "../主页/components/事项树/components/数字标签";
-import { 思源协议 } from "@/constant/系统码";
-import dayjs from "dayjs";
-import { E时间格式化 } from "@/constant/配置常量";
 
 const 程度 = {
   0: 0,

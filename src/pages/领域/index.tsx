@@ -1,15 +1,16 @@
-import SQL助手 from "@/class/SQL助手";
 import { 设置块属性 } from "@/API/块数据";
 import CL文档 from "@/API/文档";
+import SQL助手 from "@/class/SQL助手";
 import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
 import { E块属性名称 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 更新用户设置 } from "@/tools/设置";
 import { 睡眠 } from "@/utils/异步";
-import { Button, Card, Form, Input, List, Spin } from "antd";
+import { Button, Form, Input } from "antd";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import 领域卡片 from "./components/领域卡片";
+import { 领域页面样式 } from "./index.style";
 
 export interface I分类 {
   名称: string;
@@ -25,17 +26,16 @@ export interface I领域 {
 }
 
 function 领域() {
-  const 导航到 = useNavigate();
-
   const [用户设置, 设置用户设置] = useAtom(用户设置Atom);
+  const { styles } = 领域页面样式();
   const [弹窗状态, 令弹窗状态为] = useState<T弹窗状态>(undefined);
-  const [创建中] = useState<string | undefined>();
 
   const [领域列表, 令领域列表为] = useState([
     {
       名称: "添加领域",
       ID: "添加领域",
       描述: "添加领域",
+      笔记本ID: 用户设置.笔记本ID,
     },
   ]);
 
@@ -49,6 +49,7 @@ function 领域() {
             名称: "添加领域",
             ID: "添加领域",
             描述: "添加领域",
+            笔记本ID: 用户设置.笔记本ID,
           })
       );
     });
@@ -57,37 +58,16 @@ function 领域() {
   useEffect(() => {
     获取领域列表();
   }, [用户设置]);
+
   return (
     <>
-      <List
-        dataSource={领域列表}
-        grid={{
-          gutter: 16,
-          xs: 1,
-          sm: 2,
-          md: 4,
-          lg: 4,
-          xl: 6,
-          xxl: 3,
-        }}
-        pagination={{
-          position: "bottom",
-          align: "end",
-        }}
-        renderItem={(item) => (
-          <List.Item
-            onClick={() => {
-              if (item.ID === "添加领域") {
-                令弹窗状态为("添加");
-                return;
-              }
-              导航到("/领域/领域详情", { state: item });
-            }}
-          >
-            <Card title={item.名称}>{item.描述}</Card>
-          </List.Item>
-        )}
-      />
+      <div className={styles.领域}>
+        {领域列表.map((领域) => {
+          return (
+            <领域卡片 key={领域.ID} 领域={领域} 令弹窗状态为={令弹窗状态为} />
+          );
+        })}
+      </div>
       <弹窗表单
         弹窗标题={"领域"}
         弹窗状态={弹窗状态}
@@ -95,19 +75,23 @@ function 领域() {
           initialValues: undefined,
         }}
         表单内容={
-          <Spin spinning={创建中 !== undefined}>
+          <>
             <Form.Item name="领域名称" label="领域名称" required>
               <Input type="text" />
             </Form.Item>
             <Form.Item name="领域描述" label="领域描述">
               <Input.TextArea autoSize={{ minRows: 1 }} />
             </Form.Item>
-            <Form.Item>
+            <Form.Item
+              style={{
+                textAlign: "center",
+              }}
+            >
               <Button type="primary" htmlType="submit">
                 添加
               </Button>
             </Form.Item>
-          </Spin>
+          </>
         }
         弹窗确认={() => 令弹窗状态为(undefined)}
         弹窗取消={() => 令弹窗状态为(undefined)}
