@@ -18,6 +18,7 @@ function 日历() {
 
   const 获取当月事项 = () => {
     SQL助手.常用(E常用SQL.获取所有事项).then(({ data }) => {
+      console.log("🚀 ~ SQL助手.常用 ~ data:", data);
       令当月事项为(
         data
           .map(({ value }) => JSON.parse(value) as I事项)

@@ -8,7 +8,7 @@ import { 亮色主题 } from "./theme/亮色";
 import { 暗色主题 } from "./theme/暗色";
 export const PluginId = "lively_SaSa";
 
-const DOCK_TYPE = "dock_tab";
+// const DOCK_TYPE = "dock_tab";
 const TAB_TYPE = "custom_tab";
 
 export default class PluginSample extends Plugin {
