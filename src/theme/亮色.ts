@@ -2,15 +2,21 @@ import { theme, ThemeConfig } from "antd";
 
 export const 亮色主题: ThemeConfig = {
   token: {
-    colorBgBase: "#2f3437",
-    colorTextBase: "#acacac",
-    colorPrimary: "#b57e7e",
-    colorInfo: "#b57e7e",
-    colorSuccess: "#a1c191",
-    colorWarning: "#ca9b3d",
+    colorPrimary: "#e7bdbd",
+    colorInfo: "#e7bdbd",
+    colorTextBase: "#3d2e2e",
+    colorBgBase: "#ffffff",
+    colorSuccess: "#9bc188",
+    colorWarning: "#d3ba8a",
+    colorError: "#ff8486",
+    wireframe: true,
     borderRadius: 10,
     sizeStep: 4,
-    wireframe: true,
+  },
+  components: {
+    Layout: {
+      headerBg: "rgb(239,208,208)",
+    },
   },
   algorithm: theme.defaultAlgorithm,
 };
