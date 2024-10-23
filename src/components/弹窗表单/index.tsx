@@ -1,4 +1,4 @@
-import { Form, Modal } from "antd";
+import { Button, Form, Modal } from "antd";
 import { ReactNode } from "react";
 import { 弹窗表单样式 } from "./index.style";
 
@@ -11,6 +11,7 @@ export interface I弹窗表单Props<TFormValue> {
     initialValues: TFormValue;
   };
   表单内容: ReactNode;
+  确认按钮文本?: string;
   //
   弹窗确认?: (() => void) | (() => Promise<void>);
   弹窗取消: (() => void) | (() => Promise<void>);
@@ -25,6 +26,8 @@ function 弹窗表单<TFormValue>(props: I弹窗表单Props<TFormValue>) {
     弹窗标题,
     弹窗状态,
     表单配置: { initialValues },
+    表单内容,
+    确认按钮文本 = "确定",
     弹窗确认,
     弹窗取消,
     提交表单,
@@ -44,7 +47,16 @@ function 弹窗表单<TFormValue>(props: I弹窗表单Props<TFormValue>) {
         initialValues={initialValues}
         onFinish={提交表单}
       >
-        {props.表单内容}
+        {表单内容}
+        <Form.Item
+          style={{
+            textAlign: "center",
+          }}
+        >
+          <Button type="primary" htmlType="submit">
+            {确认按钮文本}
+          </Button>
+        </Form.Item>
       </Form>
     </Modal>
   );

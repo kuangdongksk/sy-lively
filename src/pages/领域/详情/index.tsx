@@ -177,6 +177,7 @@ function 领域详情() {
         表单配置={{
           initialValues: undefined,
         }}
+        确认按钮文本="添加分类"
         表单内容={
           <>
             <Form.Item name="分类名称" label="分类名称" required>
@@ -184,11 +185,6 @@ function 领域详情() {
             </Form.Item>
             <Form.Item name="分类描述" label="分类描述" required>
               <Input.TextArea />
-            </Form.Item>
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                添加
-              </Button>
             </Form.Item>
           </>
         }

@@ -6,12 +6,13 @@ import { E块属性名称 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 更新用户设置 } from "@/tools/设置";
 import { 睡眠 } from "@/utils/异步";
-import { Button, Form, Input } from "antd";
+import { Form, Input } from "antd";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import 领域卡片 from "./components/领域卡片";
 import { 领域页面样式 } from "./index.style";
 
+export const 添加领域 = "添加领域";
 export interface I分类 {
   名称: string;
   ID: string;
@@ -32,9 +33,9 @@ function 领域() {
 
   const [领域列表, 令领域列表为] = useState([
     {
-      名称: "添加领域",
-      ID: "添加领域",
-      描述: "添加领域",
+      名称: 添加领域,
+      ID: 添加领域,
+      描述: 添加领域,
       笔记本ID: 用户设置.笔记本ID,
     },
   ]);
@@ -46,9 +47,9 @@ function 领域() {
         data
           .map((item: { value: string }) => JSON.parse(item.value))
           .concat({
-            名称: "添加领域",
-            ID: "添加领域",
-            描述: "添加领域",
+            名称: 添加领域,
+            ID: 添加领域,
+            描述: 添加领域,
             笔记本ID: 用户设置.笔记本ID,
           })
       );
@@ -82,17 +83,9 @@ function 领域() {
             <Form.Item name="领域描述" label="领域描述">
               <Input.TextArea autoSize={{ minRows: 1 }} />
             </Form.Item>
-            <Form.Item
-              style={{
-                textAlign: "center",
-              }}
-            >
-              <Button type="primary" htmlType="submit">
-                添加
-              </Button>
-            </Form.Item>
           </>
         }
+        确认按钮文本="添加领域"
         弹窗确认={() => 令弹窗状态为(undefined)}
         弹窗取消={() => 令弹窗状态为(undefined)}
         提交表单={(value: { 领域名称: string; 领域描述: string }) => {
