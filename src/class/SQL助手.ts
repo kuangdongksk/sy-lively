@@ -13,6 +13,10 @@ export enum E常用SQL {
 }
 
 export default class SQL助手 {
+  private static 数据库到分类(data: { value: string }[]): I分类[] {
+    return data.map((item: { value: string }) => JSON.parse(item.value));
+  }
+
   public static 常用(sql: E常用SQL) {
     return fetchSyncPost("/api/query/sql", {
       stmt: sql,
@@ -52,9 +56,7 @@ export default class SQL助手 {
       stmt: `SELECT * FROM attributes WHERE name = '${E块属性名称.分类}' AND value LIKE '%${领域ID}%'`,
     });
 
-    return 查询结果.data.map((item: { value: string }) =>
-      JSON.parse(item.value)
-    );
+    return this.数据库到分类(查询结果.data);
   }
 
   public static async 获取指定领域下的事项(领域ID: string): Promise<I事项[]> {
@@ -87,8 +89,7 @@ export default class SQL助手 {
 
     return fetchSyncPost("/api/query/sql", {
       stmt: sql,
-    }).then(({ msg, data }) => {
-      console.log("🚀 ~ SQL助手 ~ msg:", msg);
+    }).then(({ data }) => {
       if (!data) {
         return [];
       }

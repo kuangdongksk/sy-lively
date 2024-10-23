@@ -51,9 +51,8 @@ function 领域详情() {
   const 加载事项数据 = async () => {
     令事项加载中为(true);
     const ID = 页签键 === 所有 ? state.ID : 页签键;
-    await SQL助手.获取指定分类下的事项(ID).then((data) => {
-      令事项数据为(data);
-    });
+    const data = await SQL助手.获取指定分类下的事项(ID);
+    令事项数据为(data);
     令事项加载中为(false);
   };
 
@@ -72,7 +71,11 @@ function 领域详情() {
         type="editable-card"
         tabBarExtraContent={
           <>
-            <Button icon={<UndoOutlined />} type="link" onClick={加载数据} />
+            <Button
+              icon={<UndoOutlined />}
+              type="link"
+              onClick={加载事项数据}
+            />
             <Button
               icon={<PlusCircleOutlined />}
               type="link"
@@ -165,7 +168,7 @@ function 领域详情() {
             }
 
             await 睡眠(1000);
-            加载数据();
+            加载事项数据();
             // 等待持久化完成().then(() => 加载数据());
           },
         }}
@@ -209,7 +212,7 @@ function 领域详情() {
             });
 
             await 睡眠(1000);
-            加载数据();
+            加载事项数据();
           });
         }}
       />
