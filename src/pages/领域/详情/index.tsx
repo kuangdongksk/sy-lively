@@ -4,9 +4,9 @@ import SQL助手 from "@/class/SQL助手";
 import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
 import { E块属性名称, 思源协议 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
-import { I事项, T层级 } from "@/pages/主页/components/事项树/components/事项";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 生成事项 } from "@/tools/事项";
+import { I事项, T层级 } from "@/types/喧嚣";
 import { 睡眠 } from "@/utils/异步";
 import {
   DeleteOutlined,
@@ -160,7 +160,14 @@ function 领域详情() {
             });
           },
           onSave: async (_key, 事项) => {
+            事项.开始时间 = dayjs(事项.开始时间, E时间格式化.日记格式).format(
+              E时间格式化.思源时间
+            );
+            事项.结束时间 = dayjs(事项.结束时间, E时间格式化.日记格式).format(
+              E时间格式化.思源时间
+            );
             const 是新建的 = 事项.更新时间 === 事项.创建时间;
+
             if (是新建的) {
               await 新建事项块(事项, 用户设置);
             } else {

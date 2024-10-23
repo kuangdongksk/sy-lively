@@ -52,7 +52,6 @@ function 领域卡片(props: {
                       label: (
                         <span
                           onClick={(e) => {
-                            e.preventDefault();
                             e.stopPropagation();
                             令分类表单状态为("添加");
                           }}
@@ -66,7 +65,6 @@ function 领域卡片(props: {
                       label: (
                         <span
                           onClick={(e) => {
-                            e.preventDefault();
                             e.stopPropagation();
                           }}
                         >
@@ -93,7 +91,13 @@ function 领域卡片(props: {
         }}
       >
         <div className={styles.卡片内容头}>
-          <Switch checkedChildren="分类" unCheckedChildren="事项" />
+          {/* <Switch
+            checkedChildren="分类"
+            unCheckedChildren="事项"
+            onClick={(_checked, e) => {
+              e.stopPropagation();
+            }}
+          /> */}
         </div>
         <List
           dataSource={分类列表}

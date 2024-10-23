@@ -4,8 +4,9 @@ import { green, red } from "@ant-design/colors";
 import { ProColumns } from "@ant-design/pro-components";
 import { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
-import { I事项 } from "../主页/components/事项树/components/事项";
 import 数字标签 from "../主页/components/事项树/components/数字标签";
+import { I事项 } from "@/types/喧嚣";
+import { E事项状态 } from "@/constant/状态配置";
 
 const 程度 = {
   0: 0,
@@ -72,6 +73,7 @@ export const 列配置: ProColumns<I事项>[] = [
   },
   {
     dataIndex: "开始时间",
+    defaultSortOrder: "ascend",
     key: "开始时间",
     title: "开始时间",
     valueType: "dateTime",
@@ -79,7 +81,7 @@ export const 列配置: ProColumns<I事项>[] = [
     render: (_dom, record) => {
       return (
         <span>
-          {dayjs(record.结束时间, E时间格式化.思源时间).format(
+          {dayjs(record.开始时间, E时间格式化.思源时间).format(
             E时间格式化.日记格式
           )}
         </span>
@@ -94,6 +96,7 @@ export const 列配置: ProColumns<I事项>[] = [
   },
   {
     dataIndex: "结束时间",
+    defaultSortOrder: "ascend",
     key: "结束时间",
     title: "结束时间",
     valueType: "dateTime",
@@ -114,37 +117,46 @@ export const 列配置: ProColumns<I事项>[] = [
       );
     },
   },
-  // {
-  //   title: "状态",
-  //   key: "状态",
-  //   dataIndex: "状态",
-  //   valueType: "select",
-  //   valueEnum: {
-  //     [E事项状态.未开始]: { text: "未开始", status: "Default" },
-  //     [E事项状态.重复中]: { text: "重复中", status: "Warning" },
-  //     [E事项状态.进行中]: { text: "进行中", status: "Processing" },
-  //     [E事项状态.已完成]: { text: "已完成", status: "Success" },
-  //   },
-  //   // width: 100,
-  //   render: (_dom, record) => {
-  //     const 映射 = {
-  //       [E事项状态.未开始]: "未开始",
-  //       [E事项状态.重复中]: "重复中",
-  //       [E事项状态.进行中]: "进行中",
-  //       [E事项状态.已完成]: "已完成",
-  //     };
-  //     return <span>{映射[record.状态]}</span>;
-  //   },
-  //   sorter: (a, b) => {
-  //     const 映射 = {
-  //       [E事项状态.未开始]: 0,
-  //       [E事项状态.重复中]: 1,
-  //       [E事项状态.进行中]: 2,
-  //       [E事项状态.已完成]: 3,
-  //     };
-  //     return 映射[a.状态] - 映射[b.状态];
-  //   },
-  // },
+  {
+    title: "状态",
+    key: "状态",
+    dataIndex: "状态",
+    defaultSortOrder: "ascend",
+    defaultFilteredValue: [E事项状态.未开始],
+    filters: [
+      {
+        text: "未开始",
+        value: E事项状态.未开始,
+      },
+      {
+        text: "已完成",
+        value: E事项状态.已完成,
+      },
+    ],
+    valueType: "select",
+    valueEnum: {
+      [E事项状态.未开始]: { text: "未开始", status: "Default" },
+      [E事项状态.已完成]: { text: "已完成", status: "Success" },
+    },
+    // width: 100,
+    onFilter: (value, record) => {
+      return record.状态 === value;
+    },
+    render: (_dom, record) => {
+      const 映射 = {
+        [E事项状态.未开始]: "未开始",
+        [E事项状态.已完成]: "已完成",
+      };
+      return <span>{映射[record.状态]}</span>;
+    },
+    sorter: (a, b) => {
+      const 映射 = {
+        [E事项状态.未开始]: 0,
+        [E事项状态.已完成]: 3,
+      };
+      return 映射[a.状态] - 映射[b.状态];
+    },
+  },
   // {
   //   title: "重复",
   //   key: "重复",

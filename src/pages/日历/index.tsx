@@ -3,7 +3,7 @@ import SQL助手 from "@/class/SQL助手";
 import { 思源协议 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/store/用户设置";
 import { Badge, Button, Calendar, List, Tooltip } from "antd";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useStyle } from "./index.style";
@@ -15,7 +15,7 @@ function 日历() {
 
   const [当月事项, 令当月事项为] = useState([]);
 
-  const 获取当月事项 = (日期) => {
+  const 获取当月事项 = (日期: Dayjs) => {
     SQL助手.根据开始时间获取当月事项(日期).then((data) => {
       令当月事项为(data);
     });

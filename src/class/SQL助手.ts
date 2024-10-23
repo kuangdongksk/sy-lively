@@ -1,7 +1,7 @@
 import { E块属性名称 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
-import { I事项 } from "@/pages/主页/components/事项树/components/事项";
 import { I分类 } from "@/pages/领域";
+import { I事项 } from "@/types/喧嚣";
 import dayjs, { Dayjs } from "dayjs";
 import { fetchSyncPost, IWebSocketData } from "siyuan";
 
