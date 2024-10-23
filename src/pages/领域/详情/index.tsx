@@ -43,8 +43,8 @@ function 领域详情() {
   const [页签键, 令页签键为] = useState(所有);
 
   const 加载数据 = async () => {
-    await SQL助手.获取指定领域下的分类(state.ID).then(({ data }) => {
-      令分类为(data.map((item: { value: string }) => JSON.parse(item.value)));
+    await SQL助手.获取指定领域下的分类(state.ID).then((data) => {
+      令分类为(data);
     });
   };
 
@@ -208,10 +208,8 @@ function 领域详情() {
               },
             });
 
-            睡眠(1000).then(() => {
-              加载数据();
-              令弹窗状态为(undefined);
-            });
+            await 睡眠(1000);
+            加载数据();
           });
         }}
       />

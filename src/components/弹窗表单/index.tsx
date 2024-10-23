@@ -45,7 +45,10 @@ function 弹窗表单<TFormValue>(props: I弹窗表单Props<TFormValue>) {
         labelCol={{ span: 4 }}
         className={styles.表单}
         initialValues={initialValues}
-        onFinish={提交表单}
+        onFinish={async (value) => {
+          await 提交表单(value);
+          弹窗取消();
+        }}
       >
         {表单内容}
         <Form.Item

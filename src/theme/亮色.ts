@@ -15,7 +15,7 @@ export const 亮色主题: ThemeConfig = {
   },
   components: {
     Layout: {
-      headerBg: "rgb(239,208,208)",
+      headerBg: "rgb(239,208,208,0.5)",
     },
   },
   algorithm: theme.defaultAlgorithm,

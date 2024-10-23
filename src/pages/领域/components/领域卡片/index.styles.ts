@@ -3,6 +3,7 @@ import { createStyles } from "antd-style";
 export const useStyle = createStyles(({ css }) => {
   return {
     卡片: css`
+      height: 220px;
       span {
         margin-right: 0.5em;
       }
@@ -13,9 +14,14 @@ export const useStyle = createStyles(({ css }) => {
     卡片标题: {
       fontSize: "14px",
     },
+    卡片内容: {
+      overflowY: "scroll",
+    },
     卡片内容头: {
       display: "flex",
       justifyContent: "space-between",
+      position: "sticky",
+      top: "0px",
     },
   };
 });

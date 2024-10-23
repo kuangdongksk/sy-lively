@@ -1,6 +1,7 @@
 import { E块属性名称 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
 import { I事项 } from "@/pages/主页/components/事项树/components/事项";
+import { I分类 } from "@/pages/领域";
 import dayjs, { Dayjs } from "dayjs";
 import { fetchSyncPost, IWebSocketData } from "siyuan";
 
@@ -46,14 +47,14 @@ export default class SQL助手 {
     });
   }
 
-  public static 获取指定领域下的分类(领域ID: string): Promise<{
-    data: {
-      value: string;
-    }[];
-  }> {
-    return fetchSyncPost("/api/query/sql", {
+  public static async 获取指定领域下的分类(领域ID: string): Promise<I分类[]> {
+    const 查询结果 = await fetchSyncPost("/api/query/sql", {
       stmt: `SELECT * FROM attributes WHERE name = '${E块属性名称.分类}' AND value LIKE '%${领域ID}%'`,
     });
+
+    return 查询结果.data.map((item: { value: string }) =>
+      JSON.parse(item.value)
+    );
   }
 
   public static async 获取指定领域下的事项(领域ID: string): Promise<I事项[]> {

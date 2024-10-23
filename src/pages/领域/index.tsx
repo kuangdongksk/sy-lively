@@ -88,47 +88,43 @@ function 领域() {
         确认按钮文本="添加领域"
         弹窗确认={() => 令弹窗状态为(undefined)}
         弹窗取消={() => 令弹窗状态为(undefined)}
-        提交表单={(value: { 领域名称: string; 领域描述: string }) => {
-          const 新建领域 = () => {
-            CL文档.通过Markdown创建(
+        提交表单={async (value: { 领域名称: string; 领域描述: string }) => {
+          const 新建领域 = async () => {
+            const { data: 领域文档ID } = await CL文档.通过Markdown创建(
               用户设置.笔记本ID,
               `/领域/${value.领域名称}`,
               ""
-            ).then(({ data: 领域文档ID }) => {
-              设置块属性({
-                id: 领域文档ID,
-                attrs: {
-                  [E块属性名称.领域]: JSON.stringify({
-                    名称: value.领域名称,
-                    ID: 领域文档ID,
-                    描述: value.领域描述,
-                    笔记本ID: 用户设置.笔记本ID,
-                  }),
-                },
-              });
-
-              CL文档.通过Markdown创建(
-                用户设置.笔记本ID,
-                `/领域/${value.领域名称}/杂项`,
-                ""
-              ).then(async ({ data }) => {
-                设置块属性({
-                  id: data,
-                  attrs: {
-                    [E块属性名称.分类]: JSON.stringify({
-                      名称: "杂项",
-                      ID: data,
-                      描述: "杂项",
-                      领域ID: 领域文档ID,
-                    }),
-                  },
-                });
-                睡眠(1000).then(() => {
-                  获取领域列表();
-                  令弹窗状态为(undefined);
-                });
-              });
+            );
+            设置块属性({
+              id: 领域文档ID,
+              attrs: {
+                [E块属性名称.领域]: JSON.stringify({
+                  名称: value.领域名称,
+                  ID: 领域文档ID,
+                  描述: value.领域描述,
+                  笔记本ID: 用户设置.笔记本ID,
+                }),
+              },
             });
+
+            const { data: 分类文档ID } = await CL文档.通过Markdown创建(
+              用户设置.笔记本ID,
+              `/领域/${value.领域名称}/杂项`,
+              ""
+            );
+            设置块属性({
+              id: 分类文档ID,
+              attrs: {
+                [E块属性名称.分类]: JSON.stringify({
+                  名称: "杂项",
+                  ID: 分类文档ID,
+                  描述: "杂项",
+                  领域ID: 领域文档ID,
+                }),
+              },
+            });
+            await 睡眠(1000);
+            获取领域列表();
           };
 
           if (用户设置.领域文档ID === "") {
@@ -146,7 +142,7 @@ function 领域() {
             return;
           }
 
-          新建领域();
+          await 新建领域();
         }}
       />
     </>
