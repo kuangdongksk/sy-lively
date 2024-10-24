@@ -1,12 +1,10 @@
-import { 设置块属性 } from "@/API/块数据";
-import CL文档 from "@/API/文档";
 import SQL助手 from "@/class/SQL助手";
-import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
-import { E块属性名称, 思源协议 } from "@/constant/系统码";
+import { T弹窗状态 } from "@/components/弹窗表单";
+import { 思源协议 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 生成事项 } from "@/tools/事项";
-import { I事项, T层级 } from "@/types/喧嚣";
+import { I事项, I分类, I领域, T层级 } from "@/types/喧嚣";
 import { 睡眠 } from "@/utils/异步";
 import {
   DeleteOutlined,
@@ -15,12 +13,12 @@ import {
   UndoOutlined,
 } from "@ant-design/icons";
 import { EditableProTable } from "@ant-design/pro-components";
-import { Button, Form, Input, Tabs } from "antd";
+import { Button, Tabs } from "antd";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { I分类, I领域 } from "..";
+import 分类表单 from "../components/分类表单";
 import { 列配置 } from "../constant";
 import { 新建事项块, 更新事项块 } from "./tools";
 
@@ -142,8 +140,10 @@ function 领域详情() {
           record: () => {
             const 新事项 = 生成事项({
               层级: 1 as T层级,
-              领域ID: state.ID,
               父项ID: 页签键 === 所有 ? 分类?.[0]?.ID : 页签键,
+              分类ID: 页签键 === 所有 ? 分类?.[0]?.ID : 页签键,
+              领域ID: state.ID,
+              笔记本ID: 用户设置.笔记本ID,
             });
 
             return 新事项;
@@ -175,47 +175,11 @@ function 领域详情() {
         }}
       />
 
-      <弹窗表单
-        弹窗标题="分类"
+      <分类表单
+        领域={state}
         弹窗状态={弹窗状态}
-        表单配置={{
-          initialValues: undefined,
-        }}
-        确认按钮文本="添加分类"
-        表单内容={
-          <>
-            <Form.Item name="分类名称" label="分类名称" required>
-              <Input />
-            </Form.Item>
-            <Form.Item name="分类描述" label="分类描述" required>
-              <Input.TextArea />
-            </Form.Item>
-          </>
-        }
-        弹窗取消={() => 令弹窗状态为(undefined)}
-        提交表单={(value: { 分类名称: string; 分类描述: string }) => {
-          const { 分类名称, 分类描述 } = value;
-          CL文档.通过Markdown创建(
-            用户设置.笔记本ID,
-            `/领域/${state.名称}/${分类名称}`,
-            ""
-          ).then(async ({ data }) => {
-            设置块属性({
-              id: data,
-              attrs: {
-                [E块属性名称.分类]: JSON.stringify({
-                  名称: 分类名称,
-                  ID: data,
-                  描述: 分类描述,
-                  领域ID: state.ID,
-                } as I分类),
-              },
-            });
-
-            await 睡眠(1000);
-            加载事项数据();
-          });
-        }}
+        令弹窗状态为={令弹窗状态为}
+        完成回调={加载数据}
       />
     </>
   );

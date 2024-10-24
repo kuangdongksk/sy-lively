@@ -1,6 +1,6 @@
 import { E事项状态 } from "@/constant/状态配置";
 import { E时间格式化 } from "@/constant/配置常量";
-import { I事项, T层级 } from "@/pages/主页/components/事项树/components/事项";
+import { I事项, T层级 } from "@/types/喧嚣";
 import { 生成块ID } from "@/utils/DOM";
 import { stringArr2string } from "@/utils/拼接与拆解";
 import dayjs from "dayjs";
@@ -8,8 +8,10 @@ import dayjs from "dayjs";
 export function 生成事项(
   参数: {
     层级: T层级;
-    领域ID: string;
     父项ID: string;
+    分类ID: string;
+    领域ID: string;
+    笔记本ID: string;
   } & Partial<I事项>
 ): I事项 {
   const 名称 = "未命名";

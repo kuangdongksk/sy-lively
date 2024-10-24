@@ -5,6 +5,7 @@ import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
 import { E块属性名称 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 更新用户设置 } from "@/tools/设置";
+import { I领域 } from "@/types/喧嚣";
 import { 睡眠 } from "@/utils/异步";
 import { Form, Input } from "antd";
 import { useAtom } from "jotai";
@@ -13,46 +14,25 @@ import 领域卡片 from "./components/领域卡片";
 import { 领域页面样式 } from "./index.style";
 
 export const 添加领域 = "添加领域";
-export interface I分类 {
-  名称: string;
-  ID: string;
-  描述: string;
-  领域ID: string;
-}
-export interface I领域 {
-  名称: string;
-  ID: string;
-  描述: string;
-  笔记本ID: string;
-}
 
 function 领域() {
   const [用户设置, 设置用户设置] = useAtom(用户设置Atom);
   const { styles } = 领域页面样式();
   const [弹窗状态, 令弹窗状态为] = useState<T弹窗状态>(undefined);
 
-  const [领域列表, 令领域列表为] = useState([
+  const [领域列表, 令领域列表为] = useState<I领域[]>([
     {
-      名称: 添加领域,
       ID: 添加领域,
-      描述: 添加领域,
       笔记本ID: 用户设置.笔记本ID,
+      名称: 添加领域,
+      描述: 添加领域,
+      默认分类: "",
     },
   ]);
 
   const 获取领域列表 = () => {
-    if (用户设置.领域文档ID === "") return;
-    SQL助手.获取笔记本下的领域设置(用户设置.笔记本ID).then(({ data }) => {
-      令领域列表为(
-        data
-          .map((item: { value: string }) => JSON.parse(item.value))
-          .concat({
-            名称: 添加领域,
-            ID: 添加领域,
-            描述: 添加领域,
-            笔记本ID: 用户设置.笔记本ID,
-          })
-      );
+    SQL助手.获取笔记本下的领域设置(用户设置.笔记本ID).then((data) => {
+      令领域列表为(data);
     });
   };
 
@@ -95,16 +75,13 @@ function 领域() {
               `/领域/${value.领域名称}`,
               ""
             );
-            设置块属性({
-              id: 领域文档ID,
-              attrs: {
-                [E块属性名称.领域]: JSON.stringify({
-                  名称: value.领域名称,
-                  ID: 领域文档ID,
-                  描述: value.领域描述,
-                  笔记本ID: 用户设置.笔记本ID,
-                }),
+
+            await 更新用户设置({
+              当前用户设置: 用户设置,
+              更改的用户设置: {
+                默认领域: 领域文档ID,
               },
+              设置用户设置,
             });
 
             const { data: 分类文档ID } = await CL文档.通过Markdown创建(
@@ -112,7 +89,21 @@ function 领域() {
               `/领域/${value.领域名称}/杂项`,
               ""
             );
-            设置块属性({
+
+            await 设置块属性({
+              id: 领域文档ID,
+              attrs: {
+                [E块属性名称.领域]: JSON.stringify({
+                  名称: value.领域名称,
+                  ID: 领域文档ID,
+                  描述: value.领域描述,
+                  笔记本ID: 用户设置.笔记本ID,
+                  默认分类: 分类文档ID,
+                }),
+              },
+            });
+
+            await 设置块属性({
               id: 分类文档ID,
               attrs: {
                 [E块属性名称.分类]: JSON.stringify({
@@ -126,21 +117,6 @@ function 领域() {
             await 睡眠(1000);
             获取领域列表();
           };
-
-          if (用户设置.领域文档ID === "") {
-            CL文档.通过Markdown创建(用户设置.笔记本ID, `/领域`, "").then(
-              ({ data }) => {
-                更新用户设置({
-                  当前用户设置: 用户设置,
-                  更改的用户设置: { 领域文档ID: data },
-                  设置用户设置,
-                }).then(() => {
-                  新建领域();
-                });
-              }
-            );
-            return;
-          }
 
           await 新建领域();
         }}

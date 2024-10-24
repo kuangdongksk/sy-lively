@@ -3,7 +3,7 @@ export const 开启调试 = false;
 export async function 调试(开启调试: boolean) {
   if (!开启调试) return;
   // console.log(
-  //   "🚀 ~ ).then ~ 获取块Kramdown源码(用户设置.领域文档ID):",
+  //   "🚀 ~ ).then ~ 获取块Kramdown源码(用户设置):",
   //   await 获取块Kramdown源码("20241019174714-sksvgji")
   // );
 
