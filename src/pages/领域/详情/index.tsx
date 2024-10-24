@@ -21,6 +21,7 @@ import { useLocation } from "react-router-dom";
 import 分类表单 from "../components/分类表单";
 import { 列配置 } from "../constant";
 import { 新建事项块, 更新事项块 } from "./tools";
+import 删除事项 from "../components/删除事项";
 
 const 所有 = "所有";
 
@@ -115,12 +116,9 @@ function 领域详情() {
                   action?.startEditable?.(record.ID, record);
                 }}
               />,
-              <Button
-                key="delete"
-                type="link"
-                icon={<DeleteOutlined />}
-                onClick={() => {}}
-              />,
+              <删除事项 事项={record} 完成回调={加载事项数据}>
+                <Button key="delete" type="link" icon={<DeleteOutlined />} />
+              </删除事项>,
             ],
           },
         ]}
