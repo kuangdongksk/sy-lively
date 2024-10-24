@@ -1,9 +1,11 @@
+import { isRecord } from "@/utils/类型判断";
 import { Modal } from "antd";
 import {
   forwardRef,
   ReactNode,
   Ref,
   useImperativeHandle,
+  useMemo,
   useState,
 } from "react";
 
@@ -12,7 +14,8 @@ export interface I弹窗Ref<T弹窗标识> {
   关闭弹窗: () => void;
 }
 export interface I弹窗Props<T弹窗标识 extends string | number | symbol> {
-  内容: Record<T弹窗标识, ReactNode>;
+  底部按钮?: boolean;
+  内容?: Record<T弹窗标识, ReactNode>;
   zIndex?: number;
   确定回调?: () => void | Promise<void>;
   取消回调?: () => void | Promise<void>;
@@ -22,7 +25,7 @@ function O弹窗<T弹窗标识 extends string>(
   props: I弹窗Props<T弹窗标识>,
   ref: Ref<I弹窗Ref<T弹窗标识>>
 ) {
-  const { 内容, zIndex, 确定回调, 取消回调 } = props;
+  const { 底部按钮 = true, 内容, zIndex, 确定回调, 取消回调 } = props;
 
   const [弹窗标识, 令弹窗标识为] = useState<T弹窗标识>(undefined);
 
@@ -32,6 +35,13 @@ function O弹窗<T弹窗标识 extends string>(
       关闭弹窗: () => 令弹窗标识为(undefined),
     };
   });
+
+  const 表单内容 = useMemo(() => {
+    if (isRecord<T弹窗标识, object>(内容, "object")) {
+      return <>{内容?.[弹窗标识]}</>;
+    }
+    return <>{内容}</>;
+  }, [内容, 弹窗标识]);
 
   return (
     <Modal
@@ -48,8 +58,9 @@ function O弹窗<T弹窗标识 extends string>(
         await 确定回调?.();
         令弹窗标识为(undefined);
       }}
+      footer={底部按钮}
     >
-      {内容[弹窗标识]}
+      {表单内容}
     </Modal>
   );
 }
