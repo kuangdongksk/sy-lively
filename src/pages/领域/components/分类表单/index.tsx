@@ -36,8 +36,12 @@ function 分类表单(props: I分类表单Props) {
           <Form.Item name="分类描述" label="分类描述" required>
             <Input.TextArea />
           </Form.Item>
-          <Form.Item name="设置为默认分类" label="设置为默认分类" required>
-            <Checkbox />
+          <Form.Item
+            name="设置为默认分类"
+            label="默认分类"
+            valuePropName="checked"
+          >
+            <Checkbox>设置为默认分类</Checkbox>
           </Form.Item>
         </>
       }
@@ -62,7 +66,7 @@ function 分类表单(props: I分类表单Props) {
           await 设置块属性({
             id: 领域.ID,
             attrs: {
-              [E块属性名称.分类]: JSON.stringify(新的领域),
+              [E块属性名称.领域]: JSON.stringify(新的领域),
             },
           });
         }

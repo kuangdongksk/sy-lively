@@ -13,15 +13,15 @@ import {
   UndoOutlined,
 } from "@ant-design/icons";
 import { EditableProTable } from "@ant-design/pro-components";
-import { Button, Tabs } from "antd";
+import { Button, message, Tabs } from "antd";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import 分类表单 from "../components/分类表单";
+import 删除事项 from "../components/删除事项";
 import { 列配置 } from "../constant";
 import { 新建事项块, 更新事项块 } from "./tools";
-import 删除事项 from "../components/删除事项";
 
 const 所有 = "所有";
 
@@ -136,10 +136,11 @@ function 领域详情() {
         recordCreatorProps={{
           position: "top",
           record: () => {
+            const 分类ID = 页签键 === 所有 ? state.默认分类 : 页签键;
             const 新事项 = 生成事项({
               层级: 1 as T层级,
-              父项ID: 页签键 === 所有 ? 分类?.[0]?.ID : 页签键,
-              分类ID: 页签键 === 所有 ? 分类?.[0]?.ID : 页签键,
+              父项ID: 分类ID,
+              分类ID,
               领域ID: state.ID,
               笔记本ID: 用户设置.笔记本ID,
             });
@@ -158,6 +159,22 @@ function 领域详情() {
             });
           },
           onSave: async (_key, 事项) => {
+            if (事项.分类ID === "" || 事项.分类ID === undefined) {
+              message.error(
+                <>
+                  P001：未指定默认分类。请查看
+                  <a
+                    href="https://github.com/kuangdongksk/sy-lively/wiki/%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF#p001%E6%9C%AA%E6%8C%87%E5%AE%9A%E9%BB%98%E8%AE%A4%E5%88%86%E7%B1%BB"
+                    target="_blank"
+                  >
+                    解决方案
+                  </a>
+                  ！
+                </>,
+                5
+              );
+              return;
+            }
             const 是新建的 = 事项.更新时间 === 事项.创建时间;
 
             if (是新建的) {
