@@ -3,9 +3,10 @@ name: Create Release on Tag Push
 on:
   push:
     tags:
-      - "v*"
-      - "R*" # 添加以R开头的标签模式
-      - "P*" # 添加以P开头的标签模式
+      - "R*" # 长期支持
+      - "P*" # 预览
+      - "S*" # 紧急修复
+      - "N*" # 通知
 
 jobs:
   build:
