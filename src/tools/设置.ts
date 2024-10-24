@@ -22,9 +22,8 @@ export async function 更新用户设置(
     attrs: {
       [E块属性名称.用户设置]: JSON.stringify(新的用户设置),
     },
-  }).then(() => {
-    设置用户设置(新的用户设置);
   });
+  设置用户设置(新的用户设置);
 
   return;
 }

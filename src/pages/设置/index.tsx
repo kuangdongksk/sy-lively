@@ -2,7 +2,7 @@ import CL文档 from "@/API/文档";
 import { 列出笔记本 } from "@/API/笔记本";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 更新用户设置 } from "@/tools/设置";
-import { Form, Select } from "antd";
+import { Form, message, Select } from "antd";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 
@@ -28,39 +28,33 @@ function 设置() {
         <Select<string>
           defaultValue={用户设置.笔记本ID}
           options={笔记本列表}
-          onChange={(笔记本ID) => {
+          onChange={async (笔记本ID) => {
             if (用户设置.笔记本ID === 笔记本ID) return;
-            const 更新设置 = () => {
-              CL文档.获取日记根文档(笔记本ID).then(({ id: 日记根文档ID }) => {
-                更新用户设置(
-                  {
-                    当前用户设置: 用户设置,
-                    更改的用户设置: {
-                      笔记本ID,
-                      是否使用中: true,
-                      日记根文档ID,
-                    },
-                    设置用户设置,
-                  },
-                  日记根文档ID
-                );
-              });
-            };
 
-            if (用户设置.笔记本ID === "") {
-              更新设置();
-              return;
+            if (用户设置.笔记本ID !== "") {
+              await 更新用户设置({
+                当前用户设置: 用户设置,
+                更改的用户设置: {
+                  是否使用中: false,
+                },
+                设置用户设置,
+              });
             }
 
-            更新用户设置({
-              当前用户设置: 用户设置,
-              更改的用户设置: {
-                是否使用中: false,
+            const { id: 日记根文档ID } = await CL文档.获取日记根文档(笔记本ID);
+            await 更新用户设置(
+              {
+                当前用户设置: 用户设置,
+                更改的用户设置: {
+                  笔记本ID,
+                  是否使用中: true,
+                  日记根文档ID,
+                },
+                设置用户设置,
               },
-              设置用户设置,
-            }).then(() => {
-              更新设置();
-            });
+              日记根文档ID
+            );
+            message.success("切换笔记本成功");
           }}
         />
       </Form.Item>
