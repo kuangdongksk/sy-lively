@@ -1,6 +1,7 @@
 import SQL助手 from "@/class/SQL助手";
 import { T弹窗状态 } from "@/components/弹窗表单";
 import { 用户设置Atom } from "@/store/用户设置";
+import { 更新用户设置 } from "@/tools/设置";
 import { I分类, I领域 } from "@/types/喧嚣";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { Button, Card, Checkbox, Dropdown, List, message, Tooltip } from "antd";
@@ -8,9 +9,8 @@ import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 添加领域 } from "../..";
-import 分类表单 from "../分类表单";
+import 分类表单 from "../../../../业务组件/表单/分类表单";
 import { useStyle } from "./index.styles";
-import { 更新用户设置 } from "@/tools/设置";
 
 function 领域卡片(props: {
   领域: I领域;

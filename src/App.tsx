@@ -14,6 +14,7 @@ import { useAppStyle } from "./App.style";
 import SQL助手, { E常用SQL } from "./class/SQL助手";
 import { 用户设置Atom } from "./store/用户设置";
 import { 开启调试, 调试 } from "./tools/调试";
+import 浮动按钮 from "./业务组件/浮动按钮";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -99,6 +100,7 @@ function App() {
         </Content>
         <Footer>{dayjs().format("YYYY年MM月DD日")}</Footer>
       </Layout>
+      <浮动按钮 />
     </Layout>
   );
 }

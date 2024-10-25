@@ -21,6 +21,10 @@ export interface I分类 {
   描述: string;
 }
 
+export interface I领域分类 extends I领域 {
+  分类: I分类[];
+}
+
 export type TCorn = string;
 export type T层级 = 0 | 1 | 2 | 3 | 4 | 5;
 export interface I事项 {

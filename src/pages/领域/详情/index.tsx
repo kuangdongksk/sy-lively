@@ -18,7 +18,7 @@ import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import 分类表单 from "../components/分类表单";
+import 分类表单 from "../../../业务组件/表单/分类表单";
 import 删除事项 from "../components/删除事项";
 import { 列配置 } from "../constant";
 import { 新建事项块, 更新事项块 } from "./tools";

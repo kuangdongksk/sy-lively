@@ -1,6 +1,7 @@
 import { E块属性名称 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
-import { I事项, I分类, I领域 } from "@/types/喧嚣";
+import { 组合领域分类 } from "@/tools/结构转换";
+import { I事项, I分类, I用户设置, I领域, I领域分类 } from "@/types/喧嚣";
 import dayjs, { Dayjs } from "dayjs";
 import { fetchSyncPost, IWebSocketData } from "siyuan";
 
@@ -22,6 +23,7 @@ export default class SQL助手 {
     });
   }
 
+  //#region 日记
   public static 获取日记根文档(
     笔记本ID: string,
     日记文档名称: string
@@ -39,10 +41,25 @@ export default class SQL助手 {
       stmt: `SELECT * FROM blocks WHERE box='${笔记本ID}' AND type='d' AND hpath='${日期日记路径}'`,
     });
   }
+  //#endregion
 
-  public static async 获取笔记本下的领域设置(
+  //#region 笔记本
+  public static 获取笔记本对应的用户设置(
     笔记本ID: string
-  ): Promise<I领域[]> {
+  ): Promise<IWebSocketData> {
+    return fetchSyncPost("/api/query/sql", {
+      stmt: `SELECT * FROM attributes WHERE name='${E块属性名称.用户设置}' AND box LIKE '%${笔记本ID}%'`,
+    });
+  }
+
+  public static async 获取所有用户设置(): Promise<I用户设置[]> {
+    const { data } = await fetchSyncPost("/api/query/sql", {
+      stmt: `SELECT * FROM attributes WHERE name='${E块属性名称.用户设置}'`,
+    });
+    return data.map((item: { value: string }) => JSON.parse(item.value));
+  }
+
+  public static async 获取笔记本下的领域(笔记本ID: string): Promise<I领域[]> {
     const { data } = await fetchSyncPost("/api/query/sql", {
       stmt: `SELECT * FROM attributes WHERE name = '${E块属性名称.领域}' AND value LIKE '%${笔记本ID}%'`,
     });
@@ -50,7 +67,28 @@ export default class SQL助手 {
 
     return data.map((item: { value: string }) => JSON.parse(item.value));
   }
+  //#endregion
 
+  public static async 获取笔记本下的所有分类(
+    笔记本ID: string
+  ): Promise<I分类[]> {
+    const 查询结果 = await fetchSyncPost("/api/query/sql", {
+      stmt: `SELECT * FROM attributes WHERE name = '${E块属性名称.分类}' AND value LIKE '%${笔记本ID}%'`,
+    });
+
+    return this.数据库到分类(查询结果.data);
+  }
+
+  public static async 获取笔记本下的所有分类按领域(
+    笔记本ID: string
+  ): Promise<I领域分类[]> {
+    const 所有领域 = await this.获取笔记本下的领域(笔记本ID);
+    const 所有分类 = await this.获取笔记本下的所有分类(笔记本ID);
+
+    return 组合领域分类(所有领域, 所有分类);
+  }
+
+  //#region 分类
   public static async 获取指定领域下的分类(领域ID: string): Promise<I分类[]> {
     const 查询结果 = await fetchSyncPost("/api/query/sql", {
       stmt: `SELECT * FROM attributes WHERE name = '${E块属性名称.分类}' AND value LIKE '%${领域ID}%'`,
@@ -58,7 +96,9 @@ export default class SQL助手 {
 
     return this.数据库到分类(查询结果.data);
   }
+  //#endregion
 
+  //#region 事项
   public static async 获取指定领域下的事项(领域ID: string): Promise<I事项[]> {
     const sql = `SELECT * FROM attributes WHERE name='${E块属性名称.事项}' AND value LIKE '%${领域ID}%'`;
 
@@ -98,4 +138,5 @@ export default class SQL助手 {
       ) as I事项[];
     });
   }
+  //#endregion
 }
