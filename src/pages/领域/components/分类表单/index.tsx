@@ -31,7 +31,7 @@ function 分类表单(props: I分类表单Props) {
       表单内容={
         <>
           <Form.Item name="分类名称" label="分类名称" required>
-            <Input />
+            <Input maxLength={6} />
           </Form.Item>
           <Form.Item name="分类描述" label="分类描述" required>
             <Input.TextArea autoSize={{ minRows: 1 }} />

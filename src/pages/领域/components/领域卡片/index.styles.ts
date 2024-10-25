@@ -14,6 +14,10 @@ export const useStyle = createStyles(({ css }) => {
     卡片标题: {
       fontSize: "14px",
     },
+    卡片标题第一行: {
+      fontSize: "16px",
+      fontWeight: 500,
+    },
     卡片内容: {
       overflowY: "scroll",
     },

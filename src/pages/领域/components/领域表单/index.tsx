@@ -29,7 +29,7 @@ function 领域表单(props: I领域表单Props) {
       表单内容={
         <>
           <Form.Item name="领域名称" label="领域名称" required>
-            <Input type="text" />
+            <Input type="text" maxLength={6} />
           </Form.Item>
           <Form.Item name="领域描述" label="领域描述">
             <Input.TextArea autoSize={{ minRows: 1 }} />
