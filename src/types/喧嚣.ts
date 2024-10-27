@@ -25,6 +25,14 @@ export interface I领域分类 extends I领域 {
   分类: I分类[];
 }
 
+export interface I分类事项 extends I分类 {
+  事项: I事项[];
+}
+
+export interface I领域分类事项 extends I领域分类 {
+  分类: I分类事项[];
+}
+
 export type TCorn = string;
 export type T层级 = 0 | 1 | 2 | 3 | 4 | 5;
 export interface I事项 {

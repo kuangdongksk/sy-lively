@@ -4,6 +4,7 @@ import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
 import { E块属性名称 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 更新用户设置 } from "@/tools/设置";
+import { I分类, I领域 } from "@/types/喧嚣";
 import { Checkbox, Form, Input } from "antd";
 import { useAtom } from "jotai";
 
@@ -72,28 +73,33 @@ function 领域表单(props: I领域表单Props) {
           ""
         );
 
+        const 新的领域: I领域 = {
+          ID: 领域文档ID,
+          名称: 领域名称,
+          描述: 领域描述,
+          笔记本ID: 用户设置.笔记本ID,
+          默认分类: 分类文档ID,
+        };
+
         await 设置块属性({
           id: 领域文档ID,
           attrs: {
-            [E块属性名称.领域]: JSON.stringify({
-              名称: 领域名称,
-              ID: 领域文档ID,
-              描述: 领域描述,
-              笔记本ID: 用户设置.笔记本ID,
-              默认分类: 分类文档ID,
-            }),
+            [E块属性名称.领域]: JSON.stringify(新的领域),
           },
         });
+
+        const 分类: I分类 = {
+          名称: "杂项",
+          ID: 分类文档ID,
+          描述: "杂项",
+          领域ID: 领域文档ID,
+          笔记本ID: 用户设置.笔记本ID,
+        };
 
         await 设置块属性({
           id: 分类文档ID,
           attrs: {
-            [E块属性名称.分类]: JSON.stringify({
-              名称: "杂项",
-              ID: 分类文档ID,
-              描述: "杂项",
-              领域ID: 领域文档ID,
-            }),
+            [E块属性名称.分类]: JSON.stringify(分类),
           },
         });
         await 完成回调?.();

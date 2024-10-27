@@ -1,7 +1,14 @@
 import { E块属性名称 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
-import { 组合领域分类 } from "@/tools/结构转换";
-import { I事项, I分类, I用户设置, I领域, I领域分类 } from "@/types/喧嚣";
+import { 整理事项, 组合领域分类 } from "@/tools/结构转换";
+import {
+  I事项,
+  I分类,
+  I用户设置,
+  I领域,
+  I领域分类,
+  I领域分类事项,
+} from "@/types/喧嚣";
 import dayjs, { Dayjs } from "dayjs";
 import { fetchSyncPost, IWebSocketData } from "siyuan";
 
@@ -99,6 +106,26 @@ export default class SQL助手 {
   //#endregion
 
   //#region 事项
+  public static async 获取笔记本下的所有事项(
+    笔记本ID: string
+  ): Promise<I事项[]> {
+    const { data } = await fetchSyncPost("/api/query/sql", {
+      stmt: `SELECT * FROM attributes WHERE name='${E块属性名称.事项}' AND value LIKE '%${笔记本ID}%'`,
+    });
+
+    return data.map((item: { value: string }) => JSON.parse(item.value));
+  }
+
+  public static async 获取笔记本下的所有事项按领域分类组织(
+    笔记本ID: string
+  ): Promise<I领域分类事项[]> {
+    const 所有领域 = await this.获取笔记本下的领域(笔记本ID);
+    const 所有分类 = await this.获取笔记本下的所有分类(笔记本ID);
+    const 所有事项 = await this.获取笔记本下的所有事项(笔记本ID);
+
+    return 整理事项(所有领域, 所有分类, 所有事项);
+  }
+
   public static async 获取指定领域下的事项(领域ID: string): Promise<I事项[]> {
     const sql = `SELECT * FROM attributes WHERE name='${E块属性名称.事项}' AND value LIKE '%${领域ID}%'`;
 
