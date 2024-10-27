@@ -26,18 +26,17 @@ function 删除事项(props: I删除事项Props) {
         内容={{
           ["打开"]: (
             <div>
-              <div>
+              <h4>
                 如果要删除事项，请将鼠标悬浮在以下内容上，手动删除对应的块，删除完成后关闭弹窗即可
-              </div>
+              </h4>
               <div>
-                <span data-type="block-ref" data-id={事项.ID}>
-                  这是源数据所在的块
-                </span>
-              </div>
-              <div>
-                <span data-type="block-ref" data-id={事项.嵌入块ID}>
+                <a data-type="block-ref" data-id={事项.嵌入块ID}>
                   这是嵌入块所在的块
-                </span>
+                </a>
+                <br />
+                <a data-type="block-ref" data-id={事项.ID}>
+                  这是源数据所在的块
+                </a>
               </div>
             </div>
           ),

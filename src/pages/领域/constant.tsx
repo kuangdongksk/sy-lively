@@ -74,6 +74,9 @@ export const 列配置: ProColumns<I事项>[] = [
   {
     dataIndex: "开始时间",
     defaultSortOrder: "ascend",
+    fieldProps: {
+      format: E时间格式化.日记格式,
+    },
     key: "开始时间",
     title: "开始时间",
     valueType: "dateTime",
@@ -97,6 +100,9 @@ export const 列配置: ProColumns<I事项>[] = [
   {
     dataIndex: "结束时间",
     defaultSortOrder: "ascend",
+    fieldProps: {
+      format: E时间格式化.日记格式,
+    },
     key: "结束时间",
     title: "结束时间",
     valueType: "dateTime",

@@ -21,7 +21,7 @@ import { useLocation } from "react-router-dom";
 import 分类表单 from "../../../业务组件/表单/分类表单";
 import 删除事项 from "../components/删除事项";
 import { 列配置 } from "../constant";
-import { 新建事项块, 更新事项块 } from "./tools";
+import { 新建事项块, 时间格式处理, 更新事项块 } from "./tools";
 
 const 所有 = "所有";
 
@@ -159,6 +159,13 @@ function 领域详情() {
             });
           },
           onSave: async (_key, 事项) => {
+            // 如果开始时间和结束时间不为空，且开始时间大于结束时间，则提示错误
+            if (dayjs(事项.开始时间).isAfter(dayjs(事项.结束时间))) {
+              message.error("开始时间不能大于结束时间！", 5);
+              return;
+            }
+            时间格式处理(事项);
+
             if (事项.分类ID === "" || 事项.分类ID === undefined) {
               message.error(
                 <>

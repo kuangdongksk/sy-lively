@@ -57,3 +57,10 @@ export async function 更新事项块(事项: I事项) {
     }),
   ]);
 }
+
+export async function 时间格式处理(事项: I事项) {
+  if (事项.开始时间.includes(":"))
+    事项.开始时间 = dayjs(事项.开始时间).format(E时间格式化.思源时间);
+  if (事项.结束时间.includes(":"))
+    事项.结束时间 = dayjs(事项.结束时间).format(E时间格式化.思源时间);
+}
