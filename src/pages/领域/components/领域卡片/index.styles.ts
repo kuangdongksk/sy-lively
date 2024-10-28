@@ -1,9 +1,12 @@
 import { createStyles } from "antd-style";
 
-export const useStyle = createStyles(({ css }) => {
+export const useStyle = createStyles(({ css, token }) => {
   return {
     卡片: css`
       height: 220px;
+      border-radius: ${token.borderRadius}px;
+      border: 1px solid ${token.colorPrimary};
+      padding: 12px;
       span {
         margin-right: 0.5em;
       }
@@ -19,13 +22,11 @@ export const useStyle = createStyles(({ css }) => {
       fontWeight: 500,
     },
     卡片内容: {
-      overflowY: "scroll",
+      padding: "0px 8px !important",
+      overflow: "auto",
     },
-    卡片内容头: {
-      display: "flex",
-      justifyContent: "space-between",
-      position: "sticky",
-      top: "0px",
+    卡片内容中间: {
+      overflow: "auto",
     },
   };
 });
