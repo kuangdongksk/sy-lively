@@ -1,6 +1,6 @@
 import { E块属性名称 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
-import { 整理事项, 组合领域分类 } from "@/tools/结构转换";
+import { 为事项添加领域分类, 整理事项, 组合领域分类 } from "@/tools/结构转换";
 import {
   I事项,
   I分类,
@@ -124,6 +124,19 @@ export default class SQL助手 {
     const 所有事项 = await this.获取笔记本下的所有事项(笔记本ID);
 
     return 整理事项(所有领域, 所有分类, 所有事项);
+  }
+
+  public static async 获取笔记本下的所有事项添加分类(笔记本ID: string): Promise<
+    (I事项 & {
+      领域名称: string;
+      分类名称: string;
+    })[]
+  > {
+    const 所有领域 = await this.获取笔记本下的领域(笔记本ID);
+    const 所有分类 = await this.获取笔记本下的所有分类(笔记本ID);
+    const 所有事项 = await this.获取笔记本下的所有事项(笔记本ID);
+
+    return 为事项添加领域分类(所有领域, 所有分类, 所有事项);
   }
 
   public static async 获取指定领域下的事项(领域ID: string): Promise<I事项[]> {
