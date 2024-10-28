@@ -4,14 +4,15 @@ import {
   HomeOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu, Segmented } from "antd";
+import { Layout, Menu, Segmented } from "antd";
 import { useThemeMode } from "antd-style";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useAppStyle } from "./App.style";
 import SQL助手, { E常用SQL } from "./class/SQL助手";
+import 面包屑 from "./components/面包屑";
 import { 用户设置Atom } from "./store/用户设置";
 import { 开启调试, 调试 } from "./tools/调试";
 import 浮动按钮 from "./业务组件/浮动按钮";
@@ -32,7 +33,6 @@ const C目录 = [
 ];
 
 function App() {
-  const 当前位置 = useLocation();
   const 导航到 = useNavigate();
   const [用户设置, 设置用户设置] = useAtom(用户设置Atom);
 
@@ -82,13 +82,7 @@ function App() {
       </Sider>
       <Layout className={styles.主体}>
         <Header className={styles.顶栏}>
-          <Breadcrumb
-            items={decodeURI(当前位置.pathname)
-              .split("/")
-              .map((item) => ({
-                title: item,
-              }))}
-          />
+          <面包屑 />
           <Segmented
             value={themeMode}
             onChange={setThemeMode}
