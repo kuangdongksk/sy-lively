@@ -6,9 +6,7 @@ export type T增改查 = "添加" | "编辑" | "查看" | undefined;
 
 export interface I增改查弹窗表单Props {
   弹窗主题: string;
-  表单配置: {
-    初始值: any;
-  };
+
   表单内容: (弹窗状态: T增改查) => React.ReactNode;
   确认按钮文本?: string;
   弹窗取消?: (() => void) | (() => Promise<void>);
@@ -26,7 +24,6 @@ function O增改查弹窗表单(
 ) {
   const {
     弹窗主题,
-    表单配置: { 初始值 },
     表单内容,
     确认按钮文本 = "确定",
     弹窗取消,
@@ -35,7 +32,7 @@ function O增改查弹窗表单(
   const { styles } = useStyle();
 
   const [表单状态, 令表单状态为] = useState<T增改查>();
-  const [表单值, 令表单值为] = useState<any>(初始值);
+  const [表单值, 令表单值为] = useState<any>();
 
   useImperativeHandle(ref, () => {
     return { 令表单状态为, 令表单值为 };

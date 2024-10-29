@@ -12,7 +12,7 @@ import {
   List,
   message,
   Progress,
-  Tooltip
+  Tooltip,
 } from "antd";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
@@ -130,16 +130,18 @@ function 领域卡片(props: {
           <span>{描述}</span>
         </div>
         <div className={styles.卡片内容}>
-          <Progress
-            percent={
-              (事项列表.filter((事项) => 事项.状态 === E事项状态.已完成)
-                .length /
-                事项列表.length) *
-              100
-            }
-            status="active"
-            strokeColor={{ from: "#ff8486", to: "#9bc188" }}
-          />
+          {ID !== 添加领域 && (
+            <Progress
+              percent={
+                (事项列表.filter((事项) => 事项.状态 === E事项状态.已完成)
+                  .length /
+                  事项列表.length) *
+                100
+              }
+              status="active"
+              strokeColor={{ from: "#ff8486", to: "#9bc188" }}
+            />
+          )}
           <div className={styles.卡片内容中间}>
             {分类列表.map((分类) => (
               <List.Item>{分类.名称}</List.Item>
