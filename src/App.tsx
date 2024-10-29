@@ -3,16 +3,17 @@ import {
   HeatMapOutlined,
   HomeOutlined,
   PlusCircleOutlined,
-  SettingOutlined
+  SettingOutlined,
 } from "@ant-design/icons";
 import { Button, Layout, Menu, Segmented } from "antd";
 import { useThemeMode } from "antd-style";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAppStyle } from "./App.style";
 import SQL助手, { E常用SQL } from "./class/SQL助手";
+import { I增改查弹窗表单Ref } from "./components/增改查弹窗表单";
 import 面包屑 from "./components/面包屑";
 import { 用户设置Atom } from "./store/用户设置";
 import { 开启调试, 调试 } from "./tools/调试";
@@ -40,6 +41,7 @@ function App() {
   const { themeMode, setThemeMode } = useThemeMode();
 
   const { styles } = useAppStyle();
+  const 事项Ref = useRef<I增改查弹窗表单Ref>();
   const [目录, 设置目录] = useState([C目录[3]]);
 
   useEffect(() => {
@@ -67,41 +69,43 @@ function App() {
   });
 
   return (
-    <Layout className={styles.App}>
-      <Sider className={styles.侧栏}>
-        <div className={styles.logo}>
-          <事项表单
-            触发器={
-              <h3>
-                <Button icon={<PlusCircleOutlined />}>喧嚣</Button>
-              </h3>
-            }
+    <>
+      <Layout className={styles.App}>
+        <Sider className={styles.侧栏}>
+          <div className={styles.logo}>
+            <Button
+              icon={<PlusCircleOutlined />}
+              onClick={() => 事项Ref.current?.令表单状态为("添加")}
+            >
+              <h3>喧嚣</h3>
+            </Button>
+          </div>
+          <Menu
+            mode="inline"
+            inlineCollapsed={true}
+            items={目录}
+            onSelect={(data) => {
+              导航到("/" + data.key);
+            }}
           />
-        </div>
-        <Menu
-          mode="inline"
-          inlineCollapsed={true}
-          items={目录}
-          onSelect={(data) => {
-            导航到("/" + data.key);
-          }}
-        />
-      </Sider>
-      <Layout className={styles.主体}>
-        <Header className={styles.顶栏}>
-          <面包屑 />
-          <Segmented
-            value={themeMode}
-            onChange={setThemeMode}
-            options={C主题}
-          />
-        </Header>
-        <Content className={styles.内容}>
-          <Outlet />
-        </Content>
-        <Footer>{dayjs().format("YYYY年MM月DD日")}</Footer>
+        </Sider>
+        <Layout className={styles.主体}>
+          <Header className={styles.顶栏}>
+            <面包屑 />
+            <Segmented
+              value={themeMode}
+              onChange={setThemeMode}
+              options={C主题}
+            />
+          </Header>
+          <Content className={styles.内容}>
+            <Outlet />
+          </Content>
+          <Footer>{dayjs().format("YYYY年MM月DD日")}</Footer>
+        </Layout>
       </Layout>
-    </Layout>
+      <事项表单 ref={事项Ref} />
+    </>
   );
 }
 

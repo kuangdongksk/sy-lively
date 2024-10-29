@@ -8,7 +8,15 @@ import { 新建事项块, 更新事项块 } from "@/pages/领域/详情/tools";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 生成事项 } from "@/tools/事项";
 import { I事项, I领域分类, T层级 } from "@/types/喧嚣";
-import { Button, Cascader, DatePicker, Form, Input, Select } from "antd";
+import {
+  Button,
+  Cascader,
+  DatePicker,
+  Form,
+  Input,
+  message,
+  Select,
+} from "antd";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import {
@@ -23,12 +31,13 @@ import {
 const { RangePicker } = DatePicker;
 export interface I事项表单Props {
   事项?: I事项;
+  完成回调?: () => void | Promise<void>;
 }
 
 function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表单Ref>) {
   const [用户设置] = useAtom(用户设置Atom);
 
-  const { 事项 } = props;
+  const { 事项, 完成回调 } = props;
   const 表单Ref = useRef<I增改查弹窗表单Ref>(null);
   const [领域分类列表, 令领域分类列表为] = useState<I领域分类[]>([]);
   const [展开更多, 令展开更多为] = useState(false);
@@ -124,7 +133,7 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
               <RangePicker showTime placeholder={["开始时间", "结束时间"]} />
             </Form.Item>
 
-            <Button onClick={() => 令展开更多为(!展开更多)}>
+            <Button type="link" onClick={() => 令展开更多为(!展开更多)}>
               {展开更多 ? "收起" : "展开更多"}
             </Button>
 
@@ -173,6 +182,7 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
         if (是新建的) {
           新事项 = 生成事项(新事项);
           await 新建事项块(新事项 as I事项, 用户设置);
+          message.success("添加成功");
         } else {
           新事项 = {
             ...新事项,
@@ -183,7 +193,9 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
             更新时间: dayjs().format(E时间格式化.思源时间),
           };
           await 更新事项块(新事项 as I事项);
+          message.success("更新成功");
         }
+        完成回调 && 完成回调();
       }}
     />
   );

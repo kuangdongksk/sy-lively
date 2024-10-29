@@ -1,12 +1,15 @@
+import { ConfigProvider } from "antd";
 import { ThemeProvider } from "antd-style";
+import zhCN from "antd/locale/zh_CN";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import { getFrontend, openTab, Plugin } from "siyuan";
+import { 提示器 } from "./class/提示器";
 import router from "./router";
 import { 亮色主题 } from "./theme/亮色";
 import { 暗色主题 } from "./theme/暗色";
-import { 提示器 } from "./class/提示器";
+
 export const PluginId = "lively_SaSa";
 
 // const DOCK_TYPE = "dock_tab";
@@ -18,17 +21,18 @@ export default class PluginSample extends Plugin {
 
   private REACT_ROOT = (
     <React.StrictMode>
-      <ThemeProvider
-        defaultThemeMode={"auto"}
-        theme={(appearance) => {
-          if (appearance === "light") {
-            return 亮色主题;
-          }
-          return 暗色主题;
-        }}
-      >
-        <RouterProvider router={router} />
-      </ThemeProvider>
+      <ConfigProvider locale={zhCN}>
+        <ThemeProvider
+          defaultThemeMode={"auto"}
+          theme={(appearance) => {
+            if (appearance === "light") return 亮色主题;
+
+            return 暗色主题;
+          }}
+        >
+          <RouterProvider router={router} />
+        </ThemeProvider>
+      </ConfigProvider>
     </React.StrictMode>
   );
 

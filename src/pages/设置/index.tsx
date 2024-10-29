@@ -1,8 +1,9 @@
+import { 设置块属性 } from "@/API/块数据";
 import CL文档 from "@/API/文档";
 import { 列出笔记本 } from "@/API/笔记本";
 import SQL助手 from "@/class/SQL助手";
+import { E块属性名称 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/store/用户设置";
-import { 更新用户设置 } from "@/tools/设置";
 import { I用户设置 } from "@/types/喧嚣";
 import { Form, message, Select } from "antd";
 import { useAtom } from "jotai";
@@ -34,17 +35,18 @@ function 设置() {
             if (用户设置.笔记本ID === 笔记本ID) return;
 
             if (用户设置.笔记本ID !== "") {
-              await 更新用户设置({
-                当前用户设置: 用户设置,
-                更改的用户设置: {
-                  是否使用中: false,
+              await 设置块属性({
+                id: 用户设置.日记根文档ID,
+                attrs: {
+                  [E块属性名称.用户设置]: JSON.stringify({
+                    ...用户设置,
+                    是否使用中: false,
+                  }),
                 },
-                设置用户设置,
               });
             }
 
             const { id: 日记根文档ID } = await CL文档.获取日记根文档(笔记本ID);
-
             const 所有的笔记本设置 = await SQL助手.获取所有用户设置();
 
             let 新的用户设置: Partial<I用户设置> = 所有的笔记本设置.find(
@@ -57,16 +59,24 @@ function 设置() {
                 是否使用中: true,
                 日记根文档ID,
               };
+            } else {
+              新的用户设置.是否使用中 = true;
             }
 
-            await 更新用户设置(
-              {
-                当前用户设置: 用户设置,
-                更改的用户设置: { ...新的用户设置, 是否使用中: true },
-                设置用户设置,
+            await 设置块属性({
+              id: 日记根文档ID,
+              attrs: {
+                [E块属性名称.用户设置]: JSON.stringify({
+                  ...新的用户设置,
+                  是否使用中: true,
+                }),
               },
-              日记根文档ID
-            );
+            });
+
+            设置用户设置({
+              ...(新的用户设置 as I用户设置),
+            });
+
             message.success("切换笔记本成功");
           }}
         />
