@@ -3,15 +3,9 @@ import { T弹窗状态 } from "@/components/弹窗表单";
 import { 思源协议 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
 import { 用户设置Atom } from "@/store/用户设置";
-import { 生成事项 } from "@/tools/事项";
-import { I事项, I分类, I领域, T层级 } from "@/types/喧嚣";
-import { 睡眠 } from "@/utils/异步";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  PlusCircleOutlined,
-  UndoOutlined,
-} from "@ant-design/icons";
+import { I事项, I分类, I领域 } from "@/types/喧嚣";
+import 事项表单 from "@/业务组件/表单/事项表单";
+import { DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { EditableProTable } from "@ant-design/pro-components";
 import { Button, message, Tabs } from "antd";
 import dayjs from "dayjs";
@@ -34,11 +28,9 @@ function 领域详情() {
 
   const [分类, 令分类为] = useState<I分类[]>([]);
   const [弹窗状态, 令弹窗状态为] = useState<T弹窗状态>(undefined);
-  const [事项加载中, 令事项加载中为] = useState(false);
 
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>(() => []);
 
-  const [事项数据, 令事项数据为] = useState([]);
   const [页签键, 令页签键为] = useState(所有);
 
   const 加载数据 = async () => {
@@ -47,40 +39,22 @@ function 领域详情() {
     });
   };
 
-  const 加载事项数据 = async () => {
-    令事项加载中为(true);
-    const ID = 页签键 === 所有 ? state.ID : 页签键;
-    const data = await SQL助手.获取指定分类下的事项(ID);
-    令事项数据为(data);
-    令事项加载中为(false);
-  };
-
   useEffect(() => {
     加载数据();
-    加载事项数据();
   }, [state.ID]);
 
-  useEffect(() => {
-    加载事项数据();
-  }, [页签键]);
+  useEffect(() => {}, [页签键]);
 
   return (
     <>
       <Tabs
         type="editable-card"
         tabBarExtraContent={
-          <>
-            <Button
-              icon={<UndoOutlined />}
-              type="link"
-              onClick={加载事项数据}
-            />
-            <Button
-              icon={<PlusCircleOutlined />}
-              type="link"
-              onClick={() => 令弹窗状态为("添加")}
-            />
-          </>
+          <Button
+            icon={<PlusCircleOutlined />}
+            type="link"
+            onClick={() => 令弹窗状态为("添加")}
+          />
         }
         items={[
           {
@@ -107,23 +81,13 @@ function 领域详情() {
             title: "操作",
             valueType: "option",
             fixed: "right",
-            render: (_text, record, _, action) => [
-              <Button
-                key="edit"
-                type="link"
-                icon={<EditOutlined />}
-                onClick={() => {
-                  action?.startEditable?.(record.ID, record);
-                }}
-              />,
-              <删除事项 事项={record} 完成回调={加载事项数据}>
+            render: (_text, record) => [
+              <删除事项 事项={record} 完成回调={() => {}}>
                 <Button key="delete" type="link" icon={<DeleteOutlined />} />
               </删除事项>,
             ],
           },
         ]}
-        loading={事项加载中}
-        value={事项数据}
         headerTitle={
           页签键 === 所有 ? (
             "所有"
@@ -133,22 +97,18 @@ function 领域详情() {
             </a>
           )
         }
-        recordCreatorProps={{
-          position: "top",
-          record: () => {
-            const 分类ID = 页签键 === 所有 ? state.默认分类 : 页签键;
-            const 新事项 = 生成事项({
-              层级: 1 as T层级,
-              父项ID: 分类ID,
-              分类ID,
-              领域ID: state.ID,
-              笔记本ID: 用户设置.笔记本ID,
-            });
-
-            return 新事项;
-          },
-        }}
         rowKey="ID"
+        toolbar={{
+          actions: [
+            <事项表单
+              触发器={<Button>新建</Button>}
+              默认领域分类={[
+                state.ID,
+                页签键 === 所有 ? state.默认分类 : 页签键,
+              ]}
+            />,
+          ],
+        }}
         editable={{
           type: "single",
           editableKeys,
@@ -189,11 +149,12 @@ function 领域详情() {
             } else {
               await 更新事项块(事项);
             }
-
-            await 睡眠(1000);
-            加载事项数据();
-            // 等待持久化完成().then(() => 加载数据());
           },
+        }}
+        request={async () => {
+          const ID = 页签键 === 所有 ? state.ID : 页签键;
+          const data = await SQL助手.获取指定分类下的事项(ID);
+          return { data, success: true };
         }}
       />
 

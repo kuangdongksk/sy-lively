@@ -2,9 +2,10 @@ import {
   CalendarOutlined,
   HeatMapOutlined,
   HomeOutlined,
-  SettingOutlined,
+  PlusCircleOutlined,
+  SettingOutlined
 } from "@ant-design/icons";
-import { Layout, Menu, Segmented } from "antd";
+import { Button, Layout, Menu, Segmented } from "antd";
 import { useThemeMode } from "antd-style";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
@@ -15,7 +16,7 @@ import SQL助手, { E常用SQL } from "./class/SQL助手";
 import 面包屑 from "./components/面包屑";
 import { 用户设置Atom } from "./store/用户设置";
 import { 开启调试, 调试 } from "./tools/调试";
-import 浮动按钮 from "./业务组件/浮动按钮";
+import 事项表单 from "./业务组件/表单/事项表单";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -69,7 +70,13 @@ function App() {
     <Layout className={styles.App}>
       <Sider className={styles.侧栏}>
         <div className={styles.logo}>
-          <h3>喧嚣</h3>
+          <事项表单
+            触发器={
+              <h3>
+                <Button icon={<PlusCircleOutlined />}>喧嚣</Button>
+              </h3>
+            }
+          />
         </div>
         <Menu
           mode="inline"
@@ -94,7 +101,6 @@ function App() {
         </Content>
         <Footer>{dayjs().format("YYYY年MM月DD日")}</Footer>
       </Layout>
-      <浮动按钮 />
     </Layout>
   );
 }

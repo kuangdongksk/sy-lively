@@ -17,12 +17,13 @@ import dayjs from "dayjs";
 
 export interface I事项表单Props {
   触发器: ReactElement;
+  默认领域分类?: [string, string];
 }
 
 function 事项表单(props: I事项表单Props) {
   const [用户设置] = useAtom(用户设置Atom);
 
-  const { 触发器 } = props;
+  const { 触发器, 默认领域分类 } = props;
   const { styles } = useStyle();
 
   const [领域分类列表, 令领域分类列表为] = useState<I领域分类[]>([]);
@@ -44,6 +45,7 @@ function 事项表单(props: I事项表单Props) {
       className={styles.弹窗}
       layout="horizontal"
       labelCol={{ span: 4 }}
+      initialValues={{ 领域分类: 默认领域分类 }}
       trigger={触发器}
       validateTrigger="onBlur"
       onFinish={async (value) => {

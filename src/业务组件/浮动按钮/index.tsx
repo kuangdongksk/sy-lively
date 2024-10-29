@@ -8,7 +8,15 @@ function 浮动按钮(props: I浮动按钮Props) {
   const {} = props;
   return (
     <事项表单
-      触发器={<FloatButton icon={<PlusCircleOutlined />} shape="circle" />}
+      触发器={
+        <FloatButton
+          style={{
+            insetInlineStart: 96,
+          }}
+          icon={<PlusCircleOutlined />}
+          shape="circle"
+        />
+      }
     />
   );
 }
