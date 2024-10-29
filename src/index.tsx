@@ -6,6 +6,7 @@ import { getFrontend, openTab, Plugin } from "siyuan";
 import router from "./router";
 import { 亮色主题 } from "./theme/亮色";
 import { 暗色主题 } from "./theme/暗色";
+import { 提示器 } from "./class/提示器";
 export const PluginId = "lively_SaSa";
 
 // const DOCK_TYPE = "dock_tab";
@@ -13,6 +14,7 @@ const TAB_TYPE = "custom_tab";
 
 export default class PluginSample extends Plugin {
   private isMobile: boolean;
+  private 提示器1: 提示器 = new 提示器();
 
   private REACT_ROOT = (
     <React.StrictMode>
@@ -81,7 +83,9 @@ export default class PluginSample extends Plugin {
     });
   }
 
-  async onunload() {}
+  async onunload() {
+    this.提示器1.销毁();
+  }
 
   uninstall() {}
 
