@@ -23,11 +23,6 @@ export default defineConfig({
   plugins: [
     react(),
 
-    vitePluginYamlI18n({
-      inDir: "public/i18n",
-      outDir: `${distDir}/i18n`,
-    }),
-
     viteStaticCopy({
       targets: [
         {
