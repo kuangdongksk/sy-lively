@@ -6,7 +6,6 @@ import livereload from "rollup-plugin-livereload";
 import { defineConfig } from "vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import zipPack from "vite-plugin-zip-pack";
-import vitePluginYamlI18n from "./yaml-plugin";
 
 const args = minimist(process.argv.slice(2));
 const isWatch = args.watch || args.w || false;
