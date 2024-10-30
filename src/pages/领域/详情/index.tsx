@@ -17,7 +17,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import 分类表单 from "../../../业务组件/表单/分类表单";
 import 删除事项 from "../components/删除事项";
-import { 列配置 } from "../constant";
+import { 事项列配置 } from "@/constant/columns/事项";
 
 const 所有 = "所有";
 
@@ -44,7 +44,7 @@ function 领域详情() {
 
   const columns = useMemo(() => {
     return [
-      ...列配置,
+      ...事项列配置,
       {
         title: "操作",
         valueType: "option",
