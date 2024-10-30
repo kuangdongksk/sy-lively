@@ -3,7 +3,8 @@ name: Create Release on Tag Push
 on:
   push:
     tags:
-      - "R*" # 长期支持
+      - "RF*" # 重大重构
+      - "V*" # 长期支持
       - "P*" # 预览
       - "S*" # 紧急修复
       - "N*" # 通知
