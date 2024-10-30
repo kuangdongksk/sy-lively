@@ -1,5 +1,4 @@
 import 数字标签 from "@/pages/主页/components/事项树/components/数字标签";
-import { I事项 } from "@/types/喧嚣";
 import { green, red } from "@ant-design/colors";
 import { ProColumns } from "@ant-design/pro-components";
 import dayjs from "dayjs";
@@ -20,20 +19,14 @@ const 程度 = {
   9: 9,
 };
 
-export const 事项列配置: ProColumns<I事项>[] = [
+export const 事项列配置: ProColumns[] = [
   {
     dataIndex: "名称",
     key: "名称",
     title: "名称",
-    formItemProps: () => {
-      return {
-        rules: [{ required: true, message: "此项为必填项" }],
-      };
-    },
     render: (_dom, record) => {
       return <a href={思源协议 + record.ID}>{record.名称}</a>;
     },
-    // width: 100,
   },
   {
     dataIndex: "重要程度",
@@ -68,7 +61,6 @@ export const 事项列配置: ProColumns<I事项>[] = [
     key: "开始时间",
     title: "开始时间",
     valueType: "dateTime",
-    // width: 150,
     render: (_dom, record) => {
       return (
         <span>
@@ -132,7 +124,6 @@ export const 事项列配置: ProColumns<I事项>[] = [
       [E事项状态.未开始]: { text: "未开始", status: "Default" },
       [E事项状态.已完成]: { text: "已完成", status: "Success" },
     },
-    // width: 100,
     onFilter: (value, record) => {
       return record.状态 === value;
     },
@@ -156,11 +147,11 @@ export const 事项列配置: ProColumns<I事项>[] = [
   //   key: "重复",
   //   dataIndex: "重复",
   // },
-  // {
-  //   title: "层级",
-  //   key: "层级",
-  //   dataIndex: "层级",
-  // },
+  {
+    title: "层级",
+    key: "层级",
+    dataIndex: "层级",
+  },
   // {
   //   title: "父项",
   //   key: "父项",

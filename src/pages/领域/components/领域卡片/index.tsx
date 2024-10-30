@@ -1,5 +1,6 @@
 import SQL助手 from "@/class/SQL助手";
 import { T弹窗状态 } from "@/components/弹窗表单";
+import 进度条 from "@/components/进度条";
 import { E事项状态 } from "@/constant/状态配置";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 更新用户设置 } from "@/tools/设置";
@@ -11,8 +12,7 @@ import {
   Dropdown,
   List,
   message,
-  Progress,
-  Tooltip,
+  Tooltip
 } from "antd";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
@@ -131,15 +131,11 @@ function 领域卡片(props: {
         </div>
         <div className={styles.卡片内容}>
           {ID !== 添加领域 && (
-            <Progress
-              percent={
-                (事项列表.filter((事项) => 事项.状态 === E事项状态.已完成)
-                  .length /
-                  事项列表.length) *
-                100
+            <进度条
+              进度={
+                事项列表.filter((事项) => 事项.状态 === E事项状态.已完成)
+                  .length / 事项列表.length
               }
-              status="active"
-              strokeColor={{ from: "#ff8486", to: "#9bc188" }}
             />
           )}
           <div className={styles.卡片内容中间}>
