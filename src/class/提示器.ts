@@ -10,28 +10,39 @@ export class 提示器 {
     this.计时器 = setInterval(() => {
       SQL助手.常用(E常用SQL.获取所有事项).then(({ data }) => {
         const 事项列表 = data.map(({ value }) => JSON.parse(value) as I事项);
-        let 即将开始 = 0;
-        let 逾期 = 0;
+        const 即将开始事项 = [];
+        const 逾期事项 = [];
+
         事项列表.forEach((事项: I事项) => {
           if (事项.状态 === E事项状态.未开始) {
             if (dayjs(事项.开始时间).diff(dayjs(), "minute") < 10) {
-              即将开始++;
+              即将开始事项.push(事项.名称);
             }
             if (dayjs(事项.结束时间).isBefore(dayjs())) {
-              逾期++;
+              逾期事项.push(事项.名称);
             }
           }
         });
 
+        if (即将开始事项.length === 0 && 逾期事项.length === 0) {
+          return;
+        }
         系统推送消息({
-          msg: `有${即将开始}个事项即将开始，${逾期}个事项已逾期`,
-          timeout: 5000,
+          msg: `有${即将开始事项.join(",")}等${
+            即将开始事项.length
+          }个事项即将开始，${逾期事项.join(",")}等${
+            逾期事项.length
+          }个事项已逾期`,
+          timeout: 20000,
         });
       });
     }, 1000 * 60 * 5);
   }
 
   public 销毁() {
-    clearInterval(this.计时器);
+    if (this.计时器 !== null) {
+      clearInterval(this.计时器);
+      this.计时器 = null;
+    }
   }
 }
