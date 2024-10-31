@@ -1,9 +1,9 @@
 import { 设置块属性 } from "@/API/块数据";
 import CL文档 from "@/API/文档";
 import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
-import { E块属性名称 } from "@/constant/系统码";
+import { E块属性名称, E持久化键 } from "@/constant/系统码";
+import { 持久化atom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
-import { 更新用户设置 } from "@/tools/设置";
 import { I分类, I领域 } from "@/types/喧嚣/事项";
 import { Checkbox, Form, Input } from "antd";
 import { useAtom } from "jotai";
@@ -18,6 +18,7 @@ export interface I领域表单Props {
 
 function 领域表单(props: I领域表单Props) {
   const [用户设置, 设置用户设置] = useAtom(用户设置Atom);
+  const [持久化] = useAtom(持久化atom);
   const { 弹窗状态, 令弹窗状态为, 完成回调 } = props;
 
   return (
@@ -60,10 +61,14 @@ function 领域表单(props: I领域表单Props) {
         );
 
         if (设置为默认领域) {
-          await 更新用户设置({
-            当前用户设置: 用户设置,
-            更改的用户设置: { 默认领域: 领域文档ID },
-            设置用户设置,
+          await 持久化.保存(E持久化键.用户设置, {
+            ...用户设置,
+            默认领域: 领域文档ID,
+          });
+
+          设置用户设置({
+            ...用户设置,
+            默认领域: 领域文档ID,
           });
         }
 

@@ -1,4 +1,4 @@
-import 数字标签 from "@/pages/主页/components/事项树/components/数字标签";
+import 数字标签 from "@/components/数字标签";
 import { green, red } from "@ant-design/colors";
 import { ProColumns } from "@ant-design/pro-components";
 import dayjs from "dayjs";
