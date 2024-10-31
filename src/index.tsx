@@ -16,8 +16,6 @@ export default class SyLively extends Plugin {
   private 提示器1: 提示器 = new 提示器();
 
   async onload() {
-    this.data[E持久化键.用户设置] = {};
-
     this.isMobile =
       getFrontend() === "mobile" || getFrontend() === "browser-mobile";
 
@@ -41,8 +39,26 @@ export default class SyLively extends Plugin {
     tabDiv.style.height = "100%";
     tabDiv.id = PluginId;
 
-    const load = this.loadData;
-    const save = this.saveData;
+    const getData = async (key: E持久化键) => {
+      let data: any;
+      try {
+        data = await this.loadData(key);
+      } catch (error) {
+        console.log("🚀 ~ AccessControllerPlugin ~ getData ~ error:", error);
+        return null;
+      }
+      return data;
+    };
+
+    const saveData = async (key: E持久化键, value: any) => {
+      try {
+        await this.saveData(key, value);
+        return true;
+      } catch (error) {
+        console.log("🚀 ~ AccessControllerPlugin ~ saveData ~ error:", error);
+        return false;
+      }
+    };
 
     // 添加自定义页签
     this.addTab({
@@ -53,22 +69,8 @@ export default class SyLively extends Plugin {
           const root = ReactDOM.createRoot(tabDiv);
 
           仓库.set(持久化atom, {
-            加载: async (key: E持久化键) => {
-              return load(key)
-                .then((data) => data)
-                .catch((e) => {
-                  console.warn("🚀 ~ SyLively ~ 加载: ~ error:", e);
-                  return null;
-                });
-            },
-            保存: async (key: E持久化键, data: any) => {
-              return save(key, data)
-                .then(() => true)
-                .catch((e) => {
-                  console.warn("🚀 ~ SyLively ~ 保存: ~ error:", e);
-                  return false;
-                });
-            },
+            加载: getData,
+            保存: saveData,
           });
           root.render(
             <Provider store={仓库}>
