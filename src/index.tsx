@@ -2,6 +2,9 @@ import ReactDOM from "react-dom/client";
 import { getFrontend, openTab, Plugin } from "siyuan";
 import App from "./App";
 import { 提示器 } from "./class/提示器";
+import { E持久化键 } from "./constant/系统码";
+import { Provider } from "jotai";
+import { 仓库, 持久化atom } from "./store";
 
 export const PluginId = "lively_SaSa";
 
@@ -13,6 +16,8 @@ export default class SyLively extends Plugin {
   private 提示器1: 提示器 = new 提示器();
 
   async onload() {
+    this.data[E持久化键.用户设置] = {};
+
     this.isMobile =
       getFrontend() === "mobile" || getFrontend() === "browser-mobile";
 
@@ -47,15 +52,28 @@ export default class SyLively extends Plugin {
         if (tabDiv) {
           const root = ReactDOM.createRoot(tabDiv);
 
+          仓库.set(持久化atom, {
+            加载: async (key: E持久化键) => {
+              return load(key)
+                .then((data) => data)
+                .catch((e) => {
+                  console.warn("🚀 ~ SyLively ~ 加载: ~ error:", e);
+                  return null;
+                });
+            },
+            保存: async (key: E持久化键, data: any) => {
+              return save(key, data)
+                .then(() => true)
+                .catch((e) => {
+                  console.warn("🚀 ~ SyLively ~ 保存: ~ error:", e);
+                  return false;
+                });
+            },
+          });
           root.render(
-            <App
-              加载={(key: string) => {
-                return load(key);
-              }}
-              保存={(key: string, data: any) => {
-                return save(key, data);
-              }}
-            />
+            <Provider store={仓库}>
+              <App />
+            </Provider>
           );
         }
       },

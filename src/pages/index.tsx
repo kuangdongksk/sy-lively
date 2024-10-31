@@ -1,3 +1,10 @@
+import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
+import 面包屑 from "@/components/面包屑";
+import { E持久化键 } from "@/constant/系统码";
+import { 持久化atom } from "@/store";
+import { 用户设置Atom } from "@/store/用户设置";
+import { 开启调试, 调试 } from "@/tools/调试";
+import 事项表单 from "@/业务组件/表单/事项表单";
 import {
   CalendarOutlined,
   HeatMapOutlined,
@@ -12,12 +19,6 @@ import { useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAppStyle } from "./index.style";
-import SQL助手, { E常用SQL } from "@/class/SQL助手";
-import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
-import 面包屑 from "@/components/面包屑";
-import { 用户设置Atom } from "@/store/用户设置";
-import { 调试, 开启调试 } from "@/tools/调试";
-import 事项表单 from "@/业务组件/表单/事项表单";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -37,6 +38,7 @@ const C目录 = [
 function App() {
   const 导航到 = useNavigate();
   const [用户设置, 设置用户设置] = useAtom(用户设置Atom);
+  const [持久化] = useAtom(持久化atom);
 
   const { themeMode, setThemeMode } = useThemeMode();
 
@@ -45,12 +47,10 @@ function App() {
   const [目录, 设置目录] = useState([C目录[3]]);
 
   useEffect(() => {
-    SQL助手.常用(E常用SQL.获取用户设置).then(({ data }) => {
-      if (data.length !== 0) {
-        const 启用的用户设置 = data.filter(
-          (item: { value: string }) => JSON.parse(item.value).是否使用中
-        )[0];
-        设置用户设置(JSON.parse(启用的用户设置.value));
+    持久化.加载(E持久化键.用户设置).then((启用的用户设置) => {
+      if (启用的用户设置) {
+        console.log("🚀 ~ 持久化.加载 ~ 启用的用户设置:", 启用的用户设置);
+        设置用户设置(JSON.parse(启用的用户设置));
         导航到("/领域");
       } else {
         导航到("/设置");
@@ -59,7 +59,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (用户设置.是否使用中) {
+    if (用户设置) {
       设置目录(C目录);
     }
   }, [用户设置]);
