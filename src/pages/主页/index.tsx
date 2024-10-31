@@ -3,7 +3,7 @@ import 进度条 from "@/components/进度条";
 import { 事项列配置 } from "@/constant/columns/事项";
 import { E事项状态 } from "@/constant/状态配置";
 import { 用户设置Atom } from "@/store/用户设置";
-import { I事项 } from "@/types/喧嚣";
+import { I事项 } from "@/types/喧嚣/事项";
 import { ProTable } from "@ant-design/pro-components";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";

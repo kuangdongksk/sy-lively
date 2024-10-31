@@ -7,7 +7,7 @@ import { E时间格式化 } from "@/constant/配置常量";
 import { 新建事项块, 更新事项块 } from "@/pages/领域/详情/tools";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 生成事项 } from "@/tools/事项";
-import { I事项, I领域分类, T层级 } from "@/types/喧嚣";
+import { I事项, I领域分类, T层级 } from "@/types/喧嚣/事项";
 import {
   Button,
   Cascader,

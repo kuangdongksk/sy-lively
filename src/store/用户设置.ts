@@ -1,4 +1,4 @@
-import { I用户设置, I领域 } from "@/types/喧嚣";
+import { I用户设置, I领域 } from "@/types/喧嚣/事项";
 import { atom } from "jotai";
 
 export const 用户设置Atom = atom<I用户设置>({

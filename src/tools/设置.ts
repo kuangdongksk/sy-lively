@@ -1,6 +1,6 @@
 import { 设置块属性 } from "@/API/块数据";
 import { E块属性名称 } from "@/constant/系统码";
-import { I用户设置 } from "@/types/喧嚣";
+import { I用户设置 } from "@/types/喧嚣/事项";
 
 /** 更改日记根文档ID时必填第二个参数，不改时不要填 */
 export async function 更新用户设置(

@@ -1,6 +1,6 @@
 import { E事项状态 } from "@/constant/状态配置";
 import { E时间格式化 } from "@/constant/配置常量";
-import { I事项, T层级 } from "@/types/喧嚣";
+import { I事项, T层级 } from "@/types/喧嚣/事项";
 import { 生成块ID } from "@/utils/DOM";
 import { stringArr2string } from "@/utils/拼接与拆解";
 import dayjs from "dayjs";

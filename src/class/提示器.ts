@@ -1,4 +1,4 @@
-import { I事项 } from "@/types/喧嚣";
+import { I事项 } from "@/types/喧嚣/事项";
 import SQL助手, { E常用SQL } from "./SQL助手";
 import dayjs from "dayjs";
 import { 系统推送消息 } from "@/API/推送消息";

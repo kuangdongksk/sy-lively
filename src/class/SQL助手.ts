@@ -8,7 +8,7 @@ import {
   I领域,
   I领域分类,
   I领域分类事项,
-} from "@/types/喧嚣";
+} from "@/types/喧嚣/事项";
 import dayjs, { Dayjs } from "dayjs";
 import { fetchSyncPost, IWebSocketData } from "siyuan";
 

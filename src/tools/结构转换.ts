@@ -1,4 +1,4 @@
-import { I事项, I分类, I领域, I领域分类, I领域分类事项 } from "@/types/喧嚣";
+import { I事项, I分类, I领域, I领域分类, I领域分类事项 } from "@/types/喧嚣/事项";
 
 export function 组合领域分类(
   领域列表: I领域[],

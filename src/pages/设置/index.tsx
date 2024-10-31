@@ -4,7 +4,7 @@ import { 列出笔记本 } from "@/API/笔记本";
 import SQL助手 from "@/class/SQL助手";
 import { E块属性名称 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/store/用户设置";
-import { I用户设置 } from "@/types/喧嚣";
+import { I用户设置 } from "@/types/喧嚣/事项";
 import { Form, message, Select } from "antd";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";

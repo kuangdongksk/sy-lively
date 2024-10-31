@@ -1,5 +1,5 @@
 import 弹窗, { I弹窗Ref } from "@/components/弹窗";
-import { I事项 } from "@/types/喧嚣";
+import { I事项 } from "@/types/喧嚣/事项";
 import { useRef } from "react";
 
 export interface I删除事项Props {

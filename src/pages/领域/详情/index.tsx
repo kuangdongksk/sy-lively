@@ -3,7 +3,7 @@ import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
 import { T弹窗状态 } from "@/components/弹窗表单";
 import { E事项状态 } from "@/constant/状态配置";
 import { 思源协议 } from "@/constant/系统码";
-import { I事项, I分类, I领域 } from "@/types/喧嚣";
+import { I事项, I分类, I领域 } from "@/types/喧嚣/事项";
 import 事项表单 from "@/业务组件/表单/事项表单";
 import {
   DeleteOutlined,

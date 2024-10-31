@@ -1,7 +1,7 @@
 import SQL助手 from "@/class/SQL助手";
 import { T弹窗状态 } from "@/components/弹窗表单";
 import { 用户设置Atom } from "@/store/用户设置";
-import { I领域 } from "@/types/喧嚣";
+import { I领域 } from "@/types/喧嚣/事项";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import 领域卡片 from "./components/领域卡片";

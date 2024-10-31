@@ -1,11 +1,5 @@
 import { E事项状态 } from "@/constant/状态配置";
 
-export interface I用户设置 {
-  笔记本ID: string;
-  是否使用中: boolean;
-  日记根文档ID: string;
-  默认领域: string;
-}
 export interface I领域 {
   ID: string;
   笔记本ID: string;
@@ -35,6 +29,7 @@ export interface I领域分类事项 extends I领域分类 {
 
 export type TCorn = string;
 export type T层级 = 0 | 1 | 2 | 3 | 4 | 5;
+
 export interface I事项 {
   名称: string;
   重要程度: number;

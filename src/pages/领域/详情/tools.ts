@@ -8,7 +8,7 @@ import {
 } from "@/components/模板/Kramdown/超级块";
 import { E块属性名称 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
-import { I事项, I用户设置 } from "@/types/喧嚣";
+import { I事项, I用户设置 } from "@/types/喧嚣/事项";
 import dayjs from "dayjs";
 
 export async function 新建事项块(事项: I事项, 用户设置: I用户设置) {
