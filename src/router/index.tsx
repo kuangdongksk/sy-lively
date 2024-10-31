@@ -1,4 +1,4 @@
-import App from "@/App";
+import App from "@/pages";
 import 主页 from "@/pages/主页";
 import 日历 from "@/pages/日历";
 import 设置 from "@/pages/设置";
