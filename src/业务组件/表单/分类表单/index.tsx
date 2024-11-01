@@ -3,7 +3,6 @@ import CL文档 from "@/API/文档";
 import 增改查弹窗表单, {
   I增改查弹窗表单Ref,
 } from "@/components/增改查弹窗表单";
-import { T弹窗状态 } from "@/components/弹窗表单";
 import { E块属性名称 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/store/用户设置";
 import { I分类, I领域 } from "@/types/喧嚣/事项";
@@ -13,9 +12,6 @@ import { forwardRef, Ref, useImperativeHandle, useRef } from "react";
 
 export interface I分类表单Props {
   领域: I领域;
-  弹窗状态: T弹窗状态;
-
-  令弹窗状态为: (弹窗状态: T弹窗状态) => void;
 
   完成回调?: () => void | Promise<void>;
 }
