@@ -15,7 +15,8 @@ export class 提示器 {
 
         事项列表.forEach((事项: I事项) => {
           if (事项.状态 === E事项状态.未开始) {
-            if (dayjs(事项.开始时间).diff(dayjs(), "minute") <= 10) {
+            const diff = dayjs(事项.开始时间).diff(dayjs(), "minute");
+            if (diff <= 10 && diff >= 0) {
               即将开始事项.push(事项.名称);
             }
             if (dayjs(事项.结束时间).isBefore(dayjs())) {
