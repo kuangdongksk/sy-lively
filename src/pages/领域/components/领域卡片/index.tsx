@@ -1,5 +1,5 @@
 import SQL助手 from "@/class/SQL助手";
-import { T弹窗状态 } from "@/components/弹窗表单";
+import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
 import 进度条 from "@/components/进度条";
 import { E事项状态 } from "@/constant/状态配置";
 import { E持久化键 } from "@/constant/系统码";
@@ -9,7 +9,7 @@ import { I事项, I分类, I领域 } from "@/types/喧嚣/事项";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Dropdown, List, message, Tooltip } from "antd";
 import { useAtom } from "jotai";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 添加领域 } from "../..";
 import 分类表单 from "../../../../业务组件/表单/分类表单";
@@ -24,7 +24,8 @@ function 领域卡片(props: { 领域: I领域 }) {
   const { 领域 } = props;
   const { ID, 名称, 描述 } = 领域;
 
-  const [分类表单状态, 令分类表单状态为] = useState<T弹窗状态>(undefined);
+  const 分类表单Ref = useRef<I增改查弹窗表单Ref>(null);
+
   const [分类列表, 令分类列表为] = useState<I分类[]>([]);
   const [事项列表, 令事项列表为] = useState<I事项[]>([]);
 
@@ -64,7 +65,7 @@ function 领域卡片(props: { 领域: I领域 }) {
                       <span
                         onClick={(e) => {
                           e.stopPropagation();
-                          令分类表单状态为("添加");
+                          分类表单Ref.current?.令表单状态为("添加");
                         }}
                       >
                         新建分类
@@ -129,11 +130,7 @@ function 领域卡片(props: { 领域: I领域 }) {
           </div>
         </div>
       </div>
-      <分类表单
-        领域={领域}
-        弹窗状态={分类表单状态}
-        令弹窗状态为={令分类表单状态为}
-      />
+      <分类表单 ref={分类表单Ref} 领域={领域} />
     </>
   );
 }
