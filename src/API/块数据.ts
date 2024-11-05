@@ -175,13 +175,3 @@ export function 设置块属性(options: {
 }) {
   return fetchSyncPost(EAPI.设置块属性, options);
 }
-
-/**
- * 获取块属性
- * @param options - 包含以下属性的对象：
- *   - id: 待获取块的 ID
- * @returns 块的属性
- */
-export function 获取块属性(options: { id: string }) {
-  return fetchSyncPost(EAPI.获取块属性, options);
-}

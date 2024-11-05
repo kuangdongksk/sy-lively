@@ -1,6 +1,7 @@
 import { 插入前置子块, 插入后置子块, 更新块, 设置块属性 } from "@/API/块数据";
 import CL文档 from "@/API/文档";
 import Kramdown助手 from "@/class/Kramdown助手";
+import SQL助手 from "@/class/SQL助手";
 import { 生成嵌入块Kramdown } from "@/components/模板/Kramdown/嵌入快";
 import {
   根据事项生成信息块,
@@ -8,10 +9,23 @@ import {
 } from "@/components/模板/Kramdown/超级块";
 import { E块属性名称 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
-import { I事项, I用户设置 } from "@/types/喧嚣/事项";
+import { I事项 } from "@/types/喧嚣/事项";
+import { I用户设置 } from "@/types/喧嚣/设置";
 import dayjs from "dayjs";
 
 export async function 新建事项块(事项: I事项, 用户设置: I用户设置) {
+  const { 名称, 单开一页, 父项ID, 笔记本ID } = 事项;
+  if (单开一页) {
+    const 块数据 = await SQL助手.根据ID获取块(父项ID);
+    const { data: 文档ID } = await CL文档.通过Markdown创建(
+      笔记本ID,
+      块数据.hpath + "/" + 名称,
+      ""
+    );
+    事项.ID = 文档ID;
+    return;
+  }
+
   await 插入后置子块({
     dataType: "markdown",
     data: 生成事项块Kramdown(事项),

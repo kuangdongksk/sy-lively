@@ -34,14 +34,16 @@ export interface I事项 {
   名称: string;
   重要程度: number;
   紧急程度: number;
-  开始时间: string;
-  结束时间: string;
+  开始时间?: string;
+  结束时间?: string;
   状态: E事项状态;
   重复: TCorn | false;
+  单开一页: boolean;
+  提醒: TCorn | false;
+  逾期不再提醒: boolean;
 
   // ID就是超级块ID
   ID: string;
-  key: string;
   层级: T层级;
   // 对于顶级（0级）父项ID就是分类ID
   父项ID: string;

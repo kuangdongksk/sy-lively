@@ -3,20 +3,14 @@ import 增改查弹窗表单, {
   I增改查弹窗表单Ref,
 } from "@/components/增改查弹窗表单";
 import { E事项状态 } from "@/constant/状态配置";
+import { Op提醒 } from "@/constant/选项/事项";
 import { E时间格式化 } from "@/constant/配置常量";
 import { 新建事项块, 更新事项块 } from "@/pages/领域/详情/tools";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 生成事项 } from "@/tools/事项";
 import { I事项, I领域分类, T层级 } from "@/types/喧嚣/事项";
-import {
-  Button,
-  Cascader,
-  DatePicker,
-  Form,
-  Input,
-  message,
-  Select,
-} from "antd";
+import { Cascader, DatePicker, Form, Input, message, Select } from "antd";
+import Checkbox from "antd/es/checkbox/Checkbox";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import {
@@ -40,7 +34,6 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
   const { 事项, 完成回调 } = props;
   const 表单Ref = useRef<I增改查弹窗表单Ref>(null);
   const [领域分类列表, 令领域分类列表为] = useState<I领域分类[]>([]);
-  const [展开更多, 令展开更多为] = useState(false);
 
   const 加载领域分类列表 = async () => {
     await SQL助手.获取笔记本下的所有分类按领域(用户设置.笔记本ID).then(
@@ -113,12 +106,16 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
                 }))}
               />
             </Form.Item>
-
+            <Form.Item name="提醒" label="提醒">
+              <Select options={Op提醒} />
+            </Form.Item>
             <Form.Item
               name="起止时间"
               label="起止时间"
+              dependencies={[""]}
               rules={[
                 { required: true },
+
                 {
                   validator: (_rule, value) => {
                     if (dayjs(value[0]).isAfter(dayjs(value[1]))) {
@@ -131,37 +128,35 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
             >
               <RangePicker showTime placeholder={["开始时间", "结束时间"]} />
             </Form.Item>
+            <Form.Item name="单开一页" label="单开一页" valuePropName="checked">
+              <Checkbox>为该事项创建一个文档</Checkbox>
+            </Form.Item>
 
-            <Button type="link" onClick={() => 令展开更多为(!展开更多)}>
-              {展开更多 ? "收起" : "展开更多"}
-            </Button>
-
-            {展开更多 && (
-              <>
-                <Form.Item name="紧急程度" label="紧急程度">
-                  <Select
-                    options={Array.from({ length: 10 }).map((_, i) => ({
-                      label: i,
-                      value: i,
-                    }))}
-                  />
-                </Form.Item>
-                <Form.Item name="重要程度" label="重要程度">
-                  <Select
-                    options={Array.from({ length: 10 }).map((_, i) => ({
-                      label: i,
-                      value: i,
-                    }))}
-                  />
-                </Form.Item>
-              </>
-            )}
+            <Form.Item name="紧急程度" label="紧急程度">
+              <Select
+                defaultValue={5}
+                options={Array.from({ length: 10 }).map((_, i) => ({
+                  label: i,
+                  value: i,
+                }))}
+              />
+            </Form.Item>
+            <Form.Item name="重要程度" label="重要程度">
+              <Select
+                defaultValue={5}
+                options={Array.from({ length: 10 }).map((_, i) => ({
+                  label: i,
+                  value: i,
+                }))}
+              />
+            </Form.Item>
           </>
         );
       }}
       提交表单={async (value, 表单状态) => {
-        const [领域ID, 分类ID] = value["领域分类"];
-        const [开始时间, 结束时间] = value["起止时间"];
+        const { 领域分类, 起止时间 } = value;
+        const [领域ID, 分类ID] = 领域分类;
+        const [开始时间, 结束时间] = 起止时间;
 
         let 新事项 = {
           ...事项,

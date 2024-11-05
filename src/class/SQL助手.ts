@@ -4,11 +4,12 @@ import { 为事项添加领域分类, 整理事项, 组合领域分类 } from "@
 import {
   I事项,
   I分类,
-  I用户设置,
   I领域,
   I领域分类,
   I领域分类事项,
 } from "@/types/喧嚣/事项";
+import { I用户设置 } from "@/types/喧嚣/设置";
+import { I块 } from "@/types/数据库表";
 import dayjs, { Dayjs } from "dayjs";
 import { fetchSyncPost, IWebSocketData } from "siyuan";
 
@@ -66,6 +67,8 @@ export default class SQL助手 {
     return data.map((item: { value: string }) => JSON.parse(item.value));
   }
 
+  //#endregion
+  //#region 领域
   public static async 获取笔记本下的领域(笔记本ID: string): Promise<I领域[]> {
     const { data } = await fetchSyncPost("/api/query/sql", {
       stmt: `SELECT * FROM attributes WHERE name = '${E块属性名称.领域}' AND value LIKE '%${笔记本ID}%'`,
@@ -76,6 +79,7 @@ export default class SQL助手 {
   }
   //#endregion
 
+  //#region 分类
   public static async 获取笔记本下的所有分类(
     笔记本ID: string
   ): Promise<I分类[]> {
@@ -95,7 +99,6 @@ export default class SQL助手 {
     return 组合领域分类(所有领域, 所有分类);
   }
 
-  //#region 分类
   public static async 获取指定领域下的分类(领域ID: string): Promise<I分类[]> {
     const 查询结果 = await fetchSyncPost("/api/query/sql", {
       stmt: `SELECT * FROM attributes WHERE name = '${E块属性名称.分类}' AND value LIKE '%${领域ID}%'`,
@@ -176,6 +179,17 @@ export default class SQL助手 {
       return data.map((item: { value: string }) =>
         JSON.parse(item.value)
       ) as I事项[];
+    });
+  }
+  //#endregion
+
+  //#region 块
+  public static async 根据ID获取块(ID: string): Promise<I块> {
+    const sql = `SELECT * FROM blocks WHERE id='${ID}'`;
+    return fetchSyncPost("/api/query/sql", {
+      stmt: sql,
+    }).then(({ data }) => {
+      return data[0];
     });
   }
   //#endregion
