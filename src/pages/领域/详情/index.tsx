@@ -5,10 +5,7 @@ import { E事项状态 } from "@/constant/状态配置";
 import { 思源协议 } from "@/constant/系统码";
 import { I事项, I分类, I领域 } from "@/types/喧嚣/事项";
 import 事项表单 from "@/业务组件/表单/事项表单";
-import {
-  DeleteOutlined,
-  EditOutlined
-} from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { ProColumns, ProTable } from "@ant-design/pro-components";
 import { Button, Tabs } from "antd";
 import dayjs from "dayjs";

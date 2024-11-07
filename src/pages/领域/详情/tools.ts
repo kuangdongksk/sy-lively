@@ -14,7 +14,8 @@ import { I用户设置 } from "@/types/喧嚣/设置";
 import dayjs from "dayjs";
 
 export async function 新建事项块(事项: I事项, 用户设置: I用户设置) {
-  const { 名称, 单开一页, 父项ID, 笔记本ID } = 事项;
+  const { 名称, 开始时间, 创建时间, 父项ID, 笔记本ID, 单开一页 } = 事项;
+
   if (单开一页) {
     const 块数据 = await SQL助手.根据ID获取块(父项ID);
     const { data: 文档ID } = await CL文档.通过Markdown创建(
@@ -23,18 +24,16 @@ export async function 新建事项块(事项: I事项, 用户设置: I用户设�
       ""
     );
     事项.ID = 文档ID;
-    return;
   }
-
   await 插入后置子块({
     dataType: "markdown",
     data: 生成事项块Kramdown(事项),
-    parentID: 事项.父项ID,
+    parentID: 单开一页 ? 事项.ID : 父项ID,
   });
 
   const { id: 日记文档ID } = await CL文档.获取对应日期的日记文档(
     用户设置.笔记本ID,
-    dayjs(事项.开始时间, E时间格式化.思源时间)
+    dayjs(开始时间 ?? 创建时间, E时间格式化.思源时间)
   );
 
   await 插入前置子块({

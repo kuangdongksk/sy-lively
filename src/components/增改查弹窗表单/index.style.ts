@@ -14,5 +14,8 @@ export const useStyle = createStyles(({ css }) => {
         }
       }
     `,
+    取消按钮: {
+      marginRight: 12,
+    },
   };
 });

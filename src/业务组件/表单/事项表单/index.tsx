@@ -1,15 +1,23 @@
+import { OptionsHelper } from "@/class/OptionsHelper";
 import SQL助手 from "@/class/SQL助手";
 import 增改查弹窗表单, {
   I增改查弹窗表单Ref,
 } from "@/components/增改查弹窗表单";
-import { E事项状态 } from "@/constant/状态配置";
-import { Op提醒 } from "@/constant/选项/事项";
+import { E提醒 } from "@/constant/状态配置";
 import { E时间格式化 } from "@/constant/配置常量";
 import { 新建事项块, 更新事项块 } from "@/pages/领域/详情/tools";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 生成事项 } from "@/tools/事项";
 import { I事项, I领域分类, T层级 } from "@/types/喧嚣/事项";
-import { Cascader, DatePicker, Form, Input, message, Select } from "antd";
+import {
+  Button,
+  Cascader,
+  DatePicker,
+  Form,
+  Input,
+  message,
+  Select,
+} from "antd";
 import Checkbox from "antd/es/checkbox/Checkbox";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
@@ -35,6 +43,8 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
   const 表单Ref = useRef<I增改查弹窗表单Ref>(null);
   const [领域分类列表, 令领域分类列表为] = useState<I领域分类[]>([]);
 
+  const [展开更多, 令展开更多为] = useState(false);
+
   const 加载领域分类列表 = async () => {
     await SQL助手.获取笔记本下的所有分类按领域(用户设置.笔记本ID).then(
       (data) => {
@@ -46,7 +56,15 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
   useImperativeHandle(ref, () => {
     return {
       令表单状态为: 表单Ref.current?.令表单状态为,
-      令表单值为: 表单Ref.current?.令表单值为,
+      令表单值为: (事项初始值: Partial<I事项>) => {
+        表单Ref.current?.令表单值为({
+          名称: dayjs().format(E时间格式化.思源时间) + " 未命名事项",
+          重要程度: 5,
+          紧急程度: 5,
+          提醒: E提醒.不提醒,
+          ...事项初始值,
+        });
+      },
     };
   });
 
@@ -65,12 +83,7 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
               <Input />
             </Form.Item>
             <Form.Item name="状态" label="状态">
-              <Select
-                options={[
-                  { label: "未开始", value: E事项状态.未开始 },
-                  { label: "已完成", value: E事项状态.已完成 },
-                ]}
-              />
+              <Select options={OptionsHelper.状态} />
             </Form.Item>
             <Form.Item
               name="领域分类"
@@ -107,23 +120,36 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
               />
             </Form.Item>
             <Form.Item name="提醒" label="提醒">
-              <Select options={Op提醒} />
+              <Select options={OptionsHelper.提醒} />
             </Form.Item>
             <Form.Item
               name="起止时间"
               label="起止时间"
-              dependencies={[""]}
               rules={[
-                { required: true },
-
                 {
                   validator: (_rule, value) => {
+                    if (!value || !value[0] || !value[1]) {
+                      return Promise.resolve();
+                    }
                     if (dayjs(value[0]).isAfter(dayjs(value[1]))) {
                       return Promise.reject("开始时间不能大于结束时间！");
                     }
                     return Promise.resolve();
                   },
                 },
+                ({ getFieldValue }) => ({
+                  validator(_rule, value) {
+                    if (
+                      (!value || !value[0] || !value[1]) &&
+                      getFieldValue("提醒") !== E提醒.不提醒
+                    ) {
+                      return Promise.reject(
+                        "请选择开始时间和结束时间，或者取消提醒"
+                      );
+                    }
+                    return Promise.resolve();
+                  },
+                }),
               ]}
             >
               <RangePicker showTime placeholder={["开始时间", "结束时间"]} />
@@ -132,23 +158,17 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
               <Checkbox>为该事项创建一个文档</Checkbox>
             </Form.Item>
 
-            <Form.Item name="紧急程度" label="紧急程度">
-              <Select
-                defaultValue={5}
-                options={Array.from({ length: 10 }).map((_, i) => ({
-                  label: i,
-                  value: i,
-                }))}
-              />
+            <Form.Item>
+              <Button type="link" onClick={() => 令展开更多为(!展开更多)}>
+                {展开更多 ? "收起" : "展开更多"}
+              </Button>
             </Form.Item>
-            <Form.Item name="重要程度" label="重要程度">
-              <Select
-                defaultValue={5}
-                options={Array.from({ length: 10 }).map((_, i) => ({
-                  label: i,
-                  value: i,
-                }))}
-              />
+
+            <Form.Item name="紧急程度" label="紧急程度" hidden={!展开更多}>
+              <Select options={OptionsHelper.程度} />
+            </Form.Item>
+            <Form.Item name="重要程度" label="重要程度" hidden={!展开更多}>
+              <Select options={OptionsHelper.程度} />
             </Form.Item>
           </>
         );
@@ -156,7 +176,7 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
       提交表单={async (value, 表单状态) => {
         const { 领域分类, 起止时间 } = value;
         const [领域ID, 分类ID] = 领域分类;
-        const [开始时间, 结束时间] = 起止时间;
+        const [开始时间, 结束时间] = 起止时间 ?? [];
 
         let 新事项 = {
           ...事项,
@@ -166,9 +186,15 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
           分类ID,
           领域ID,
           笔记本ID: 用户设置.笔记本ID,
-          开始时间: dayjs(开始时间).format(E时间格式化.思源时间),
-          结束时间: dayjs(结束时间).format(E时间格式化.思源时间),
+          开始时间: 开始时间
+            ? dayjs(开始时间).format(E时间格式化.思源时间)
+            : undefined,
+          结束时间: 结束时间
+            ? dayjs(结束时间).format(E时间格式化.思源时间)
+            : undefined,
+          更新时间: dayjs().format(E时间格式化.思源时间),
         };
+
         const 是新建的 = 表单状态 === "添加";
         delete 新事项.领域分类;
         delete 新事项.起止时间;
@@ -178,14 +204,6 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
           await 新建事项块(新事项 as I事项, 用户设置);
           message.success("添加成功");
         } else {
-          新事项 = {
-            ...新事项,
-            分类ID,
-            领域ID,
-            开始时间: dayjs(开始时间).format(E时间格式化.思源时间),
-            结束时间: dayjs(结束时间).format(E时间格式化.思源时间),
-            更新时间: dayjs().format(E时间格式化.思源时间),
-          };
           await 更新事项块(新事项 as I事项);
           message.success("更新成功");
         }
@@ -195,8 +213,6 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
   );
 }
 
-const 事项表单 = forwardRef(O事项表单) as (
-  props: I事项表单Props & { ref?: Ref<I增改查弹窗表单Ref> }
-) => ReturnType<typeof O事项表单>;
+const 事项表单 = forwardRef(O事项表单);
 
 export default 事项表单;
