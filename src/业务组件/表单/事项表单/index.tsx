@@ -119,9 +119,6 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
                 }))}
               />
             </Form.Item>
-            <Form.Item name="提醒" label="提醒">
-              <Select options={OptionsHelper.提醒} />
-            </Form.Item>
             <Form.Item
               name="起止时间"
               label="起止时间"
@@ -154,10 +151,12 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
             >
               <RangePicker showTime placeholder={["开始时间", "结束时间"]} />
             </Form.Item>
-            <Form.Item name="单开一页" label="单开一页" valuePropName="checked">
-              <Checkbox>为该事项创建一个文档</Checkbox>
+            <Form.Item name="提醒" label="提醒">
+              <Select options={OptionsHelper.提醒} />
             </Form.Item>
-
+            <Form.Item name="重复" label="重复">
+              <Cascader />
+            </Form.Item>
             <Form.Item>
               <Button type="link" onClick={() => 令展开更多为(!展开更多)}>
                 {展开更多 ? "收起" : "展开更多"}
@@ -169,6 +168,9 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
             </Form.Item>
             <Form.Item name="重要程度" label="重要程度" hidden={!展开更多}>
               <Select options={OptionsHelper.程度} />
+            </Form.Item>
+            <Form.Item name="单开一页" label="单开一页" valuePropName="checked">
+              <Checkbox>为该事项创建一个文档</Checkbox>
             </Form.Item>
           </>
         );
