@@ -12,7 +12,7 @@ import { useAtom } from "jotai";
 import { nanoid } from "nanoid";
 import { TreeNode } from "../..";
 import { 层级增加 } from "../../tools";
-import CL文档 from "@/API/文档";
+import CL文档 from "@/class/文档";
 
 function 添加子项(props: { 节点: TreeNode }) {
   const { 节点 } = props;

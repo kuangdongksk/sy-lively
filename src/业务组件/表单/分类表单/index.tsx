@@ -1,5 +1,5 @@
 import { 设置块属性 } from "@/API/块数据";
-import CL文档 from "@/API/文档";
+import CL文档 from "@/class/文档";
 import 增改查弹窗表单, {
   I增改查弹窗表单Ref,
 } from "@/components/增改查弹窗表单";

@@ -68,6 +68,18 @@ export default class SQL助手 {
   }
 
   //#endregion
+
+  //#region 文档
+  public static async 获取块的路径(块ID: string): Promise<string> {
+    const { data } = await fetchSyncPost("/api/query/sql", {
+      stmt: `SELECT * FROM blocks WHERE id='${块ID}'`,
+    });
+
+    return data[0].path;
+  }
+
+  //#endregion
+
   //#region 领域
   public static async 获取笔记本下的领域(笔记本ID: string): Promise<I领域[]> {
     const { data } = await fetchSyncPost("/api/query/sql", {

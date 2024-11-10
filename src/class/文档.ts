@@ -2,9 +2,9 @@ import { EAPI } from "@/constant/API路径";
 import { E块属性名称 } from "@/constant/系统码";
 import dayjs, { Dayjs } from "dayjs";
 import { fetchSyncPost } from "siyuan";
-import { 设置块属性 } from "./块数据";
-import { 获取笔记本配置 } from "./笔记本";
-import SQL助手 from "../class/SQL助手";
+import { 设置块属性 } from "../API/块数据";
+import { 获取笔记本配置 } from "../API/笔记本";
+import SQL助手 from "./SQL助手";
 
 export default class CL文档 {
   public static 通过Markdown创建(
@@ -19,6 +19,15 @@ export default class CL文档 {
     });
   }
 
+  public static async 重命名(笔记本ID: string, 路径: string, 新名称: string) {
+    await fetchSyncPost(EAPI.重命名文档, {
+      notebook: 笔记本ID,
+      path: 路径,
+      title: 新名称,
+    });
+  }
+
+  //#region 日记
   public static async 获取日记根文档(
     笔记本ID: string
   ): Promise<{ id: string }> {
@@ -46,7 +55,10 @@ export default class CL文档 {
       "YYYY/MM/YYYY-MM-DD"
     )}`;
 
-    const { data } = await SQL助手.获取日期对应的日记文档(笔记本ID, 日期日记路径);
+    const { data } = await SQL助手.获取日期对应的日记文档(
+      笔记本ID,
+      日期日记路径
+    );
     if (data.length === 0) {
       const 文档ID = await this.通过Markdown创建(
         笔记本ID,
@@ -68,4 +80,5 @@ export default class CL文档 {
     }
     return data[0];
   }
+  //#endregion
 }

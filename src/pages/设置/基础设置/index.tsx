@@ -1,5 +1,5 @@
 import { 设置块属性 } from "@/API/块数据";
-import CL文档 from "@/API/文档";
+import CL文档 from "@/class/文档";
 import { 列出笔记本 } from "@/API/笔记本";
 import SQL助手 from "@/class/SQL助手";
 import { E块属性名称, E持久化键 } from "@/constant/系统码";
