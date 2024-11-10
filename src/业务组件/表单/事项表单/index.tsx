@@ -76,7 +76,7 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
     <增改查弹窗表单
       ref={表单Ref}
       弹窗主题="事项"
-      表单内容={() => {
+      表单内容={(表单状态) => {
         return (
           <>
             <Form.Item name="名称" label="名称" rules={[{ required: true }]}>
@@ -108,6 +108,7 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
               ]}
             >
               <Cascader
+                disabled={表单状态 !== "添加"}
                 expandTrigger="hover"
                 options={领域分类列表.map((领域) => ({
                   value: 领域.ID,
@@ -170,7 +171,9 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
               <Select options={OptionsHelper.程度} />
             </Form.Item>
             <Form.Item name="单开一页" label="单开一页" valuePropName="checked">
-              <Checkbox>为该事项创建一个文档</Checkbox>
+              <Checkbox disabled={表单状态 !== "添加"}>
+                为该事项创建一个文档
+              </Checkbox>
             </Form.Item>
           </>
         );
