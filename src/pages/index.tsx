@@ -1,5 +1,5 @@
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
-import 面包屑 from "@/components/面包屑";
+import 面包屑 from "@/components/基础/面包屑";
 import { E持久化键 } from "@/constant/系统码";
 import { 持久化atom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";

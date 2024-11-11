@@ -1,6 +1,6 @@
 import SQL助手 from "@/class/SQL助手";
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
-import 进度条 from "@/components/进度条";
+import 进度条 from "@/components/基础/进度条";
 import { E事项状态 } from "@/constant/状态配置";
 import { E持久化键 } from "@/constant/系统码";
 import { 持久化atom } from "@/store";
