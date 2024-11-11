@@ -5,7 +5,7 @@ import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 
 const { Text } = Typography;
-export const 版本号 = "P0.1.1-3";
+export const 版本号 = "P0.1.2";
 
 function 更新公告() {
   const [持久化] = useAtom(持久化atom);
@@ -35,8 +35,8 @@ function 更新公告() {
       onCancel={() => 设置展示更新公告(false)}
     >
       <Typography>
-        <h1>{版本号}更新公告</h1>
-        <h2>功能</h2>
+        <h3>{版本号}更新公告</h3>
+        <h4>功能</h4>
         <ol>
           <li>
             支持通过Cron表达式设置重复，重复的事项会在
