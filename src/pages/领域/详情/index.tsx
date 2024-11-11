@@ -1,7 +1,6 @@
 import SQL助手 from "@/class/SQL助手";
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
 import { 事项列配置 } from "@/constant/columns/事项";
-import { E事项状态 } from "@/constant/状态配置";
 import { 思源协议 } from "@/constant/系统码";
 import { I事项, I分类, I领域 } from "@/types/喧嚣/事项";
 import 事项表单 from "@/业务组件/表单/事项表单";
@@ -84,7 +83,6 @@ function 领域详情() {
           onClick={() => {
             事项Ref.current.令表单状态为("添加");
             事项Ref.current.令表单值为({
-              状态: E事项状态.未开始,
               领域分类: [state.ID, 页签键 === 所有 ? state.默认分类 : 页签键],
             });
           }}

@@ -2,8 +2,9 @@ import { OptionsHelper } from "@/class/OptionsHelper";
 import Cron输入 from "@/components/Cron输入";
 import 增改查弹窗表单, {
   I增改查弹窗表单Ref,
+  T增改查,
 } from "@/components/增改查弹窗表单";
-import { E提醒 } from "@/constant/状态配置";
+import { E事项状态, E提醒 } from "@/constant/状态配置";
 import { E时间格式化 } from "@/constant/配置常量";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 生成事项 } from "@/tools/事项/事项";
@@ -29,6 +30,13 @@ export interface I事项表单Props {
 
 function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表单Ref>) {
   const [用户设置] = useAtom(用户设置Atom);
+  const 初始值 = {
+    名称: dayjs().format(E时间格式化.思源时间) + " 未命名事项",
+    状态: E事项状态.未开始,
+    重要程度: 5,
+    紧急程度: 5,
+    提醒: E提醒.不提醒,
+  };
 
   const { 事项, 完成回调 } = props;
   const 表单Ref = useRef<I增改查弹窗表单Ref>(null);
@@ -37,13 +45,15 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
 
   useImperativeHandle(ref, () => {
     return {
-      令表单状态为: 表单Ref.current?.令表单状态为,
+      令表单状态为: (状态: T增改查) => {
+        if (状态 === "添加") {
+          表单Ref.current?.令表单值为(初始值);
+        }
+        表单Ref.current?.令表单状态为(状态);
+      },
       令表单值为: (事项初始值: Partial<I事项>) => {
         表单Ref.current?.令表单值为({
-          名称: dayjs().format(E时间格式化.思源时间) + " 未命名事项",
-          重要程度: 5,
-          紧急程度: 5,
-          提醒: E提醒.不提醒,
+          ...初始值,
           ...事项初始值,
         });
       },

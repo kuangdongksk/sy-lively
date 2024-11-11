@@ -1,9 +1,12 @@
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
 import 领域表单 from "@/业务组件/表单/领域表单";
+import { message } from "antd";
 import { useRef } from "react";
 import { useStyle } from "./index.styles";
 
-function 新建领域() {
+function 新建领域(props: { 完成回调?: () => void }) {
+  const { 完成回调 } = props;
+
   const { styles } = useStyle();
 
   const 领域表单Ref = useRef<I增改查弹窗表单Ref>(null);
@@ -23,7 +26,13 @@ function 新建领域() {
         <div className={styles.卡片内容中间}></div>
       </div>
 
-      <领域表单 ref={领域表单Ref} />
+      <领域表单
+        ref={领域表单Ref}
+        完成回调={() => {
+          完成回调 && 完成回调();
+          message.success("新建成功");
+        }}
+      />
     </div>
   );
 }

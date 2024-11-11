@@ -16,13 +16,7 @@ function 错误页面() {
       <h1>页面出错了！!</h1>
       <p>{decodeURI(error.data)}</p>
 
-      <Button
-        onClick={() => {
-          导航到("/主页");
-        }}
-      >
-        返回主页
-      </Button>
+      <Button onClick={() => 导航到("/主页")}>返回主页</Button>
     </div>
   );
 }
