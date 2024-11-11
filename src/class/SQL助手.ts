@@ -121,6 +121,14 @@ export default class SQL助手 {
   //#endregion
 
   //#region 事项
+  public static async 获取所有事项(): Promise<I事项[]> {
+    const { data } = await fetchSyncPost("/api/query/sql", {
+      stmt: `SELECT * FROM attributes WHERE name='${E块属性名称.事项}'`,
+    });
+
+    return data.map((item: { value: string }) => JSON.parse(item.value));
+  }
+
   public static async 获取笔记本下的所有事项(
     笔记本ID: string
   ): Promise<I事项[]> {

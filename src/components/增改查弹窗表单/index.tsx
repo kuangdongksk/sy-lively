@@ -51,7 +51,7 @@ function O增改查弹窗表单(
     >
       <Form
         className={styles.表单}
-        labelCol={{ span: 4 }}
+        labelCol={{ span: 5 }}
         initialValues={表单值}
         variant={表单状态 === "查看" ? "borderless" : "outlined"}
         validateTrigger="onBlur"

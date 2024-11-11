@@ -1,9 +1,10 @@
+import { Provider } from "jotai";
 import ReactDOM from "react-dom/client";
 import { getFrontend, openTab, Plugin } from "siyuan";
 import App from "./App";
+import { 启动器 } from "./class/启动器";
 import { 提示器 } from "./class/提示器";
 import { E持久化键 } from "./constant/系统码";
-import { Provider } from "jotai";
 import { 仓库, 持久化atom } from "./store";
 
 export const PluginId = "lively_SaSa";
@@ -13,7 +14,28 @@ const TAB_TYPE = "custom_tab";
 
 export default class SyLively extends Plugin {
   private isMobile: boolean;
+  private getData = async (key: E持久化键) => {
+    let data: any;
+    try {
+      data = await this.loadData(key);
+    } catch (error) {
+      console.log("🚀 ~ AccessControllerPlugin ~ getData ~ error:", error);
+      return null;
+    }
+    return data;
+  };
+  private putData = async (key: E持久化键, value: any) => {
+    try {
+      await this.saveData(key, value);
+      return true;
+    } catch (error) {
+      console.log("🚀 ~ AccessControllerPlugin ~ saveData ~ error:", error);
+      return false;
+    }
+  };
+
   private 提示器1: 提示器 = new 提示器();
+  private 启动器1: 启动器 = new 启动器(this.getData, this.putData);
 
   async onload() {
     this.isMobile =
@@ -39,26 +61,8 @@ export default class SyLively extends Plugin {
     tabDiv.style.height = "100%";
     tabDiv.id = PluginId;
 
-    const getData = async (key: E持久化键) => {
-      let data: any;
-      try {
-        data = await this.loadData(key);
-      } catch (error) {
-        console.log("🚀 ~ AccessControllerPlugin ~ getData ~ error:", error);
-        return null;
-      }
-      return data;
-    };
-
-    const saveData = async (key: E持久化键, value: any) => {
-      try {
-        await this.saveData(key, value);
-        return true;
-      } catch (error) {
-        console.log("🚀 ~ AccessControllerPlugin ~ saveData ~ error:", error);
-        return false;
-      }
-    };
+    const getData = this.getData;
+    const saveData = this.putData;
 
     // 添加自定义页签
     this.addTab({

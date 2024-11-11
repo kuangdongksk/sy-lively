@@ -1,5 +1,4 @@
 import { OptionsHelper } from "@/class/OptionsHelper";
-import SQL助手 from "@/class/SQL助手";
 import Cron输入 from "@/components/Cron输入";
 import 增改查弹窗表单, {
   I增改查弹窗表单Ref,
@@ -14,29 +13,15 @@ import {
   新建事项文档,
   更新事项块,
 } from "@/tools/事项/事项块";
-import { I事项, I领域分类, T层级 } from "@/types/喧嚣/事项";
-import {
-  Button,
-  Cascader,
-  DatePicker,
-  Form,
-  Input,
-  message,
-  Select,
-} from "antd";
+import { I事项, T层级 } from "@/types/喧嚣/事项";
+import { Button, Form, Input, message, Select } from "antd";
 import Checkbox from "antd/es/checkbox/Checkbox";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
-import {
-  forwardRef,
-  Ref,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+import { forwardRef, Ref, useImperativeHandle, useRef, useState } from "react";
+import 起止时间 from "../../表单项/起止时间";
+import 领域分类 from "../../表单项/领域分类";
 
-const { RangePicker } = DatePicker;
 export interface I事项表单Props {
   事项?: I事项;
   完成回调?: () => void | Promise<void>;
@@ -47,17 +32,8 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
 
   const { 事项, 完成回调 } = props;
   const 表单Ref = useRef<I增改查弹窗表单Ref>(null);
-  const [领域分类列表, 令领域分类列表为] = useState<I领域分类[]>([]);
 
   const [展开更多, 令展开更多为] = useState(false);
-
-  const 加载领域分类列表 = async () => {
-    await SQL助手.获取笔记本下的所有分类按领域(用户设置.笔记本ID).then(
-      (data) => {
-        令领域分类列表为(data);
-      }
-    );
-  };
 
   useImperativeHandle(ref, () => {
     return {
@@ -74,10 +50,6 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
     };
   });
 
-  useEffect(() => {
-    加载领域分类列表();
-  }, [用户设置]);
-
   return (
     <增改查弹窗表单
       ref={表单Ref}
@@ -91,73 +63,9 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
             <Form.Item name="状态" label="状态">
               <Select options={OptionsHelper.状态} />
             </Form.Item>
-            <Form.Item
-              name="领域分类"
-              label="领域分类"
-              rules={[
-                { required: true, message: "请选择领域分类" },
-                {
-                  type: "array",
-                  min: 2,
-                  message: (
-                    <>
-                      请选择分类，P002：有分类未展示？ 查看
-                      <a
-                        href="https://github.com/kuangdongksk/sy-lively/wiki/%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF#p002%E6%9C%89%E5%88%86%E7%B1%BB%E6%9C%AA%E5%B1%95%E7%A4%BA"
-                        target="_blank"
-                      >
-                        解决方案
-                      </a>
-                    </>
-                  ),
-                },
-              ]}
-            >
-              <Cascader
-                disabled={表单状态 !== "添加"}
-                expandTrigger="hover"
-                options={领域分类列表.map((领域) => ({
-                  value: 领域.ID,
-                  label: 领域.名称,
-                  children: 领域.分类.map((分类) => ({
-                    value: 分类.ID,
-                    label: 分类.名称,
-                  })),
-                }))}
-              />
-            </Form.Item>
-            <Form.Item
-              name="起止时间"
-              label="起止时间"
-              rules={[
-                {
-                  validator: (_rule, value) => {
-                    if (!value || !value[0] || !value[1]) {
-                      return Promise.resolve();
-                    }
-                    if (dayjs(value[0]).isAfter(dayjs(value[1]))) {
-                      return Promise.reject("开始时间不能大于结束时间！");
-                    }
-                    return Promise.resolve();
-                  },
-                },
-                ({ getFieldValue }) => ({
-                  validator(_rule, value) {
-                    if (
-                      (!value || !value[0] || !value[1]) &&
-                      getFieldValue("提醒") !== E提醒.不提醒
-                    ) {
-                      return Promise.reject(
-                        "请选择开始时间和结束时间，或者取消提醒"
-                      );
-                    }
-                    return Promise.resolve();
-                  },
-                }),
-              ]}
-            >
-              <RangePicker showTime placeholder={["开始时间", "结束时间"]} />
-            </Form.Item>
+
+            <领域分类 表单状态={表单状态} />
+            <起止时间 />
             <Form.Item name="提醒" label="提醒">
               <Select options={OptionsHelper.提醒} />
             </Form.Item>

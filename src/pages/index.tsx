@@ -19,6 +19,7 @@ import { useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAppStyle } from "./index.style";
+import 更新公告 from "./业务组件/更新公告";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -104,6 +105,7 @@ function App() {
         </Layout>
       </Layout>
       <事项表单 ref={事项Ref} />
+      <更新公告 />
     </>
   );
 }
