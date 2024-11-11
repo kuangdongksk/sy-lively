@@ -1,18 +1,19 @@
 import { OptionsHelper } from "@/class/OptionsHelper";
 import SQL助手 from "@/class/SQL助手";
+import Cron输入 from "@/components/Cron输入";
 import 增改查弹窗表单, {
   I增改查弹窗表单Ref,
 } from "@/components/增改查弹窗表单";
 import { E提醒 } from "@/constant/状态配置";
 import { E时间格式化 } from "@/constant/配置常量";
+import { 用户设置Atom } from "@/store/用户设置";
+import { 生成事项 } from "@/tools/事项/事项";
 import {
   插入到日记,
   新建事项块,
   新建事项文档,
   更新事项块,
 } from "@/tools/事项/事项块";
-import { 用户设置Atom } from "@/store/用户设置";
-import { 生成事项 } from "@/tools/事项/事项";
 import { I事项, I领域分类, T层级 } from "@/types/喧嚣/事项";
 import {
   Button,
@@ -160,9 +161,9 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
             <Form.Item name="提醒" label="提醒">
               <Select options={OptionsHelper.提醒} />
             </Form.Item>
-            <Form.Item name="重复" label="重复">
-              <Cascader />
-            </Form.Item>
+
+            <Cron输入 />
+
             <Form.Item>
               <Button type="link" onClick={() => 令展开更多为(!展开更多)}>
                 {展开更多 ? "收起" : "展开更多"}
