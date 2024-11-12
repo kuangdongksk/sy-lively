@@ -5,7 +5,7 @@ import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 
 const { Text } = Typography;
-export const 版本号 = "P0.1.2";
+export const 版本号 = "P0.1.3";
 
 function 更新公告() {
   const [持久化] = useAtom(持久化atom);
@@ -36,17 +36,22 @@ function 更新公告() {
     >
       <Typography>
         <h3>{版本号}更新公告</h3>
-        {/* <h4>功能</h4>
+        <h4>功能</h4>
         <ol>
-          <li></li>
-        </ol> */}
-        <h2>优化</h2>
+          <li>
+            对事项中的错误的字段增加判断，目前会将无法识别的提醒和重复重置为不提醒和不重复
+          </li>
+        </ol>
+        <h4>优化</h4>
         <ol>
           <li>添加领域后刷新领域界面</li>
           <li>所有新增事项表单添加初始值</li>
+          <li>增强通知，现在通知还会在桌面提示</li>
         </ol>
-        {/* <h2>修复</h2>
-        <ol></ol> */}
+        <h4>修复</h4>
+        <ol>
+          <li>修复重复不生效问题</li>
+        </ol>
       </Typography>
     </Modal>
   );
