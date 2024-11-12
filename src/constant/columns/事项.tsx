@@ -62,15 +62,16 @@ export const 事项列配置: ProColumns[] = [
     title: "开始时间",
     valueType: "dateTime",
     render: (_dom, record) => {
+      const 开始时间 = record.开始时间;
+      if (!开始时间) return <span>无</span>;
       return (
         <span>
-          {dayjs(record.开始时间, E时间格式化.思源时间).format(
-            E时间格式化.日记格式
-          )}
+          {dayjs(开始时间, E时间格式化.思源时间).format(E时间格式化.日记格式)}
         </span>
       );
     },
     sorter: (a, b) => {
+      if (!a.开始时间 || !b.开始时间) return 0;
       return (
         dayjs(a.开始时间, E时间格式化.思源时间).valueOf() -
         dayjs(b.开始时间, E时间格式化.思源时间).valueOf()
@@ -88,15 +89,16 @@ export const 事项列配置: ProColumns[] = [
     valueType: "dateTime",
     // width: 150,
     render: (_dom, record) => {
+      const 结束时间 = record.结束时间;
+      if (!结束时间) return <span>无</span>;
       return (
         <span>
-          {dayjs(record.结束时间, E时间格式化.思源时间).format(
-            E时间格式化.日记格式
-          )}
+          {dayjs(结束时间, E时间格式化.思源时间).format(E时间格式化.日记格式)}
         </span>
       );
     },
     sorter: (a, b) => {
+      if (!a.结束时间 || !b.结束时间) return 0;
       return (
         dayjs(a.结束时间, E时间格式化.思源时间).valueOf() -
         dayjs(b.结束时间, E时间格式化.思源时间).valueOf()
@@ -142,11 +144,11 @@ export const 事项列配置: ProColumns[] = [
       return 映射[a.状态] - 映射[b.状态];
     },
   },
-  // {
-  //   title: "重复",
-  //   key: "重复",
-  //   dataIndex: "重复",
-  // },
+  {
+    title: "重复",
+    key: "重复",
+    dataIndex: "重复",
+  },
   {
     title: "层级",
     key: "层级",

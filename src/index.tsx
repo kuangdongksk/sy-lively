@@ -2,10 +2,9 @@ import { Provider } from "jotai";
 import ReactDOM from "react-dom/client";
 import { getFrontend, openTab, Plugin } from "siyuan";
 import App from "./App";
-import { 启动器 } from "./class/启动器";
-import { 提示器 } from "./class/提示器";
 import { E持久化键 } from "./constant/系统码";
 import { 仓库, 持久化atom } from "./store";
+import { 触发器 } from "./class/触发器";
 
 export const PluginId = "lively_SaSa";
 
@@ -34,8 +33,7 @@ export default class SyLively extends Plugin {
     }
   };
 
-  private 提示器1: 提示器 = new 提示器();
-  private 启动器1: 启动器 = new 启动器(this.getData, this.putData);
+  private 提示器1: 触发器 = new 触发器(this.getData, this.putData);
 
   async onload() {
     this.isMobile =

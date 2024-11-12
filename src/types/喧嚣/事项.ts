@@ -1,4 +1,4 @@
-import { E事项状态 } from "@/constant/状态配置";
+import { E事项状态, E提醒 } from "@/constant/状态配置";
 
 export interface I领域 {
   ID: string;
@@ -37,9 +37,9 @@ export interface I事项 {
   开始时间?: string;
   结束时间?: string;
   状态: E事项状态;
-  重复: TCorn | false;
+  重复: TCorn | "u不重复";
   单开一页: boolean;
-  提醒: TCorn | false;
+  提醒: E提醒;
   逾期不再提醒: boolean;
 
   // ID就是超级块ID

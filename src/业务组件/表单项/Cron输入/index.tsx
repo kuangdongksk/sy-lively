@@ -18,7 +18,7 @@ function Cron输入(props: ICron输入Props) {
         rules={[
           {
             validator: (_rule, value) => {
-              if (!value) {
+              if (value === "u不重复") {
                 令下次执行时间为(null);
                 return Promise.resolve();
               }
@@ -40,7 +40,7 @@ function Cron输入(props: ICron输入Props) {
             },
           },
         ]}
-        tooltip={"请使用AI帮你生成标准的Cron表达式，不填则不重复"}
+        tooltip={'请使用AI帮你生成标准的Cron表达式，填"u不重复"则不重复'}
       >
         <Input />
       </Form.Item>
