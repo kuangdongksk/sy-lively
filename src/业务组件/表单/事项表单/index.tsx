@@ -37,6 +37,7 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
     紧急程度: 5,
     提醒: E提醒.不提醒,
     重复: "u不重复",
+    单开一页: false,
   };
 
   const { 事项, 完成回调 } = props;

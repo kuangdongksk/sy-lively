@@ -5,7 +5,10 @@ import { E事项状态 } from "@/constant/状态配置";
 import 删除事项 from "@/pages/领域/components/删除事项";
 import { I事项 } from "@/types/喧嚣/事项";
 import 事项表单 from "@/业务组件/表单/事项表单";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined
+} from "@ant-design/icons";
 import { ProTable } from "@ant-design/pro-components";
 import { Button } from "antd";
 import dayjs from "dayjs";
@@ -50,8 +53,9 @@ function 事项表格<T事项 extends I事项>(props: I事项表格Props<T事项
             valueType: "option",
             fixed: "right",
             render: (_text, record) => [
+              // <Button key="添加子项" icon={<PlusCircleOutlined />} />,
               <Button
-                key="edit"
+                key="编辑"
                 type="link"
                 icon={<EditOutlined />}
                 onClick={() => {

@@ -3,10 +3,10 @@ import { E事项状态, E提醒, 获取提醒参数 } from "@/constant/状态配
 import { E持久化键 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
 import { 更新事项块 } from "@/tools/事项/事项块";
+import { I事项 } from "@/types/喧嚣/事项";
 import CronParser from "cron-parser";
 import dayjs from "dayjs";
 import SQL助手 from "./SQL助手";
-import { I事项 } from "@/types/喧嚣/事项";
 
 export class 触发器 {
   private 计时器: NodeJS.Timeout | null = null;
@@ -34,8 +34,12 @@ export class 触发器 {
     const 所有事项 = await SQL助手.获取所有事项();
 
     所有事项.forEach((事项) => {
+      if (this.修复事项(事项)) {
+        return;
+      }
+
       const { 名称, 重复, 提醒, 状态, 开始时间, 结束时间 } = 事项;
-      this.检查是否需要提醒(事项, {
+      this.检查是否需要提醒({
         名称,
         提醒: 提醒,
         状态,
@@ -44,18 +48,13 @@ export class 触发器 {
       });
 
       if (重复 !== "u不重复" && 状态 === E事项状态.已完成) {
-        try {
-          const 定时器 = CronParser.parseExpression(重复);
-          const 下次开始时间 = dayjs(定时器.next().toDate()).format(
-            E时间格式化.思源时间
-          );
-          事项.开始时间 = 下次开始时间;
-          事项.状态 = E事项状态.未开始;
-          更新事项块(事项);
-        } catch (error) {
-          事项.重复 = "u不重复";
-          更新事项块(事项);
-        }
+        const 定时器 = CronParser.parseExpression(重复);
+        const 下次开始时间 = dayjs(定时器.next().toDate()).format(
+          E时间格式化.思源时间
+        );
+        事项.开始时间 = 下次开始时间;
+        事项.状态 = E事项状态.未开始;
+        更新事项块(事项);
       }
     });
     if (this.即将开始事项.length === 0 && this.逾期事项.length === 0) {
@@ -75,27 +74,38 @@ export class 触发器 {
     this.逾期事项 = [];
   }
 
-  private 检查是否需要提醒(
-    事项: I事项,
-    参数: {
-      名称: string;
-      提醒: E提醒;
-      状态: E事项状态;
-      开始时间?: string;
-      结束时间?: string;
-    }
-  ) {
-    const { 名称, 提醒, 状态, 开始时间, 结束时间 } = 参数;
-
-    if (提醒 === E提醒.不提醒) {
-      return;
-    }
-
+  private 修复事项(事项: I事项): boolean {
+    const { 重复, 提醒, 单开一页 } = 事项;
     try {
       const { 单位: _1, 数量: _2 } = 获取提醒参数(提醒);
     } catch (error) {
       事项.提醒 = E提醒.不提醒;
+      try {
+        CronParser.parseExpression(重复);
+      } catch (error) {
+        事项.重复 = "u不重复";
+      }
+      if (typeof 单开一页 !== "boolean") {
+        事项.单开一页 = false;
+      }
+
       更新事项块(事项);
+      return true;
+    }
+
+    return false;
+  }
+
+  private 检查是否需要提醒(参数: {
+    名称: string;
+    提醒: E提醒;
+    状态: E事项状态;
+    开始时间?: string;
+    结束时间?: string;
+  }) {
+    const { 名称, 提醒, 状态, 开始时间, 结束时间 } = 参数;
+
+    if (提醒 === E提醒.不提醒) {
       return;
     }
 

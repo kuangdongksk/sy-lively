@@ -65,12 +65,13 @@ export async function 新建事项文档(事项: I事项) {
 
 export async function 更新事项块(事项: I事项) {
   const { ID, 笔记本ID, 名称, 单开一页 } = 事项;
-  const 更新标题 = async () => {
-    单开一页
-      ? await SQL助手.获取块的路径(ID).then(async (res) => {
+  const 更新标题 = 单开一页
+    ? async () =>
+        await SQL助手.获取块的路径(ID).then(async (res) => {
           await CL文档.重命名(笔记本ID, res, 名称);
         })
-      : await 更新块({
+    : async () =>
+        await 更新块({
           id: 事项.标题区ID,
           data: Kramdown助手.生成标题块({
             标题: 事项.名称,
@@ -79,9 +80,8 @@ export async function 更新事项块(事项: I事项) {
           }),
           dataType: "markdown",
         });
-  };
 
-  await Promise.all([
+  const 结果 = await Promise.all([
     // 更新块属性
     await 设置块属性({
       id: 事项.ID,
@@ -97,6 +97,14 @@ export async function 更新事项块(事项: I事项) {
       dataType: "markdown",
     }),
   ]);
+  if (
+    结果.some((res) => {
+      if (!res) return false;
+      return res.code !== 0;
+    })
+  ) {
+    console.error("更新事项块失败", 事项, 结果);
+  }
 }
 
 export async function 时间格式处理(事项: I事项) {

@@ -25,33 +25,18 @@ export const 事项列配置: ProColumns[] = [
     key: "名称",
     title: "名称",
     render: (_dom, record) => {
-      return <a href={思源协议 + record.ID}>{record.名称}</a>;
+      return (
+        <a
+          href={思源协议 + record.ID}
+          data-type="block-ref"
+          data-id={record.ID}
+        >
+          {record.名称}
+        </a>
+      );
     },
   },
-  {
-    dataIndex: "重要程度",
-    key: "重要程度",
-    title: "重要程度",
-    valueEnum: 程度,
-    valueType: "select",
-    width: 100,
-    render: (_dom, record) => {
-      return <数字标签 num={record.重要程度} 颜色数组={red} />;
-    },
-    sorter: (a, b) => a.重要程度 - b.重要程度,
-  },
-  {
-    dataIndex: "紧急程度",
-    key: "紧急程度",
-    title: "紧急程度",
-    valueType: "select",
-    valueEnum: 程度,
-    width: 100,
-    render: (_dom, record) => {
-      return <数字标签 num={record.紧急程度} 颜色数组={green} />;
-    },
-    sorter: (a, b) => a.紧急程度 - b.紧急程度,
-  },
+
   {
     dataIndex: "开始时间",
     defaultSortOrder: "ascend",
@@ -150,10 +135,34 @@ export const 事项列配置: ProColumns[] = [
     dataIndex: "重复",
   },
   {
-    title: "层级",
-    key: "层级",
-    dataIndex: "层级",
+    dataIndex: "重要程度",
+    key: "重要程度",
+    title: "重要程度",
+    valueEnum: 程度,
+    valueType: "select",
+    width: 100,
+    render: (_dom, record) => {
+      return <数字标签 num={record.重要程度} 颜色数组={red} />;
+    },
+    sorter: (a, b) => a.重要程度 - b.重要程度,
   },
+  {
+    dataIndex: "紧急程度",
+    key: "紧急程度",
+    title: "紧急程度",
+    valueType: "select",
+    valueEnum: 程度,
+    width: 100,
+    render: (_dom, record) => {
+      return <数字标签 num={record.紧急程度} 颜色数组={green} />;
+    },
+    sorter: (a, b) => a.紧急程度 - b.紧急程度,
+  },
+  // {
+  //   title: "层级",
+  //   key: "层级",
+  //   dataIndex: "层级",
+  // },
   // {
   //   title: "父项",
   //   key: "父项",

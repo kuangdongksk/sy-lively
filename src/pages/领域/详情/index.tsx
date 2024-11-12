@@ -31,7 +31,7 @@ function 领域详情() {
     return 页签键 === 所有 ? (
       "所有"
     ) : (
-      <a href={思源协议 + 页签键}>
+      <a href={思源协议 + 页签键} data-type="block-ref" data-id={页签键}>
         {分类.find((item) => item.ID === 页签键)?.名称}
       </a>
     );
