@@ -7,6 +7,10 @@ export const C分类 = "category";
 export const 属性前缀 = `${自定义}-plugin-${喧嚣}-`;
 
 export enum E块属性名称 {
+  //
+  名称 = "name",
+  别名 = "alias",
+  //
   用户设置 = `${属性前缀}userSettings`,
   领域设置 = `${属性前缀}${C领域}Settings`,
   分类设置 = `${属性前缀}${C分类}Settings`,

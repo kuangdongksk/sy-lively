@@ -1,13 +1,16 @@
+import { ThemeProvider } from "antd-style";
 import { Provider } from "jotai";
+import { nanoid } from "nanoid";
 import ReactDOM from "react-dom/client";
 import { Dialog, getFrontend, openTab, Plugin } from "siyuan";
+import { 系统推送错误消息 } from "./API/推送消息";
 import App from "./App";
+import { 触发器 } from "./class/触发器";
 import { E持久化键 } from "./constant/系统码";
 import { 仓库, 持久化atom } from "./store";
-import { 触发器 } from "./class/触发器";
-import { Modal } from "antd";
-import { 卡片块 } from "./class/卡片/卡片块";
-import { 系统推送错误消息 } from "./API/推送消息";
+import { 亮色主题 } from "./theme/亮色";
+import { 暗色主题 } from "./theme/暗色";
+import 卡片表单 from "./业务组件/表单/卡片表单";
 
 export const PluginId = "lively_SaSa";
 
@@ -66,13 +69,13 @@ export default class SyLively extends Plugin {
     });
 
     // 添加打开新建卡片快捷键
-    // this.addCommand({
-    //   langKey: "喧嚣-新建卡片",
-    //   hotkey: "⌥Q",
-    //   callback: () => {
-    //     this.打开新建卡片();
-    //   },
-    // });
+    this.addCommand({
+      langKey: "喧嚣-新建卡片",
+      hotkey: "⌥Q",
+      callback: () => {
+        this.打开新建卡片();
+      },
+    });
   }
 
   onLayoutReady() {
@@ -128,9 +131,9 @@ export default class SyLively extends Plugin {
   }
 
   async 打开新建卡片() {
-    const 父项ID = await this.loadData(E持久化键.卡片文档ID);
+    const 卡片文档ID = await this.loadData(E持久化键.卡片文档ID);
 
-    if (!父项ID) {
+    if (!卡片文档ID) {
       系统推送错误消息({
         msg: "未找到卡片文档ID",
         timeout: 10 * 1000,
@@ -138,38 +141,29 @@ export default class SyLively extends Plugin {
       return;
     }
 
-    const id = await 卡片块.新建卡片(父项ID);
+    const rootId = nanoid();
 
-    this.addFloatLayer({
-      ids: [id],
-      defIds: [],
-      x: window.innerWidth / 2 - 300,
-      y: window.innerHeight / 2,
+    const 对话框 = new Dialog({
+      title: "新建卡片",
+      content: `<div id='${rootId}'></div>`,
+      width: "400px",
+      height: "300px",
+      hideCloseIcon: true,
     });
 
-    // const 对话框 = new Dialog({
-    //   title: "新建卡片",
-    //   content: `<div>
-    //     <form
-    //       onsubmit="(e) => {
-    //         console.log("🚀 ~ SyLively ~ e:", e)
-    //       }"
-    //       id="form"
-    //     >
-    //       <div>
-    //         <label>标题</label>
-    //         <input type="text" id="title" />
-    //       </div>
-    //       <div>
-    //         <label>内容</label>
-    //         <textarea id="content"></textarea>
-    //       </div>
-    //       <button type="submit">提交</button>
-    //     </form>
-    //   </div>`,
-    //   width: "400px",
-    //   height: "300px",
-    //   hideCloseIcon: true,
-    // });
+    const rootDom = document.getElementById(rootId);
+    const root = ReactDOM.createRoot(rootDom);
+
+    root.render(
+      <ThemeProvider
+        defaultThemeMode={"auto"}
+        theme={(appearance) => {
+          if (appearance === "light") return 亮色主题;
+          return 暗色主题;
+        }}
+      >
+        <卡片表单 卡片文档ID={卡片文档ID} />
+      </ThemeProvider>
+    );
   }
 }

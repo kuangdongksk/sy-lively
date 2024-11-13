@@ -212,5 +212,18 @@ export default class SQL助手 {
       return data[0];
     });
   }
+
+  //#endregion
+
+  //#region 属性
+  public static async 根据块ID获取属性(块ID): Promise<any> {
+    const sql = `SELECT * FROM attributes WHERE block_id='${块ID}'`;
+
+    return fetchSyncPost("/api/query/sql", {
+      stmt: sql,
+    }).then(({ data }) => {
+      return data;
+    });
+  }
   //#endregion
 }
