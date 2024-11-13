@@ -6,6 +6,8 @@ import livereload from "rollup-plugin-livereload";
 import { defineConfig } from "vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import zipPack from "vite-plugin-zip-pack";
+import jotaiDebugLabel from "jotai/babel/plugin-debug-label";
+import jotaiReactRefresh from "jotai/babel/plugin-react-refresh";
 
 const args = minimist(process.argv.slice(2));
 const isWatch = args.watch || args.w || false;
@@ -20,7 +22,7 @@ export default defineConfig({
   },
 
   plugins: [
-    react(),
+    react({ babel: { plugins: [jotaiDebugLabel, jotaiReactRefresh] } }),
 
     viteStaticCopy({
       targets: [

@@ -16,6 +16,11 @@ export enum E块属性名称 {
   日记前缀 = `${自定义}-dailynote-`,
 }
 
+export enum E持久化键 {
+  用户设置 = "用户设置",
+  当前版本 = "当前版本",
+}
+
 export enum E数据索引 {
   事项数据 = "事项数据",
 }

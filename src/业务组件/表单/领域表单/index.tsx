@@ -1,35 +1,45 @@
 import { 设置块属性 } from "@/API/块数据";
-import CL文档 from "@/API/文档";
-import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
-import { E块属性名称 } from "@/constant/系统码";
+import CL文档 from "@/class/文档";
+import 增改查弹窗表单, {
+  I增改查弹窗表单Ref,
+} from "@/components/增改查弹窗表单";
+import { E块属性名称, E持久化键 } from "@/constant/系统码";
+import { 持久化atom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
-import { 更新用户设置 } from "@/tools/设置";
-import { I分类, I领域 } from "@/types/喧嚣";
+import { I分类, I领域 } from "@/types/喧嚣/事项";
 import { Checkbox, Form, Input } from "antd";
 import { useAtom } from "jotai";
+import { forwardRef, Ref, useImperativeHandle, useRef } from "react";
 
 export interface I领域表单Props {
-  弹窗状态: T弹窗状态;
-
-  令弹窗状态为: (弹窗状态: T弹窗状态) => void;
-
   完成回调?: () => void | Promise<void>;
 }
 
-function 领域表单(props: I领域表单Props) {
+function O领域表单(props: I领域表单Props, ref: Ref<I增改查弹窗表单Ref>) {
   const [用户设置, 设置用户设置] = useAtom(用户设置Atom);
-  const { 弹窗状态, 令弹窗状态为, 完成回调 } = props;
+  const [持久化] = useAtom(持久化atom);
+
+  const { 完成回调 } = props;
+  const 表单Ref = useRef<I增改查弹窗表单Ref>(null);
+
+  useImperativeHandle(ref, () => {
+    return {
+      令表单状态为: 表单Ref.current?.令表单状态为,
+      令表单值为: 表单Ref.current?.令表单值为,
+    };
+  });
 
   return (
-    <弹窗表单
-      弹窗标题={"领域"}
-      弹窗状态={弹窗状态}
-      表单配置={{
-        initialValues: undefined,
-      }}
-      表单内容={
+    <增改查弹窗表单
+      ref={表单Ref}
+      弹窗主题={"领域"}
+      表单内容={() => (
         <>
-          <Form.Item name="领域名称" label="领域名称" required>
+          <Form.Item
+            name="领域名称"
+            label="领域名称"
+            rules={[{ required: true }]}
+          >
             <Input type="text" maxLength={6} />
           </Form.Item>
           <Form.Item name="领域描述" label="领域描述">
@@ -43,10 +53,9 @@ function 领域表单(props: I领域表单Props) {
             <Checkbox>设置为默认领域</Checkbox>
           </Form.Item>
         </>
-      }
+      )}
       确认按钮文本="添加领域"
-      弹窗确认={() => 令弹窗状态为(undefined)}
-      弹窗取消={() => 令弹窗状态为(undefined)}
+      弹窗取消={() => 表单Ref.current?.令表单状态为(undefined)}
       提交表单={async (value: {
         领域名称: string;
         领域描述: string;
@@ -60,10 +69,14 @@ function 领域表单(props: I领域表单Props) {
         );
 
         if (设置为默认领域) {
-          await 更新用户设置({
-            当前用户设置: 用户设置,
-            更改的用户设置: { 默认领域: 领域文档ID },
-            设置用户设置,
+          await 持久化.保存(E持久化键.用户设置, {
+            ...用户设置,
+            默认领域: 领域文档ID,
+          });
+
+          设置用户设置({
+            ...用户设置,
+            默认领域: 领域文档ID,
           });
         }
 
@@ -107,4 +120,6 @@ function 领域表单(props: I领域表单Props) {
     />
   );
 }
+
+const 领域表单 = forwardRef(O领域表单);
 export default 领域表单;

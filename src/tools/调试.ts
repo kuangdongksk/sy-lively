@@ -8,7 +8,7 @@ export async function 调试(开启调试: boolean) {
   // );
 
   // fetchSyncPost("/api/query/sql", {
-  //   stmt: `CREATE TABLE IF NOT EXISTS things (
+  //   stmt: `CREATE TABLE IF NOT EXISTS things 
   //   id INTEGER PRIMARY KEY,
   //   name TEXT NOT NULL,
   //   age INTEGER

@@ -1,34 +1,39 @@
 import { 设置块属性 } from "@/API/块数据";
-import CL文档 from "@/API/文档";
-import 弹窗表单, { T弹窗状态 } from "@/components/弹窗表单";
+import CL文档 from "@/class/文档";
+import 增改查弹窗表单, {
+  I增改查弹窗表单Ref,
+} from "@/components/增改查弹窗表单";
 import { E块属性名称 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/store/用户设置";
-import { I分类, I领域 } from "@/types/喧嚣";
+import { I分类, I领域 } from "@/types/喧嚣/事项";
 import { Checkbox, Form, Input } from "antd";
 import { useAtom } from "jotai";
+import { forwardRef, Ref, useImperativeHandle, useRef } from "react";
 
 export interface I分类表单Props {
   领域: I领域;
-  弹窗状态: T弹窗状态;
-
-  令弹窗状态为: (弹窗状态: T弹窗状态) => void;
 
   完成回调?: () => void | Promise<void>;
 }
 
-function 分类表单(props: I分类表单Props) {
+function O分类表单(props: I分类表单Props, ref: Ref<I增改查弹窗表单Ref>) {
   const [用户设置] = useAtom(用户设置Atom);
-  const { 领域, 弹窗状态, 令弹窗状态为, 完成回调 } = props;
+  const { 领域, 完成回调 } = props;
+  const 表单Ref = useRef<I增改查弹窗表单Ref>(null);
+
+  useImperativeHandle(ref, () => {
+    return {
+      令表单状态为: 表单Ref.current?.令表单状态为,
+      令表单值为: 表单Ref.current?.令表单值为,
+    };
+  });
 
   return (
-    <弹窗表单
-      弹窗标题="分类"
-      弹窗状态={弹窗状态}
-      表单配置={{
-        initialValues: undefined,
-      }}
+    <增改查弹窗表单
+      ref={表单Ref}
+      弹窗主题="分类"
       确认按钮文本="添加分类"
-      表单内容={
+      表单内容={() => (
         <>
           <Form.Item name="分类名称" label="分类名称" required>
             <Input maxLength={6} />
@@ -44,8 +49,8 @@ function 分类表单(props: I分类表单Props) {
             <Checkbox>设置为默认分类</Checkbox>
           </Form.Item>
         </>
-      }
-      弹窗取消={() => 令弹窗状态为(undefined)}
+      )}
+      弹窗取消={() => 表单Ref.current?.令表单状态为(undefined)}
       提交表单={async (value: {
         分类名称: string;
         分类描述: string;
@@ -91,5 +96,5 @@ function 分类表单(props: I分类表单Props) {
     />
   );
 }
-
+const 分类表单 = forwardRef(O分类表单);
 export default 分类表单;

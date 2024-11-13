@@ -6,10 +6,10 @@ import { useBoolean } from "ahooks";
 import { Button, DatePicker, Input, Select } from "antd";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
-import 数字标签 from "../数字标签";
+import 数字标签 from "../../../../../../components/基础/数字标签";
 import 添加子项 from "../添加子项";
 import { use事项样式 } from "./index.style";
-import { I事项 } from "@/types/喧嚣";
+import { I事项 } from "@/types/喧嚣/事项";
 
 const { RangePicker } = DatePicker;
 const 程度选项数组 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => ({

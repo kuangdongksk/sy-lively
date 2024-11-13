@@ -1,4 +1,4 @@
-import CL文档 from "@/API/文档";
+import CL文档 from "@/class/文档";
 import SQL助手 from "@/class/SQL助手";
 import { 思源协议 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/store/用户设置";

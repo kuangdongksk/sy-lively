@@ -51,7 +51,7 @@ function O增改查弹窗表单(
     >
       <Form
         className={styles.表单}
-        labelCol={{ span: 4 }}
+        labelCol={{ span: 5 }}
         initialValues={表单值}
         variant={表单状态 === "查看" ? "borderless" : "outlined"}
         validateTrigger="onBlur"
@@ -67,6 +67,15 @@ function O增改查弹窗表单(
               textAlign: "center",
             }}
           >
+            <Button
+              className={styles.取消按钮}
+              onClick={async () => {
+                await 弹窗取消?.();
+                令表单状态为(undefined);
+              }}
+            >
+              取消
+            </Button>
             <Button type="primary" htmlType="submit">
               {确认按钮文本}
             </Button>
