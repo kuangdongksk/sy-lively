@@ -1,5 +1,5 @@
 import { 插入前置子块, 插入后置子块, 更新块, 设置块属性 } from "@/API/块数据";
-import Kramdown助手 from "@/class/Kramdown助手";
+import Kramdown助手 from "@/class/块/Kramdown助手";
 import SQL助手 from "@/class/SQL助手";
 import CL文档 from "@/class/文档";
 import { 生成嵌入块Kramdown } from "@/components/模板/Kramdown/嵌入快";
