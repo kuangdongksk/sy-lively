@@ -8,8 +8,6 @@ import App from "./App";
 import { 触发器 } from "./class/触发器";
 import { E持久化键 } from "./constant/系统码";
 import { 仓库, 持久化atom } from "./store";
-import { 亮色主题 } from "./theme/亮色";
-import { 暗色主题 } from "./theme/暗色";
 import 卡片表单 from "./业务组件/表单/卡片表单";
 
 export const PluginId = "lively_SaSa";
@@ -24,7 +22,7 @@ export default class SyLively extends Plugin {
     try {
       data = await this.loadData(key);
     } catch (error) {
-      console.log("🚀 ~ AccessControllerPlugin ~ getData ~ error:", error);
+      console.log("🚀 ~ 喧嚣 ~ getData ~ error:", error);
       return null;
     }
     return data;
@@ -34,7 +32,7 @@ export default class SyLively extends Plugin {
       await this.saveData(key, value);
       return true;
     } catch (error) {
-      console.log("🚀 ~ AccessControllerPlugin ~ saveData ~ error:", error);
+      console.log("🚀 ~ 喧嚣 ~ saveData ~ error:", error);
       return false;
     }
   };
@@ -123,7 +121,7 @@ export default class SyLively extends Plugin {
     openTab({
       app: this.app,
       custom: {
-        icon: "iconFace",
+        icon: "iconCalendar",
         title: "喧嚣",
         id: this.name + TAB_TYPE,
       },
@@ -155,13 +153,7 @@ export default class SyLively extends Plugin {
     const root = ReactDOM.createRoot(rootDom);
 
     root.render(
-      <ThemeProvider
-        defaultThemeMode={"auto"}
-        theme={(appearance) => {
-          if (appearance === "light") return 亮色主题;
-          return 暗色主题;
-        }}
-      >
+      <ThemeProvider defaultThemeMode={"auto"}>
         <卡片表单 卡片文档ID={卡片文档ID} />
       </ThemeProvider>
     );

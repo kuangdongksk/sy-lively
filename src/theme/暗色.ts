@@ -5,7 +5,6 @@ export const 暗色主题: ThemeConfig = {
   token: {
     colorBgBase: "#2f3437",
     colorTextBase: "#acacac",
-    colorPrimary: "#b57e7e",
     colorInfo: "#b57e7e",
     colorSuccess: "#a1c191",
     colorWarning: "#ca9b3d",
@@ -16,7 +15,7 @@ export const 暗色主题: ThemeConfig = {
   algorithm: theme.darkAlgorithm,
   components: {
     Layout: {
-      headerBg: "#2f3437",
+      headerBg: "var(--b3-theme-surface)",
     },
   },
 };
