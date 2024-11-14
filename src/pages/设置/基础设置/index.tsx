@@ -6,7 +6,7 @@ import { E块属性名称, E持久化键 } from "@/constant/系统码";
 import { 持久化atom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
 import { I用户设置 } from "@/types/喧嚣/设置";
-import { Form, Select, message } from "antd";
+import { Button, Form, Select, message } from "antd";
 import { useAtom } from "jotai";
 import { useState, useEffect } from "react";
 
@@ -62,6 +62,25 @@ function 用户设置() {
             message.success("切换笔记本成功");
           }}
         />
+      </Form.Item>
+      <Form.Item label="卡片文档">
+        <Button
+          onClick={async () => {
+            if (!用户设置.笔记本ID) return message.error("请先选择笔记本");
+            const 卡片文档ID = await 持久化.加载(E持久化键.卡片文档ID);
+            if (卡片文档ID) {
+              message.error("卡片文档已存在");
+              return;
+            }
+
+            const { id } = await CL文档.创建卡片文档(用户设置.笔记本ID);
+
+            await 持久化.保存(E持久化键.卡片文档ID, id);
+            message.success("生成卡片文档成功");
+          }}
+        >
+          生成卡片文档
+        </Button>
       </Form.Item>
     </Form>
   );

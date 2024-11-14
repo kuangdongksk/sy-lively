@@ -1,4 +1,4 @@
-import Kramdown助手, { TKramdownAttr } from "@/class/Kramdown助手";
+import Kramdown助手 from "@/class/块/Kramdown助手";
 import { E块属性名称 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
 import { I事项 } from "@/types/喧嚣/事项";
@@ -36,20 +36,5 @@ export function 生成事项块Kramdown(事项: I事项) {
 
   const 事项块 = Kramdown助手.生成超级块([标题块, 信息块, 内容区]);
 
-  return 事项块 + "\n" + 根据事项生成属性(事项);
-}
-
-export function 根据事项生成属性(事项: I事项): TKramdownAttr {
-  const 属性字符串 = Object.entries(事项)
-    .map(([key, value]) => {
-      if (typeof value === "number") {
-        return `&quot;${key}&quot;:${value}`;
-      }
-      return `&quot;${key}&quot;:&quot;${value}&quot;`;
-    })
-    .join(",");
-
-  return `{: ${E块属性名称.事项}="&#123;${属性字符串}&#125;" id="${
-    事项.ID
-  }" updated="${dayjs().format(E时间格式化.思源时间)}"}`;
+  return Kramdown助手.为块添加属性(事项块, 事项, E块属性名称.事项);
 }

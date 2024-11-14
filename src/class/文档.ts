@@ -81,4 +81,13 @@ export default class CL文档 {
     return data[0];
   }
   //#endregion
+
+  //#region 卡片
+  public static async 创建卡片文档(笔记本ID: string): Promise<{ id: string }> {
+    const { data } = await this.通过Markdown创建(笔记本ID, "/卡片", "");
+    return {
+      id: data,
+    };
+  }
+  //#endregion
 }

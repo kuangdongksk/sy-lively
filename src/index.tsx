@@ -1,10 +1,14 @@
+import { ThemeProvider } from "antd-style";
 import { Provider } from "jotai";
+import { nanoid } from "nanoid";
 import ReactDOM from "react-dom/client";
-import { getFrontend, openTab, Plugin } from "siyuan";
+import { Dialog, getFrontend, openTab, Plugin } from "siyuan";
+import { 系统推送错误消息 } from "./API/推送消息";
 import App from "./App";
+import { 触发器 } from "./class/触发器";
 import { E持久化键 } from "./constant/系统码";
 import { 仓库, 持久化atom } from "./store";
-import { 触发器 } from "./class/触发器";
+import 卡片表单 from "./业务组件/表单/卡片表单";
 
 export const PluginId = "lively_SaSa";
 
@@ -18,7 +22,7 @@ export default class SyLively extends Plugin {
     try {
       data = await this.loadData(key);
     } catch (error) {
-      console.log("🚀 ~ AccessControllerPlugin ~ getData ~ error:", error);
+      console.log("🚀 ~ 喧嚣 ~ getData ~ error:", error);
       return null;
     }
     return data;
@@ -28,7 +32,7 @@ export default class SyLively extends Plugin {
       await this.saveData(key, value);
       return true;
     } catch (error) {
-      console.log("🚀 ~ AccessControllerPlugin ~ saveData ~ error:", error);
+      console.log("🚀 ~ 喧嚣 ~ saveData ~ error:", error);
       return false;
     }
   };
@@ -39,6 +43,7 @@ export default class SyLively extends Plugin {
     this.isMobile =
       getFrontend() === "mobile" || getFrontend() === "browser-mobile";
 
+    // 添加日程管理Icon
     this.addTopBar({
       icon: "iconCalendar", // 使用图标库中的图标，可以在工作空间/conf/appearance/icons/index.html中查看内置图标
       title: "喧嚣-日程管理",
@@ -49,6 +54,24 @@ export default class SyLively extends Plugin {
         } else {
           this.打开页签();
         }
+      },
+    });
+
+    // 添加打开喧嚣快捷键
+    this.addCommand({
+      langKey: "喧嚣-打开喧嚣",
+      hotkey: "⇧⌥X",
+      callback: () => {
+        this.打开页签();
+      },
+    });
+
+    // 添加打开新建卡片快捷键
+    this.addCommand({
+      langKey: "喧嚣-新建卡片",
+      hotkey: "⌥Q",
+      callback: () => {
+        this.打开新建卡片();
       },
     });
   }
@@ -98,10 +121,41 @@ export default class SyLively extends Plugin {
     openTab({
       app: this.app,
       custom: {
-        icon: "iconFace",
+        icon: "iconCalendar",
         title: "喧嚣",
         id: this.name + TAB_TYPE,
       },
     });
+  }
+
+  async 打开新建卡片() {
+    const 卡片文档ID = await this.loadData(E持久化键.卡片文档ID);
+
+    if (!卡片文档ID) {
+      系统推送错误消息({
+        msg: "未找到卡片文档ID",
+        timeout: 10 * 1000,
+      });
+      return;
+    }
+
+    const rootId = nanoid();
+
+    const 对话框 = new Dialog({
+      title: "新建卡片",
+      content: `<div id='${rootId}'></div>`,
+      width: "400px",
+      height: "300px",
+      hideCloseIcon: true,
+    });
+
+    const rootDom = document.getElementById(rootId);
+    const root = ReactDOM.createRoot(rootDom);
+
+    root.render(
+      <ThemeProvider defaultThemeMode={"auto"}>
+        <卡片表单 卡片文档ID={卡片文档ID} />
+      </ThemeProvider>
+    );
   }
 }
