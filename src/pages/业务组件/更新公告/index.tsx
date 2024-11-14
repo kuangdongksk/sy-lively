@@ -3,9 +3,9 @@ import { 持久化atom } from "@/store";
 import { Collapse, Modal, Typography } from "antd";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
+import { 所有更新公告, 最新版本号 } from "./配置";
 
 const { Text } = Typography;
-export const 版本号 = "P0.1.4";
 
 function 更新公告() {
   const [持久化] = useAtom(持久化atom);
@@ -15,9 +15,9 @@ function 更新公告() {
 
   const 加载版本号 = async () => {
     const 当前版本号 = await 加载(E持久化键.当前版本);
-    if (当前版本号 !== 版本号) {
+    if (当前版本号 !== 最新版本号) {
       设置展示更新公告(true);
-      保存(E持久化键.当前版本, 版本号);
+      保存(E持久化键.当前版本, 最新版本号);
     }
   };
 
@@ -37,25 +37,30 @@ function 更新公告() {
     >
       <Typography>
         <Collapse
-          defaultActiveKey={[版本号]}
+          defaultActiveKey={[最新版本号]}
           ghost
           items={[
-            {
-              key: 版本号,
-              label: `${版本号}更新公告`,
+            ...所有更新公告.map((公告) => ({
+              key: 公告.key,
+              label: `${公告.key}更新公告`,
               children: (
                 <>
-                  <h4>功能</h4>
-                  <ol>
-                    <li>添加快捷键shift+alt+x，快速打开喧嚣面板</li>
-                    <li>
-                      添加快捷键alt+q，快速新建卡片，需要在喧嚣设置内生成卡片文档,并且需要在思源的设置--搜索中打开超级块和别名
-                      <img src="https://b3logfile.com/file/2024/11/image-Ut4o21e.png?imageView2/2/interlace/1/format/webp" />
-                    </li>
-                  </ol>
+                  {公告.Children.map(
+                    (child: { type: string; content: React.ReactNode[] }) => (
+                      <div>
+                        <h4>{child.type}</h4>
+                        <ol>
+                          {child.content.map((item) => (
+                            <li>{item}</li>
+                          ))}
+                        </ol>
+                      </div>
+                    )
+                  )}
                 </>
               ),
-            },
+            })),
+
             {
               key: "P0.1.3-2",
               label: `P0.1.3-2更新公告`,
