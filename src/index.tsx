@@ -9,6 +9,7 @@ import { 触发器 } from "./class/触发器";
 import { E持久化键 } from "./constant/系统码";
 import { 仓库, 持久化atom } from "./store";
 import 卡片表单 from "./业务组件/表单/卡片表单";
+import { 暗色主题 } from "./theme/暗色";
 
 export const PluginId = "lively_SaSa";
 
@@ -143,7 +144,7 @@ export default class SyLively extends Plugin {
 
     const 对话框 = new Dialog({
       title: "新建卡片",
-      content: `<div id='${rootId}'></div>`,
+      content: `<div id='${rootId}' style="padding: 12px;"></div>`,
       width: "400px",
       height: "300px",
       hideCloseIcon: true,
@@ -153,7 +154,7 @@ export default class SyLively extends Plugin {
     const root = ReactDOM.createRoot(rootDom);
 
     root.render(
-      <ThemeProvider defaultThemeMode={"auto"}>
+      <ThemeProvider theme={暗色主题}>
         <卡片表单 卡片文档ID={卡片文档ID} />
       </ThemeProvider>
     );

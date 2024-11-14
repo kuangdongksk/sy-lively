@@ -4,6 +4,7 @@ import { theme, ThemeConfig } from "antd";
 export const 暗色主题: ThemeConfig = {
   token: {
     colorBgBase: "#2f3437",
+    colorPrimary: "#b57e7e",
     colorTextBase: "#acacac",
     colorInfo: "#b57e7e",
     colorSuccess: "#a1c191",
@@ -14,6 +15,9 @@ export const 暗色主题: ThemeConfig = {
   },
   algorithm: theme.darkAlgorithm,
   components: {
+    Button: {
+      colorPrimary: "var(--b3-theme-primary)",
+    },
     Layout: {
       headerBg: "var(--b3-theme-surface)",
     },
