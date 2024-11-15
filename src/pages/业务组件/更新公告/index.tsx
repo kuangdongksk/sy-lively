@@ -39,75 +39,22 @@ function 更新公告() {
         <Collapse
           defaultActiveKey={[最新版本号]}
           ghost
-          items={[
-            ...所有更新公告.map((公告) => ({
-              key: 公告.key,
-              label: `${公告.key}更新公告`,
-              children: (
-                <>
-                  {公告.Children.map(
-                    (child: { type: string; content: React.ReactNode[] }) => (
-                      <div>
-                        <h4>{child.type}</h4>
-                        <ol>
-                          {child.content.map((item) => (
-                            <li>{item}</li>
-                          ))}
-                        </ol>
-                      </div>
-                    )
-                  )}
-                </>
-              ),
-            })),
-
-            {
-              key: "P0.1.3-2",
-              label: `P0.1.3-2更新公告`,
-              children: (
-                <>
-                  <h4>功能</h4>
+          items={所有更新公告.map((公告) => ({
+            key: 公告.key,
+            label: `${公告.key}更新公告`,
+            children: 公告.Children.map(
+              (child: { type: string; content: React.ReactNode[] }) => (
+                <div>
+                  <h4>{child.type}</h4>
                   <ol>
-                    <li>添加数据修复：单开一页如果不是布尔值会重置为false</li>
-                    <li>更新失败添加控制台报错</li>
+                    {child.content.map((item) => (
+                      <li>{item}</li>
+                    ))}
                   </ol>
-                  <h4>优化</h4>
-                  <ol>
-                    <li>鼠标悬浮到事项和分类名称上出现预览</li>
-                    <li>可以查看历史公告</li>
-                  </ol>
-                  <h4>修复</h4>
-                  <ol>
-                    <li>修改非单开一页的事项会导致分类文档重命名</li>
-                  </ol>
-                </>
-              ),
-            },
-            {
-              key: "P0.1.3",
-              label: `P0.1.3更新公告`,
-              children: (
-                <>
-                  <h4>功能</h4>
-                  <ol>
-                    <li>
-                      对事项中的错误的字段增加判断，目前会将无法识别的提醒和重复重置为不提醒和不重复
-                    </li>
-                  </ol>
-                  <h4>优化</h4>
-                  <ol>
-                    <li>添加领域后刷新领域界面</li>
-                    <li>所有新增事项表单添加初始值</li>
-                    <li>增强通知，现在通知还会在桌面提示</li>
-                  </ol>
-                  <h4>修复</h4>
-                  <ol>
-                    <li>修复重复不生效问题</li>
-                  </ol>
-                </>
-              ),
-            },
-          ]}
+                </div>
+              )
+            ),
+          }))}
         />
       </Typography>
     </Modal>
