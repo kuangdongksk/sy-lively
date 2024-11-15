@@ -1,8 +1,12 @@
 .idea
 .vscode
 .DS_Store
+
+# lock
 pnpm-lock.yaml
+yarn.lock
 package-lock.json
+
 package.zip
 node_modules
 dev
