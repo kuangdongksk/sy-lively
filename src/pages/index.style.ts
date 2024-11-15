@@ -7,7 +7,6 @@ export const useAppStyle = createStyles(({ token }) => {
     },
     侧栏: {
       width: 150,
-      background: token.colorBgContainer,
     },
     logo: {
       height: 32,
@@ -25,7 +24,6 @@ export const useAppStyle = createStyles(({ token }) => {
       padding: 24,
       margin: 24,
       minHeight: 280,
-      background: token.colorBgContainer,
       borderRadius: token.borderRadiusLG,
     },
   };

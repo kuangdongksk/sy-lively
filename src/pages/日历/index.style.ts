@@ -25,7 +25,7 @@ export const useStyle = createStyles(({ css, token }) => {
       margin: "0.5em",
       borderRadius: token.borderRadius,
       ":hover": {
-        backgroundColor: token.colorPrimaryBgHover,
+        backgroundColor: "var(--b3-list-hover)",
       },
     },
     天头部: {

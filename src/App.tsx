@@ -10,7 +10,11 @@ function App() {
   return (
     <React.StrictMode>
       <ConfigProvider locale={zhCN}>
-        <ThemeProvider theme={暗色主题}>
+        <ThemeProvider
+          theme={() => {
+            return { ...暗色主题, colorPrimary: "var" };
+          }}
+        >
           <RouterProvider router={router} />
         </ThemeProvider>
       </ConfigProvider>
