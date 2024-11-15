@@ -5,14 +5,12 @@ import { E事项状态 } from "@/constant/状态配置";
 import 删除事项 from "@/pages/领域/components/删除事项";
 import { I事项 } from "@/types/喧嚣/事项";
 import 事项表单 from "@/业务组件/表单/事项表单";
-import {
-  DeleteOutlined,
-  EditOutlined
-} from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { ProTable } from "@ant-design/pro-components";
 import { Button } from "antd";
 import dayjs from "dayjs";
 import { MutableRefObject, useRef, useState } from "react";
+import "./index.less";
 
 export interface I事项表格Props<T事项> {
   标题?: React.ReactNode;
@@ -46,6 +44,7 @@ function 事项表格<T事项 extends I事项>(props: I事项表格Props<T事项
         }
       />
       <ProTable<T事项>
+        className="proTable"
         columns={[
           ...事项列配置,
           {
