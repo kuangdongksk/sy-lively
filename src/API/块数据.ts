@@ -169,9 +169,11 @@ export function 转移块引用(options: {
  *   - attrs: 待设置的属性
  * @returns 设置块属性的结果
  */
-export function 设置块属性(options: {
+export async function 设置块属性(options: {
   id: string;
   attrs: { [key: string]: string };
 }) {
-  return fetchSyncPost(EAPI.设置块属性, options);
+  console.log("🚀 ~ attrs:", options);
+  const 结果 = await fetchSyncPost(EAPI.设置块属性, options);
+  return 结果;
 }

@@ -1,37 +1,84 @@
+import { 设置块属性 } from "@/API/块数据";
 import { 系统推送消息 } from "@/API/推送消息";
 import { E事项状态, E提醒, 获取提醒参数 } from "@/constant/状态配置";
 import { E持久化键 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
+import { 事项转为属性 } from "@/tools/事项/事项";
 import { 更新事项块 } from "@/tools/事项/事项块";
 import { I事项 } from "@/types/喧嚣/事项";
 import CronParser from "cron-parser";
 import dayjs from "dayjs";
-import SQL助手 from "./SQL助手";
+import SQLer from "./SQLer";
+
+const 最新数据版本 = {
+  事项数据版本: 1,
+  卡片数据版本: 1,
+};
 
 export class 触发器 {
   private 计时器: NodeJS.Timeout | null = null;
 
   private 加载: (key: E持久化键) => Promise<any>;
   private 保存: (key: E持久化键, value: any) => Promise<boolean>;
+  private 添加状态栏: (options: {
+    element: HTMLElement;
+    position?: "right" | "left";
+  }) => HTMLElement;
 
   private 即将开始事项 = [];
   private 逾期事项 = [];
 
   constructor(
     加载: (key: E持久化键) => Promise<any>,
-    保存: (key: E持久化键, value: any) => Promise<boolean>
+    保存: (key: E持久化键, value: any) => Promise<boolean>,
+    添加状态栏: (options: {
+      element: HTMLElement;
+      position?: "right" | "left";
+    }) => HTMLElement
   ) {
     this.加载 = 加载;
     this.保存 = 保存;
+    this.添加状态栏 = 添加状态栏;
 
-    this.事项处理();
-    this.计时器 = setInterval(() => {
+    this.数据处理().then(() => {
       this.事项处理();
-    }, 1000 * 60 * 5);
+      this.计时器 = setInterval(() => {
+        this.事项处理();
+      }, 1000 * 60 * 5);
+    });
+  }
+
+  async 数据处理() {
+    const { 事项版本, 卡片版本 } = await this.加载(E持久化键.数据版本);
+    const { 事项数据版本, 卡片数据版本 } = 最新数据版本;
+
+    if (事项版本 !== 事项数据版本) {
+      系统推送消息({
+        msg: "数据版本不一致，正在进行数据升级",
+        timeout: 20000,
+      });
+
+      const 所有事项 = await SQLer.获取所有事项();
+
+      所有事项.forEach(async (事项) => {
+        await 设置块属性({
+          id: 事项.ID,
+          attrs: { ...事项转为属性(事项) },
+        });
+      });
+
+      await this.保存(E持久化键.数据版本, {
+        事项版本: 事项数据版本,
+        卡片版本,
+      });
+    }
+
+    if (卡片版本 !== 卡片数据版本) {
+    }
   }
 
   async 事项处理() {
-    const 所有事项 = await SQL助手.获取所有事项();
+    const 所有事项 = await SQLer.获取所有事项();
 
     所有事项.forEach((事项) => {
       if (this.修复事项(事项)) {
@@ -76,19 +123,33 @@ export class 触发器 {
 
   private 修复事项(事项: I事项): boolean {
     const { 重复, 提醒, 单开一页 } = 事项;
-    try {
-      const { 单位: _1, 数量: _2 } = 获取提醒参数(提醒);
-    } catch (error) {
-      事项.提醒 = E提醒.不提醒;
+
+    let 需要修复 = false;
+
+    if (提醒 !== E提醒.不提醒) {
+      try {
+        const { 单位: _1, 数量: _2 } = 获取提醒参数(提醒);
+      } catch (error) {
+        事项.提醒 = E提醒.不提醒;
+        需要修复 = true;
+      }
+    }
+
+    if (重复 !== "u不重复") {
       try {
         CronParser.parseExpression(重复);
       } catch (error) {
         事项.重复 = "u不重复";
+        需要修复 = true;
       }
-      if (typeof 单开一页 !== "boolean") {
-        事项.单开一页 = false;
-      }
+    }
 
+    if (typeof 单开一页 !== "boolean") {
+      事项.单开一页 = false;
+      需要修复 = true;
+    }
+
+    if (需要修复) {
       更新事项块(事项);
       return true;
     }

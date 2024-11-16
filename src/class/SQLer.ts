@@ -1,5 +1,6 @@
-import { E块属性名称 } from "@/constant/系统码";
+import { E块属性名称, 事项属性前缀 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
+import { 属性转化为事项 } from "@/tools/事项/事项";
 import { 为事项添加领域分类, 整理事项, 组合领域分类 } from "@/tools/结构转换";
 import {
   I事项,
@@ -13,22 +14,9 @@ import { I块 } from "@/types/数据库表";
 import dayjs, { Dayjs } from "dayjs";
 import { fetchSyncPost, IWebSocketData } from "siyuan";
 
-export enum E常用SQL {
-  获取用户设置 = `SELECT * FROM attributes WHERE name='${E块属性名称.用户设置}'`,
-  获取所有事项 = `SELECT * FROM attributes WHERE name='${E块属性名称.事项}'`,
-  获取所有事项对应的块 = `SELECT b.* FROM blocks b JOIN attributes a ON b.id = a.block_id
-                  WHERE a.name = '${E块属性名称.事项}'`,
-}
-
-export default class SQL助手 {
+export default class SQLer {
   private static 数据库到分类(data: { value: string }[]): I分类[] {
     return data.map((item: { value: string }) => JSON.parse(item.value));
-  }
-
-  public static 常用(sql: E常用SQL) {
-    return fetchSyncPost("/api/query/sql", {
-      stmt: sql,
-    });
   }
 
   //#region 日记
@@ -123,10 +111,17 @@ export default class SQL助手 {
   //#region 事项
   public static async 获取所有事项(): Promise<I事项[]> {
     const { data } = await fetchSyncPost("/api/query/sql", {
-      stmt: `SELECT * FROM attributes WHERE name='${E块属性名称.事项}'`,
+      stmt: `
+      SELECT 
+        '{' || GROUP_CONCAT('"' || name || '":"' || value || '"', ',') || '}'  AS 事项
+      FROM attributes WHERE name LIKE '%${事项属性前缀}%'
+      GROUP BY block_id;`,
     });
 
-    return data.map((item: { value: string }) => JSON.parse(item.value));
+    return data.map((item: { 事项: string }) => {
+      const 原始 = JSON.parse(item.事项);
+      return 属性转化为事项(原始);
+    });
   }
 
   public static async 获取笔记本下的所有事项(

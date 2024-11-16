@@ -1,4 +1,4 @@
-import SQL助手 from "@/class/SQL助手";
+import SQLer from "@/class/SQLer";
 import { T增改查 } from "@/components/增改查弹窗表单";
 import { 用户设置Atom } from "@/store/用户设置";
 import { I领域分类 } from "@/types/喧嚣/事项";
@@ -17,7 +17,7 @@ function 领域分类(props: I领域分类Props) {
   const [领域分类列表, 令领域分类列表为] = useState<I领域分类[]>([]);
 
   const 加载领域分类列表 = async () => {
-    await SQL助手.获取笔记本下的所有分类按领域(用户设置.笔记本ID).then(
+    await SQLer.获取笔记本下的所有分类按领域(用户设置.笔记本ID).then(
       (data) => {
         令领域分类列表为(data);
       }

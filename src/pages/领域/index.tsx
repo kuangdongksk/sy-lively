@@ -1,4 +1,4 @@
-import SQL助手 from "@/class/SQL助手";
+import SQLer from "@/class/SQLer";
 import { 用户设置Atom } from "@/store/用户设置";
 import { I领域 } from "@/types/喧嚣/事项";
 import { useAtom } from "jotai";
@@ -16,7 +16,7 @@ function 领域() {
   const [领域列表, 令领域列表为] = useState<I领域[]>([]);
 
   const 获取领域列表 = async () => {
-    const data = await SQL助手.获取笔记本下的领域(用户设置.笔记本ID);
+    const data = await SQLer.获取笔记本下的领域(用户设置.笔记本ID);
     令领域列表为(data);
   };
 

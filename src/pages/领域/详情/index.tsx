@@ -1,4 +1,4 @@
-import SQL助手 from "@/class/SQL助手";
+import SQLer from "@/class/SQLer";
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
 import { 思源协议 } from "@/constant/系统码";
 import { I分类, I领域 } from "@/types/喧嚣/事项";
@@ -19,7 +19,7 @@ function 领域详情() {
   const [页签键, 令页签键为] = useState(所有);
 
   const 加载分类 = async () => {
-    const data = await SQL助手.获取指定领域下的分类(state.ID);
+    const data = await SQLer.获取指定领域下的分类(state.ID);
     令分类为(data);
   };
 
@@ -65,7 +65,7 @@ function 领域详情() {
         参数={{ ID: 页签键 === 所有 ? state.ID : 页签键 }}
         获取事项列表={async (params) => {
           const { ID, 版本: _版本 } = params;
-          const data = await SQL助手.获取指定分类下的事项(ID);
+          const data = await SQLer.获取指定分类下的事项(ID);
           return data;
         }}
         新建事项={(事项Ref) => {

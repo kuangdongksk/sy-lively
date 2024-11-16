@@ -21,10 +21,41 @@ export enum E块属性名称 {
   卡片 = `${属性前缀}card`,
 }
 
+export const 事项属性前缀 = `${属性前缀}thing-`;
+
+export enum E事项属性名称 {
+  名称 = `${事项属性前缀}name`,
+  重要程度 = `${事项属性前缀}importance`,
+  紧急程度 = `${事项属性前缀}urgency`,
+  开始时间 = `${事项属性前缀}startTime`,
+  结束时间 = `${事项属性前缀}endTime`,
+  状态 = `${事项属性前缀}status`,
+  重复 = `${事项属性前缀}repeat`,
+  单开一页 = `${事项属性前缀}singlePage`,
+  提醒 = `${事项属性前缀}remind`,
+  逾期不再提醒 = `${事项属性前缀}noRemind`,
+
+  // ID就是超级块ID
+  ID = `${事项属性前缀}ID`,
+  层级 = `${事项属性前缀}level`,
+  // 对于顶级（0级）父项ID就是分类ID
+  父项ID = `${事项属性前缀}parentID`,
+  分类ID = `${事项属性前缀}categoryID`,
+  领域ID = `${事项属性前缀}domainID`,
+  笔记本ID = `${事项属性前缀}notebookID`,
+  标题区ID = `${事项属性前缀}titleID`,
+  信息区ID = `${事项属性前缀}infoID`,
+  内容区ID = `${事项属性前缀}contentID`,
+  嵌入块ID = `${事项属性前缀}embedID`,
+  创建时间 = `${事项属性前缀}createTime`,
+  更新时间 = `${事项属性前缀}updateTime`,
+}
+
 export enum E持久化键 {
   用户设置 = "用户设置",
   卡片文档ID = "卡片文档ID",
   当前版本 = "当前版本",
+  数据版本 = "数据版本",
 }
 
 export enum E数据索引 {

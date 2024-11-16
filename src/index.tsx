@@ -38,7 +38,11 @@ export default class SyLively extends Plugin {
     }
   };
 
-  private 提示器1: 触发器 = new 触发器(this.getData, this.putData);
+  private 提示器1: 触发器 = new 触发器(
+    this.getData,
+    this.putData,
+    this.addStatusBar
+  );
 
   async onload() {
     this.isMobile =

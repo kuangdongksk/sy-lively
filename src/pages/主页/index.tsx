@@ -1,4 +1,4 @@
-import SQL助手 from "@/class/SQL助手";
+import SQLer from "@/class/SQLer";
 import { 用户设置Atom } from "@/store/用户设置";
 import { I事项 } from "@/types/喧嚣/事项";
 import 事项表格 from "@/业务组件/表格/事项表格";
@@ -15,7 +15,7 @@ function 主页() {
       }
     >
       获取事项列表={() =>
-        SQL助手.获取笔记本下的所有事项添加分类(用户设置.笔记本ID)
+        SQLer.获取笔记本下的所有事项添加分类(用户设置.笔记本ID)
       }
     />
   );

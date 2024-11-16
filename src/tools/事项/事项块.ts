@@ -1,6 +1,6 @@
 import { 插入前置子块, 插入后置子块, 更新块, 设置块属性 } from "@/API/块数据";
 import Kramdown助手 from "@/class/块/Kramdown助手";
-import SQL助手 from "@/class/SQL助手";
+import SQLer from "@/class/SQLer";
 import CL文档 from "@/class/文档";
 import { 生成嵌入块Kramdown } from "@/components/模板/Kramdown/嵌入快";
 import {
@@ -40,7 +40,7 @@ export async function 新建事项块(事项: I事项) {
 
 export async function 新建事项文档(事项: I事项) {
   const { 名称, 父项ID, 笔记本ID } = 事项;
-  const 块数据 = await SQL助手.根据ID获取块(父项ID);
+  const 块数据 = await SQLer.根据ID获取块(父项ID);
   const { data: 文档ID } = await CL文档.通过Markdown创建(
     笔记本ID,
     块数据.hpath + "/" + 名称,
@@ -67,7 +67,7 @@ export async function 更新事项块(事项: I事项) {
   const { ID, 笔记本ID, 名称, 单开一页 } = 事项;
   const 更新标题 = 单开一页
     ? async () =>
-        await SQL助手.获取块的路径(ID).then(async (res) => {
+        await SQLer.获取块的路径(ID).then(async (res) => {
           await CL文档.重命名(笔记本ID, res, 名称);
         })
     : async () =>

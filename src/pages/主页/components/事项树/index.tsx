@@ -1,12 +1,13 @@
-import SQL助手, { E常用SQL } from "@/class/SQL助手";
+import SQLer from "@/class/SQLer";
 import { 顶级节点 } from "@/constant/状态配置";
 import { 事项数据 } from "@/store/事项数据";
+import { I事项 } from "@/types/喧嚣/事项";
 import { string2stringArr } from "@/utils/拼接与拆解";
 import type { TreeDataNode } from "antd";
 import { Tree } from "antd";
 import { useAtom } from "jotai";
 import React, { useEffect } from "react";
-import 事项, { I事项 } from "./components/事项";
+import 事项 from "./components/事项";
 import 添加子项 from "./components/添加子项";
 import { 任务树样式 } from "./index.style";
 import { convertTo树 } from "./tools";
@@ -23,11 +24,8 @@ function 任务树() {
   const [数据, 令数据为] = useAtom(事项数据);
 
   useEffect(() => {
-    SQL助手.常用(E常用SQL.获取所有事项).then(({ data }) => {
-      令数据为([
-        ...数据,
-        ...data.map(({ value }) => JSON.parse(value) as TreeNode),
-      ]);
+    SQLer.获取所有事项().then((data) => {
+      令数据为([...数据, ...data]);
     });
   }, []);
 

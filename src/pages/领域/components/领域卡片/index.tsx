@@ -1,4 +1,4 @@
-import SQL助手 from "@/class/SQL助手";
+import SQLer from "@/class/SQLer";
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
 import 进度条 from "@/components/基础/进度条";
 import { E事项状态 } from "@/constant/状态配置";
@@ -31,14 +31,14 @@ function 领域卡片(props: { 领域: I领域 }) {
 
   const 加载事项 = () => {
     if (名称 === 添加领域) return;
-    SQL助手.获取指定领域下的事项(ID).then((data) => {
+    SQLer.获取指定领域下的事项(ID).then((data) => {
       令事项列表为(data);
     });
   };
 
   const 加载数据 = () => {
     if (名称 === 添加领域) return;
-    SQL助手.获取指定领域下的分类(ID).then((data) => {
+    SQLer.获取指定领域下的分类(ID).then((data) => {
       令分类列表为(data);
     });
   };

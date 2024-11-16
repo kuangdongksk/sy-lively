@@ -1,5 +1,5 @@
 import CL文档 from "@/class/文档";
-import SQL助手 from "@/class/SQL助手";
+import SQLer from "@/class/SQLer";
 import { 思源协议 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/store/用户设置";
 import { Badge, Button, Calendar, List, Tooltip } from "antd";
@@ -16,7 +16,7 @@ function 日历() {
   const [当月事项, 令当月事项为] = useState([]);
 
   const 获取当月事项 = (日期: Dayjs) => {
-    SQL助手.根据开始时间获取当月事项(日期).then((data) => {
+    SQLer.根据开始时间获取当月事项(日期).then((data) => {
       令当月事项为(data);
     });
   };

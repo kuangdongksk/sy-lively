@@ -3,10 +3,11 @@ import { E块属性名称 } from "@/constant/系统码";
 import dayjs, { Dayjs } from "dayjs";
 import { fetchSyncPost } from "siyuan";
 import { 设置块属性 } from "../API/块数据";
-import { 获取笔记本配置 } from "../API/笔记本";
-import SQL助手 from "./SQL助手";
+import SQLer from "./SQLer";
+import { CL笔记本 } from "./笔记本";
 
 export default class CL文档 {
+  //#region 通过Markdown创建
   public static 通过Markdown创建(
     笔记本ID: string,
     文档路径: string,
@@ -18,6 +19,7 @@ export default class CL文档 {
       markdown,
     });
   }
+  //#endregion
 
   public static async 重命名(笔记本ID: string, 路径: string, 新名称: string) {
     await fetchSyncPost(EAPI.重命名文档, {
@@ -31,9 +33,9 @@ export default class CL文档 {
   public static async 获取日记根文档(
     笔记本ID: string
   ): Promise<{ id: string }> {
-    const value = await 获取笔记本配置(笔记本ID);
+    const value = await CL笔记本.获取笔记本配置(笔记本ID);
     const 日记文档名称 = value.data.conf.dailyNoteSavePath.split("/")[1];
-    const { data } = await SQL助手.获取日记根文档(笔记本ID, 日记文档名称);
+    const { data } = await SQLer.获取日记根文档(笔记本ID, 日记文档名称);
 
     if (data.length === 0) {
       return {
@@ -48,14 +50,14 @@ export default class CL文档 {
     笔记本ID: string,
     日期: Dayjs
   ): Promise<{ id: string }> {
-    const value = await 获取笔记本配置(笔记本ID);
+    const value = await CL笔记本.获取笔记本配置(笔记本ID);
     const 日记文档保存路径 = value.data.conf.dailyNoteSavePath;
     const 日记文档名称 = 日记文档保存路径.split("/")[1];
     const 日期日记路径 = `/${日记文档名称}/${日期.format(
       "YYYY/MM/YYYY-MM-DD"
     )}`;
 
-    const { data } = await SQL助手.获取日期对应的日记文档(
+    const { data } = await SQLer.获取日期对应的日记文档(
       笔记本ID,
       日期日记路径
     );
