@@ -8,7 +8,7 @@ import App from "./App";
 import { 触发器 } from "./class/触发器";
 import { E持久化键 } from "./constant/系统码";
 import { 仓库, 持久化atom } from "./store";
-import { 暗色主题 } from "./theme/暗色";
+import { 主题 } from "./theme";
 import 卡片表单 from "./业务组件/表单/卡片表单";
 
 export const PluginId = "lively_SaSa";
@@ -154,7 +154,7 @@ export default class SyLively extends Plugin {
     const root = ReactDOM.createRoot(rootDom);
 
     root.render(
-      <ConfigProvider theme={暗色主题}>
+      <ConfigProvider theme={主题}>
         <卡片表单 卡片文档ID={卡片文档ID} />
       </ConfigProvider>
     );
