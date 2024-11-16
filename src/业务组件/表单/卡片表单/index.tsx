@@ -30,7 +30,7 @@ function 卡片表单(props: I卡片表单Props) {
     if (!name) {
       return;
     }
-    令别名为([...别名]);
+    令别名为([...别名, name]);
     setName("");
   };
 
@@ -51,16 +51,19 @@ function 卡片表单(props: I卡片表单Props) {
       }) => {
         const { 标题, 别名 = [] } = value;
 
+        const ID = 生成块ID();
+
         await 卡片块.新建卡片(
           {
             ...value,
-            ID: 生成块ID(),
+            ID,
             标题ID: 生成块ID(),
             别名: [
               pinyin(标题, {
-                pattern: "initial",
+                pattern: "first",
                 type: "array",
               })?.join(""),
+              ID.slice(-7),
               ...别名,
             ],
           },
@@ -69,13 +72,11 @@ function 卡片表单(props: I卡片表单Props) {
         message.success("新建卡片成功");
       }}
     >
-      <Form.Item label="卡片文档ID">{卡片文档ID}</Form.Item>
-
       <Form.Item label="标题" name="标题" required>
         <Input />
       </Form.Item>
 
-      <Form.Item label="描述" name="描述">
+      <Form.Item label="描述" name="描述" required>
         <Input />
       </Form.Item>
 
@@ -108,7 +109,7 @@ function 卡片表单(props: I卡片表单Props) {
         />
       </Form.Item>
 
-      <Form.Item>
+      <Form.Item style={{ textAlign: "center" }}>
         <Button htmlType="submit" type="primary">
           确定
         </Button>

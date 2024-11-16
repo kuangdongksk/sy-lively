@@ -12,7 +12,7 @@ import {
   PlusCircleOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Button, Layout, Menu } from "antd";
+import { App as AntdApp, Button, Layout, Menu } from "antd";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
@@ -60,7 +60,9 @@ function App() {
   });
 
   return (
-    <>
+    <AntdApp
+      style={{ backgroundColor: "var(--b3-theme-surface)", height: "100%" }}
+    >
       <Layout className={styles.App}>
         <Sider className={styles.侧栏}>
           <div className={styles.logo}>
@@ -92,7 +94,7 @@ function App() {
       </Layout>
       <事项表单 ref={事项Ref} />
       <更新公告 />
-    </>
+    </AntdApp>
   );
 }
 

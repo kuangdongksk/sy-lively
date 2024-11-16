@@ -5,7 +5,7 @@ export const useStyle = createStyles(({ css, token }) => {
     卡片: css`
       height: 220px;
       border-radius: ${token.borderRadius}px;
-      border: 1px solid ${token.colorPrimary};
+      border: 1px solid var(--b3-theme-primary);
       padding: 12px;
       span {
         margin-right: 0.5em;

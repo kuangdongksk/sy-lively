@@ -52,7 +52,6 @@ function 日历() {
             </div>
 
             <Tooltip
-              color="black"
               title={
                 <List
                   dataSource={当天事项}
@@ -66,7 +65,12 @@ function 日历() {
                 />
               }
             >
-              <Badge count={当天事项.length} />
+              <Badge
+                style={{
+                  background: "var(--b3-theme-error)",
+                }}
+                count={当天事项.length}
+              />
             </Tooltip>
           </div>
         );

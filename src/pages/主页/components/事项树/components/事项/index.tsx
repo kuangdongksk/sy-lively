@@ -2,7 +2,6 @@ import { 事项数据 } from "@/store/事项数据";
 import { stringArr2string } from "@/utils/拼接与拆解";
 import { green, red } from "@ant-design/colors";
 import { CopyOutlined, EditOutlined } from "@ant-design/icons";
-import { useBoolean } from "ahooks";
 import { Button, DatePicker, Input, Select } from "antd";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
@@ -10,6 +9,7 @@ import 数字标签 from "../../../../../../components/基础/数字标签";
 import 添加子项 from "../添加子项";
 import { use事项样式 } from "./index.style";
 import { I事项 } from "@/types/喧嚣/事项";
+import { useState } from "react";
 
 const { RangePicker } = DatePicker;
 const 程度选项数组 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => ({
@@ -27,7 +27,7 @@ function 事项(props: I事项Props) {
   const [数据, 令数据为] = useAtom(事项数据);
   const { styles } = use事项样式();
 
-  const [不可编辑名称, { toggle: 切换名称编辑状态 }] = useBoolean(true);
+  const [不可编辑名称, 切换名称编辑状态] = useState(true);
 
   return (
     <div className={styles.事项}>
@@ -48,7 +48,7 @@ function 事项(props: I事项Props) {
               size="small"
               type="link"
               icon={<EditOutlined />}
-              onClick={切换名称编辑状态}
+              onClick={() => 切换名称编辑状态((pre) => !pre)}
             />
             <span className="">{名称}</span>
           </>
@@ -62,7 +62,7 @@ function 事项(props: I事项Props) {
               数据.find((item) => item.ID === ID).名称 = e.target.value;
               令数据为([...数据]);
             }}
-            onBlur={切换名称编辑状态}
+            onBlur={() => 切换名称编辑状态((pre) => !pre)}
           />
         )}
         <span className={styles.id文本}>#{ID.slice(0, 6)}</span>

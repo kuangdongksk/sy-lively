@@ -41,6 +41,7 @@ export class 卡片块 {
       attrs: {
         [E块属性名称.名称]: 标题,
         [E块属性名称.别名]: 别名.join(","),
+        [E块属性名称.卡片]: JSON.stringify(卡片),
       },
     });
 
