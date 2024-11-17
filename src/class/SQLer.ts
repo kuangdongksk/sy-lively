@@ -1,4 +1,4 @@
-import { E块属性名称, 事项属性前缀 } from "@/constant/系统码";
+import { E块属性名称 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
 import { 属性转化为事项 } from "@/tools/事项/事项";
 import { 为事项添加领域分类, 整理事项, 组合领域分类 } from "@/tools/结构转换";
@@ -109,29 +109,50 @@ export default class SQLer {
   //#endregion
 
   //#region 事项
-  public static async 获取所有事项(): Promise<I事项[]> {
-    const { data } = await fetchSyncPost("/api/query/sql", {
-      stmt: `
-      SELECT 
-        '{' || GROUP_CONCAT('"' || name || '":"' || value || '"', ',') || '}'  AS 事项
-      FROM attributes WHERE name LIKE '%${事项属性前缀}%'
-      GROUP BY block_id;`,
-    });
+  private static 生成事项SQL(条件数组?: string[]): string {
+    const 条件 = 条件数组 ? "WHERE " + 条件数组.join(" AND ") : "";
 
+    return `
+      SELECT
+        事项
+      FROM
+        (SELECT
+          block_id,
+          '{' || GROUP_CONCAT('"' || name || '":"' || value || '"', ',') || '}' AS 事项
+        FROM
+          attributes
+        WHERE
+          name LIKE '%custom-plugin-lively-thing-%'
+        GROUP BY
+          block_id)
+        ${条件}
+    `;
+  }
+
+  private static 原始结果转化为事项(data: { 事项: string }[]): I事项[] {
+    if (!data) return [];
     return data.map((item: { 事项: string }) => {
       const 原始 = JSON.parse(item.事项);
       return 属性转化为事项(原始);
     });
   }
 
+  public static async 获取所有事项(): Promise<I事项[]> {
+    const { data } = await fetchSyncPost("/api/query/sql", {
+      stmt: this.生成事项SQL(),
+    });
+
+    return this.原始结果转化为事项(data);
+  }
+
   public static async 获取笔记本下的所有事项(
     笔记本ID: string
   ): Promise<I事项[]> {
     const { data } = await fetchSyncPost("/api/query/sql", {
-      stmt: `SELECT * FROM attributes WHERE name='${E块属性名称.事项}' AND value LIKE '%${笔记本ID}%'`,
+      stmt: this.生成事项SQL([`事项 LIKE '%${笔记本ID}%'`]),
     });
 
-    return data.map((item: { value: string }) => JSON.parse(item.value));
+    return this.原始结果转化为事项(data);
   }
 
   public static async 获取笔记本下的所有事项按领域分类组织(
@@ -158,42 +179,27 @@ export default class SQLer {
   }
 
   public static async 获取指定领域下的事项(领域ID: string): Promise<I事项[]> {
-    const sql = `SELECT * FROM attributes WHERE name='${E块属性名称.事项}' AND value LIKE '%${领域ID}%'`;
-
-    const { data: sqlData } = await fetchSyncPost("/api/query/sql", {
-      stmt: sql,
+    const { data } = await fetchSyncPost("/api/query/sql", {
+      stmt: this.生成事项SQL([`事项 LIKE '%${领域ID}%'`]),
     });
 
-    return sqlData.map((item: { value: string }) =>
-      JSON.parse(item.value)
-    ) as I事项[];
+    return this.原始结果转化为事项(data);
   }
 
   public static async 获取指定分类下的事项(分类ID: string): Promise<I事项[]> {
-    const sql = `SELECT * FROM attributes WHERE name='${E块属性名称.事项}' AND value LIKE '%${分类ID}%'`;
-
-    const { data: sqlData } = await fetchSyncPost("/api/query/sql", {
-      stmt: sql,
+    const { data } = await fetchSyncPost("/api/query/sql", {
+      stmt: this.生成事项SQL([`事项 LIKE '%${分类ID}%'`]),
     });
 
-    return sqlData.map((item: { value: string }) =>
-      JSON.parse(item.value)
-    ) as I事项[];
+    return this.原始结果转化为事项(data);
   }
 
   public static async 根据开始时间获取当月事项(日期: Dayjs): Promise<I事项[]> {
     const 开始时间 = dayjs(日期).format(E时间格式化.思源时间).slice(0, 6);
-    const sql = `SELECT * FROM attributes WHERE name='${E块属性名称.事项}' AND value LIKE '%"开始时间":"${开始时间}%'`;
-
     return fetchSyncPost("/api/query/sql", {
-      stmt: sql,
+      stmt: this.生成事项SQL([`事项 LIKE '%"开始时间":"${开始时间}%'`]),
     }).then(({ data }) => {
-      if (!data) {
-        return [];
-      }
-      return data.map((item: { value: string }) =>
-        JSON.parse(item.value)
-      ) as I事项[];
+      return this.原始结果转化为事项(data);
     });
   }
   //#endregion

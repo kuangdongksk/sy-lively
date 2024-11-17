@@ -1,17 +1,17 @@
 import { 插入前置子块, 插入后置子块, 更新块, 设置块属性 } from "@/API/块数据";
-import Kramdown助手 from "@/class/块/Kramdown助手";
 import SQLer from "@/class/SQLer";
+import Kramdown助手 from "@/class/块/Kramdown助手";
 import CL文档 from "@/class/文档";
 import { 生成嵌入块Kramdown } from "@/components/模板/Kramdown/嵌入快";
 import {
   根据事项生成信息块,
   生成事项块Kramdown,
 } from "@/components/模板/Kramdown/超级块";
-import { E块属性名称 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
 import { I事项 } from "@/types/喧嚣/事项";
 import { I用户设置 } from "@/types/喧嚣/设置";
 import dayjs from "dayjs";
+import { 事项转为属性 } from "./事项";
 
 export async function 插入到日记(事项: I事项, 用户设置: I用户设置) {
   const { 开始时间, 创建时间 } = 事项;
@@ -36,6 +36,11 @@ export async function 新建事项块(事项: I事项) {
     data: 生成事项块Kramdown(事项),
     parentID: 父项ID,
   });
+
+  await 设置块属性({
+    id: 事项.ID,
+    attrs: 事项转为属性(事项),
+  });
 }
 
 export async function 新建事项文档(事项: I事项) {
@@ -56,9 +61,7 @@ export async function 新建事项文档(事项: I事项) {
     }),
     await 设置块属性({
       id: 文档ID,
-      attrs: {
-        [E块属性名称.事项]: JSON.stringify(事项),
-      },
+      attrs: 事项转为属性(事项),
     }),
   ]);
 }
@@ -85,9 +88,7 @@ export async function 更新事项块(事项: I事项) {
     // 更新块属性
     await 设置块属性({
       id: 事项.ID,
-      attrs: {
-        [E块属性名称.事项]: JSON.stringify(事项),
-      },
+      attrs: 事项转为属性(事项),
     }),
     // 更新标题块、信息快
     更新标题(),

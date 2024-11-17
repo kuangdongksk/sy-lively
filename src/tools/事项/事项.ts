@@ -5,7 +5,6 @@ import { I事项, T层级 } from "@/types/喧嚣/事项";
 import { 生成块ID } from "@/utils/DOM";
 import { 根据枚举的值获取枚举的键 } from "@/utils/枚举";
 import dayjs from "dayjs";
-import { k } from "vite/dist/node/types.d-aGj9QkWt";
 
 export function 生成事项(
   参数: {
@@ -43,7 +42,10 @@ export function 生成事项(
 export function 事项转为属性(事项: I事项) {
   const 事项属性 = {};
   Object.keys(事项).forEach((key) => {
-    事项属性[E事项属性名称[key]] = 事项[key].toString();
+    if (事项[key] === undefined) {
+      return;
+    }
+    事项属性[E事项属性名称[key]] = 事项[key]?.toString();
   });
   return 事项属性;
 }
