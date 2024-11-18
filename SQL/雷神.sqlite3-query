@@ -13,4 +13,4 @@ FROM
       name LIKE '%custom-plugin-lively-thing-%'
     GROUP BY
       block_id
-  )
+  );

@@ -1,0 +1,25 @@
+-- database: ../../../Data/思源/工作/temp/siyuan.db
+-- 要运行整个文件，请按窗口右上角的▷按钮。
+SELECT
+  卡片
+FROM
+  (
+    SELECT
+      block_id,
+      '{' || GROUP_CONCAT('"' || name || '":"' || value || '"', ',') || '}' AS 卡片
+    FROM
+      attributes
+    WHERE
+      name LIKE '%custom-plugin-lively-card-%'
+    GROUP BY
+      block_id
+  )
+WHERE
+  卡片 LIKE '%海康威视%';
+
+SELECT
+  value
+FROM
+  attributes
+WHERE
+  name = 'custom-plugin-lively-card'

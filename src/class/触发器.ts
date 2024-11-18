@@ -9,6 +9,7 @@ import { I事项 } from "@/types/喧嚣/事项";
 import CronParser from "cron-parser";
 import dayjs from "dayjs";
 import SQLer from "./SQLer";
+import { 卡片 as 卡片类 } from "./卡片";
 
 const 最新数据版本 = {
   事项数据版本: 1,
@@ -63,7 +64,7 @@ export class 触发器 {
       所有事项.forEach(async (事项) => {
         await 设置块属性({
           id: 事项.ID,
-          attrs: { ...事项转为属性(事项) },
+          attrs: 事项转为属性(事项),
         });
       });
 
@@ -74,6 +75,24 @@ export class 触发器 {
     }
 
     if (卡片版本 !== 卡片数据版本) {
+      系统推送消息({
+        msg: "数据版本不一致，正在进行数据升级",
+        timeout: 20000,
+      });
+
+      const 所有卡片 = await 卡片类.获取所有卡片();
+
+      所有卡片.forEach(async (卡片) => {
+        await 设置块属性({
+          id: 卡片.ID,
+          attrs: 卡片类.卡片转为属性(卡片),
+        });
+      });
+
+      await this.保存(E持久化键.数据版本, {
+        事项版本,
+        卡片版本: 卡片数据版本,
+      });
     }
   }
 

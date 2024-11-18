@@ -1,14 +1,7 @@
 import { 插入后置子块, 设置块属性 } from "@/API/块数据";
 import { E块属性名称 } from "@/constant/系统码";
+import { I卡片, 卡片 as 卡片类 } from ".";
 import KH from "../块/Kramdown助手";
-
-export interface I卡片 {
-  ID: string;
-  标题: string;
-  标题ID: string;
-  描述: string;
-  别名: string[];
-}
 
 export class 卡片块 {
   private static 生成卡片Kramdown(卡片: I卡片): string {
@@ -42,6 +35,7 @@ export class 卡片块 {
         [E块属性名称.名称]: 标题,
         [E块属性名称.别名]: 别名.join(","),
         [E块属性名称.卡片]: JSON.stringify(卡片),
+        ...卡片类.卡片转为属性(卡片),
       },
     });
 
