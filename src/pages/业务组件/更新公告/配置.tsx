@@ -1,4 +1,4 @@
-export const 最新版本号 = "P0.1.4-3";
+export const 最新版本号 = "P0.1.5";
 
 export const 所有更新公告: {
   key: string;
@@ -11,13 +11,25 @@ export const 所有更新公告: {
     key: 最新版本号,
     Children: [
       {
+        type: "功能",
+        content: [
+          "右上Dock添加卡片侧栏 （alt+q 可以新增卡片）",
+          "添加数据升级逻辑",
+        ],
+      },
+    ],
+  },
+  {
+    key: "P0.1.4-3",
+    Children: [
+      {
         type: "优化",
         content: ["主题色跟随思源颜色"],
       },
     ],
   },
   {
-    key: 'P0.1.4-2',
+    key: "P0.1.4-2",
     Children: [
       {
         type: "修复",

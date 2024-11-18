@@ -16,8 +16,7 @@ import 卡片表单 from "./业务组件/表单/卡片表单";
 
 export const PluginId = "lively_SaSa";
 
-// const DOCK_TYPE = "dock_tab";
-const TAB_TYPE = "custom_tab";
+const TAB_TYPE = "lively_tab";
 
 export default class SyLively extends Plugin {
   private isMobile: boolean;
@@ -194,7 +193,7 @@ export default class SyLively extends Plugin {
 
     if (!卡片文档ID) {
       系统推送错误消息({
-        msg: "未找到卡片文档ID",
+        msg: "未找到卡片文档ID，请先在设置中生成卡片文档",
         timeout: 10 * 1000,
       });
       return;
