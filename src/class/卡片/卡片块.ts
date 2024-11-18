@@ -1,6 +1,5 @@
 import { 插入后置子块, 设置块属性 } from "@/API/块数据";
 import { E块属性名称 } from "@/constant/系统码";
-import 领域分类 from "@/业务组件/表单项/领域分类";
 import { I卡片, 卡片 as 卡片类 } from ".";
 import KH from "../块/Kramdown助手";
 
@@ -23,7 +22,7 @@ export class 卡片块 {
   }
 
   public static async 新建卡片(卡片: I卡片): Promise<string> {
-    const { ID, 标题, 别名 } = 卡片;
+    const { ID, 标题, 别名, 领域分类 } = 卡片;
     await 插入后置子块({
       dataType: "markdown",
       data: this.生成卡片Kramdown(卡片),

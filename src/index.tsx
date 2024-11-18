@@ -202,7 +202,7 @@ export default class SyLively extends Plugin {
       title: "新建卡片",
       content: `<div id='${rootId}' style="padding: 12px;"></div>`,
       width: "600px",
-      height: "300px",
+      height: "400px",
       hideCloseIcon: true,
     });
 
