@@ -6,7 +6,7 @@ import { Dialog, getFrontend, openTab, Plugin } from "siyuan";
 import { 系统推送错误消息 } from "./API/推送消息";
 import App from "./App";
 import { 触发器 } from "./class/触发器";
-import { E持久化键 } from "./constant/系统码";
+import { E块属性名称, E持久化键 } from "./constant/系统码";
 import { 仓库, 持久化atom } from "./store";
 import { 主题 } from "./theme";
 import 卡片表单 from "./业务组件/表单/卡片表单";
@@ -47,6 +47,30 @@ export default class SyLively extends Plugin {
   async onload() {
     this.isMobile =
       getFrontend() === "mobile" || getFrontend() === "browser-mobile";
+
+    // 添加卡片样式
+    const 卡片样式 = document.createElement("style");
+    document.head.appendChild(卡片样式);
+    卡片样式.innerHTML = `
+      [${E块属性名称.卡片}] {
+        background-color: var(--b3-theme-background);
+
+        padding: 12px !important;
+        margin: 12px 0 !important;
+
+        border: 1px solid var(--b3-theme-on-surface);
+        border-radius: 24px !important;
+      }
+      [${E块属性名称.卡片}]:hover {
+        background-color: var(--b3-theme-background-light);
+      }
+      [${E块属性名称.卡片}]>.h6 {
+        border-bottom: 1px solid var(--b3-theme-on-surface);
+      }    
+      [${E块属性名称.卡片}]>.protyle-attr {
+        position: initial;
+      }
+    `;
 
     // 添加日程管理Icon
     this.addTopBar({
@@ -146,7 +170,7 @@ export default class SyLively extends Plugin {
 
     const rootId = nanoid();
 
-    const 对话框 = new Dialog({
+    new Dialog({
       title: "新建卡片",
       content: `<div id='${rootId}' style="padding: 12px;"></div>`,
       width: "400px",

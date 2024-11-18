@@ -10,7 +10,7 @@ import { ProTable } from "@ant-design/pro-components";
 import { Button } from "antd";
 import dayjs from "dayjs";
 import { MutableRefObject, useRef, useState } from "react";
-import "./index.less";
+import style from "./index.module.less";
 
 export interface I事项表格Props<T事项> {
   标题?: React.ReactNode;
@@ -44,7 +44,7 @@ function 事项表格<T事项 extends I事项>(props: I事项表格Props<T事项
         }
       />
       <ProTable<T事项>
-        className="proTable"
+        className={style.proTable}
         columns={[
           ...事项列配置,
           {

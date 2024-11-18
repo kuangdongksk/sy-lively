@@ -18,7 +18,6 @@ export const useAppStyle = createStyles(({ token }) => {
     顶栏: {
       display: "flex",
       justifyContent: "space-between",
-      padding: "24px 16px",
     },
     内容: {
       padding: 24,

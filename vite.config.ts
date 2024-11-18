@@ -1,13 +1,13 @@
 import react from "@vitejs/plugin-react";
 import fg from "fast-glob";
+import jotaiDebugLabel from "jotai/babel/plugin-debug-label";
+import jotaiReactRefresh from "jotai/babel/plugin-react-refresh";
 import minimist from "minimist";
 import { resolve } from "path";
 import livereload from "rollup-plugin-livereload";
 import { defineConfig } from "vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import zipPack from "vite-plugin-zip-pack";
-import jotaiDebugLabel from "jotai/babel/plugin-debug-label";
-import jotaiReactRefresh from "jotai/babel/plugin-react-refresh";
 
 const args = minimist(process.argv.slice(2));
 const isWatch = args.watch || args.w || false;
@@ -45,6 +45,14 @@ export default defineConfig({
       ],
     }),
   ],
+
+  css: {
+    modules: {
+      hashPrefix: "hash",
+      generateScopedName: isWatch ? "[name]__[local]" : "[hash:base64:5]",
+    },
+    devSourcemap: isWatch,
+  },
 
   // https://github.com/vitejs/vite/issues/1930
   // https://vitejs.dev/guide/env-and-mode.html#env-files
