@@ -1,18 +1,16 @@
 import { 卡片块 } from "@/class/卡片/卡片块";
 import { useStyle } from "@/components/增改查弹窗表单/index.style";
 import { 生成块ID } from "@/utils/DOM";
+import 领域分类 from "@/业务组件/表单项/领域分类";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Divider, Form, Input, message, Select, Space } from "antd";
 import { pinyin } from "pinyin-pro";
 import { useState } from "react";
 
-export interface I卡片表单Props {
-  卡片文档ID: string;
-}
+export interface I卡片表单Props {}
 
 function 卡片表单(props: I卡片表单Props) {
-  const { 卡片文档ID } = props;
-
+  const {} = props;
   const { styles } = useStyle();
   const [formCore] = Form.useForm();
 
@@ -38,9 +36,8 @@ function 卡片表单(props: I卡片表单Props) {
     <Form
       className={styles.表单}
       form={formCore}
-      labelCol={{ span: 4 }}
+      labelCol={{ span: 6 }}
       initialValues={{
-        卡片文档ID,
         标题: "卡片标题",
         描述: "请保持外层的超级块存在，即该块和标题块同时存在",
       }}
@@ -48,27 +45,26 @@ function 卡片表单(props: I卡片表单Props) {
         标题: string;
         描述: string;
         别名: string[];
+        领域分类: string[];
       }) => {
-        const { 标题, 别名 = [] } = value;
+        const { 标题, 别名 = [], 领域分类 } = value;
 
         const ID = 生成块ID();
 
-        await 卡片块.新建卡片(
-          {
-            ...value,
-            ID,
-            标题ID: 生成块ID(),
-            别名: [
-              pinyin(标题, {
-                pattern: "first",
-                type: "array",
-              })?.join(""),
-              ID.slice(-7),
-              ...别名,
-            ],
-          },
-          卡片文档ID
-        );
+        await 卡片块.新建卡片({
+          ...value,
+          ID,
+          标题ID: 生成块ID(),
+          别名: [
+            pinyin(标题, {
+              pattern: "first",
+              type: "array",
+            })?.join(""),
+            ID.slice(-7),
+            ...别名,
+          ],
+          领域分类: 领域分类,
+        });
         message.success("新建卡片成功");
       }}
     >
@@ -108,6 +104,8 @@ function 卡片表单(props: I卡片表单Props) {
           )}
         />
       </Form.Item>
+
+      <领域分类 表单状态={"添加"} />
 
       <Form.Item style={{ textAlign: "center" }}>
         <Button htmlType="submit" type="primary">

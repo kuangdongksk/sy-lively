@@ -3,10 +3,9 @@ import { Provider } from "jotai";
 import { nanoid } from "nanoid";
 import ReactDOM from "react-dom/client";
 import { Dialog, getFrontend, openTab, Plugin } from "siyuan";
-import { 系统推送错误消息 } from "./API/推送消息";
 import App from "./App";
 import { 触发器 } from "./class/触发器";
-import { E持久化键 } from "./constant/系统码";
+import { E事项属性名称, E持久化键 } from "./constant/系统码";
 // import "./index.less";
 import { E卡片属性名称 } from "./class/卡片";
 import CardDocker from "./docker/CardDocker";
@@ -54,6 +53,14 @@ export default class SyLively extends Plugin {
     const 卡片样式 = document.createElement("style");
     document.head.appendChild(卡片样式);
     卡片样式.innerHTML = `
+      [${E事项属性名称.ID}] {
+        background-color: var(--b3-theme-background);
+
+        padding: 12px !important;
+        margin: 12px 0 !important;
+
+        border: 1px solid var(--b3-theme-on-surface);
+      }
       [${E卡片属性名称.ID}] {
         background-color: var(--b3-theme-background);
 
@@ -189,22 +196,12 @@ export default class SyLively extends Plugin {
   }
 
   async 打开新建卡片() {
-    const 卡片文档ID = await this.loadData(E持久化键.卡片文档ID);
-
-    if (!卡片文档ID) {
-      系统推送错误消息({
-        msg: "未找到卡片文档ID，请先在设置中生成卡片文档",
-        timeout: 10 * 1000,
-      });
-      return;
-    }
-
     const rootId = nanoid();
 
     new Dialog({
       title: "新建卡片",
       content: `<div id='${rootId}' style="padding: 12px;"></div>`,
-      width: "400px",
+      width: "600px",
       height: "300px",
       hideCloseIcon: true,
     });
@@ -214,7 +211,7 @@ export default class SyLively extends Plugin {
 
     root.render(
       <ConfigProvider theme={主题}>
-        <卡片表单 卡片文档ID={卡片文档ID} />
+        <卡片表单 />
       </ConfigProvider>
     );
   }

@@ -7,7 +7,7 @@ import SQLer from "./SQLer";
 import { CL笔记本 } from "./笔记本";
 
 export default class CL文档 {
-  //#region 通过Markdown创建
+  //#region 公共
   public static 通过Markdown创建(
     笔记本ID: string,
     文档路径: string,
@@ -18,6 +18,13 @@ export default class CL文档 {
       path: 文档路径,
       markdown,
     });
+  }
+
+  public static async 检验文档是否存在(文档ID: string): Promise<boolean> {
+    const { data } = await fetchSyncPost("/api/query/sql", {
+      stmt: `SELECT * FROM blocks WHERE id=${文档ID}`,
+    });
+    return Boolean(data);
   }
   //#endregion
 
@@ -57,10 +64,7 @@ export default class CL文档 {
       "YYYY/MM/YYYY-MM-DD"
     )}`;
 
-    const { data } = await SQLer.获取日期对应的日记文档(
-      笔记本ID,
-      日期日记路径
-    );
+    const { data } = await SQLer.获取日期对应的日记文档(笔记本ID, 日期日记路径);
     if (data.length === 0) {
       const 文档ID = await this.通过Markdown创建(
         笔记本ID,

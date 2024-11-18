@@ -9,6 +9,7 @@ export enum E卡片属性名称 {
   标题ID = `${卡片属性前缀}titleId`,
   描述 = `${卡片属性前缀}description`,
   别名 = `${卡片属性前缀}alias`,
+  领域分类 = `${卡片属性前缀}domainCategory`,
 }
 
 export interface I卡片 {
@@ -17,6 +18,7 @@ export interface I卡片 {
   标题ID: string;
   描述: string;
   别名: string[];
+  领域分类: string[];
 }
 
 export class 卡片 {
