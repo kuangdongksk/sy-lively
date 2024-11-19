@@ -38,6 +38,8 @@
     "@ant-design/colors": "^7.1.0",
     "@ant-design/icons": "^5.5.1",
     "@ant-design/pro-components": "^2.7.19",
+    "@antv/g6": "^5.0.32",
+    "@antv/g6-extension-react": "^0.1.7",
     "@types/react": "^18.3.11",
     "@vitejs/plugin-react": "^4.3.2",
     "ahooks": "^3.8.1",

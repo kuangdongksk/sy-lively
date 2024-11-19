@@ -7,10 +7,12 @@ import { 开启调试, 调试 } from "@/tools/调试";
 import 事项表单 from "@/业务组件/表单/事项表单";
 import {
   CalendarOutlined,
+  CreditCardOutlined,
   HeatMapOutlined,
   HomeOutlined,
   PlusCircleOutlined,
   SettingOutlined,
+  ShareAltOutlined,
 } from "@ant-design/icons";
 import { App as AntdApp, Button, Layout, Menu } from "antd";
 import dayjs from "dayjs";
@@ -26,6 +28,8 @@ const C目录 = [
   { key: "主页", icon: <HomeOutlined />, label: "主页" },
   { key: "领域", icon: <HeatMapOutlined />, label: "领域" },
   { key: "日历", icon: <CalendarOutlined />, label: "日历" },
+  { key: "卡片", icon: <CreditCardOutlined />, label: "卡片" },
+  { key: "关系", icon: <ShareAltOutlined />, label: "关系" },
   { key: "设置", icon: <SettingOutlined />, label: "设置" },
 ];
 
