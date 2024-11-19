@@ -139,9 +139,11 @@ export default class SQLer {
 
   public static async 获取所有事项(): Promise<I事项[]> {
     const { data } = await fetchSyncPost("/api/query/sql", {
+      // stmt: 'SELECT * FROM attributes WHERE name = "custom-plugin-lively-things"',
       stmt: this.生成事项SQL(),
     });
 
+    // return data.map((item: { value: string }) => JSON.parse(item.value));
     return this.原始结果转化为事项(data);
   }
 

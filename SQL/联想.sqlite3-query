@@ -1,5 +1,6 @@
 -- database: ../../../Data/思源/工作/temp/siyuan.db
 -- 要运行整个文件，请按窗口右上角的▷按钮。
+
 SELECT
   卡片
 FROM
@@ -22,4 +23,6 @@ SELECT
 FROM
   attributes
 WHERE
-  name = 'custom-plugin-lively-card'
+  name = 'custom-plugin-lively-card';
+
+SELECT * FROM attributes WHERE name = "custom-plugin-lively-things"
