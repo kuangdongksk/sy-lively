@@ -1,4 +1,11 @@
-export const 最新版本号 = "P0.1.5";
+export const 最新版本号 = "P0.1.5-2";
+
+export enum E功能类型 {
+  功能 = "功能",
+  优化 = "优化",
+  修复 = "修复",
+  移除 = "移除",
+}
 
 export const 所有更新公告: {
   key: string;
@@ -9,6 +16,19 @@ export const 所有更新公告: {
 }[] = [
   {
     key: 最新版本号,
+    Children: [
+      {
+        type: E功能类型.功能,
+        content: ["卡片新建时必须选择领域分类"],
+      },
+      {
+        type: E功能类型.移除,
+        content: ["移除创建卡片文档功能，卡片与事项存储在一起"],
+      },
+    ],
+  },
+  {
+    key: "P0.1.5",
     Children: [
       {
         type: "功能",
