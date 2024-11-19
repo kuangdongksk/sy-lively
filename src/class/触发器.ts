@@ -1,5 +1,5 @@
-import { 设置块属性 } from "@/API/块数据";
 import { 系统推送消息 } from "@/API/推送消息";
+import { SY块 } from "@/class/思源/块";
 import { E事项状态, E提醒, 获取提醒参数 } from "@/constant/状态配置";
 import { E持久化键 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
@@ -62,7 +62,7 @@ export class 触发器 {
       const 所有事项 = await SQLer.获取所有事项();
 
       所有事项.forEach(async (事项) => {
-        await 设置块属性({
+        await SY块.设置块属性({
           id: 事项.ID,
           attrs: 事项转为属性(事项),
         });
@@ -83,7 +83,7 @@ export class 触发器 {
       const 所有卡片 = await 卡片类.获取所有卡片();
 
       所有卡片.forEach(async (卡片) => {
-        await 设置块属性({
+        await SY块.设置块属性({
           id: 卡片.ID,
           attrs: 卡片类.卡片转为属性(卡片),
         });

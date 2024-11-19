@@ -9,6 +9,7 @@ export enum EAPI {
   通过Markdown创建文档 = "/api/filetree/createDocWithMd",
   创建日记文档 = "/api/filetree/createDailyNote",
   重命名文档 = "/api/filetree/renameDoc",
+  移动文档 = "/api/filetree/moveDocs",
   //#endregion
 
   //#region 块 https://docs.siyuan-note.club/zh-Hans/reference/api/kernel/#%E5%9D%97
@@ -24,9 +25,18 @@ export enum EAPI {
   设置块属性 = "/api/attr/setBlockAttrs",
   获取块属性 = "/api/attr/getBlockAttrs",
   //#endregion
+
+  //#region 文件
   获取文件 = "/api/file/getFile",
   写入文件 = "/api/file/putFile",
+  //#endregion
 
+  //#region 通知
   推送消息 = "/api/notification/pushMsg",
   推送错误消息 = "/api/notification/pushErrMsg",
+  //#endregion
+
+  //#region 查询
+  查询SQL = "/api/query/sql",
+  //#endregion
 }

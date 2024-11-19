@@ -1,5 +1,5 @@
-import { 设置块属性 } from "@/API/块数据";
-import CL文档 from "@/class/文档";
+import { SY块 } from "@/class/思源/块";
+import SY文档 from "@/class/思源/文档";
 import 增改查弹窗表单, {
   I增改查弹窗表单Ref,
 } from "@/components/增改查弹窗表单";
@@ -57,7 +57,7 @@ function O分类表单(props: I分类表单Props, ref: Ref<I增改查弹窗表�
         设置为默认分类: boolean;
       }) => {
         const { 分类名称, 分类描述, 设置为默认分类 } = value;
-        const { data: 分类文档ID } = await CL文档.通过Markdown创建(
+        const { data: 分类文档ID } = await SY文档.通过Markdown创建(
           用户设置.笔记本ID,
           `/领域/${领域.名称}/${分类名称}`,
           ""
@@ -68,7 +68,7 @@ function O分类表单(props: I分类表单Props, ref: Ref<I增改查弹窗表�
             ...领域,
             默认分类: 分类文档ID,
           };
-          await 设置块属性({
+          await SY块.设置块属性({
             id: 领域.ID,
             attrs: {
               [E块属性名称.领域]: JSON.stringify(新的领域),
@@ -84,7 +84,7 @@ function O分类表单(props: I分类表单Props, ref: Ref<I增改查弹窗表�
           描述: 分类描述,
         };
 
-        await 设置块属性({
+        await SY块.设置块属性({
           id: 分类文档ID,
           attrs: {
             [E块属性名称.分类]: JSON.stringify(分类),

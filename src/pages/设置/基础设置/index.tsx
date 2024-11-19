@@ -1,7 +1,7 @@
-import { 设置块属性 } from "@/API/块数据";
 import SQLer from "@/class/SQLer";
-import CL文档 from "@/class/文档";
-import { CL笔记本 } from "@/class/笔记本";
+import { SY块 } from "@/class/思源/块";
+import SY文档 from "@/class/思源/文档";
+import { SY笔记本 } from "@/class/思源/笔记本";
 import { E块属性名称, E持久化键 } from "@/constant/系统码";
 import { 持久化atom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
@@ -17,7 +17,7 @@ function 用户设置() {
   const [笔记本列表, 令笔记本列表为] = useState([]);
 
   useEffect(() => {
-    CL笔记本.列出笔记本().then(({ data }) => {
+    SY笔记本.列出笔记本().then(({ data }) => {
       令笔记本列表为(
         data.notebooks.map((notebook: { id: any; name: any }) => ({
           value: notebook.id,
@@ -36,7 +36,7 @@ function 用户设置() {
           onChange={async (笔记本ID) => {
             if (用户设置.笔记本ID === 笔记本ID) return;
 
-            const { id: 日记根文档ID } = await CL文档.获取日记根文档(笔记本ID);
+            const { id: 日记根文档ID } = await SY文档.获取日记根文档(笔记本ID);
             const 所有的笔记本设置 = await SQLer.获取所有用户设置();
 
             let 新的用户设置: I用户设置 = 所有的笔记本设置.find(
@@ -48,7 +48,7 @@ function 用户设置() {
                 笔记本ID,
                 日记根文档ID,
               };
-              await 设置块属性({
+              await SY块.设置块属性({
                 id: 日记根文档ID,
                 attrs: {
                   [E块属性名称.用户设置]: JSON.stringify(新的用户设置),

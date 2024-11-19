@@ -1,4 +1,5 @@
-import { 插入前置子块 } from "@/API/块数据";
+import { SY块 } from "@/class/思源/块";
+import SY文档 from "@/class/思源/文档";
 import 事项DOM from "@/components/模板/DOM/事项DOM";
 import { E事项状态 } from "@/constant/状态配置";
 import { 事项数据 } from "@/store/事项数据";
@@ -12,7 +13,6 @@ import { useAtom } from "jotai";
 import { nanoid } from "nanoid";
 import { TreeNode } from "../..";
 import { 层级增加 } from "../../tools";
-import CL文档 from "@/class/文档";
 
 function 添加子项(props: { 节点: TreeNode }) {
   const { 节点 } = props;
@@ -32,12 +32,12 @@ function 添加子项(props: { 节点: TreeNode }) {
             const 名称 = "未命名";
             const 层级 = 层级增加(节点.层级);
 
-            CL文档.获取对应日期的日记文档(用户设置.笔记本ID, dayjs()).then(
+            SY文档.获取对应日期的日记文档(用户设置.笔记本ID, dayjs()).then(
               ({ id: 文档ID }) => {
                 const 新事项 = {
-                  id,
-                  key: stringArr2string([状态, 名称, id]),
-                  checkable: true,
+                  ID: id,
+                  Key: stringArr2string([状态, 名称, id]),
+                  Checkable: true,
                   名称,
                   重要程度: 5,
                   紧急程度: 5,
@@ -49,14 +49,17 @@ function 添加子项(props: { 节点: TreeNode }) {
                   子项: [],
                   父项: 节点.id,
                 };
-                插入前置子块({
-                  dataType: "dom",
-                  data: TSX2HTML(<事项DOM 事项={新事项} />),
-                  parentID: 文档ID,
-                }).then((value) => {
-                  数据.push(新事项);
-                  令数据为([...数据]);
-                });
+
+                SY块
+                  .插入前置子块({
+                    dataType: "dom",
+                    data: TSX2HTML(<事项DOM 事项={新事项} />),
+                    parentID: 文档ID,
+                  })
+                  .then((value) => {
+                    数据.push(新事项);
+                    令数据为([...数据]);
+                  });
               }
             );
           }}

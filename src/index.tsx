@@ -10,7 +10,7 @@ import { E事项属性名称, E持久化键 } from "./constant/系统码";
 import { E卡片属性名称 } from "./class/卡片";
 import CardDocker from "./docker/CardDocker";
 import { 仓库, 持久化atom } from "./store";
-import { 主题 } from "./theme";
+import { 主题 } from "./style/theme";
 import 卡片表单 from "./业务组件/表单/卡片表单";
 
 export const PluginId = "lively_SaSa";

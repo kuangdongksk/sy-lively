@@ -1,4 +1,4 @@
-import { 插入后置子块, 设置块属性 } from "@/API/块数据";
+import { SY块 } from "@/class/思源/块";
 import { E块属性名称 } from "@/constant/系统码";
 import { I卡片, 卡片 as 卡片类 } from ".";
 import KH from "../块/Kramdown助手";
@@ -23,13 +23,13 @@ export class 卡片块 {
 
   public static async 新建卡片(卡片: I卡片): Promise<string> {
     const { ID, 标题, 别名, 领域分类 } = 卡片;
-    await 插入后置子块({
+    await SY块.插入后置子块({
       dataType: "markdown",
       data: this.生成卡片Kramdown(卡片),
       parentID: 领域分类[1],
     });
 
-    await 设置块属性({
+    await SY块.设置块属性({
       id: ID,
       attrs: {
         [E块属性名称.名称]: 标题,

@@ -6,6 +6,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, Divider, Form, Input, message, Select, Space } from "antd";
 import { pinyin } from "pinyin-pro";
 import { useState } from "react";
+import "@/style/global.less";
 
 export interface I卡片表单Props {}
 

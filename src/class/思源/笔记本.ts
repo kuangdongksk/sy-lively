@@ -1,7 +1,7 @@
 import { EAPI } from "@/constant/API路径";
 import { fetchSyncPost } from "siyuan";
 
-export class CL笔记本 {
+export class SY笔记本 {
   public static 列出笔记本() {
     return fetchSyncPost(EAPI.列出笔记本);
   }

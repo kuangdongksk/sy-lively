@@ -1,4 +1,4 @@
-import CL文档 from "@/class/文档";
+import SY文档 from "@/class/思源/文档";
 import SQLer from "@/class/SQLer";
 import { 思源协议 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/store/用户设置";
@@ -40,7 +40,7 @@ function 日历() {
                 <Button
                   type="link"
                   onClick={() => {
-                    CL文档.获取对应日期的日记文档(
+                    SY文档.获取对应日期的日记文档(
                       用户设置.笔记本ID,
                       value
                     ).then(({ id }) => window.open(思源协议 + id));
