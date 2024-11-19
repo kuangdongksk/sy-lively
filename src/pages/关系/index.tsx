@@ -1,5 +1,5 @@
 import 关系图 from "@/业务组件/关系图";
-import styles from "./index.module.css";
+import styles from "./index.module.less";
 
 export interface I关系Props {}
 

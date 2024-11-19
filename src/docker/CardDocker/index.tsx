@@ -1,10 +1,10 @@
+import { 思源协议 } from "@/constant/系统码";
 import { CopyOutlined } from "@ant-design/icons";
 import { useDebounce } from "ahooks";
 import { Button, Input, List, message } from "antd";
 import { useEffect, useState } from "react";
-import { E卡片属性名称, I卡片, 卡片 as 卡片类 } from "../../class/卡片";
+import { I卡片, 卡片 as 卡片类 } from "../../class/卡片";
 import styles from "./index.module.less";
-import { 思源协议 } from "@/constant/系统码";
 
 function CardDocker() {
   const [关键词, 令关键词为] = useState("");
@@ -40,10 +40,10 @@ function CardDocker() {
                 <a
                   className={styles.cardTitle}
                   data-type="block-ref"
-                  data-id={卡片[E卡片属性名称.ID]}
-                  href={思源协议 + 卡片[E卡片属性名称.ID]}
+                  data-id={卡片.ID}
+                  href={思源协议 + 卡片.ID}
                 >
-                  {卡片[E卡片属性名称.标题]}
+                  {卡片.标题}
                 </a>
                 <Button
                   icon={<CopyOutlined />}
@@ -51,9 +51,7 @@ function CardDocker() {
                   onClick={async () => {
                     // ((20241113184100-q4i1fg4 '浙江大华'))
                     await navigator.clipboard.writeText(
-                      `((${卡片[E卡片属性名称.ID]} '${
-                        卡片[E卡片属性名称.标题]
-                      }'))`
+                      `((${卡片.ID} '${卡片.标题}'))`
                     );
 
                     message.success("已复制");

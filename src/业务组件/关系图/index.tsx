@@ -1,99 +1,46 @@
+import { I卡片, 卡片 } from "@/class/卡片";
 import { ExtensionCategory, Graph as G6Graph, register } from "@antv/g6";
 import { ReactNode } from "@antv/g6-extension-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { 图配置 } from "./配置";
 
-const ICON_MAP = {
-  error: "&#10060;",
-  overload: "&#9889;",
-  running: "&#9989;",
-};
-
-const COLOR_MAP = {
-  error: "#f5222d",
-  overload: "#faad14",
-  running: "#52c41a",
-};
 export interface I关系图Props {
-  options?: any;
-  onRender?: (graph: G6Graph) => void;
   onDestroy?: () => void;
 }
 
 register(ExtensionCategory.NODE, "react", ReactNode);
 
 function 关系图(props: I关系图Props) {
-  const {} = props;
-  const { options, onRender, onDestroy } = props;
+  const { onDestroy } = props;
+
   const 图Ref = useRef<G6Graph>();
   const 容器Ref = useRef<HTMLDivElement>(null);
 
+  const [所有卡片, 设置所有卡片] = useState<I卡片[]>([]);
+
+  const 获取所有卡片 = async () => {
+    const 所有卡片 = await 卡片.获取所有卡片();
+    设置所有卡片(所有卡片);
+  };
+
+  useEffect(() => {
+    获取所有卡片();
+  }, []);
+
   useEffect(() => {
     const 图 = new G6Graph({
+      ...图配置,
       container: 容器Ref.current!,
       data: {
-        nodes: [
-          {
-            id: "node-1",
-            data: { location: "East", status: "error", ip: "192.168.1.2" },
-          },
-          {
-            id: "node-2",
-            data: { location: "West", status: "overload", ip: "192.168.1.3" },
-          },
-          {
-            id: "node-3",
-            data: { location: "South", status: "running", ip: "192.168.1.4" },
-          },
-        ],
+        nodes: 所有卡片.map((卡片) => ({
+          id: 卡片.标题ID,
+          data: 卡片 as any,
+        })),
       },
-      node: {
-        type: "html",
-        style: {
-          size: [240, 80],
-          dx: -120,
-          dy: -40,
-          innerHTML: (d) => {
-            const {
-              data: { location, status, ip },
-            } = d;
-            const color = COLOR_MAP[status];
-
-            return `
-  <div 
-    style="
-      width:100%; 
-      height: 100%; 
-      background: ${color}bb; 
-      border: 1px solid ${color};
-      color: #fff;
-      user-select: none;
-      display: flex; 
-      padding: 10px;
-      "
-  >
-    <div style="display: flex;flex-direction: column;flex: 1;">
-      <div style="font-weight: bold;">
-        ${location} Node
-      </div>
-      <div>
-        status: ${status} ${ICON_MAP[status]}
-      </div>
-    </div>
-    <div>
-      <span style="border: 1px solid white; padding: 2px;">
-        ${ip}
-      </span>
-    </div>
-  </div>`;
-          },
-        },
-      },
-      layout: {
-        type: "grid",
-      },
-      behaviors: ["drag-element", "zoom-canvas"],
     });
     图Ref.current = 图;
+
+    图.render();
 
     return () => {
       const 图 = 图Ref.current;
@@ -103,19 +50,7 @@ function 关系图(props: I关系图Props) {
         图Ref.current = undefined;
       }
     };
-  }, []);
-
-  useEffect(() => {
-    const 容器 = 容器Ref.current;
-    const 图 = 图Ref.current;
-
-    if (!options || !容器 || !图 || 图.destroyed) return;
-
-    图.setOptions(options);
-    图.render()
-      .then(() => onRender?.(图))
-      .catch((error) => console.debug(error));
-  }, [options]);
+  }, [所有卡片]);
 
   return (
     <div

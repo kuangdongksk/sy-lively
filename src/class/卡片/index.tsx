@@ -1,5 +1,6 @@
-import { fetchSyncPost } from "siyuan";
 import { E块属性名称 } from "@/constant/系统码";
+import { 根据枚举的值获取枚举的键 } from "@/utils/枚举";
+import { fetchSyncPost } from "siyuan";
 
 export const 卡片属性前缀 = `${E块属性名称.卡片}-`;
 
@@ -44,8 +45,8 @@ export class 卡片 {
     `;
   }
 
-  public static 卡片转为属性(卡片: I卡片): Record<string, string> {
-    const 卡片属性 = {};
+  public static 卡片转为属性(卡片: I卡片): { [key in E卡片属性名称]: string } {
+    const 卡片属性 = {} as { [key in E卡片属性名称]: string };
     Object.keys(卡片).forEach((key) => {
       if (卡片[key] === undefined) {
         return;
@@ -55,14 +56,30 @@ export class 卡片 {
     return 卡片属性;
   }
 
+  private static 属性转为卡片(属性: { [key in E卡片属性名称]: string }): I卡片 {
+    const 卡片 = {} as I卡片;
+    Object.keys(属性).forEach((key) => {
+      if (属性[key] === undefined) {
+        return;
+      }
+
+      卡片[根据枚举的值获取枚举的键(E卡片属性名称, key)] = 属性[key];
+    });
+    return 卡片;
+  }
+
+  public static 原始结果转为卡片(原始结果: { 卡片: string }[]): I卡片[] {
+    if (!原始结果) return [];
+
+    return 原始结果.map((item) => this.属性转为卡片(JSON.parse(item.卡片)));
+  }
+
   public static async 获取所有卡片(): Promise<I卡片[]> {
     const { data } = await fetchSyncPost("/api/query/sql", {
       stmt: this.生成卡片SQL(),
     });
 
-    if (!data) return [];
-
-    return data.map((item) => JSON.parse(item.卡片));
+    return this.原始结果转为卡片(data);
   }
 
   public static async 获取卡片通过关键词(关键词: string): Promise<I卡片[]> {
@@ -70,8 +87,6 @@ export class 卡片 {
       stmt: this.生成卡片SQL([`卡片 LIKE '%${关键词}%'`]),
     });
 
-    if (!data) return [];
-
-    return data.map((item) => JSON.parse(item.卡片));
+    return this.原始结果转为卡片(data);
   }
 }
