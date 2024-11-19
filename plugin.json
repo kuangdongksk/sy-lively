@@ -18,7 +18,7 @@
   },
   "description": {
     "en_US": "Calendar management plugin",
-    "zh_CN": "日程管理插件"
+    "zh_CN": "日程管理插件，同时提供简单的卡片功能"
   },
   "readme": {
     "en_US": "README.md",
@@ -27,5 +27,5 @@
   "funding": {
     "custom": [""]
   },
-  "keywords": ["plugin", "日程", "日程管理"]
+  "keywords": ["plugin", "日程", "日程管理", "卡片"]
 }
