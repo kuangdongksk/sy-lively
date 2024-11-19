@@ -1,4 +1,4 @@
-export const 最新版本号 = "P0.1.5-2";
+export const 最新版本号 = "P0.1.5-3";
 
 export enum E功能类型 {
   功能 = "功能",
@@ -16,6 +16,15 @@ export const 所有更新公告: {
 }[] = [
   {
     key: 最新版本号,
+    Children: [
+      {
+        type: E功能类型.功能,
+        content: ["添加关系页面，在导航中可以看见，尚无实际功能"],
+      },
+    ],
+  },
+  {
+    key: "P0.1.5-2",
     Children: [
       {
         type: E功能类型.功能,
