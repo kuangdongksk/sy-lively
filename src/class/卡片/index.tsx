@@ -1,6 +1,7 @@
 import { E块属性名称 } from "@/constant/系统码";
 import { 根据枚举的值获取枚举的键 } from "@/utils/枚举";
 import { fetchSyncPost } from "siyuan";
+import { SY块 } from "../思源/块";
 
 export const 卡片属性前缀 = `${E块属性名称.卡片}-`;
 
@@ -11,6 +12,8 @@ export enum E卡片属性名称 {
   描述 = `${卡片属性前缀}description`,
   别名 = `${卡片属性前缀}alias`,
   领域分类 = `${卡片属性前缀}domainCategory`,
+  X = `${卡片属性前缀}x`,
+  Y = `${卡片属性前缀}y`,
 }
 
 export interface I卡片 {
@@ -20,6 +23,8 @@ export interface I卡片 {
   描述: string;
   别名: string[];
   领域分类: string[];
+  X?: number;
+  Y?: number;
 }
 
 export class 卡片 {
@@ -88,5 +93,15 @@ export class 卡片 {
     });
 
     return this.原始结果转为卡片(data);
+  }
+
+  public static async 更新位置(ID: string, 位置: { x: number; y: number }) {
+    await SY块.设置块属性({
+      id: ID,
+      attrs: {
+        [E卡片属性名称.X]: 位置.x.toString(),
+        [E卡片属性名称.Y]: 位置.y.toString(),
+      },
+    });
   }
 }

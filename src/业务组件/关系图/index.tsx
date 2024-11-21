@@ -1,8 +1,14 @@
 import { I卡片, 卡片 } from "@/class/卡片";
-import { ExtensionCategory, Graph as G6Graph, register } from "@antv/g6";
+import {
+  CanvasEvent,
+  ExtensionCategory,
+  Graph as G6Graph,
+  NodeEvent,
+  register,
+} from "@antv/g6";
 import { ReactNode } from "@antv/g6-extension-react";
 import { useEffect, useRef, useState } from "react";
-import { 图配置 } from "./配置";
+import { 事件配置, 图配置 } from "./配置";
 
 export interface I关系图Props {
   onDestroy?: () => void;
@@ -31,14 +37,12 @@ function 关系图(props: I关系图Props) {
     const 图 = new G6Graph({
       ...图配置,
       container: 容器Ref.current!,
-      data: {
-        nodes: 所有卡片.map((卡片) => ({
-          id: 卡片.标题ID,
-          data: 卡片 as any,
-        })),
-      },
+      data: {},
     });
     图Ref.current = 图;
+
+    图.on(NodeEvent.DRAG_END, 事件配置[NodeEvent.DRAG_END]);
+    图.on(NodeEvent.DROP, 事件配置[NodeEvent.DROP]);
 
     图.render();
 
@@ -50,6 +54,19 @@ function 关系图(props: I关系图Props) {
         图Ref.current = undefined;
       }
     };
+  }, []);
+
+  useEffect(() => {
+    图Ref.current?.setData({
+      nodes: 所有卡片.map((卡片) => ({
+        id: 卡片.ID,
+        data: 卡片 as any,
+        style: {
+          x: 卡片.X,
+          y: 卡片.Y,
+        },
+      })),
+    });
   }, [所有卡片]);
 
   return (

@@ -13,7 +13,7 @@ import { 仓库, 持久化atom } from "./store";
 import { 主题 } from "./style/theme";
 import 卡片表单 from "./业务组件/表单/卡片表单";
 
-export const PluginId = "lively_SaSa";
+export const PluginId = "livelySaSa";
 
 const TAB_TYPE = "lively_tab";
 
@@ -114,6 +114,7 @@ export default class SyLively extends Plugin {
       type: "喧嚣卡片",
       init() {
         const rootDom = this.element;
+        rootDom.id = PluginId;
         const root = ReactDOM.createRoot(rootDom);
 
         root.render(
@@ -200,7 +201,7 @@ export default class SyLively extends Plugin {
 
     new Dialog({
       title: "新建卡片",
-      content: `<div id='${rootId}' style="padding: 12px;"></div>`,
+      content: `<div id='${rootId}' id="${PluginId}" style="padding: 12px;"></div>`,
       width: "600px",
       height: "400px",
       hideCloseIcon: true,
