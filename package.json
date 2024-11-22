@@ -38,6 +38,7 @@
     "@ant-design/colors": "^7.1.0",
     "@ant-design/icons": "^5.5.1",
     "@ant-design/pro-components": "^2.7.19",
+    "@antv/g": "^6.1.9",
     "@antv/g6": "^5.0.32",
     "@antv/g6-extension-react": "^0.1.7",
     "@types/react": "^18.3.11",

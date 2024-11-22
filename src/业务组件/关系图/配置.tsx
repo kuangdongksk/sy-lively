@@ -37,7 +37,7 @@ export const 图配置: GraphOptions = {
       follow: true,
       key: "grid-line",
       type: "grid-line",
-      stock: "#88888888",
+      stroke: "#88888888",
     },
   ],
 };
@@ -47,13 +47,16 @@ export const 事件配置 = {
     console.log(e);
   },
   [NodeEvent.DRAG_END]: (e: IPointerEvent) => {
-    console.log("这是dragEnd");
     const { target } = e;
-    卡片.更新位置(target.id, e.canvas);
+
+    卡片.更新位置(target.id, {
+      x: target.attributes.x,
+      y: target.attributes.y,
+    });
   },
-  [NodeEvent.DROP]: (e: IPointerEvent) => {
-    console.log("这是drop");
-    const { target } = e;
-    卡片.更新位置(target.id, e.canvas);
-  },
+  // [NodeEvent.DROP]: (e: IPointerEvent) => {
+  //   console.log("这是drop");
+  //   const { target } = e;
+  //   卡片.更新位置(target.id, e.canvas);
+  // },
 };

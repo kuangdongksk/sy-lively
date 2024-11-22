@@ -41,8 +41,9 @@ function 关系图(props: I关系图Props) {
     });
     图Ref.current = 图;
 
-    图.on(NodeEvent.DRAG_END, 事件配置[NodeEvent.DRAG_END]);
-    图.on(NodeEvent.DROP, 事件配置[NodeEvent.DROP]);
+    Object.entries(事件配置).forEach(([event, callback]) => {
+      图.on(event, callback);
+    });
 
     图.render();
 

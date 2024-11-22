@@ -68,6 +68,12 @@ export class 卡片 {
         return;
       }
 
+      if (key === E卡片属性名称.X || key === E卡片属性名称.Y) {
+        return (卡片[根据枚举的值获取枚举的键(E卡片属性名称, key)] = parseFloat(
+          属性[key]
+        ));
+      }
+
       卡片[根据枚举的值获取枚举的键(E卡片属性名称, key)] = 属性[key];
     });
     return 卡片;
