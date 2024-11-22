@@ -21,12 +21,15 @@ export class 卡片块 {
     );
   }
 
-  public static async 新建卡片(卡片: I卡片): Promise<string> {
-    const { ID, 标题, 别名, 领域分类 } = 卡片;
+  public static async 新建卡片(
+    卡片: I卡片,
+    卡片文档ID: string
+  ): Promise<string> {
+    const { ID, 标题, 别名 } = 卡片;
     await SY块.插入后置子块({
       dataType: "markdown",
       data: this.生成卡片Kramdown(卡片),
-      parentID: 领域分类[1],
+      parentID: 卡片文档ID,
     });
 
     await SY块.设置块属性({

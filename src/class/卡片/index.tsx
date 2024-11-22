@@ -11,9 +11,10 @@ export enum E卡片属性名称 {
   标题ID = `${卡片属性前缀}titleId`,
   描述 = `${卡片属性前缀}description`,
   别名 = `${卡片属性前缀}alias`,
-  领域分类 = `${卡片属性前缀}domainCategory`,
   X = `${卡片属性前缀}x`,
   Y = `${卡片属性前缀}y`,
+  单开一页 = `${卡片属性前缀}singlePage`,
+  父项ID = `${卡片属性前缀}parentId`,
 }
 
 export interface I卡片 {
@@ -22,10 +23,14 @@ export interface I卡片 {
   标题ID: string;
   描述: string;
   别名: string[];
-  领域分类: string[];
   X?: number;
   Y?: number;
+  单开一页?: boolean;
+  父项ID?: string;
 }
+
+const 数字类型属性 = [E卡片属性名称.X, E卡片属性名称.Y];
+const 布尔类型属性 = [E卡片属性名称.单开一页];
 
 export class 卡片 {
   private static 生成卡片SQL(条件数组?: string[]) {
@@ -68,10 +73,15 @@ export class 卡片 {
         return;
       }
 
-      if (key === E卡片属性名称.X || key === E卡片属性名称.Y) {
+      if (数字类型属性.includes(key as E卡片属性名称)) {
         return (卡片[根据枚举的值获取枚举的键(E卡片属性名称, key)] = parseFloat(
           属性[key]
         ));
+      }
+
+      if (布尔类型属性.includes(key as E卡片属性名称)) {
+        return (卡片[根据枚举的值获取枚举的键(E卡片属性名称, key)] =
+          属性[key] === "true");
       }
 
       卡片[根据枚举的值获取枚举的键(E卡片属性名称, key)] = 属性[key];

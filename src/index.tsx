@@ -3,15 +3,17 @@ import { Provider } from "jotai";
 import { nanoid } from "nanoid";
 import ReactDOM from "react-dom/client";
 import { Dialog, getFrontend, openTab, Plugin } from "siyuan";
+import { 系统推送错误消息 } from "./API/推送消息";
 import App from "./App";
+import { E卡片属性名称 } from "./class/卡片";
+import SY文档 from "./class/思源/文档";
 import { 触发器 } from "./class/触发器";
 import { E事项属性名称, E持久化键 } from "./constant/系统码";
-// import "./index.less";
-import { E卡片属性名称 } from "./class/卡片";
 import CardDocker from "./docker/CardDocker";
 import { 仓库, 持久化atom } from "./store";
 import { 主题 } from "./style/theme";
 import 卡片表单 from "./业务组件/表单/卡片表单";
+// import "./index.less";
 
 export const PluginId = "livelySaSa";
 
@@ -197,6 +199,18 @@ export default class SyLively extends Plugin {
   }
 
   async 打开新建卡片() {
+    const 卡片文档ID = await this.getData(E持久化键.卡片文档ID);
+
+    if (!卡片文档ID) {
+      系统推送错误消息({ msg: "请先在设置中生成卡片文档", timeout: 5000 });
+      return;
+    }
+
+    if (!(await SY文档.检验文档是否存在(卡片文档ID))) {
+      系统推送错误消息({ msg: "卡片文档不存在，请重新生成", timeout: 5000 });
+      return;
+    }
+
     const rootId = nanoid();
 
     new Dialog({
@@ -212,7 +226,7 @@ export default class SyLively extends Plugin {
 
     root.render(
       <ConfigProvider theme={主题}>
-        <卡片表单 />
+        <卡片表单 父ID={卡片文档ID} />
       </ConfigProvider>
     );
   }

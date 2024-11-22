@@ -22,9 +22,9 @@ export default class SY文档 {
 
   public static async 检验文档是否存在(文档ID: string): Promise<boolean> {
     const { data } = await fetchSyncPost("/api/query/sql", {
-      stmt: `SELECT * FROM blocks WHERE id=${文档ID}`,
+      stmt: `SELECT * FROM blocks WHERE id='${文档ID}'`,
     });
-    return Boolean(data);
+    return Boolean(data?.length);
   }
 
   public static async 根据ID获取路径(ID: string): Promise<string> {
@@ -107,6 +107,15 @@ export default class SY文档 {
       };
     }
     return data[0];
+  }
+  //#endregion
+
+  //#region 卡片
+  public static async 创建卡片文档(笔记本ID: string): Promise<{ id: string }> {
+    const { data } = await this.通过Markdown创建(笔记本ID, "/卡片", "");
+    return {
+      id: data,
+    };
   }
   //#endregion
 }

@@ -30,4 +30,11 @@ SELECT
 FROM
   attributes
 WHERE
-  name LIKE "custom-plugin-lively-card-x%"
+  name LIKE "custom-plugin-lively-card-x%";
+
+SELECT
+  *
+FROM
+  blocks
+WHERE
+  id = 'null'

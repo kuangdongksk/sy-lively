@@ -3,11 +3,12 @@ import {
   CanvasEvent,
   ExtensionCategory,
   Graph as G6Graph,
-  NodeEvent,
   register,
 } from "@antv/g6";
 import { ReactNode } from "@antv/g6-extension-react";
+import { Modal } from "antd";
 import { useEffect, useRef, useState } from "react";
+import 卡片表单 from "../表单/卡片表单";
 import { 事件配置, 图配置 } from "./配置";
 
 export interface I关系图Props {
@@ -23,6 +24,7 @@ function 关系图(props: I关系图Props) {
   const 容器Ref = useRef<HTMLDivElement>(null);
 
   const [所有卡片, 设置所有卡片] = useState<I卡片[]>([]);
+  const [打开弹窗, 令打开弹窗为] = useState(false);
 
   const 获取所有卡片 = async () => {
     const 所有卡片 = await 卡片.获取所有卡片();
@@ -42,15 +44,21 @@ function 关系图(props: I关系图Props) {
     图Ref.current = 图;
 
     Object.entries(事件配置).forEach(([event, callback]) => {
-      图.on(event, callback);
+      图.on(event, (e) => callback(e as any, 图));
     });
+
+    图.on(CanvasEvent.DBLCLICK, (e) => {});
 
     图.render();
 
     return () => {
       const 图 = 图Ref.current;
       if (图) {
-        图.destroy();
+        try {
+          图.destroy();
+        } catch (error) {
+          console.log(error);
+        }
         onDestroy?.();
         图Ref.current = undefined;
       }
@@ -71,13 +79,18 @@ function 关系图(props: I关系图Props) {
   }, [所有卡片]);
 
   return (
-    <div
-      ref={容器Ref}
-      style={{
-        width: "100%",
-        height: "100%",
-      }}
-    />
+    <>
+      <div
+        ref={容器Ref}
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+      />
+      <Modal open={打开弹窗} onCancel={() => 令打开弹窗为(false)}>
+        {/* <卡片表单  /> */}
+      </Modal>
+    </>
   );
 }
 export default 关系图;

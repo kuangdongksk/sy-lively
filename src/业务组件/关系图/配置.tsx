@@ -1,5 +1,6 @@
 import {
   CanvasEvent,
+  Graph,
   GraphOptions,
   IPointerEvent,
   NodeData,
@@ -31,7 +32,16 @@ export const 图配置: GraphOptions = {
       type: "minimap",
       position: "right-top",
     },
-    "snapLine",
+    {
+      type: "snapline",
+      key: "snapline",
+      verticalLineStyle: { stroke: "#AAAAAA", lineWidth: 2 },
+      horizontalLineStyle: { stroke: "#AAAAAA", lineWidth: 2 },
+      offset: Infinity,
+      autoSnap: true,
+      tolerance: 20,
+      shape: "key",
+    },
     {
       border: false,
       follow: true,
@@ -46,6 +56,9 @@ export const 事件配置 = {
   [CanvasEvent.CLICK]: (e: any) => {
     console.log(e);
   },
+  [NodeEvent.DRAG]: (e: IPointerEvent, graph: Graph) => {
+    console.log("这是dragStart", e);
+  },
   [NodeEvent.DRAG_END]: (e: IPointerEvent) => {
     const { target } = e;
 
@@ -54,6 +67,7 @@ export const 事件配置 = {
       y: target.attributes.y,
     });
   },
+
   // [NodeEvent.DROP]: (e: IPointerEvent) => {
   //   console.log("这是drop");
   //   const { target } = e;
