@@ -79,4 +79,10 @@ export default class Kramdown助手 {
   ): TKramdown {
     return `${Kramdown块}\n${this.根据对象生成属性(对象, 属性名称)}`;
   }
+
+  public static 生成嵌入块(ID: string, 嵌入块ID?: string): TKramdown {
+    return `{{select * from blocks where id='${ID}'}}\n{: id="${
+      嵌入块ID ?? 生成块ID()
+    }" updated="${dayjs().format(E时间格式化.思源时间)}"}`;
+  }
 }

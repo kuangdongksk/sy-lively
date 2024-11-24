@@ -90,12 +90,6 @@ function 用户设置() {
           <Button
             onClick={async () => {
               if (!用户设置.笔记本ID) return message.error("请先选择笔记本");
-              const 卡片文档ID = await 持久化.加载(E持久化键.卡片文档ID);
-
-              if (卡片文档ID !== "null") {
-                message.error("卡片文档已存在");
-                return;
-              }
 
               const { id } = await SY文档.创建卡片文档(用户设置.笔记本ID);
 

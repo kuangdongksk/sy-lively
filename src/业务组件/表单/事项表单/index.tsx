@@ -136,7 +136,7 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
             ? await 新建事项文档(新事项)
             : await 新建事项块(新事项);
 
-          await 插入到日记(新事项, 用户设置);
+          await 插入到日记(新事项.ID, 用户设置);
           message.success("添加成功");
         } else {
           await 更新事项块(新事项);

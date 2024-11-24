@@ -1,5 +1,6 @@
 import {
   CanvasEvent,
+  ComboEvent,
   Graph,
   GraphOptions,
   IPointerEvent,
@@ -12,13 +13,14 @@ import { 卡片 } from "@/class/卡片";
 export const 图配置: GraphOptions = {
   behaviors: ["drag-element", "zoom-canvas", "drag-canvas"],
   node: {
-    type: "react",
-    style: {
-      size: [240, 50],
-      component: (data: NodeData) => (
-        <节点 data={data as unknown as I节点Props["data"]} />
-      ),
-    },
+    type: "circle",
+    // type: "react",
+    // style: {
+    //   size: [240, 50],
+    //   component: (data: NodeData) => (
+    //     <节点 data={data as unknown as I节点Props["data"]} />
+    //   ),
+    // },
   },
   layout: {
     type: "d3-force",
@@ -56,11 +58,10 @@ export const 事件配置 = {
   [CanvasEvent.CLICK]: (e: any) => {
     console.log(e);
   },
-  [NodeEvent.DRAG]: (e: IPointerEvent, graph: Graph) => {
-    console.log("这是dragStart", e);
-  },
+  [NodeEvent.DRAG]: (e: IPointerEvent, graph: Graph) => {},
   [NodeEvent.DRAG_END]: (e: IPointerEvent) => {
-    const { target } = e;
+    const { target } = e as any;
+    console.log("🚀 ~ NodeEvent.DRAG_END:", e);
 
     卡片.更新位置(target.id, {
       x: target.attributes.x,
@@ -68,9 +69,29 @@ export const 事件配置 = {
     });
   },
 
-  // [NodeEvent.DROP]: (e: IPointerEvent) => {
-  //   console.log("这是drop");
-  //   const { target } = e;
-  //   卡片.更新位置(target.id, e.canvas);
-  // },
+  [NodeEvent.DROP]: (e: IPointerEvent) => {
+    console.log("🚀 ~ NodeEvent.DROP:", e);
+    const { target } = e;
+    // 卡片.更新位置(target.id, e.canvas);
+  },
+
+  //#region ComboEvent
+  [ComboEvent.POINTER_ENTER]: (e: IPointerEvent) => {
+    console.log("🚀 ~ ComboEvent.POINTER_ENTER:", e);
+  },
+  [ComboEvent.POINTER_UP]: (e: IPointerEvent) => {
+    console.log("🚀 ~ ComboEvent.POINTER_UP:", e);
+  },
+  [ComboEvent.DRAG_ENTER]: (e: IPointerEvent) => {
+    console.log("🚀 ~ ComboEvent.DRAG_ENTER:", e);
+  },
+  [ComboEvent.DRAG_LEAVE]: (e: IPointerEvent) => {
+    console.log("🚀 ~ ComboEvent.DRAG_LEAVE:", e);
+  },
+  [ComboEvent.DRAG_END]: (e: IPointerEvent) => {
+    console.log("🚀 ~ ComboEvent.DRAG_END:", e);
+  },
+  [ComboEvent.DROP]: (e: IPointerEvent) => {
+    console.log("🚀 ~ ComboEvent.DROP:", e);
+  },
 };

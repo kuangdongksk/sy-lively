@@ -55,7 +55,7 @@ export default class SyLively extends Plugin {
     const 卡片样式 = document.createElement("style");
     document.head.appendChild(卡片样式);
     卡片样式.innerHTML = `
-      [${E事项属性名称.ID}] {
+      [${E事项属性名称.ID}]:not(.protyle-wysiwyg) {
         background-color: var(--b3-theme-background);
 
         padding: 12px !important;
@@ -63,7 +63,7 @@ export default class SyLively extends Plugin {
 
         border: 1px solid var(--b3-theme-on-surface);
       }
-      [${E卡片属性名称.ID}] {
+      [${E卡片属性名称.ID}]:not(.protyle-wysiwyg) {
         background-color: var(--b3-theme-background);
 
         padding: 12px !important;
@@ -72,13 +72,13 @@ export default class SyLively extends Plugin {
         border: 1px solid var(--b3-theme-on-surface);
         border-radius: 24px !important;
       }
-      [${E卡片属性名称.ID}]:hover {
+      [${E卡片属性名称.ID}]:hover:not(.protyle-wysiwyg) {
         background-color: var(--b3-theme-background-light);
       }
-      [${E卡片属性名称.ID}]>.h6 {
+      [${E卡片属性名称.ID}]>.h6:not(.protyle-wysiwyg) {
         border-bottom: 1px solid var(--b3-theme-on-surface);
       }    
-      [${E卡片属性名称.ID}]>.protyle-attr {
+      [${E卡片属性名称.ID}]>.protyle-attr:not(.protyle-wysiwyg) {
         position: initial;
       }
     `;

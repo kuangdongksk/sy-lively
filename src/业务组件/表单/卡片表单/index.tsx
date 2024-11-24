@@ -21,7 +21,7 @@ export interface I卡片表单Props {
 }
 
 function 卡片表单(props: I卡片表单Props) {
-  const { 父ID } = props;
+  const { 父ID: 卡片根文档ID } = props;
   const { styles } = useStyle();
   const [formCore] = Form.useForm();
 
@@ -56,9 +56,10 @@ function 卡片表单(props: I卡片表单Props) {
         标题: string;
         描述: string;
         别名: string[];
+        嵌入日记: boolean;
         单开一页: boolean;
       }) => {
-        const { 标题, 别名 = [], 单开一页 } = value;
+        const { 标题, 别名 = [], 嵌入日记, 单开一页 } = value;
 
         const ID = 生成块ID();
 
@@ -77,8 +78,9 @@ function 卡片表单(props: I卡片表单Props) {
             ],
             单开一页: 单开一页,
           },
-          父ID
+          卡片根文档ID
         );
+
         message.success("新建卡片成功");
       }}
     >
@@ -118,6 +120,10 @@ function 卡片表单(props: I卡片表单Props) {
           )}
         />
       </Form.Item>
+
+      {/* <Form.Item name="嵌入日记" label="嵌入日记" valuePropName="checked">
+        <Checkbox>嵌入到当天的日记中</Checkbox>
+      </Form.Item> */}
 
       <Form.Item name="单开一页" label="单开一页" valuePropName="checked">
         <Checkbox>为该卡片创建一个文档</Checkbox>

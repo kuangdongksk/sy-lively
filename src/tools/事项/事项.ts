@@ -32,7 +32,6 @@ export function 生成事项(
     标题区ID: 生成块ID(),
     信息区ID: 生成块ID(),
     内容区ID: 生成块ID(),
-    嵌入块ID: 生成块ID(),
     创建时间: dayjs().format(E时间格式化.思源时间),
     更新时间: dayjs().format(E时间格式化.思源时间),
     ...参数,

@@ -2,7 +2,6 @@ import SQLer from "@/class/SQLer";
 import Kramdown助手 from "@/class/块/Kramdown助手";
 import { SY块 } from "@/class/思源/块";
 import SY文档 from "@/class/思源/文档";
-import { 生成嵌入块Kramdown } from "@/components/模板/Kramdown/嵌入快";
 import {
   根据事项生成信息块,
   生成事项块Kramdown,
@@ -13,17 +12,15 @@ import { I用户设置 } from "@/types/喧嚣/设置";
 import dayjs from "dayjs";
 import { 事项转为属性 } from "./事项";
 
-export async function 插入到日记(事项: I事项, 用户设置: I用户设置) {
-  const { 开始时间, 创建时间 } = 事项;
-
+export async function 插入到日记(ID: string, 用户设置: I用户设置) {
   const { id: 日记文档ID } = await SY文档.获取对应日期的日记文档(
     用户设置.笔记本ID,
-    dayjs(开始时间 ?? 创建时间, E时间格式化.思源时间)
+    dayjs(dayjs(), E时间格式化.思源时间)
   );
 
   await SY块.插入前置子块({
     dataType: "markdown",
-    data: 生成嵌入块Kramdown(事项),
+    data: Kramdown助手.生成嵌入块(ID),
     parentID: 日记文档ID,
   });
 }
