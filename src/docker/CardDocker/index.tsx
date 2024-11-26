@@ -5,6 +5,7 @@ import { Button, Input, List, message } from "antd";
 import { useEffect, useState } from "react";
 import { I卡片, 卡片 as 卡片类 } from "../../class/卡片";
 import styles from "./index.module.less";
+import { E按钮类型 } from "@/基础组件/按钮";
 
 function CardDocker() {
   const [关键词, 令关键词为] = useState("");
@@ -46,8 +47,8 @@ function CardDocker() {
                   {卡片.标题}
                 </a>
                 <Button
+                  className={E按钮类型.文本}
                   icon={<CopyOutlined />}
-                  type="link"
                   onClick={async () => {
                     // ((20241113184100-q4i1fg4 '浙江大华'))
                     await navigator.clipboard.writeText(

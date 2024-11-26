@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { 添加领域 } from "../..";
 import 分类表单 from "../../../../业务组件/表单/分类表单";
 import { useStyle } from "./index.styles";
+import { E按钮类型 } from "@/基础组件/按钮";
 
 function 领域卡片(props: { 领域: I领域 }) {
   const 导航到 = useNavigate();
@@ -87,7 +88,10 @@ function 领域卡片(props: { 领域: I领域 }) {
                 ],
               }}
             >
-              <Button icon={<PlusCircleOutlined />} type="link" />
+              <Button
+                className={E按钮类型.文本}
+                icon={<PlusCircleOutlined />}
+              />
             </Dropdown>
             <span>{名称}</span>
             <span>

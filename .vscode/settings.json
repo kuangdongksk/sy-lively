@@ -1,0 +1,19 @@
+{
+  "editor.fontSize": 18,
+  "workbench.editor.customLabels.patterns": {
+    "**/src/**/业务组件/**/index.tsx": "${dirname} - 业务组件",
+
+    "**/src/**/components/**/index.tsx": "${dirname} - 组件",
+    "**/src/**/components/**/index.style.ts": "${dirname} - 组件样式",
+    "**/src/index.tsx": "${filename} - 根目录",
+    "**/src/router/index.tsx": "${filename} - 路由",
+    "**/src/pages/**/index.tsx": "${dirname} - 页面",
+    "**/src/pages/**/index.style.ts": "${dirname} - 页面样式"
+  },
+  "material-icon-theme.folders.associations": {
+    "业务组件": "components",
+    "基础组件": "base"
+  },
+  "cSpell.words": ["antd", "Sider", "siyuan"],
+  "npm.packageManager": "pnpm"
+}

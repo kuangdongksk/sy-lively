@@ -2,6 +2,7 @@ import { 卡片块 } from "@/class/卡片/卡片块";
 import { useStyle } from "@/components/增改查弹窗表单/index.style";
 import "@/style/global.less";
 import { 生成块ID } from "@/tools/事项/事项";
+import { E按钮类型 } from "@/基础组件/按钮";
 import { PlusOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -112,7 +113,11 @@ function 卡片表单(props: I卡片表单Props) {
                   onChange={onNameChange}
                   onKeyDown={(e) => e.stopPropagation()}
                 />
-                <Button type="text" icon={<PlusOutlined />} onClick={添加别名}>
+                <Button
+                  className={E按钮类型.文本}
+                  icon={<PlusOutlined />}
+                  onClick={添加别名}
+                >
                   添加
                 </Button>
               </Space>
@@ -130,7 +135,7 @@ function 卡片表单(props: I卡片表单Props) {
       </Form.Item>
 
       <Form.Item style={{ textAlign: "center" }}>
-        <Button htmlType="submit" type="primary">
+        <Button className={E按钮类型.默认} htmlType="submit">
           确定
         </Button>
       </Form.Item>

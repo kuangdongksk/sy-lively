@@ -11,6 +11,7 @@ import { Button } from "antd";
 import dayjs from "dayjs";
 import { MutableRefObject, useRef, useState } from "react";
 import style from "./index.module.less";
+import { E按钮类型 } from "@/基础组件/按钮";
 
 export interface I事项表格Props<T事项> {
   标题?: React.ReactNode;
@@ -54,8 +55,8 @@ function 事项表格<T事项 extends I事项>(props: I事项表格Props<T事项
             render: (_text, record) => [
               // <Button key="添加子项" icon={<PlusCircleOutlined />} />,
               <Button
+                className={E按钮类型.文本}
                 key="编辑"
-                type="link"
                 icon={<EditOutlined />}
                 onClick={() => {
                   令被修改的事项为(record);
@@ -68,7 +69,12 @@ function 事项表格<T事项 extends I事项>(props: I事项表格Props<T事项
                 }}
               />,
               <删除事项 事项={record} 完成回调={() => {}}>
-                <Button key="delete" type="link" icon={<DeleteOutlined />} />
+                <Button
+                  className={E按钮类型.删除}
+                  key="delete"
+                  type="link"
+                  icon={<DeleteOutlined />}
+                />
               </删除事项>,
             ],
           },
@@ -90,6 +96,7 @@ function 事项表格<T事项 extends I事项>(props: I事项表格Props<T事项
         toolbar={{
           actions: [
             <Button
+              className={E按钮类型.默认}
               onClick={() => {
                 if (新建事项) 新建事项(事项Ref);
                 else {

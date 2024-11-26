@@ -1,6 +1,7 @@
+import { E按钮类型 } from "@/基础组件/按钮";
 import { Button, Form, Modal } from "antd";
 import { forwardRef, Ref, useImperativeHandle, useState } from "react";
-import { useStyle } from "./index.style";
+import styles from "./index.module.scss";
 
 export type T增改查 = "添加" | "编辑" | "查看" | undefined;
 
@@ -29,7 +30,6 @@ function O增改查弹窗表单(
     弹窗取消,
     提交表单,
   } = props;
-  const { styles } = useStyle();
 
   const [表单状态, 令表单状态为] = useState<T增改查>();
   const [表单值, 令表单值为] = useState<any>();
@@ -68,7 +68,7 @@ function O增改查弹窗表单(
             }}
           >
             <Button
-              className={styles.取消按钮}
+              className={styles.取消按钮 + " " + E按钮类型.取消}
               onClick={async () => {
                 await 弹窗取消?.();
                 令表单状态为(undefined);
@@ -76,7 +76,7 @@ function O增改查弹窗表单(
             >
               取消
             </Button>
-            <Button type="primary" htmlType="submit">
+            <Button className={E按钮类型.默认} htmlType="submit">
               {确认按钮文本}
             </Button>
           </Form.Item>

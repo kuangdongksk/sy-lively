@@ -21,6 +21,7 @@ import { useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAppStyle } from "./index.style";
 import 更新公告 from "./业务组件/更新公告";
+import { E按钮类型 } from "@/基础组件/按钮";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -71,6 +72,7 @@ function App() {
         <Sider className={styles.侧栏}>
           <div className={styles.logo}>
             <Button
+              className={E按钮类型.默认}
               icon={<PlusCircleOutlined />}
               onClick={() => 事项Ref.current?.令表单状态为("添加")}
             >

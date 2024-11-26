@@ -22,6 +22,7 @@ import { useAtom } from "jotai";
 import { forwardRef, Ref, useImperativeHandle, useRef, useState } from "react";
 import 起止时间 from "../../表单项/起止时间";
 import 领域分类 from "../../表单项/领域分类";
+import { E按钮类型 } from "@/基础组件/按钮";
 
 export interface I事项表单Props {
   事项?: I事项;
@@ -85,7 +86,10 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
             <Cron输入 />
 
             <Form.Item>
-              <Button type="link" onClick={() => 令展开更多为(!展开更多)}>
+              <Button
+                className={E按钮类型.文本}
+                onClick={() => 令展开更多为(!展开更多)}
+              >
                 {展开更多 ? "收起" : "展开更多"}
               </Button>
             </Form.Item>

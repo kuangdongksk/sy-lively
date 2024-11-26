@@ -6,6 +6,7 @@ import { E块属性名称, E持久化键, 思源协议 } from "@/constant/系统
 import { 持久化atom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
 import { I用户设置 } from "@/types/喧嚣/设置";
+import { E按钮类型 } from "@/基础组件/按钮";
 import { Button, Form, Modal, Select, message } from "antd";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
@@ -88,6 +89,7 @@ function 用户设置() {
           </a>
         ) : (
           <Button
+            className={E按钮类型.默认}
             onClick={async () => {
               if (!用户设置.笔记本ID) return message.error("请先选择笔记本");
 

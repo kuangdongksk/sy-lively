@@ -10,6 +10,7 @@ import 添加子项 from "../添加子项";
 import { use事项样式 } from "./index.style";
 import { I事项 } from "@/types/喧嚣/事项";
 import { useState } from "react";
+import { E按钮类型 } from "@/基础组件/按钮";
 
 const { RangePicker } = DatePicker;
 const 程度选项数组 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => ({
@@ -35,8 +36,8 @@ function 事项(props: I事项Props) {
         {不可编辑名称 ? (
           <>
             <Button
+              className={E按钮类型.文本}
               size="small"
-              type="link"
               icon={<CopyOutlined />}
               onClick={() => {
                 navigator.clipboard.writeText(
@@ -45,8 +46,8 @@ function 事项(props: I事项Props) {
               }}
             />
             <Button
+              className={E按钮类型.文本}
               size="small"
-              type="link"
               icon={<EditOutlined />}
               onClick={() => 切换名称编辑状态((pre) => !pre)}
             />

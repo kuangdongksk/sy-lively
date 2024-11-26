@@ -7,6 +7,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useStyle } from "./index.style";
+import { E按钮类型 } from "@/基础组件/按钮";
 
 function 日历() {
   const [用户设置] = useAtom(用户设置Atom);
@@ -38,7 +39,7 @@ function 日历() {
             <div className={styles.天头部}>
               <Tooltip title="跳转到日记">
                 <Button
-                  type="link"
+                  className={E按钮类型.文本}
                   onClick={() => {
                     SY文档.获取对应日期的日记文档(
                       用户设置.笔记本ID,
