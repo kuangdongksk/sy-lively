@@ -1,18 +1,21 @@
 import { I卡片, 卡片 } from "@/class/卡片";
+import { E按钮类型 } from "@/基础组件/按钮";
 import { ExtensionCategory, Graph as G6Graph, register } from "@antv/g6";
 import { ReactNode } from "@antv/g6-extension-react";
+import { Button } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { 图配置 } from "./配置";
 import { 配置事件 } from "./配置/事件";
 
 export interface I关系图Props {
+  卡片文档ID: string;
   onDestroy?: () => void;
 }
 
 register(ExtensionCategory.NODE, "react", ReactNode);
 
 function 关系图(props: I关系图Props) {
-  const { onDestroy } = props;
+  const { 卡片文档ID, onDestroy } = props;
 
   const 图Ref = useRef<G6Graph>();
   const 容器Ref = useRef<HTMLDivElement>(null);
@@ -45,6 +48,7 @@ function 关系图(props: I关系图Props) {
 
     配置事件({
       图,
+      卡片文档ID,
       当前节点,
       当前组合,
       选中的节点: [],
@@ -74,14 +78,14 @@ function 关系图(props: I关系图Props) {
     图Ref.current?.setData({
       nodes: 点列表.map((卡片) => ({
         id: 卡片.ID,
-        // data: 卡片 as any,
+        data: 卡片 as any,
         type: "circle",
         style: {
           labelText: 卡片.标题,
           x: 卡片.X,
           y: 卡片.Y,
         },
-        combo: 卡片.父项ID,
+        combo: 卡片.父项ID === 卡片文档ID ? undefined : 卡片.父项ID,
       })),
       combos: 集合列表.map((卡片) => ({
         id: 卡片.ID,
@@ -97,6 +101,11 @@ function 关系图(props: I关系图Props) {
 
   return (
     <>
+      <div>
+        <Button className={E按钮类型.默认} onClick={获取所有卡片}>
+          刷新
+        </Button>
+      </div>
       <div
         ref={容器Ref}
         style={{

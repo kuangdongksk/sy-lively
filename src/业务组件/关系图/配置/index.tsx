@@ -1,9 +1,18 @@
-import {
-  GraphOptions
-} from "@antv/g6";
+import { GraphOptions } from "@antv/g6";
 
 export const 图配置: GraphOptions = {
-  behaviors: ["drag-element", "zoom-canvas", "drag-canvas"],
+  behaviors: [
+    {
+      key: "drag-element",
+      type: "drag-element",
+      dropEffect: "link",
+      onFinish: (e) => {
+        console.log("🚀 ~ e:", e);
+      },
+    },
+    "zoom-canvas",
+    "drag-canvas",
+  ],
   node: {
     type: "circle",
     // type: "react",
@@ -13,6 +22,11 @@ export const 图配置: GraphOptions = {
     //     <节点 data={data as unknown as I节点Props["data"]} />
     //   ),
     // },
+  },
+  combo: {
+    type: "circle",
+    state: {},
+    style: {},
   },
   layout: {
     type: "d3-force",

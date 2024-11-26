@@ -11,6 +11,7 @@ import { MutableRefObject } from "react";
 
 export function 配置事件(参数: {
   图: Graph;
+  卡片文档ID: string;
   当前节点: MutableRefObject<string>;
   当前组合: MutableRefObject<string>;
   选中的节点: string[];
@@ -19,6 +20,7 @@ export function 配置事件(参数: {
 }) {
   const {
     图,
+    卡片文档ID,
     // 当前节点,
     当前组合,
     // 选中的节点,
@@ -64,13 +66,16 @@ export function 配置事件(参数: {
     },
     [ComboEvent.POINTER_LEAVE]: (e: IPointerEvent) => {
       console.log("🚀 ~ ComboEvent.POINTER_LEAVE:", e);
-    },
-    [ComboEvent.POINTER_OUT]: (e: IPointerEvent) => {
-      console.log("🚀 ~ ComboEvent.POINTER_OUT:", e);
-      当前组合.current = undefined;
+      当前组合.current = 卡片文档ID;
     },
     [ComboEvent.POINTER_ENTER]: (e: IPointerEvent) => {
       console.log("🚀 ~ ComboEvent.POINTER_ENTER:", e);
+      const { target } = e as any;
+      当前组合.current = target.id;
+    },
+    [ComboEvent.POINTER_OUT]: (e: IPointerEvent) => {
+      console.log("🚀 ~ ComboEvent.POINTER_OUT:", e);
+      当前组合.current = 卡片文档ID;
     },
     [ComboEvent.POINTER_UP]: (e: IPointerEvent) => {
       console.log("🚀 ~ ComboEvent.POINTER_UP:", e);

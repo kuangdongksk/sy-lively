@@ -1,5 +1,4 @@
 import { 卡片块 } from "@/class/卡片/卡片块";
-import { useStyle } from "@/components/增改查弹窗表单/index.style";
 import "@/style/global.less";
 import { 生成块ID } from "@/tools/事项/事项";
 import { E按钮类型 } from "@/基础组件/按钮";
@@ -16,6 +15,8 @@ import {
 } from "antd";
 import { pinyin } from "pinyin-pro";
 import { useState } from "react";
+import styles from "../../../components/增改查弹窗表单/index.module.less";
+import { E输入类型 } from "@/基础组件/输入";
 
 export interface I卡片表单Props {
   父ID: string;
@@ -23,7 +24,6 @@ export interface I卡片表单Props {
 
 function 卡片表单(props: I卡片表单Props) {
   const { 父ID: 卡片根文档ID } = props;
-  const { styles } = useStyle();
   const [formCore] = Form.useForm();
 
   const [别名, 令别名为] = useState([]);
@@ -60,7 +60,7 @@ function 卡片表单(props: I卡片表单Props) {
         嵌入日记: boolean;
         单开一页: boolean;
       }) => {
-        const { 标题, 别名 = [], 嵌入日记, 单开一页 } = value;
+        const { 标题, 别名 = [], 单开一页 } = value;
 
         const ID = 生成块ID();
 
@@ -86,11 +86,11 @@ function 卡片表单(props: I卡片表单Props) {
       }}
     >
       <Form.Item label="标题" name="标题" required>
-        <Input />
+        <Input className={E输入类型.默认} />
       </Form.Item>
 
       <Form.Item label="描述" name="描述" required>
-        <Input />
+        <Input className={E输入类型.默认} />
       </Form.Item>
 
       <Form.Item label="别名" name="别名" dependencies={["标题"]}>
@@ -108,6 +108,7 @@ function 卡片表单(props: I卡片表单Props) {
               <Divider style={{ margin: "8px 0" }} />
               <Space style={{ padding: "0 8px 4px" }}>
                 <Input
+                  className={E输入类型.默认}
                   placeholder="请输入别名"
                   value={name}
                   onChange={onNameChange}

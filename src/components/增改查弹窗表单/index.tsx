@@ -1,7 +1,7 @@
 import { E按钮类型 } from "@/基础组件/按钮";
 import { Button, Form, Modal } from "antd";
 import { forwardRef, Ref, useImperativeHandle, useState } from "react";
-import styles from "./index.module.scss";
+import styles from "./index.module.less";
 
 export type T增改查 = "添加" | "编辑" | "查看" | undefined;
 
