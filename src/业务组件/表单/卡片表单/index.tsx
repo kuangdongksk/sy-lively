@@ -1,7 +1,7 @@
 import { 卡片块 } from "@/class/卡片/卡片块";
 import { useStyle } from "@/components/增改查弹窗表单/index.style";
 import "@/style/global.less";
-import { 生成块ID } from "@/utils/DOM";
+import { 生成块ID } from "@/tools/事项/事项";
 import { PlusOutlined } from "@ant-design/icons";
 import {
   Button,

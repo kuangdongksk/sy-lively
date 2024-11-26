@@ -1,16 +1,9 @@
-import { E卡片属性名称, I卡片, 卡片 } from "@/class/卡片";
-import {
-  ComboEvent,
-  ExtensionCategory,
-  Graph as G6Graph,
-  IPointerEvent,
-  NodeEvent,
-  register,
-} from "@antv/g6";
+import { I卡片, 卡片 } from "@/class/卡片";
+import { ExtensionCategory, Graph as G6Graph, register } from "@antv/g6";
 import { ReactNode } from "@antv/g6-extension-react";
 import { useEffect, useRef, useState } from "react";
-import { 事件配置, 图配置 } from "./配置";
-import { SY块 } from "@/class/思源/块";
+import { 图配置 } from "./配置";
+import { 配置事件 } from "./配置/事件";
 
 export interface I关系图Props {
   onDestroy?: () => void;
@@ -28,7 +21,8 @@ function 关系图(props: I关系图Props) {
   const [点列表, 设置点列表] = useState<I卡片[]>([]);
   const [集合列表, 设置集合列表] = useState<I卡片[]>([]);
 
-  const comboRef = useRef<string | undefined>();
+  const 当前节点 = useRef<string | undefined>();
+  const 当前组合 = useRef<string | undefined>();
 
   const 获取所有卡片 = async () => {
     const 所有卡片 = await 卡片.获取所有卡片();
@@ -49,55 +43,13 @@ function 关系图(props: I关系图Props) {
     });
     图Ref.current = 图;
 
-    Object.entries(事件配置).forEach(([event, callback]) => {
-      图.on(event, (e) => callback(e as any, 图));
-    });
-
-    图.on(NodeEvent.DRAG_END, async (e: IPointerEvent) => {
-      console.log("🚀 ~ 图.on ~ 当前Combo:", comboRef.current);
-      if (comboRef.current) {
-        const id = e.target.id;
-        await SY块.移动块({
-          id,
-          parentID: comboRef.current,
-        });
-
-        await SY块.设置块属性({
-          id,
-          attrs: {
-            [E卡片属性名称.父项ID]: comboRef.current,
-          },
-        });
-
-        await 获取所有卡片();
-      }
-    });
-    图.once(NodeEvent.DRAG_END, async (e: IPointerEvent) => {
-      console.log("🚀 ~ 图.on ~ 当前Combo:", comboRef.current);
-      if (comboRef.current) {
-        const id = e.target.id;
-        await SY块.移动块({
-          id,
-          parentID: comboRef.current,
-        });
-
-        await SY块.设置块属性({
-          id,
-          attrs: {
-            [E卡片属性名称.父项ID]: comboRef.current,
-          },
-        });
-
-        await 获取所有卡片();
-      }
-    });
-
-    图.on(ComboEvent.POINTER_OVER, (e: IPointerEvent) => {
-      const { target } = e;
-      comboRef.current = target.id;
-    });
-    图.on(ComboEvent.POINTER_OUT, (e: IPointerEvent) => {
-      comboRef.current = undefined;
+    配置事件({
+      图,
+      当前节点,
+      当前组合,
+      选中的节点: [],
+      选中的组合: [],
+      获取所有卡片,
     });
 
     图.render();

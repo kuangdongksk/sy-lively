@@ -73,11 +73,12 @@ export default class PluginSample extends Plugin {
     });
 
     const statusIconTemp = document.createElement("template");
-    statusIconTemp.innerHTML = `<div class="toolbar__item ariaLabel" aria-label="Remove plugin-sample Data">
-    <svg>
-        <use xlink:href="#iconTrashcan"></use>
-    </svg>
-</div>`;
+    statusIconTemp.innerHTML = `
+    <div class="toolbar__item ariaLabel" aria-label="Remove plugin-sample Data">
+      <svg>
+          <use xlink:href="#iconTrashcan"></use>
+      </svg>
+    </div>`;
     statusIconTemp.content.firstElementChild.addEventListener("click", () => {
       confirm(
         "⚠️",

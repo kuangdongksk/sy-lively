@@ -1,6 +1,6 @@
 import { E块属性名称 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
-import { 生成块ID } from "@/utils/DOM";
+import { 生成块ID } from "@/tools/事项/事项";
 import dayjs from "dayjs";
 
 /** 开头结尾没有\n */

@@ -2,7 +2,6 @@ import { E事项状态, E提醒 } from "@/constant/状态配置";
 import { E事项属性名称 } from "@/constant/系统码";
 import { E时间格式化 } from "@/constant/配置常量";
 import { I事项, T层级 } from "@/types/喧嚣/事项";
-import { 生成块ID } from "@/utils/DOM";
 import { 根据枚举的值获取枚举的键 } from "@/utils/枚举";
 import dayjs from "dayjs";
 
@@ -72,4 +71,17 @@ export function 属性转化为事项(属性: { [key: string]: string }): I事�
     事项[根据枚举的值获取枚举的键(E事项属性名称, key)] = 值;
   });
   return 事项;
+}
+
+export function 生成块ID() {
+  return `${dayjs().format("YYYYMMDDHHmmss")}-${生成随机字符(7)}`;
+}
+
+export function 生成随机字符(length: number): string {
+  const letter = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += letter.charAt(Math.floor(Math.random() * letter.length));
+  }
+  return result;
 }
