@@ -85,7 +85,9 @@ function 关系图(props: I关系图Props) {
           x: 卡片.X,
           y: 卡片.Y,
         },
-        combo: 卡片.父项ID === 卡片文档ID ? undefined : 卡片.父项ID,
+        combo: 所有卡片.some((card) => card.ID == 卡片.父项ID)
+          ? 卡片.父项ID
+          : undefined,
       })),
       combos: 集合列表.map((卡片) => ({
         id: 卡片.ID,
