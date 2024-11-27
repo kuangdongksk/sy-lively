@@ -229,13 +229,13 @@ export default class SyLively extends Plugin {
       <ConfigProvider theme={主题}>
         <卡片表单
           父ID={卡片文档ID}
-          成功回调={(文档ID, 卡片ID) => {
+          成功回调={(文档ID, _卡片ID) => {
             对话框.destroy();
             睡眠(1000).then(() => {
               openTab({
                 app: this.app,
                 doc: {
-                  id: 卡片ID,
+                  id: 文档ID,
                 },
               });
             });
