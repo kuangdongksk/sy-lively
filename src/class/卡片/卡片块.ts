@@ -23,11 +23,14 @@ export class 卡片块 {
     );
   }
 
-  public static async 新建卡片(卡片: I卡片, 卡片文档ID: string): Promise<void> {
+  public static async 新建卡片(
+    卡片: I卡片,
+    卡片文档ID: string
+  ): Promise<string> {
     if (卡片.单开一页) {
-      await this.新建卡片文档(卡片, 卡片文档ID);
+      return await this.新建卡片文档(卡片, 卡片文档ID);
     } else {
-      await this.新建卡片块(卡片, 卡片文档ID);
+      return await this.新建卡片块(卡片, 卡片文档ID);
     }
   }
 
@@ -57,7 +60,7 @@ export class 卡片块 {
   public static async 新建卡片文档(
     卡片: I卡片,
     卡片文档ID: string
-  ): Promise<void> {
+  ): Promise<string> {
     const { 标题, 描述, 别名 } = 卡片;
     const 块数据 = await SQLer.根据ID获取块(卡片文档ID);
 
@@ -84,5 +87,6 @@ export class 卡片块 {
         },
       }),
     ]);
+    return 文档ID;
   }
 }

@@ -13,6 +13,7 @@ import CardDocker from "./docker/CardDocker";
 import { 仓库, 持久化atom } from "./store";
 import { 主题 } from "./style/theme";
 import 卡片表单 from "./业务组件/表单/卡片表单";
+import { 睡眠 } from "./utils/异步";
 // import "./index.less";
 
 export const PluginId = "livelySaSa";
@@ -213,7 +214,7 @@ export default class SyLively extends Plugin {
 
     const rootId = nanoid();
 
-    new Dialog({
+    const 对话框 = new Dialog({
       title: "新建卡片",
       content: `<div id='${rootId}' id="${PluginId}" style="padding: 12px;"></div>`,
       width: "600px",
@@ -226,7 +227,20 @@ export default class SyLively extends Plugin {
 
     root.render(
       <ConfigProvider theme={主题}>
-        <卡片表单 父ID={卡片文档ID} />
+        <卡片表单
+          父ID={卡片文档ID}
+          成功回调={(文档ID, 卡片ID) => {
+            对话框.destroy();
+            睡眠(1000).then(() => {
+              openTab({
+                app: this.app,
+                doc: {
+                  id: 卡片ID,
+                },
+              });
+            });
+          }}
+        />
       </ConfigProvider>
     );
   }

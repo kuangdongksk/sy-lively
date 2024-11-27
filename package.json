@@ -41,6 +41,7 @@
     "@antv/g": "^6.1.9",
     "@antv/g6": "^5.0.32",
     "@antv/g6-extension-react": "^0.1.7",
+    "@pixi/react": "7",
     "@types/react": "^18.3.11",
     "@vitejs/plugin-react": "^4.3.2",
     "ahooks": "^3.8.1",
@@ -52,6 +53,7 @@
     "jotai": "^2.10.0",
     "nanoid": "^5.0.7",
     "pinyin-pro": "^3.26.0",
+    "pixi.js": "7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0"

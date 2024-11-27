@@ -2,6 +2,7 @@ import { 卡片块 } from "@/class/卡片/卡片块";
 import "@/style/global.less";
 import { 生成块ID } from "@/tools/事项/事项";
 import { E按钮类型 } from "@/基础组件/按钮";
+import { E输入类型 } from "@/基础组件/输入";
 import { PlusOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -16,14 +17,14 @@ import {
 import { pinyin } from "pinyin-pro";
 import { useState } from "react";
 import styles from "../../../components/增改查弹窗表单/index.module.less";
-import { E输入类型 } from "@/基础组件/输入";
 
 export interface I卡片表单Props {
   父ID: string;
+  成功回调?: (文档ID: string, 卡片ID: string) => void;
 }
 
 function 卡片表单(props: I卡片表单Props) {
-  const { 父ID: 卡片根文档ID } = props;
+  const { 父ID: 卡片根文档ID, 成功回调 } = props;
   const [formCore] = Form.useForm();
 
   const [别名, 令别名为] = useState([]);
@@ -51,7 +52,6 @@ function 卡片表单(props: I卡片表单Props) {
       labelCol={{ span: 6 }}
       initialValues={{
         标题: "卡片标题",
-        描述: "请保持外层的超级块存在，即该块和标题块同时存在",
       }}
       onFinish={async (value: {
         标题: string;
@@ -64,9 +64,10 @@ function 卡片表单(props: I卡片表单Props) {
 
         const ID = 生成块ID();
 
-        await 卡片块.新建卡片(
+        const 最终ID = await 卡片块.新建卡片(
           {
             ...value,
+            描述: "请保持外层的超级块存在，即该块和标题块同时存在",
             ID,
             标题ID: 生成块ID(),
             别名: [
@@ -82,14 +83,11 @@ function 卡片表单(props: I卡片表单Props) {
           卡片根文档ID
         );
 
-        message.success("新建卡片成功");
+        成功回调?.(单开一页 ? 最终ID : 卡片根文档ID, 最终ID);
+        message.success("新建卡片成功，即将跳转");
       }}
     >
       <Form.Item label="标题" name="标题" required>
-        <Input className={E输入类型.默认} />
-      </Form.Item>
-
-      <Form.Item label="描述" name="描述" required>
         <Input className={E输入类型.默认} />
       </Form.Item>
 
