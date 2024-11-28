@@ -37,4 +37,14 @@ SELECT
 FROM
   blocks
 WHERE
-  id = 'null'
+  id = 'null';
+
+SELECT
+  block_id,
+  name
+FROM
+  attributes
+WHERE
+  r.type = 'textmark'
+  AND r.def_block_id = a.block_id
+  AND a.name LIKE '%custom-plugin-lively-card-relation%';

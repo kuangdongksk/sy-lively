@@ -1,5 +1,6 @@
 import { E卡片属性名称, 卡片 } from "@/class/卡片";
 import { SY块 } from "@/class/思源/块";
+import SY文档 from "@/class/思源/文档";
 import {
   CanvasEvent,
   ComboEvent,
@@ -28,69 +29,86 @@ export function 配置事件(参数: {
     获取所有卡片,
   } = 参数;
 
-  const 事件配置 = {
-    [CanvasEvent.CLICK]: (e: any) => {},
+  const 节点组合拖拽完成 = async (e: IPointerEvent) => {
+    const { target, targetType } = e as any;
+    const { id } = target;
 
-    [NodeEvent.DRAG]: (e: IPointerEvent) => {},
-    [NodeEvent.DRAG_END]: async (e: IPointerEvent) => {
-      const { target } = e as any;
-      const { id } = target;
+    卡片.更新位置(id, {
+      x: target.attributes.x,
+      y: target.attributes.y,
+    });
 
-      卡片.更新位置(id, {
-        x: target.attributes.x,
-        y: target.attributes.y,
-      });
-
-      if (当前组合.current) {
+    if (当前组合.current) {
+      if (targetType === "node") {
         await SY块.移动块({
           id,
           parentID: 当前组合.current,
         });
-
-        await SY块.设置块属性({
-          id,
-          attrs: {
-            [E卡片属性名称.父项ID]: 当前组合.current,
-          },
-        });
-
-        await 获取所有卡片();
+      } else {
+        // await SY文档.移动({
+        //   原父ID: 卡片文档ID,
+        //   新父ID: 当前组合.current,
+        // });
       }
+
+      await SY块.设置块属性({
+        id,
+        attrs: {
+          [E卡片属性名称.父项ID]: 当前组合.current,
+        },
+      });
+
+      await 获取所有卡片();
+    }
+  };
+
+  const 事件配置 = {
+    //#region CanvasEvent
+    [CanvasEvent.CLICK]: (e: any) => {},
+
+    //#endregion
+
+    //#region NodeEvent
+    [NodeEvent.DRAG]: (e: IPointerEvent) => {},
+    [NodeEvent.DRAG_END]: async (e: IPointerEvent) => {
+      console.log("🚀 ~ ComboEvent.DRAG_END:", e);
+      节点组合拖拽完成(e);
     },
+    [NodeEvent.DRAG_ENTER]: async (e: IPointerEvent) => {
+      console.log("🚀 ~ ComboEvent.DRAG_ENTER:", e);
+    },
+    //#endregion
 
     //#region ComboEvent
     [ComboEvent.POINTER_OVER]: (e: IPointerEvent) => {
-      console.log("🚀 ~ ComboEvent.POINTER_OVER:", e);
-      const { target } = e as any;
-      当前组合.current = target.id;
+      // console.log("🚀 ~ ComboEvent.POINTER_OVER:", e);
     },
     [ComboEvent.POINTER_LEAVE]: (e: IPointerEvent) => {
-      console.log("🚀 ~ ComboEvent.POINTER_LEAVE:", e);
-      当前组合.current = 卡片文档ID;
+      // console.log("🚀 ~ ComboEvent.POINTER_LEAVE:", e);
     },
     [ComboEvent.POINTER_ENTER]: (e: IPointerEvent) => {
-      console.log("🚀 ~ ComboEvent.POINTER_ENTER:", e);
-      const { target } = e as any;
-      当前组合.current = target.id;
+      // console.log("🚀 ~ ComboEvent.POINTER_ENTER:", e);
     },
     [ComboEvent.POINTER_OUT]: (e: IPointerEvent) => {
-      console.log("🚀 ~ ComboEvent.POINTER_OUT:", e);
-      当前组合.current = 卡片文档ID;
+      // console.log("🚀 ~ ComboEvent.POINTER_OUT:", e);
     },
     [ComboEvent.POINTER_UP]: (e: IPointerEvent) => {
-      console.log("🚀 ~ ComboEvent.POINTER_UP:", e);
+      // // console.log("🚀 ~ ComboEvent.POINTER_UP:", e);
     },
     [ComboEvent.DRAG_ENTER]: (e: IPointerEvent) => {
       console.log("🚀 ~ ComboEvent.DRAG_ENTER:", e);
+      const { target } = e as any;
+      当前组合.current = target.id;
     },
     [ComboEvent.DRAG_LEAVE]: (e: IPointerEvent) => {
-      console.log("🚀 ~ ComboEvent.DRAG_LEAVE:", e);
+      当前组合.current = 卡片文档ID;
     },
     [ComboEvent.DRAG_END]: (e: IPointerEvent) => {
-      console.log("🚀 ~ ComboEvent.DRAG_END:", e);
+      // // console.log("🚀 ~ ComboEvent.DRAG_END:", e);
+      节点组合拖拽完成(e);
     },
     [ComboEvent.DROP]: (e: IPointerEvent) => {
-      console.log("🚀 ~ ComboEvent.DROP:", e);
+      // // console.log("🚀 ~ ComboEvent.DROP:", e);
     },
     //#endregion
   };

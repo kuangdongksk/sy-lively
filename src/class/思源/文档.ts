@@ -27,6 +27,14 @@ export default class SY文档 {
     return Boolean(data?.length);
   }
 
+  public static async 根据ID获取笔记本ID(ID: string): Promise<string> {
+    const { data } = await fetchSyncPost("/api/query/sql", {
+      stmt: `SELECT * FROM blocks WHERE id='${ID}'`,
+    });
+
+    return data[0].box;
+  }
+
   public static async 根据ID获取路径(ID: string): Promise<string> {
     const { data } = await fetchSyncPost("/api/query/sql", {
       stmt: `SELECT * FROM blocks WHERE id='${ID}'`,
@@ -45,7 +53,9 @@ export default class SY文档 {
     });
   }
 
-  public static async 移动(笔记本ID: string, 原父ID: string, 新父ID: string) {
+  public static async 移动(原父ID: string, 新父ID: string) {
+    const 笔记本ID = await this.根据ID获取笔记本ID(新父ID);
+
     const 原路径 = await this.根据ID获取路径(原父ID);
 
     const 新路径 = await this.根据ID获取路径(新父ID);

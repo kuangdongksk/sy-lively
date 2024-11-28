@@ -15,6 +15,7 @@ export enum E卡片属性名称 {
   Y = `${卡片属性前缀}y`,
   单开一页 = `${卡片属性前缀}singlePage`,
   父项ID = `${卡片属性前缀}parentId`,
+  关系 = `${卡片属性前缀}relation`,
 }
 
 export interface I卡片 {
@@ -27,6 +28,11 @@ export interface I卡片 {
   Y?: number;
   单开一页?: boolean;
   父项ID?: string;
+  关系?: {
+    目标ID: string;
+    内容: string;
+    类型: string;
+  }[];
 }
 
 const 数字类型属性 = [E卡片属性名称.X, E卡片属性名称.Y];

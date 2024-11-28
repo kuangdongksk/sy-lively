@@ -75,6 +75,19 @@ function 关系图(props: I关系图Props) {
   useEffect(() => {}, [所有卡片]);
 
   useEffect(() => {
+    const 边数据 = [];
+
+    所有卡片.forEach((卡片) => {
+      if (卡片.关系) {
+        卡片.关系.forEach((关系) => {
+          边数据.push({
+            source: 卡片.ID,
+            target: 关系.目标ID,
+          });
+        });
+      }
+    });
+
     图Ref.current?.setData({
       nodes: 点列表.map((卡片) => ({
         id: 卡片.ID,
@@ -98,6 +111,7 @@ function 关系图(props: I关系图Props) {
           y: 卡片.Y,
         },
       })),
+      edges: 边数据,
     });
   }, [所有卡片]);
 
