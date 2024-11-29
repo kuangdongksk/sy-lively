@@ -75,7 +75,9 @@ function 关系图(props: I关系图Props) {
   }, []);
 
   useEffect(() => {
+    if (!图Ref.current) return;
     console.log("🚀 ~ 所有卡片", 所有卡片);
+
     const 边数据 = [];
 
     所有卡片.forEach((卡片) => {
@@ -89,7 +91,7 @@ function 关系图(props: I关系图Props) {
       }
     });
 
-    图Ref.current?.setData({
+    图Ref.current.setData({
       nodes: 点列表.map((点) => {
         const { 标题, 父项ID, ID, X, Y } = 点;
 
@@ -126,8 +128,8 @@ function 关系图(props: I关系图Props) {
       edges: 边数据,
     });
 
-    图Ref.current?.render();
-  }, [所有卡片, 点列表, 集合列表]);
+    图Ref.current.render();
+  }, [图Ref.current, 所有卡片, 点列表, 集合列表]);
 
   return (
     <>

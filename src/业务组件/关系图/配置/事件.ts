@@ -28,16 +28,16 @@ export function 配置事件(参数: {
     当前组合,
     // 选中的节点,
     // 选中的组合,
-    获取所有卡片,
+    // 获取所有卡片,
   } = 参数;
 
   const 节点组合拖拽完成 = async (e: IPointerEvent) => {
     const { target, targetType } = e as any;
     const { id } = target;
 
-    卡片.更新位置(id, {
-      x: target.attributes.x,
-      y: target.attributes.y,
+    await 卡片.更新位置(id, {
+      x: Math.round(target.attributes.x / 10) * 10,
+      y: Math.round(target.attributes.y / 10) * 10,
     });
 
     console.log(
@@ -61,7 +61,7 @@ export function 配置事件(参数: {
         },
       });
 
-      await 获取所有卡片();
+      // await 获取所有卡片();
     }
   };
 
