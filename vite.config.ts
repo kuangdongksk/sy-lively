@@ -6,7 +6,6 @@ import minimist from "minimist";
 import { resolve } from "path";
 import livereload from "rollup-plugin-livereload";
 import { defineConfig } from "vite";
-import { viteStaticCopy } from "vite-plugin-static-copy";
 import zipPack from "vite-plugin-zip-pack";
 
 const args = minimist(process.argv.slice(2));
@@ -23,27 +22,6 @@ export default defineConfig({
 
   plugins: [
     react({ babel: { plugins: [jotaiDebugLabel, jotaiReactRefresh] } }),
-
-    viteStaticCopy({
-      targets: [
-        {
-          src: "./README*.md",
-          dest: "./",
-        },
-        {
-          src: "./plugin.json",
-          dest: "./",
-        },
-        {
-          src: "./preview.png",
-          dest: "./",
-        },
-        {
-          src: "./icon.png",
-          dest: "./",
-        },
-      ],
-    }),
   ],
 
   css: {

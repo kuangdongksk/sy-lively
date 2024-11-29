@@ -31,11 +31,10 @@
     "types": ["node", "vite/client", "react"],
     // "baseUrl": "./src",
     "paths": {
-      "@/*": ["./src/*"],
-      "@/libs/*": ["./src/libs/*"]
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["tools/**/*.ts", "src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"],
   "references": [
     {
       "path": "./tsconfig.node.json"

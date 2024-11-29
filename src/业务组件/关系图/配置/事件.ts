@@ -44,7 +44,7 @@ export function 配置事件(参数: {
       "🚀 ~ const节点组合拖拽完成= ~ 是否穿越.current:",
       是否穿越.current
     );
-    if (是否穿越.current !== 0) {
+    if (是否穿越.current !== 0 && 当前组合.current !== id) {
       if (targetType === "node") {
         await SY块.移动块({
           id,
@@ -61,6 +61,7 @@ export function 配置事件(参数: {
         },
       });
 
+      // 是否穿越.current = 0;
       // await 获取所有卡片();
     }
   };
@@ -95,7 +96,7 @@ export function 配置事件(参数: {
     [ComboEvent.POINTER_OUT]: (e: IPointerEvent) => {
       // console.log("🚀 ~ ComboEvent.POINTER_OUT:", e);
     },
-    [ComboEvent.POINTER_UP]: (e: IPointerEvent) => {
+    [ComboEvent.POINTER_UP]: (e: IPointerEvent) => { 
       // // console.log("🚀 ~ ComboEvent.POINTER_UP:", e);
     },
     [ComboEvent.DRAG_ENTER]: (e: IPointerEvent) => {
@@ -105,6 +106,7 @@ export function 配置事件(参数: {
       是否穿越.current -= 1;
     },
     [ComboEvent.DRAG_LEAVE]: (e: IPointerEvent) => {
+      console.log("🚀 ~ ComboEvent.DRAG_ENTER:", e);
       当前组合.current = 卡片文档ID;
       是否穿越.current += 1;
     },
