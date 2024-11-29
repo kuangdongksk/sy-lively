@@ -26,6 +26,7 @@ function 关系图(props: I关系图Props) {
 
   const 当前节点 = useRef<string | undefined>();
   const 当前组合 = useRef<string | undefined>();
+  const 是否穿越 = useRef<number>(0);
 
   const 获取所有卡片 = async () => {
     const 所有卡片 = await 卡片.获取所有卡片();
@@ -51,6 +52,7 @@ function 关系图(props: I关系图Props) {
       卡片文档ID,
       当前节点,
       当前组合,
+      是否穿越,
       选中的节点: [],
       选中的组合: [],
       获取所有卡片,
@@ -72,9 +74,8 @@ function 关系图(props: I关系图Props) {
     };
   }, []);
 
-  useEffect(() => {}, [所有卡片]);
-
   useEffect(() => {
+    console.log("🚀 ~ 所有卡片", 所有卡片);
     const 边数据 = [];
 
     所有卡片.forEach((卡片) => {
@@ -89,28 +90,39 @@ function 关系图(props: I关系图Props) {
     });
 
     图Ref.current?.setData({
-      nodes: 点列表.map((卡片) => ({
-        id: 卡片.ID,
-        data: 卡片 as any,
-        type: "circle",
-        style: {
-          labelText: 卡片.标题,
-          x: 卡片.X,
-          y: 卡片.Y,
-        },
-        combo: 所有卡片.some((card) => card.ID == 卡片.父项ID)
-          ? 卡片.父项ID
-          : undefined,
-      })),
-      combos: 集合列表.map((卡片) => ({
-        id: 卡片.ID,
-        data: 卡片 as any,
-        style: {
-          labelText: 卡片.标题,
-          x: 卡片.X,
-          y: 卡片.Y,
-        },
-      })),
+      nodes: 点列表.map((点) => {
+        const { 标题, 父项ID, ID, X, Y } = 点;
+
+        return {
+          id: ID,
+          data: 点 as any,
+          type: "circle",
+          style: {
+            labelText: 标题,
+            x: X,
+            y: Y,
+          },
+          combo: 所有卡片.some((card) => card.ID == 父项ID)
+            ? 父项ID
+            : undefined,
+        };
+      }),
+      combos: 集合列表.map((组合) => {
+        const { 标题, 父项ID, ID, X, Y } = 组合;
+
+        return {
+          id: ID,
+          data: 组合 as any,
+          style: {
+            labelText: 标题,
+            x: X,
+            y: Y,
+          },
+          combo: 所有卡片.some((card) => card.ID == 父项ID)
+            ? 父项ID
+            : undefined,
+        };
+      }),
       edges: 边数据,
     });
 

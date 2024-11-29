@@ -15,6 +15,7 @@ export function 配置事件(参数: {
   卡片文档ID: string;
   当前节点: MutableRefObject<string>;
   当前组合: MutableRefObject<string>;
+  是否穿越: MutableRefObject<number>;
   选中的节点: string[];
   选中的组合: string[];
   获取所有卡片: () => Promise<void>;
@@ -23,6 +24,7 @@ export function 配置事件(参数: {
     图,
     卡片文档ID,
     // 当前节点,
+    是否穿越,
     当前组合,
     // 选中的节点,
     // 选中的组合,
@@ -38,17 +40,18 @@ export function 配置事件(参数: {
       y: target.attributes.y,
     });
 
-    if (当前组合.current) {
+    console.log(
+      "🚀 ~ const节点组合拖拽完成= ~ 是否穿越.current:",
+      是否穿越.current
+    );
+    if (是否穿越.current !== 0) {
       if (targetType === "node") {
         await SY块.移动块({
           id,
           parentID: 当前组合.current,
         });
       } else {
-        // await SY文档.移动({
-        //   原父ID: 卡片文档ID,
-        //   新父ID: 当前组合.current,
-        // });
+        await SY文档.移动(id, 当前组合.current);
       }
 
       await SY块.设置块属性({
@@ -99,9 +102,11 @@ export function 配置事件(参数: {
       console.log("🚀 ~ ComboEvent.DRAG_ENTER:", e);
       const { target } = e as any;
       当前组合.current = target.id;
+      是否穿越.current -= 1;
     },
     [ComboEvent.DRAG_LEAVE]: (e: IPointerEvent) => {
       当前组合.current = 卡片文档ID;
+      是否穿越.current += 1;
     },
     [ComboEvent.DRAG_END]: (e: IPointerEvent) => {
       // // console.log("🚀 ~ ComboEvent.DRAG_END:", e);

@@ -53,17 +53,24 @@ export default class SY文档 {
     });
   }
 
-  public static async 移动(原父ID: string, 新父ID: string) {
+  //   {
+  //     "toNotebook": "20241124130542-se1okdt",
+  //     "fromPaths": [
+  //         "/20241125150215-a75q7u4/20241128174316-av8r4ig.sy"
+  //     ],
+  //     "toPath": "/20241125150215-a75q7u4/20241125150327-w1306wh.sy"
+  // }
+  public static async 移动(文档ID: string, 新父ID: string) {
     const 笔记本ID = await this.根据ID获取笔记本ID(新父ID);
 
-    const 原路径 = await this.根据ID获取路径(原父ID);
+    const 原路径 = await this.根据ID获取路径(文档ID);
 
     const 新路径 = await this.根据ID获取路径(新父ID);
 
     await fetchSyncPost(EAPI.移动文档, {
-      notebook: 笔记本ID,
-      path: 原路径,
-      newPath: 新路径,
+      toNotebook: 笔记本ID,
+      fromPaths: [原路径],
+      toPath: 新路径,
     });
   }
   //#endregion
