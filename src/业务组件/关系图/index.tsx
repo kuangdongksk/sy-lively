@@ -113,7 +113,9 @@ function 关系图(props: I关系图Props) {
       })),
       edges: 边数据,
     });
-  }, [所有卡片]);
+
+    图Ref.current?.render();
+  }, [所有卡片, 点列表, 集合列表]);
 
   return (
     <>
