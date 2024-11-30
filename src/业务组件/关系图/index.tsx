@@ -4,7 +4,7 @@ import { ExtensionCategory, Graph as G6Graph, register } from "@antv/g6";
 import { ReactNode } from "@antv/g6-extension-react";
 import { Button } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { 图配置 } from "./配置";
+import { 配置图 } from "./配置";
 import { 配置事件 } from "./配置/事件";
 
 export interface I关系图Props {
@@ -41,7 +41,7 @@ function 关系图(props: I关系图Props) {
 
   useEffect(() => {
     const 图 = new G6Graph({
-      ...图配置,
+      ...配置图(),
       container: 容器Ref.current!,
       data: {},
     });
