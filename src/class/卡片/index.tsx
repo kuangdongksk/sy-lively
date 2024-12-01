@@ -49,7 +49,9 @@ export class 卡片 {
         (
           SELECT
             a.block_id,
-                  '{' || GROUP_CONCAT('"' || a.name || '":"' || a.value || '"', ',') || ',"${E卡片属性名称.父项ID}":"' || b.root_id || '"}' AS 卡片
+                  '{' || GROUP_CONCAT('"' || a.name || '":"' || a.value || '"', ',') || '
+                  
+                  }' AS 卡片
           FROM
             attributes as a,
             blocks as b
@@ -61,6 +63,7 @@ export class 卡片 {
         )
       ${条件}
     `;
+    // ,"${E卡片属性名称.父项ID}":"' || b.root_id || '"
   }
 
   public static 卡片转为属性(卡片: I卡片): { [key in E卡片属性名称]: string } {
@@ -97,10 +100,16 @@ export class 卡片 {
     return 卡片;
   }
 
-  public static 原始结果转为卡片(原始结果: { 卡片: string }[]): I卡片[] {
+  public static async 原始结果转为卡片(
+    原始结果: { 卡片: string }[]
+  ): Promise<I卡片[]> {
     if (!原始结果) return [];
 
-    return 原始结果.map((item) => this.属性转为卡片(JSON.parse(item.卡片)));
+    const 卡片列表 = 原始结果.map((item) =>
+      this.属性转为卡片(JSON.parse(item.卡片))
+    );
+
+    return 卡片列表;
   }
 
   public static async 获取所有卡片(): Promise<I卡片[]> {

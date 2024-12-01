@@ -1,5 +1,4 @@
-import { 卡片 } from "@/class/卡片";
-import { ComboData, Graph, GraphOptions, NodeData } from "@antv/g6";
+import { Graph, GraphOptions } from "@antv/g6";
 
 export const 默认配置: GraphOptions = {
   animation: false,
@@ -56,17 +55,16 @@ export function 配置图(图: Graph) {
       type: "drag-element",
       dropEffect: "link",
       shadow: true,
-      onFinish: (e: string[]) => {
-        e.forEach(async (id) => {
-          const 数据 = 图.getElementData(id) as NodeData | ComboData;
-          console.log("🚀 ~ e.forEach ~ 数据:", 数据);
+      // onFinish: (e: string[]) => {
+      //   e.forEach(async (id) => {
+      //     const 数据 = 图.getElementData(id) as NodeData | ComboData;
 
-          await 卡片.更新位置(id, {
-            x: Math.round(数据.style.x / 10) * 10,
-            y: Math.round(数据.style.y / 10) * 10,
-          });
-        });
-      },
+      //     await 卡片.更新位置(id, {
+      //       x: Math.round(数据.style.x / 10) * 10,
+      //       y: Math.round(数据.style.y / 10) * 10,
+      //     });
+      //   });
+      // },
     },
   ]);
 }

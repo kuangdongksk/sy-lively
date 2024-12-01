@@ -43,6 +43,14 @@ export default class SY文档 {
     return data[0].path;
   }
 
+  public static async 根据ID获取文档的父文档ID(ID: string): Promise<string> {
+    const { data } = await fetchSyncPost("/api/query/sql", {
+      stmt: `SELECT * FROM blocks WHERE id='${ID}'`,
+    });
+
+    return data[0].path.slice(1, 23);
+  }
+
   public static async 重命名(笔记本ID: string, ID: string, 新名称: string) {
     const 路径 = await this.根据ID获取路径(ID);
 
