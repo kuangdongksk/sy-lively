@@ -1,4 +1,4 @@
-import { E卡片属性名称, 卡片 } from "@/class/卡片";
+import { E卡片属性名称 } from "@/class/卡片";
 import { SY块 } from "@/class/思源/块";
 import SY文档 from "@/class/思源/文档";
 import {
@@ -41,12 +41,6 @@ export function 配置事件(参数: {
     } else {
       数据 = 图.getComboData(id);
     }
-    console.log("🚀 ~ const节点组合拖拽完成= ~ 数据:", 数据);
-
-    await 卡片.更新位置(id, {
-      x: Math.round(数据.style.x / 10) * 10,
-      y: Math.round(数据.style.y / 10) * 10,
-    });
 
     const 父ID = 数据.combo ?? 卡片文档ID;
 
@@ -65,9 +59,6 @@ export function 配置事件(参数: {
         [E卡片属性名称.父项ID]: 父ID,
       },
     });
-
-    是否穿越.current = 0;
-    // await 获取所有卡片();
   };
 
   const 事件配置 = {
@@ -79,7 +70,7 @@ export function 配置事件(参数: {
     //#region NodeEvent
     [NodeEvent.DRAG]: (e: IPointerEvent) => {},
     [NodeEvent.DRAG_END]: async (e: IPointerEvent) => {
-      console.log("🚀 ~ NodeEvent.DRAG_END:", e);
+      // console.log("🚀 ~ NodeEvent.DRAG_END:", e);
       节点组合拖拽完成(e);
     },
     // [NodeEvent.DRAG_ENTER]: async (e: IPointerEvent) => {
