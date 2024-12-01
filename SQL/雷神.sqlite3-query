@@ -1,16 +1,17 @@
--- database: ../../data/思源/temp/siyuan.db
--- 要运行整个文件，请按窗口右上角的▷按钮。
+-- database: ../../../data/思源/temp/siyuan.db
 SELECT
-  事项
+  卡片
 FROM
   (
     SELECT
-      block_id,
-      '{' || GROUP_CONCAT('"' || name || '":"' || value || '"', ',') || '}' AS 事项
+      a.block_id,
+      '{' || GROUP_CONCAT('"' || a.name || '":"' || a.value || '"', ',') || ',"custom-plugin-lively-card-parentId":"' || b.root_id || '"}' AS 卡片
     FROM
-      attributes
+      attributes as a,
+      blocks as b
     WHERE
-      name LIKE '%custom-plugin-lively-thing-%'
+      a.name LIKE '%custom-plugin-lively-card-%'
+      AND a.block_id = b.id
     GROUP BY
-      block_id
-  );
+      a.block_id
+  )

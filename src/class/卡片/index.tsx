@@ -48,14 +48,16 @@ export class 卡片 {
       FROM
         (
           SELECT
-            block_id,
-            '{' || GROUP_CONCAT('"' || name || '":"' || value || '"', ',') || '}' AS 卡片
+            a.block_id,
+                  '{' || GROUP_CONCAT('"' || a.name || '":"' || a.value || '"', ',') || ',"${E卡片属性名称.父项ID}":"' || b.root_id || '"}' AS 卡片
           FROM
-            attributes
+            attributes as a,
+            blocks as b
           WHERE
-            name LIKE '%${卡片属性前缀}%'
+            a.name LIKE '%custom-plugin-lively-card-%'
+            AND a.block_id = b.id
           GROUP BY
-            block_id
+            a.block_id
         )
       ${条件}
     `;

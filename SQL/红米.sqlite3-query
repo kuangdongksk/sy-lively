@@ -1,0 +1,16 @@
+-- database: ../../data/思源/temp/siyuan.db
+-- 要运行整个文件，请按窗口右上角的▷按钮。
+SELECT
+  事项
+FROM
+  (
+    SELECT
+      block_id,
+      '{' || GROUP_CONCAT('"' || name || '":"' || value || '"', ',') || '}' AS 事项
+    FROM
+      attributes
+    WHERE
+      name LIKE '%custom-plugin-lively-thing-%'
+    GROUP BY
+      block_id
+  );

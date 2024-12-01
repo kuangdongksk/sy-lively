@@ -1,4 +1,3 @@
-import { E卡片属性名称 } from "@/class/卡片";
 import { SY块 } from "@/class/思源/块";
 import SY文档 from "@/class/思源/文档";
 import {
@@ -44,21 +43,18 @@ export function 配置事件(参数: {
 
     const 父ID = 数据.combo ?? 卡片文档ID;
 
-    if (targetType === "node") {
-      await SY块.移动块({
-        id,
-        parentID: 父ID,
-      });
-    } else {
-      await SY文档.移动(id, 父ID);
-    }
+    if (是否穿越.current !== 0) {
+      if (targetType === "node") {
+        await SY块.移动块({
+          id,
+          parentID: 父ID,
+        });
+      } else {
+        await SY文档.移动(id, 父ID);
+      }
 
-    await SY块.设置块属性({
-      id,
-      attrs: {
-        [E卡片属性名称.父项ID]: 父ID,
-      },
-    });
+      是否穿越.current = 0;
+    }
   };
 
   const 事件配置 = {

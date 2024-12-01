@@ -15,19 +15,13 @@ export const 默认配置: GraphOptions = {
     //   ),
     // },
   },
-  combo: {
-    // type: "circle",
-    state: {},
-    style: {
-      // pointerEvents: "stroke",
-    },
-  },
-  layout: {
-    type: "d3-force",
-    collide: {
-      strength: 0.5,
-    },
-  },
+  combo: {},
+  // layout: {
+  //   type: "d3-force",
+  //   collide: {
+  //     strength: 0.5,
+  //   },
+  // },
   plugins: [
     {
       key: "minimap",
