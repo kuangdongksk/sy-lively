@@ -1,5 +1,3 @@
-import { SY块 } from "@/class/思源/块";
-import SY文档 from "@/class/思源/文档";
 import { ComboEvent, Graph, IPointerEvent, NodeEvent } from "@antv/g6";
 import { MutableRefObject } from "react";
 
@@ -16,7 +14,7 @@ export function 配置事件(参数: {
 }) {
   const {
     图,
-    卡片文档ID,
+    // 卡片文档ID,
     // 当前节点,
     // 当前组合,
     是否穿越,
@@ -30,14 +28,13 @@ export function 配置事件(参数: {
     const { target, targetType } = e as any;
     const { id } = target;
 
-    let 数据;
     if (targetType === "node") {
-      数据 = 图.getNodeData(id);
       更改的卡片ID列表.current.add(id);
     } else {
-      数据 = 图.getComboData(id);
       const 递归添加子节点 = (节点ID: string) => {
         if (更改的卡片ID列表.current.has(节点ID)) return;
+        更改的卡片ID列表.current.add(节点ID);
+
         const 子节点数据 = 图.getChildrenData(节点ID);
         if (子节点数据) {
           子节点数据.forEach((子节点) => {
@@ -50,21 +47,6 @@ export function 配置事件(参数: {
       };
 
       递归添加子节点(id);
-    }
-
-    const 父ID = 数据.combo ?? 卡片文档ID;
-
-    if (是否穿越.current !== 0) {
-      if (targetType === "node") {
-        await SY块.移动块({
-          id,
-          parentID: 父ID,
-        });
-      } else {
-        await SY文档.移动(id, 父ID);
-      }
-
-      是否穿越.current = 0;
     }
   };
 

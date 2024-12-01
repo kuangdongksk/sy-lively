@@ -7,6 +7,7 @@ import { Button, Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { 配置图, 默认配置 } from "./配置";
 import { 配置事件 } from "./配置/事件";
+import SY文档 from "@/class/思源/文档";
 
 export interface I关系图Props {
   卡片文档ID: string;
@@ -55,6 +56,7 @@ function 关系图(props: I关系图Props) {
 
     点数据.forEach((点) => {
       const { id, combo, style } = 点;
+      const 父项ID = combo ?? 卡片文档ID;
       if (更改的卡片ID列表.current.has(id)) {
         promiseList.push(() =>
           SY块.设置块属性({
@@ -62,8 +64,15 @@ function 关系图(props: I关系图Props) {
             attrs: {
               [E卡片属性名称.X]: (Math.round(style.x / 10) * 10).toString(),
               [E卡片属性名称.Y]: (Math.round(style.y / 10) * 10).toString(),
-              [E卡片属性名称.父项ID]: combo ?? 卡片文档ID,
+              [E卡片属性名称.父项ID]: 父项ID,
             },
+          })
+        );
+
+        promiseList.push(() =>
+          SY块.移动块({
+            id,
+            parentID: 父项ID,
           })
         );
       }
@@ -71,6 +80,7 @@ function 关系图(props: I关系图Props) {
 
     组合数据.forEach((组合) => {
       const { id, combo, style } = 组合;
+      const 父项ID = combo ?? 卡片文档ID;
       if (更改的卡片ID列表.current.has(id)) {
         promiseList.push(() =>
           SY块.设置块属性({
@@ -78,10 +88,12 @@ function 关系图(props: I关系图Props) {
             attrs: {
               [E卡片属性名称.X]: (Math.round(style.x / 10) * 10).toString(),
               [E卡片属性名称.Y]: (Math.round(style.y / 10) * 10).toString(),
-              [E卡片属性名称.父项ID]: combo ?? 卡片文档ID,
+              [E卡片属性名称.父项ID]: 父项ID,
             },
           })
         );
+
+        promiseList.push(() => SY文档.移动(id, 父项ID));
       }
     });
 
