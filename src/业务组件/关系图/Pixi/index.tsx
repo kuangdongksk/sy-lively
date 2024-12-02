@@ -62,28 +62,6 @@ const NodeCanvas: React.FC<INodeCanvasProps> = (props: INodeCanvasProps) => {
     container.y += minY;
   };
 
-  const renderNode = (node: I卡片) => {
-    const isPage = node.单开一页 || false;
-
-    return isPage ? (
-      <Graphics
-        draw={(graphics) => {
-          graphics.beginFill(0xff0000);
-          graphics.drawCircle(node.X, node.Y, 50);
-          graphics.endFill();
-        }}
-      />
-    ) : (
-      <Graphics
-        draw={(graphics) => {
-          graphics.beginFill(0x0000ff);
-          graphics.drawCircle(node.X, node.Y, 10);
-          graphics.endFill();
-        }}
-      />
-    );
-  };
-
   const handleNodeClick = (e, node) => {
     if (e.ctrlKey) {
       if (!selectedNode) {
@@ -125,7 +103,23 @@ const NodeCanvas: React.FC<INodeCanvasProps> = (props: INodeCanvasProps) => {
           onpointerup={(e) => handleDragEnd(e, node)}
           onclick={(e) => handleNodeClick(e, node)}
         >
-          {renderNode(node)}
+          {node.单开一页 ? (
+            <Graphics
+              draw={(graphics) => {
+                graphics.beginFill(0xff0000);
+                graphics.drawCircle(node.X, node.Y, 50);
+                graphics.endFill();
+              }}
+            />
+          ) : (
+            <Graphics
+              draw={(graphics) => {
+                graphics.beginFill(0x0000ff);
+                graphics.drawCircle(node.X, node.Y, 10);
+                graphics.endFill();
+              }}
+            />
+          )}
         </Container>
       ))}
       <Container ref={lineContainerRef} />
