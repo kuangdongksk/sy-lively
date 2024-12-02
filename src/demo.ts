@@ -60,12 +60,7 @@ export default class PluginSample extends Plugin {
     });
 
     const statusIconTemp = document.createElement("template");
-    statusIconTemp.innerHTML = `
-    <div class="toolbar__item ariaLabel" aria-label="Remove plugin-sample Data">
-      <svg>
-          <use xlink:href="#iconTrashcan"></use>
-      </svg>
-    </div>`;
+
     statusIconTemp.content.firstElementChild.addEventListener("click", () => {
       confirm(
         "⚠️",
@@ -410,28 +405,6 @@ export default class PluginSample extends Plugin {
 
   private eventBusLog({ detail }: any) {
     console.log(detail);
-  }
-
-  private blockIconEvent({ detail }: any) {
-    detail.menu.addItem({
-      iconHTML: "",
-      label: this.i18n.removeSpace,
-      click: () => {
-        const doOperations: IOperation[] = [];
-        detail.blockElements.forEach((item: HTMLElement) => {
-          const editElement = item.querySelector('[contenteditable="true"]');
-          if (editElement) {
-            editElement.textContent = editElement.textContent.replace(/ /g, "");
-            doOperations.push({
-              id: item.dataset.nodeId,
-              data: item.outerHTML,
-              action: "update",
-            });
-          }
-        });
-        detail.protyle.getInstance().transaction(doOperations);
-      },
-    });
   }
 
   private showDialog() {

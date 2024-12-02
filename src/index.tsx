@@ -180,6 +180,49 @@ export default class SyLively extends Plugin {
         this.element.removeChild(tabDiv);
       },
     });
+
+    //#region 事件监听
+    this.eventBus.on("open-menu-content", ({ detail }) => {
+      const selectedText = window.getSelection().toString();
+      detail.menu.addItem({
+        id: PluginId + "-new-card",
+        label: "喧嚣-新建卡片",
+        submenu: [
+          {
+            label: "新建卡片",
+            click: () => {
+              this.打开新建卡片();
+            },
+          },
+          {
+            label: "新建卡片(选中文本)",
+            click: () => {
+              this.打开新建卡片();
+            },
+            disabled: !selectedText,
+          },
+        ],
+      });
+    });
+
+    const events = [
+      "open-menu-av",
+      "open-menu-blockref",
+      "open-menu-breadcrumbmore",
+      "open-menu-content",
+      "open-menu-fileannotationref",
+      "open-menu-image",
+      "open-menu-link",
+      "open-menu-tag",
+      "open-menu-doctree",
+      "open-menu-inbox",
+    ];
+
+    events.forEach((event) => {
+      this.eventBus.on(event, (e) => {
+        console.log(`🚀 ~ SyLively ~ this.eventBus.on ~ ${event}:`, e);
+      });
+    });
   }
 
   async onunload() {
