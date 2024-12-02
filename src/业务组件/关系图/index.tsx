@@ -1,5 +1,6 @@
 import { E卡片属性名称, I卡片, 卡片 } from "@/class/卡片";
 import { SY块 } from "@/class/思源/块";
+import SY文档 from "@/class/思源/文档";
 import { E按钮类型 } from "@/基础组件/按钮";
 import { ExtensionCategory, Graph as G6Graph, register } from "@antv/g6";
 import { ReactNode } from "@antv/g6-extension-react";
@@ -7,7 +8,6 @@ import { Button, Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { 配置图, 默认配置 } from "./配置";
 import { 配置事件 } from "./配置/事件";
-import SY文档 from "@/class/思源/文档";
 
 export interface I关系图Props {
   卡片文档ID: string;
