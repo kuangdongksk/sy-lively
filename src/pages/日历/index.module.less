@@ -1,0 +1,34 @@
+.tableStyles {
+  table {
+    border-collapse: collapse;
+  }
+
+  td,
+  th {
+    border-top: 1px solid var(--b3-theme-on-surface); /* 为单元格顶部添加边框 */
+    border-left: 1px solid var(--b3-theme-on-surface); /* 为单元格左侧添加边框 */
+  }
+
+  /* 移除第一行和第一列的边框 */
+  tr:first-child td,
+  td:first-child {
+    border-top: none;
+    border-left: none;
+  }
+}
+
+.日历 {
+  .天 {
+    margin: 0.5em;
+    border-radius: var(--b3-border-radius);
+
+    &:hover {
+      background-color: var(--b3-list-hover);
+    }
+
+    .天头部 {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

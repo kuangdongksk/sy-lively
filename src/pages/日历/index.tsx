@@ -1,18 +1,16 @@
-import SY文档 from "@/class/思源/文档";
 import SQLer from "@/class/SQLer";
+import SY文档 from "@/class/思源/文档";
 import { 思源协议 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/store/用户设置";
+import { E按钮类型 } from "@/基础组件/按钮";
 import { Badge, Button, Calendar, List, Tooltip } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import { useStyle } from "./index.style";
-import { E按钮类型 } from "@/基础组件/按钮";
+import styles from "./index.module.less";
 
 function 日历() {
   const [用户设置] = useAtom(用户设置Atom);
-
-  const { styles } = useStyle();
 
   const [当月事项, 令当月事项为] = useState([]);
 

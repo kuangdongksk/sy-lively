@@ -42,7 +42,6 @@
     "@vitejs/plugin-react": "^4.3.4",
     "ahooks": "^3.8.1",
     "antd": "^5.22.2",
-    "antd-style": "^3.7.1",
     "cash-dom": "^8.1.5",
     "cron-parser": "^4.9.0",
     "dayjs": "^1.11.13",

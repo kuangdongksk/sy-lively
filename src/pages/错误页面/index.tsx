@@ -1,7 +1,7 @@
 import { Button } from "antd";
 import { useNavigate, useRouteError } from "react-router-dom";
-import { useStyle } from "./index.styles";
 import { E按钮类型 } from "@/基础组件/按钮";
+import styles from "./index.module.less";
 
 function 错误页面() {
   const 导航到 = useNavigate();
@@ -9,7 +9,6 @@ function 错误页面() {
     data: string;
   };
 
-  const { styles } = useStyle();
   console.log("🚀 ~ ErrorPage ~ error:", error);
 
   return (

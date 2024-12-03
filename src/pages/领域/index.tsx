@@ -5,13 +5,12 @@ import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import 领域卡片 from "./components/领域卡片";
 import 新建领域 from "./components/领域卡片/新建领域";
-import { 领域页面样式 } from "./index.style";
+import styles from "./index.module.less";
 
 export const 添加领域 = "添加领域";
 
 function 领域() {
   const [用户设置] = useAtom(用户设置Atom);
-  const { styles } = 领域页面样式();
 
   const [领域列表, 令领域列表为] = useState<I领域[]>([]);
 
