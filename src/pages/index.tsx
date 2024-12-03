@@ -5,6 +5,7 @@ import { 持久化atom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 开启调试, 调试 } from "@/tools/调试";
 import 事项表单 from "@/业务组件/表单/事项表单";
+import { E按钮类型 } from "@/基础组件/按钮";
 import {
   CalendarOutlined,
   CreditCardOutlined,
@@ -19,9 +20,8 @@ import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { useAppStyle } from "./index.style";
 import 更新公告 from "./业务组件/更新公告";
-import { E按钮类型 } from "@/基础组件/按钮";
+import styles from "./index.module.less";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -39,7 +39,6 @@ function App() {
   const [用户设置, 设置用户设置] = useAtom(用户设置Atom);
   const [持久化] = useAtom(持久化atom);
 
-  const { styles } = useAppStyle();
   const 事项Ref = useRef<I增改查弹窗表单Ref>();
   const [目录, 设置目录] = useState([C目录[3]]);
 

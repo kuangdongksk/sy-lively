@@ -55,16 +55,16 @@
   @b3-font-size: 14px;
 
   // 顶部工具栏
-  @b3-toolbar-background: var(--b3-theme-surface);
-  @b3-toolbar-blur-background: #fcfcfc;
-  @b3-toolbar-color: var(--b3-theme-on-surface);
-  @b3-toolbar-hover: var(--b3-theme-background-light);
+  @b3-toolbar-background: @b3-theme-surface;
+  @b3-toolbar-blur-background:var (--b3-toolbar-blur-background, #fcfcfc);
+  @b3-toolbar-color: @b3-theme-on-surface;
+  @b3-toolbar-hover: @b3-theme-background-light;
   @b3-toolbar-left-mac: 69px;
 
   // 线条
-  @b3-border-color: var(--b3-theme-surface-lighter);
-  @b3-border-radius: 6px;
-  @b3-border-radius-b: 12px;
+  @b3-border-color: @b3-theme-surface-lighter;
+  @b3-border-radius: var(--b3-border-radius, 6px);
+  @b3-border-radius-b: var(--b3-border-radius-b, 12px);
 
   // 滚动条
   @b3-scroll-color: var(--b3-scroll-color, rgba(0, 0, 0, 0.2));
@@ -74,7 +74,7 @@
   @b3-list-icon-hover: var(--b3-list-icon-hover, rgba(33, 34, 36, 0.1));
 
   // 菜单
-  @b3-menu-background: var(--b3-theme-surface);
+  @b3-menu-background: @b3-theme-surface;
 
   // 提示
   @b3-tooltips-background: var(--b3-tooltips-background, #312f35);
@@ -87,7 +87,7 @@
   @b3-av-background-hl: var(--b3-av-background-hl, #e8eefc);
 
   // 为空提示
-  @b3-empty-color: var(--b3-theme-on-surface-light);
+  @b3-empty-color: @b3-theme-on-surface-light;
 
   // 遮罩
   @b3-mask-background: var(--b3-mask-background, rgba(220, 220, 220, 0.4));
@@ -119,11 +119,11 @@
   );
 
   /* 自定义文字 */
-  @b3-font-color1: var(--b3-card-error-color);
-  @b3-font-color2: var(--b3-card-warning-color);
-  @b3-font-color3: var(--b3-card-info-color);
-  @b3-font-color4: var(--b3-card-success-color);
-  @b3-font-color5: var(--b3-theme-on-surface);
+  @b3-font-color1: @b3-card-error-color;
+  @b3-font-color2: @b3-card-warning-color;
+  @b3-font-color3: @b3-card-info-color;
+  @b3-font-color4: @b3-card-success-color;
+  @b3-font-color5: @b3-theme-on-surface;
   @b3-font-color6: var(--b3-theme-primary);
   @b3-font-color7: var(--b3-theme-secondary);
   --b3-font-color8: var(--b3-theme-error);

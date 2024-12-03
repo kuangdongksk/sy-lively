@@ -99,6 +99,7 @@ export const 主题: ThemeConfig = {
       headerBg: "var(--b3-theme-background)",
       contentBg: "var(--b3-theme-surface)",
       footerBg: "var(--b3-theme-background)",
+      colorIcon: "var(--b3-theme-on-background)",
     },
     Pagination: {
       ...公共配置,

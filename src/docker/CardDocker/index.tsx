@@ -1,11 +1,11 @@
 import { 思源协议 } from "@/constant/系统码";
+import { E按钮类型 } from "@/基础组件/按钮";
 import { CopyOutlined } from "@ant-design/icons";
 import { useDebounce } from "ahooks";
-import { Button, Input, List, message } from "antd";
+import { Button, Input, message } from "antd";
 import { useEffect, useState } from "react";
 import { I卡片, 卡片 as 卡片类 } from "../../class/卡片";
 import styles from "./index.module.less";
-import { E按钮类型 } from "@/基础组件/按钮";
 
 function CardDocker() {
   const [关键词, 令关键词为] = useState("");
@@ -24,7 +24,7 @@ function CardDocker() {
 
   return (
     <div className={styles.cardDocker}>
-      <div>喧嚣卡片</div>
+      <div className={styles.title}>喧嚣卡片</div>
       <Input
         type="text"
         placeholder="Type here"
@@ -32,36 +32,29 @@ function CardDocker() {
         value={关键词}
         onChange={(e) => 令关键词为(e.target.value)}
       />
-      <div>
-        <List
-          dataSource={卡片列表}
-          renderItem={(卡片) => (
-            <List.Item>
-              <div className={styles.cardHeader}>
-                <a
-                  className={styles.cardTitle}
-                  data-type="block-ref"
-                  data-id={卡片.ID}
-                  href={思源协议 + 卡片.ID}
-                >
-                  {卡片.标题}
-                </a>
-                <Button
-                  className={E按钮类型.文本}
-                  icon={<CopyOutlined />}
-                  onClick={async () => {
-                    // ((20241113184100-q4i1fg4 '浙江大华'))
-                    await navigator.clipboard.writeText(
-                      `((${卡片.ID} '${卡片.标题}'))`
-                    );
-
-                    message.success("已复制");
-                  }}
-                />
-              </div>
-            </List.Item>
-          )}
-        />
+      <div className={styles.content}>
+        {卡片列表.map((卡片) => (
+          <div className={styles.cardHeader}>
+            <a
+              className={styles.cardTitle}
+              data-type="block-ref"
+              data-id={卡片.ID}
+              href={思源协议 + 卡片.ID}
+            >
+              {卡片.标题}
+            </a>
+            <Button
+              className={E按钮类型.文本}
+              icon={<CopyOutlined />}
+              onClick={async () => {
+                await navigator.clipboard.writeText(
+                  `((${卡片.ID} '${卡片.标题}'))`
+                );
+                message.success("已复制");
+              }}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
