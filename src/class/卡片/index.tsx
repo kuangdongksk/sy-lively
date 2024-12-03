@@ -2,6 +2,7 @@ import { E块属性名称 } from "@/constant/系统码";
 import { 根据枚举的值获取枚举的键 } from "@/utils/枚举";
 import { fetchSyncPost } from "siyuan";
 import { SY块 } from "../思源/块";
+import SY文档 from "../思源/文档";
 
 export const 卡片属性前缀 = `${E块属性名称.卡片}-`;
 
@@ -50,7 +51,7 @@ export class 卡片 {
           SELECT
             a.block_id,
                   '{' || GROUP_CONCAT('"' || a.name || '":"' || a.value || '"', ',') || '
-                  
+                  ,"${E卡片属性名称.父项ID}":"' || b.root_id || '"
                   }' AS 卡片
           FROM
             attributes as a,
@@ -63,7 +64,7 @@ export class 卡片 {
         )
       ${条件}
     `;
-    // ,"${E卡片属性名称.父项ID}":"' || b.root_id || '"
+    //
   }
 
   public static 卡片转为属性(卡片: I卡片): { [key in E卡片属性名称]: string } {
@@ -108,6 +109,19 @@ export class 卡片 {
     const 卡片列表 = 原始结果.map((item) =>
       this.属性转为卡片(JSON.parse(item.卡片))
     );
+
+    const promiseList = [];
+
+    卡片列表.forEach((卡片) => {
+      if (卡片.单开一页) {
+        promiseList.push(async () => {
+          const parentId = await SY文档.根据ID获取文档的父文档ID(卡片.ID);
+          卡片.父项ID = parentId;
+        });
+      }
+    });
+
+    await Promise.all(promiseList.map((fn) => fn()));
 
     return 卡片列表;
   }

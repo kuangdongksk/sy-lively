@@ -16,12 +16,12 @@ export const 默认配置: GraphOptions = {
     // },
   },
   combo: {},
-  // layout: {
-  //   type: "d3-force",
-  //   collide: {
-  //     strength: 0.5,
-  //   },
-  // },
+  layout: {
+    type: "d3-force",
+    collide: {
+      strength: 0.5,
+    },
+  },
   plugins: [
     {
       key: "minimap",
@@ -56,32 +56,32 @@ export function 配置图(参数: {
 
   图.setBehaviors((behaviors) => [
     ...behaviors,
-    {
-      key: "drag-element",
-      type: "drag-element",
-      dropEffect: "link",
-      shadow: true,
-      onFinish: (e: string[]) => {
-        e.forEach(async (id) => {
-          const 递归添加子节点 = (节点ID: string) => {
-            if (更改的卡片ID列表.current.has(节点ID)) return;
-            更改的卡片ID列表.current.add(节点ID);
+    // {
+    //   key: "drag-element",
+    //   type: "drag-element",
+    //   dropEffect: "link",
+    //   shadow: true,
+    //   onFinish: (e: string[]) => {
+    //     e.forEach(async (id) => {
+    //       const 递归添加子节点 = (节点ID: string) => {
+    //         if (更改的卡片ID列表.current.has(节点ID)) return;
+    //         更改的卡片ID列表.current.add(节点ID);
 
-            const 子节点数据 = 图.getChildrenData(节点ID);
-            if (子节点数据) {
-              子节点数据.forEach((子节点) => {
-                console.log("🚀 ~ 子节点数据.forEach ~ 子节点:", 子节点);
+    //         const 子节点数据 = 图.getChildrenData(节点ID);
+    //         if (子节点数据) {
+    //           子节点数据.forEach((子节点) => {
+    //             console.log("🚀 ~ 子节点数据.forEach ~ 子节点:", 子节点);
 
-                if (子节点.data.单开一页) {
-                  递归添加子节点(子节点.id);
-                }
-              });
-            }
-          };
+    //             if (子节点.data.单开一页) {
+    //               递归添加子节点(子节点.id);
+    //             }
+    //           });
+    //         }
+    //       };
 
-          递归添加子节点(id);
-        });
-      },
-    },
+    //       递归添加子节点(id);
+    //     });
+    //   },
+    // },
   ]);
 }

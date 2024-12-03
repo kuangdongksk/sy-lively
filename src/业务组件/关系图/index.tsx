@@ -1,10 +1,9 @@
 import { E卡片属性名称, I卡片, 卡片 } from "@/class/卡片";
 import { SY块 } from "@/class/思源/块";
 import SY文档 from "@/class/思源/文档";
-import { E按钮类型 } from "@/基础组件/按钮";
 import { ExtensionCategory, Graph as G6Graph, register } from "@antv/g6";
 import { ReactNode } from "@antv/g6-extension-react";
-import { Button, Spin } from "antd";
+import { Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { 配置图, 默认配置 } from "./配置";
 import { 配置事件 } from "./配置/事件";
@@ -175,8 +174,8 @@ function 关系图(props: I关系图Props) {
           type: "circle",
           style: {
             labelText: 标题,
-            x: X,
-            y: Y,
+            // x: X,
+            // y: Y,
           },
           combo: 所有卡片.some((card) => card.ID == 父项ID)
             ? 父项ID
@@ -191,8 +190,8 @@ function 关系图(props: I关系图Props) {
           data: 组合 as any,
           style: {
             labelText: 标题,
-            x: X,
-            y: Y,
+            // x: X,
+            // y: Y,
           },
           combo: 所有卡片.some((card) => card.ID == 父项ID)
             ? 父项ID
@@ -213,11 +212,7 @@ function 关系图(props: I关系图Props) {
         height: "100%",
       }}
     >
-      <div>
-        <Button className={E按钮类型.默认} onClick={保存}>
-          保存
-        </Button>
-      </div>
+      <div></div>
       <div
         ref={容器Ref}
         style={{
@@ -229,3 +224,6 @@ function 关系图(props: I关系图Props) {
   );
 }
 export default 关系图;
+// <Button className={E按钮类型.默认} onClick={保存}>
+//   保存
+// </Button>
