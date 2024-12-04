@@ -19,8 +19,10 @@ export const 默认配置: GraphOptions = {
   layout: {
     type: "d3-force",
     collide: {
-      strength: 0.5,
+      strength: 1,
     },
+    // type: "combo-combined",
+    // comboPadding: 2,
   },
   plugins: [
     {
