@@ -1,7 +1,6 @@
 import { E块属性名称 } from "@/constant/系统码";
 import { 根据枚举的值获取枚举的键 } from "@/utils/枚举";
 import { fetchSyncPost } from "siyuan";
-import { SY块 } from "../思源/块";
 import SY文档 from "../思源/文档";
 
 export const 卡片属性前缀 = `${E块属性名称.卡片}-`;
@@ -10,23 +9,16 @@ export enum E卡片属性名称 {
   ID = `${卡片属性前缀}id`,
   标题 = `${卡片属性前缀}name`,
   标题ID = `${卡片属性前缀}titleId`,
-  描述 = `${卡片属性前缀}description`,
+  父项ID = `${卡片属性前缀}parentID`,
   别名 = `${卡片属性前缀}alias`,
-  X = `${卡片属性前缀}x`,
-  Y = `${卡片属性前缀}y`,
   单开一页 = `${卡片属性前缀}singlePage`,
-  父项ID = `${卡片属性前缀}parentId`,
-  关系 = `${卡片属性前缀}relation`,
 }
 
 export interface I卡片 {
   ID: string;
   标题: string;
   标题ID: string;
-  描述: string;
   别名: string[];
-  X?: number;
-  Y?: number;
   单开一页?: boolean;
   父项ID?: string;
   关系?: {
@@ -36,7 +28,6 @@ export interface I卡片 {
   }[];
 }
 
-const 数字类型属性 = [E卡片属性名称.X, E卡片属性名称.Y];
 const 布尔类型属性 = [E卡片属性名称.单开一页];
 
 export class 卡片 {
@@ -59,6 +50,8 @@ export class 卡片 {
           WHERE
             a.name LIKE '%custom-plugin-lively-card-%'
             AND a.block_id = b.id
+          LIMIT 1024
+          OFFSET 0
           GROUP BY
             a.block_id
         )
@@ -83,12 +76,6 @@ export class 卡片 {
     Object.keys(属性).forEach((key) => {
       if (属性[key] === undefined) {
         return;
-      }
-
-      if (数字类型属性.includes(key as E卡片属性名称)) {
-        return (卡片[根据枚举的值获取枚举的键(E卡片属性名称, key)] = parseFloat(
-          属性[key]
-        ));
       }
 
       if (布尔类型属性.includes(key as E卡片属性名称)) {
@@ -140,15 +127,5 @@ export class 卡片 {
     });
 
     return this.原始结果转为卡片(data);
-  }
-
-  public static async 更新位置(ID: string, 位置: { x: number; y: number }) {
-    await SY块.设置块属性({
-      id: ID,
-      attrs: {
-        [E卡片属性名称.X]: 位置.x.toString(),
-        [E卡片属性名称.Y]: 位置.y.toString(),
-      },
-    });
   }
 }

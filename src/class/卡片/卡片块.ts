@@ -7,14 +7,14 @@ import SY文档 from "../思源/文档";
 
 export class 卡片块 {
   private static 生成卡片Kramdown(卡片: I卡片): string {
-    const { 标题, 标题ID, 描述 } = 卡片;
+    const { 标题, 标题ID } = 卡片;
 
     const 标题块 = KH.生成标题块({
       标题: 标题,
       层级: 6,
       id: 标题ID,
     });
-    const 段落块 = KH.生成段落块(描述);
+    const 段落块 = KH.生成段落块("");
 
     return KH.为块添加属性(
       KH.生成超级块([标题块, 段落块]),
@@ -61,7 +61,7 @@ export class 卡片块 {
     卡片: I卡片,
     卡片文档ID: string
   ): Promise<string> {
-    const { 标题, 描述, 别名 } = 卡片;
+    const { 标题, 别名 } = 卡片;
     const 块数据 = await SQLer.根据ID获取块(卡片文档ID);
 
     const { data: 文档ID } = await SY文档.通过Markdown创建(
@@ -75,7 +75,7 @@ export class 卡片块 {
     await Promise.all([
       await SY块.插入前置子块({
         dataType: "markdown",
-        data: Kramdown助手.生成段落块(描述),
+        data: Kramdown助手.生成段落块(""),
         parentID: 文档ID,
       }),
       await SY块.设置块属性({

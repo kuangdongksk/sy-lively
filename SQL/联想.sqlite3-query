@@ -14,7 +14,11 @@ FROM
       name LIKE '%custom-plugin-lively-card-%'
     GROUP BY
       block_id
-  );
+  )
+LIMIT
+  1024
+OFFSET
+  0;
 
 -- WHERE
 --   卡片 LIKE '%海康威视%';
