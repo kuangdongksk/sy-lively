@@ -32,7 +32,7 @@ const 布尔类型属性 = [E卡片属性名称.单开一页];
 
 export class 卡片 {
   private static 生成卡片SQL(条件数组?: string[]) {
-    const 条件 = 条件数组 ? "WHERE " + 条件数组.join(" AND ") : "";
+    const 条件 = 条件数组 ? "AND " + 条件数组.join(" AND ") : "";
 
     return `
       SELECT
@@ -41,6 +41,7 @@ export class 卡片 {
         (
           SELECT
             a.block_id,
+            b.root_id,
                   '{' || GROUP_CONCAT('"' || a.name || '":"' || a.value || '"', ',') || '
                   ,"${E卡片属性名称.父项ID}":"' || b.root_id || '"
                   }' AS 卡片
@@ -50,12 +51,12 @@ export class 卡片 {
           WHERE
             a.name LIKE '%custom-plugin-lively-card-%'
             AND a.block_id = b.id
-          LIMIT 1024
-          OFFSET 0
+            ${条件}
           GROUP BY
             a.block_id
-        )
-      ${条件}
+        )        
+      LIMIT 1024
+      OFFSET 0
     `;
     //
   }
@@ -97,19 +98,6 @@ export class 卡片 {
       this.属性转为卡片(JSON.parse(item.卡片))
     );
 
-    const promiseList = [];
-
-    卡片列表.forEach((卡片) => {
-      if (卡片.单开一页) {
-        promiseList.push(async () => {
-          const parentId = await SY文档.根据ID获取文档的父文档ID(卡片.ID);
-          卡片.父项ID = parentId;
-        });
-      }
-    });
-
-    await Promise.all(promiseList.map((fn) => fn()));
-
     return 卡片列表;
   }
 
@@ -123,9 +111,21 @@ export class 卡片 {
 
   public static async 获取卡片通过关键词(关键词: string): Promise<I卡片[]> {
     const { data } = await fetchSyncPost("/api/query/sql", {
-      stmt: this.生成卡片SQL([`卡片 LIKE '%${关键词}%'`]),
+      stmt: this.生成卡片SQL([`b.root_id LIKE '%${关键词}%'`]),
     });
 
     return this.原始结果转为卡片(data);
+  }
+
+  public static async 获取指定文档下的卡片(文档ID: string): Promise<I卡片[]> {
+    const { data } = await fetchSyncPost("/api/query/sql", {
+      stmt: this.生成卡片SQL([`b.root_id = '${文档ID}'`]),
+    });
+
+    const result = (await this.原始结果转为卡片(data)).filter(
+      (卡片) => 卡片.ID !== 文档ID
+    );
+
+    return result;
   }
 }

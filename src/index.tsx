@@ -2,7 +2,7 @@ import { ConfigProvider } from "antd";
 import { Provider } from "jotai";
 import { nanoid } from "nanoid";
 import ReactDOM from "react-dom/client";
-import { Dialog, getFrontend, openTab, Plugin, TEventBus } from "siyuan";
+import { Dialog, getFrontend, openTab, Plugin } from "siyuan";
 import { 系统推送错误消息 } from "./API/推送消息";
 import App from "./App";
 import { E卡片属性名称 } from "./class/卡片";
@@ -12,8 +12,8 @@ import { E事项属性名称, E持久化键 } from "./constant/系统码";
 import CardDocker from "./docker/CardDocker";
 import { 仓库, 持久化atom } from "./store";
 import { 主题 } from "./style/theme";
-import 卡片表单 from "./业务组件/表单/卡片表单";
 import { 睡眠 } from "./utils/异步";
+import 卡片表单 from "./业务组件/表单/卡片表单";
 // import "./index.less";
 
 export const PluginId = "livelySaSa";
@@ -109,27 +109,30 @@ export default class SyLively extends Plugin {
     //#endregion
 
     //#region 添加卡片dock
-    this.addDock({
-      config: {
-        icon: "iconSyLivelyCard",
-        title: "喧嚣卡片",
-        position: "RightTop",
-        size: { width: 284, height: 600 },
-      },
-      data: {},
-      type: "喧嚣卡片",
-      init() {
-        const rootDom = this.element;
-        rootDom.id = PluginId;
-        const root = ReactDOM.createRoot(rootDom);
+    const 卡片文档ID = await this.getData(E持久化键.卡片文档ID);
+    if (卡片文档ID) {
+      this.addDock({
+        config: {
+          icon: "iconSyLivelyCard",
+          title: "喧嚣卡片",
+          position: "RightTop",
+          size: { width: 284, height: 600 },
+        },
+        data: {},
+        type: "喧嚣卡片",
+        init() {
+          const rootDom = this.element;
+          const root = ReactDOM.createRoot(rootDom);
 
-        root.render(
-          <ConfigProvider theme={主题}>
-            <CardDocker />
-          </ConfigProvider>
-        );
-      },
-    });
+          root.render(
+            <ConfigProvider theme={主题}>
+              <CardDocker 卡片文档ID={卡片文档ID} />
+            </ConfigProvider>
+          );
+        },
+      });
+    }
+    //#endregion
 
     //#region 添加打开喧嚣快捷键
     this.addCommand({
@@ -242,11 +245,11 @@ export default class SyLively extends Plugin {
       return;
     }
 
-    const rootId = nanoid();
+    const rootId = nanoid() + PluginId;
 
     const 对话框 = new Dialog({
       title: "新建卡片",
-      content: `<div id='${rootId}' id="${PluginId}" style="padding: 12px;"></div>`,
+      content: `<div id="${rootId}" style="padding: 12px;"></div>`,
       width: "600px",
       height: "400px",
       hideCloseIcon: true,

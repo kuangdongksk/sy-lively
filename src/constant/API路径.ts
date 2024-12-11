@@ -10,6 +10,8 @@ export enum EAPI {
   创建日记文档 = "/api/filetree/createDailyNote",
   重命名文档 = "/api/filetree/renameDoc",
   移动文档 = "/api/filetree/moveDocs",
+  根据ID移动文档 = "/api/filetree/moveDocsById",
+  根据路径列出文档 = "/api/filetree/listDocsByPath",
   //#endregion
 
   //#region 块 https://docs.siyuan-note.club/zh-Hans/reference/api/kernel/#%E5%9D%97

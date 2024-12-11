@@ -13,10 +13,7 @@ import dayjs from "dayjs";
 import { 事项转为属性 } from "./事项";
 
 export async function 插入到日记(ID: string, 用户设置: I用户设置) {
-  const { id: 日记文档ID } = await SY文档.获取对应日期的日记文档(
-    用户设置.笔记本ID,
-    dayjs(dayjs(), E时间格式化.思源时间)
-  );
+  const 日记文档ID = await SY文档.创建日记文档(用户设置.笔记本ID);
 
   await SY块.插入前置子块({
     dataType: "markdown",

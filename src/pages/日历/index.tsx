@@ -39,10 +39,9 @@ function 日历() {
                 <Button
                   className={E按钮类型.文本}
                   onClick={() => {
-                    SY文档.获取对应日期的日记文档(
-                      用户设置.笔记本ID,
-                      value
-                    ).then(({ id }) => window.open(思源协议 + id));
+                    SY文档.创建日记文档(用户设置.笔记本ID).then((id) =>
+                      window.open(思源协议 + id)
+                    );
                   }}
                 >
                   {value.format("DD")}
