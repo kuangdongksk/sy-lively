@@ -1,36 +1,25 @@
-import HelloExample from "@/hello.svelte";
 import "@/index.scss";
-import SettingExample from "@/setting-example.svelte";
 import {
-  confirm,
   Constants,
   Dialog,
   getBackend,
   getFrontend,
-  ICard,
-  ICardData,
   IModel,
-  IOperation,
   lockScreen,
   Menu,
   openMobileFileById,
   openTab,
   openWindow,
   Plugin,
-  Protyle,
   showMessage,
 } from "siyuan";
-import { svelteDialog } from "./libs/dialog";
-import { SettingUtils } from "./libs/setting-utils";
 
 const STORAGE_NAME = "menu-config";
 const TAB_TYPE = "custom_tab";
-const DOCK_TYPE = "dock_tab";
 
 export default class PluginSample extends Plugin {
   customTab: () => IModel;
   private isMobile: boolean;
-  private blockIconEventBindThis = this.blockIconEvent.bind(this);
   private settingUtils: SettingUtils;
 
   async onload() {
@@ -61,77 +50,8 @@ export default class PluginSample extends Plugin {
 
     const statusIconTemp = document.createElement("template");
 
-    statusIconTemp.content.firstElementChild.addEventListener("click", () => {
-      confirm(
-        "⚠️",
-        this.i18n.confirmRemove.replace("${name}", this.name),
-        () => {
-          this.removeData(STORAGE_NAME).then(() => {
-            this.data[STORAGE_NAME] = { readonlyText: "Readonly" };
-            showMessage(`[${this.name}]: ${this.i18n.removedData}`);
-          });
-        }
-      );
-    });
     this.addStatusBar({
       element: statusIconTemp.content.firstElementChild as HTMLElement,
-    });
-
-    this.addCommand({
-      langKey: "showDialog",
-      hotkey: "⇧⌘O",
-      callback: () => {
-        this.showDialog();
-      },
-      fileTreeCallback: (file: any) => {
-        console.log(file, "fileTreeCallback");
-      },
-      editorCallback: (protyle: any) => {
-        console.log(protyle, "editorCallback");
-      },
-      dockCallback: (element: HTMLElement) => {
-        console.log(element, "dockCallback");
-      },
-    });
-    this.addCommand({
-      langKey: "getTab",
-      hotkey: "⇧⌘M",
-      globalCallback: () => {
-        console.log(this.getOpenedTab());
-      },
-    });
-
-    this.addDock({
-      config: {
-        position: "LeftBottom",
-        size: { width: 200, height: 0 },
-        icon: "iconSaving",
-        title: "Custom Dock",
-        hotkey: "⌥⌘W",
-      },
-      data: {
-        text: "This is my custom dock",
-      },
-      type: DOCK_TYPE,
-      resize() {
-        console.log(DOCK_TYPE + " resize");
-      },
-      update() {
-        console.log(DOCK_TYPE + " update");
-      },
-      init: (dock) => {
-        dock.element.innerHTML = `<div class="toolbar toolbar--border toolbar--dark">
-                    <svg class="toolbar__icon"><use xlink:href="#iconEmoji"></use></svg>
-                        <div class="toolbar__text">Custom Dock</div>
-                    </div>
-                    <div class="fn__flex-1 plugin-sample__custom-dock">
-                        ${dock.data.text}
-                    </div>
-                    </div>`;
-      },
-      destroy() {
-        console.log("destroy dock:", DOCK_TYPE);
-      },
     });
 
     this.settingUtils = new SettingUtils({
@@ -273,51 +193,6 @@ export default class PluginSample extends Plugin {
       );
     }
 
-    this.protyleSlash = [
-      {
-        filter: ["insert emoji 😊", "插入表情 😊", "crbqwx"],
-        html: `<div class="b3-list-item__first"><span class="b3-list-item__text">${this.i18n.insertEmoji}</span><span class="b3-list-item__meta">😊</span></div>`,
-        id: "insertEmoji",
-        callback(protyle: Protyle) {
-          protyle.insert("😊");
-        },
-      },
-    ];
-
-    this.protyleOptions = {
-      toolbar: [
-        "block-ref",
-        "a",
-        "|",
-        "text",
-        "strong",
-        "em",
-        "u",
-        "s",
-        "mark",
-        "sup",
-        "sub",
-        "clear",
-        "|",
-        "code",
-        "kbd",
-        "tag",
-        "inline-math",
-        "inline-memo",
-        "|",
-        {
-          name: "insert-smail-emoji",
-          icon: "iconEmoji",
-          hotkey: "⇧⌘I",
-          tipPosition: "n",
-          tip: this.i18n.insertEmoji,
-          click(protyle: Protyle) {
-            protyle.insert("😊");
-          },
-        },
-      ],
-    };
-
     console.log(this.i18n.helloPlugin);
   }
 
@@ -358,25 +233,6 @@ export default class PluginSample extends Plugin {
     });
   }
 
-  async onunload() {
-    showMessage("Goodbye SiYuan Plugin");
-  }
-
-  uninstall() {}
-
-  async updateCards(options: ICardData) {
-    options.cards.sort((a: ICard, b: ICard) => {
-      if (a.blockID < b.blockID) {
-        return -1;
-      }
-      if (a.blockID > b.blockID) {
-        return 1;
-      }
-      return 0;
-    });
-    return options;
-  }
-
   /**
    * A custom setting pannel provided by svelte
    */
@@ -392,19 +248,6 @@ export default class PluginSample extends Plugin {
     let pannel = new SettingExample({
       target: dialog.element.querySelector("#SettingPanel"),
     });
-  }
-
-  private eventBusPaste(event: any) {
-    // 如果需异步处理请调用 preventDefault， 否则会进行默认处理
-    event.preventDefault();
-    // 如果使用了 preventDefault，必须调用 resolve，否则程序会卡死
-    event.detail.resolve({
-      textPlain: event.detail.textPlain.trim(),
-    });
-  }
-
-  private eventBusLog({ detail }: any) {
-    console.log(detail);
   }
 
   private showDialog() {
@@ -435,62 +278,6 @@ export default class PluginSample extends Plugin {
       },
     });
     if (!this.isMobile) {
-      menu.addItem({
-        icon: "iconFace",
-        label: "Open Custom Tab",
-        click: () => {
-          const tab = openTab({
-            app: this.app,
-            custom: {
-              icon: "iconFace",
-              title: "Custom Tab",
-              data: {
-                text: "This is my custom tab",
-              },
-              id: this.name + TAB_TYPE,
-            },
-          });
-          console.log(tab);
-        },
-      });
-      menu.addItem({
-        icon: "iconImage",
-        label: "Open Asset Tab(open help first)",
-        click: () => {
-          const tab = openTab({
-            app: this.app,
-            asset: {
-              path: "assets/paragraph-20210512165953-ag1nib4.svg",
-            },
-          });
-          console.log(tab);
-        },
-      });
-      menu.addItem({
-        icon: "iconFile",
-        label: "Open Doc Tab(open help first)",
-        click: async () => {
-          const tab = await openTab({
-            app: this.app,
-            doc: {
-              id: "20200812220555-lj3enxa",
-            },
-          });
-          console.log(tab);
-        },
-      });
-      menu.addItem({
-        icon: "iconSearch",
-        label: "Open Search Tab",
-        click: () => {
-          const tab = openTab({
-            app: this.app,
-            search: {
-              k: "SiYuan",
-            },
-          });
-        },
-      });
       menu.addItem({
         icon: "iconRiffCard",
         label: "Open Card Tab",
@@ -541,383 +328,7 @@ export default class PluginSample extends Plugin {
         lockScreen(this.app);
       },
     });
-    menu.addItem({
-      icon: "iconScrollHoriz",
-      label: "Event Bus",
-      type: "submenu",
-      submenu: [
-        {
-          icon: "iconSelect",
-          label: "On ws-main",
-          click: () => {
-            this.eventBus.on("ws-main", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off ws-main",
-          click: () => {
-            this.eventBus.off("ws-main", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On click-blockicon",
-          click: () => {
-            this.eventBus.on("click-blockicon", this.blockIconEventBindThis);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off click-blockicon",
-          click: () => {
-            this.eventBus.off("click-blockicon", this.blockIconEventBindThis);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On click-pdf",
-          click: () => {
-            this.eventBus.on("click-pdf", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off click-pdf",
-          click: () => {
-            this.eventBus.off("click-pdf", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On click-editorcontent",
-          click: () => {
-            this.eventBus.on("click-editorcontent", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off click-editorcontent",
-          click: () => {
-            this.eventBus.off("click-editorcontent", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On click-editortitleicon",
-          click: () => {
-            this.eventBus.on("click-editortitleicon", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off click-editortitleicon",
-          click: () => {
-            this.eventBus.off("click-editortitleicon", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On click-flashcard-action",
-          click: () => {
-            this.eventBus.on("click-flashcard-action", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off click-flashcard-action",
-          click: () => {
-            this.eventBus.off("click-flashcard-action", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On open-noneditableblock",
-          click: () => {
-            this.eventBus.on("open-noneditableblock", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off open-noneditableblock",
-          click: () => {
-            this.eventBus.off("open-noneditableblock", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On loaded-protyle-static",
-          click: () => {
-            this.eventBus.on("loaded-protyle-static", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off loaded-protyle-static",
-          click: () => {
-            this.eventBus.off("loaded-protyle-static", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On loaded-protyle-dynamic",
-          click: () => {
-            this.eventBus.on("loaded-protyle-dynamic", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off loaded-protyle-dynamic",
-          click: () => {
-            this.eventBus.off("loaded-protyle-dynamic", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On switch-protyle",
-          click: () => {
-            this.eventBus.on("switch-protyle", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off switch-protyle",
-          click: () => {
-            this.eventBus.off("switch-protyle", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On destroy-protyle",
-          click: () => {
-            this.eventBus.on("destroy-protyle", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off destroy-protyle",
-          click: () => {
-            this.eventBus.off("destroy-protyle", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On open-menu-doctree",
-          click: () => {
-            this.eventBus.on("open-menu-doctree", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off open-menu-doctree",
-          click: () => {
-            this.eventBus.off("open-menu-doctree", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On open-menu-blockref",
-          click: () => {
-            this.eventBus.on("open-menu-blockref", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off open-menu-blockref",
-          click: () => {
-            this.eventBus.off("open-menu-blockref", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On open-menu-fileannotationref",
-          click: () => {
-            this.eventBus.on("open-menu-fileannotationref", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off open-menu-fileannotationref",
-          click: () => {
-            this.eventBus.off("open-menu-fileannotationref", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On open-menu-tag",
-          click: () => {
-            this.eventBus.on("open-menu-tag", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off open-menu-tag",
-          click: () => {
-            this.eventBus.off("open-menu-tag", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On open-menu-link",
-          click: () => {
-            this.eventBus.on("open-menu-link", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off open-menu-link",
-          click: () => {
-            this.eventBus.off("open-menu-link", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On open-menu-image",
-          click: () => {
-            this.eventBus.on("open-menu-image", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off open-menu-image",
-          click: () => {
-            this.eventBus.off("open-menu-image", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On open-menu-av",
-          click: () => {
-            this.eventBus.on("open-menu-av", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off open-menu-av",
-          click: () => {
-            this.eventBus.off("open-menu-av", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On open-menu-content",
-          click: () => {
-            this.eventBus.on("open-menu-content", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off open-menu-content",
-          click: () => {
-            this.eventBus.off("open-menu-content", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On open-menu-breadcrumbmore",
-          click: () => {
-            this.eventBus.on("open-menu-breadcrumbmore", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off open-menu-breadcrumbmore",
-          click: () => {
-            this.eventBus.off("open-menu-breadcrumbmore", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On open-menu-inbox",
-          click: () => {
-            this.eventBus.on("open-menu-inbox", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off open-menu-inbox",
-          click: () => {
-            this.eventBus.off("open-menu-inbox", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On input-search",
-          click: () => {
-            this.eventBus.on("input-search", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off input-search",
-          click: () => {
-            this.eventBus.off("input-search", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On paste",
-          click: () => {
-            this.eventBus.on("paste", this.eventBusPaste);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off paste",
-          click: () => {
-            this.eventBus.off("paste", this.eventBusPaste);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On open-siyuan-url-plugin",
-          click: () => {
-            this.eventBus.on("open-siyuan-url-plugin", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off open-siyuan-url-plugin",
-          click: () => {
-            this.eventBus.off("open-siyuan-url-plugin", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconSelect",
-          label: "On open-siyuan-url-block",
-          click: () => {
-            this.eventBus.on("open-siyuan-url-block", this.eventBusLog);
-          },
-        },
-        {
-          icon: "iconClose",
-          label: "Off open-siyuan-url-block",
-          click: () => {
-            this.eventBus.off("open-siyuan-url-block", this.eventBusLog);
-          },
-        },
-      ],
-    });
-    menu.addSeparator();
-    menu.addItem({
-      icon: "iconSettings",
-      label: "Official Setting Dialog",
-      click: () => {
-        this.openSetting();
-      },
-    });
-    menu.addItem({
-      icon: "iconSettings",
-      label: "A custom setting dialog (by svelte)",
-      click: () => {
-        this.openDIYSetting();
-      },
-    });
-    menu.addItem({
-      icon: "iconSparkles",
-      label: this.data[STORAGE_NAME].readonlyText || "Readonly",
-      type: "readonly",
-    });
+
     if (this.isMobile) {
       menu.fullscreen();
     } else {

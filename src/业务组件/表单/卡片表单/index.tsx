@@ -15,16 +15,17 @@ import {
   Space,
 } from "antd";
 import { pinyin } from "pinyin-pro";
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import styles from "../../../components/增改查弹窗表单/index.module.less";
 
 export interface I卡片表单Props {
+  children?: ReactElement;
   父ID: string;
   成功回调?: (文档ID: string, 卡片ID: string) => void;
 }
 
 function 卡片表单(props: I卡片表单Props) {
-  const { 父ID: 卡片根文档ID, 成功回调 } = props;
+  const { children, 父ID: 卡片根文档ID, 成功回调 } = props;
   const [formCore] = Form.useForm();
 
   const [别名, 令别名为] = useState([]);
@@ -67,7 +68,6 @@ function 卡片表单(props: I卡片表单Props) {
         const 最终ID = await 卡片块.新建卡片(
           {
             ...value,
-            描述: "请保持外层的超级块存在，即该块和标题块同时存在",
             ID,
             标题ID: 生成块ID(),
             别名: [
@@ -89,6 +89,10 @@ function 卡片表单(props: I卡片表单Props) {
     >
       <Form.Item label="标题" name="标题" required>
         <Input className={E输入类型.默认} />
+      </Form.Item>
+
+      <Form.Item label="内容" name="内容">
+        {children}
       </Form.Item>
 
       <Form.Item label="别名" name="别名" dependencies={["标题"]}>

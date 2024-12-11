@@ -2,7 +2,7 @@ import { ConfigProvider } from "antd";
 import { Provider } from "jotai";
 import { nanoid } from "nanoid";
 import ReactDOM from "react-dom/client";
-import { Dialog, getFrontend, openTab, Plugin } from "siyuan";
+import { Dialog, getFrontend, openTab, Plugin, Protyle } from "siyuan";
 import { 系统推送错误消息 } from "./API/推送消息";
 import App from "./App";
 import { E卡片属性名称 } from "./class/卡片";
@@ -52,167 +52,17 @@ export default class SyLively extends Plugin {
     this.isMobile =
       getFrontend() === "mobile" || getFrontend() === "browser-mobile";
 
-    //#region 添加卡片样式
-    const 卡片样式 = document.createElement("style");
-    document.head.appendChild(卡片样式);
-    卡片样式.innerHTML = `
-      [${E事项属性名称.ID}]:not(.protyle-wysiwyg) {
-        background-color: var(--b3-theme-background);
-
-        padding: 12px !important;
-        margin: 12px 0 !important;
-
-        border: 1px solid var(--b3-theme-on-surface);
-      }
-      [${E卡片属性名称.ID}]:not(.protyle-wysiwyg) {
-        background-color: var(--b3-theme-background);
-
-        padding: 12px !important;
-        margin: 12px 0 !important;
-
-        border: 1px solid var(--b3-theme-on-surface);
-        border-radius: 24px !important;
-      }
-      [${E卡片属性名称.ID}]:hover:not(.protyle-wysiwyg) {
-        background-color: var(--b3-theme-background-light);
-      }
-      [${E卡片属性名称.ID}]>.h6:not(.protyle-wysiwyg) {
-        border-bottom: 1px solid var(--b3-theme-on-surface);
-      }    
-      [${E卡片属性名称.ID}]>.protyle-attr:not(.protyle-wysiwyg) {
-        position: initial;
-      }
-    `;
-    //#endregion
-
-    //#region 添加图标
-    this.addIcons(`
-      <svg id="iconSyLivelyCard" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-        <path d="M1024 239.189333C1024 169.927111 965.034667 113.777778 892.330667 113.777778H131.697778C58.965333 113.777778 0 169.927111 0 239.189333V813.226667C0 882.517333 58.965333 938.666667 131.669333 938.666667H892.302222C965.034667 938.666667 1024 882.517333 1024 813.255111V239.217778zM131.669333 197.376H892.302222c24.149333 0 43.889778 18.830222 43.889778 41.813333v101.717334H87.779556V239.189333c0-22.983111 19.740444-41.813333 43.889777-41.813333zM892.302222 855.068444H131.697778c-24.149333 0-43.889778-18.830222-43.889778-41.813333V424.504889h848.440889v388.750222c0 22.983111-19.740444 41.813333-43.889778 41.813333z m-509.070222-189.496888H184.32c-24.291556 0-43.889778 18.659556-43.889778 41.813333 0 23.096889 19.626667 41.784889 43.889778 41.784889h198.940444c24.291556 0 43.889778-18.688 43.889778-41.813334s-19.598222-41.813333-43.889778-41.813333z" p-id="8723"></path>
-      /symbol>
-      `);
-    //#endregion
-
-    //#region 添加日程管理Icon
-    this.addTopBar({
-      icon: "iconCalendar", // 使用图标库中的图标，可以在工作空间/conf/appearance/icons/index.html中查看内置图标
-      title: "喧嚣-日程管理",
-      position: "left",
-      callback: () => {
-        if (this.isMobile) {
-          return;
-        } else {
-          this.打开页签();
-        }
-      },
-    });
-    //#endregion
-
-    //#region 添加卡片dock
-    const 卡片文档ID = await this.getData(E持久化键.卡片文档ID);
-    if (卡片文档ID) {
-      this.addDock({
-        config: {
-          icon: "iconSyLivelyCard",
-          title: "喧嚣卡片",
-          position: "RightTop",
-          size: { width: 284, height: 600 },
-        },
-        data: {},
-        type: "喧嚣卡片",
-        init() {
-          const rootDom = this.element;
-          const root = ReactDOM.createRoot(rootDom);
-
-          root.render(
-            <ConfigProvider theme={主题}>
-              <CardDocker 卡片文档ID={卡片文档ID} />
-            </ConfigProvider>
-          );
-        },
-      });
-    }
-    //#endregion
-
-    //#region 添加打开喧嚣快捷键
-    this.addCommand({
-      langKey: "喧嚣-打开喧嚣",
-      hotkey: "⇧⌥X",
-      callback: () => {
-        this.打开页签();
-      },
-    });
-
-    //#region 添加打开新建卡片快捷键
-    this.addCommand({
-      langKey: "喧嚣-新建卡片",
-      hotkey: "⌥Q",
-      callback: () => {
-        this.打开新建卡片();
-      },
-    });
+    添加全局样式();
+    this.添加图标();
+    this.添加快捷键();
+    this.添加TopBar();
+    this.添加Dock();
+    this.添加斜杠命令();
   }
 
   onLayoutReady() {
-    const tabDiv = document.createElement("div");
-    tabDiv.style.width = "100%";
-    tabDiv.style.height = "100%";
-    tabDiv.id = PluginId;
-
-    const getData = this.getData;
-    const saveData = this.putData;
-
-    //#region 添加自定义页签
-    this.addTab({
-      type: TAB_TYPE,
-      init() {
-        this.element.appendChild(tabDiv);
-        if (tabDiv) {
-          const root = ReactDOM.createRoot(tabDiv);
-
-          仓库.set(持久化atom, {
-            加载: getData,
-            保存: saveData,
-          });
-          root.render(
-            <Provider store={仓库}>
-              <App />
-            </Provider>
-          );
-        }
-      },
-      beforeDestroy() {},
-      destroy() {
-        this.element.removeChild(tabDiv);
-      },
-    });
-
-    //#region 事件监听
-    const 添加新建卡片目录 = ({ detail }) => {
-      const selectedText = window.getSelection().toString();
-      detail.menu.addItem({
-        id: PluginId + "-new-card",
-        label: "喧嚣-新建卡片",
-        submenu: [
-          {
-            label: "新建卡片",
-            click: () => {
-              this.打开新建卡片();
-            },
-          },
-          {
-            label: "新建卡片(选中文本)",
-            click: () => {
-              this.打开新建卡片();
-            },
-            disabled: !selectedText,
-          },
-        ],
-      });
-    };
-    this.eventBus.on("open-menu-content", 添加新建卡片目录);
-    this.eventBus.on("click-blockicon", 添加新建卡片目录);
-    //#endregion
+    this.添加tab();
+    this.添加事件监听();
   }
 
   async onunload() {
@@ -257,6 +107,50 @@ export default class SyLively extends Plugin {
 
     const rootDom = document.getElementById(rootId);
     const root = ReactDOM.createRoot(rootDom);
+    const editorWrapper = document.createElement("div");
+    const protyle = new Protyle(this.app, editorWrapper, {
+      backlinkData: [],
+      mode: "wysiwyg",
+      rootId: 卡片文档ID,
+    });
+
+    protyle.insert("###### 卡片标题\n", true);
+
+    rootDom.appendChild(editorWrapper);
+
+    this.protyleOptions = {
+      toolbar: [
+        "block-ref",
+        "a",
+        "|",
+        "text",
+        "strong",
+        "em",
+        "u",
+        "s",
+        "mark",
+        "sup",
+        "sub",
+        "clear",
+        "|",
+        "code",
+        "kbd",
+        "tag",
+        "inline-math",
+        "inline-memo",
+        "|",
+        {
+          name: "insert-smail-emoji",
+          icon: "iconEmoji",
+          hotkey: "⇧⌘I",
+          tipPosition: "n",
+          tip: this.i18n.insertEmoji,
+          click(protyle: Protyle) {
+            protyle.insert("😊");
+          },
+        },
+      ],
+    };
 
     root.render(
       <ConfigProvider theme={主题}>
@@ -273,8 +167,186 @@ export default class SyLively extends Plugin {
               });
             });
           }}
-        />
+        >
+          <div>{editorWrapper as any}</div>
+        </卡片表单>
       </ConfigProvider>
     );
   }
+
+  添加图标() {
+    this.addIcons(`
+      <svg id="iconSyLivelyCard" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1024 239.189333C1024 169.927111 965.034667 113.777778 892.330667 113.777778H131.697778C58.965333 113.777778 0 169.927111 0 239.189333V813.226667C0 882.517333 58.965333 938.666667 131.669333 938.666667H892.302222C965.034667 938.666667 1024 882.517333 1024 813.255111V239.217778zM131.669333 197.376H892.302222c24.149333 0 43.889778 18.830222 43.889778 41.813333v101.717334H87.779556V239.189333c0-22.983111 19.740444-41.813333 43.889777-41.813333zM892.302222 855.068444H131.697778c-24.149333 0-43.889778-18.830222-43.889778-41.813333V424.504889h848.440889v388.750222c0 22.983111-19.740444 41.813333-43.889778 41.813333z m-509.070222-189.496888H184.32c-24.291556 0-43.889778 18.659556-43.889778 41.813333 0 23.096889 19.626667 41.784889 43.889778 41.784889h198.940444c24.291556 0 43.889778-18.688 43.889778-41.813334s-19.598222-41.813333-43.889778-41.813333z" p-id="8723"></path>
+      /symbol>
+      `);
+  }
+
+  添加快捷键() {
+    //#region 添加打开喧嚣快捷键
+    this.addCommand({
+      langKey: "喧嚣-打开喧嚣",
+      hotkey: "⇧⌥X",
+      callback: () => {
+        this.打开页签();
+      },
+    });
+
+    //#region 添加打开新建卡片快捷键
+    this.addCommand({
+      langKey: "喧嚣-新建卡片",
+      hotkey: "⌥Q",
+      callback: () => {
+        this.打开新建卡片();
+      },
+    });
+  }
+
+  添加TopBar() {
+    this.addTopBar({
+      icon: "iconCalendar", // 使用图标库中的图标，可以在工作空间/conf/appearance/icons/index.html中查看内置图标
+      title: "喧嚣-日程管理",
+      position: "left",
+      callback: () => {
+        if (this.isMobile) {
+          return;
+        } else {
+          this.打开页签();
+        }
+      },
+    });
+  }
+
+  async 添加Dock() {
+    const 卡片文档ID = await this.getData(E持久化键.卡片文档ID);
+    if (卡片文档ID) {
+      this.addDock({
+        config: {
+          icon: "iconSyLivelyCard",
+          title: "喧嚣卡片",
+          position: "RightTop",
+          size: { width: 284, height: 600 },
+        },
+        data: {},
+        type: "喧嚣卡片",
+        init() {
+          const rootDom = this.element;
+          const root = ReactDOM.createRoot(rootDom);
+
+          root.render(
+            <ConfigProvider theme={主题}>
+              <CardDocker 卡片文档ID={卡片文档ID} />
+            </ConfigProvider>
+          );
+        },
+      });
+    }
+  }
+
+  添加tab() {
+    const tabDiv = document.createElement("div");
+    tabDiv.style.width = "100%";
+    tabDiv.style.height = "100%";
+
+    const getData = this.getData;
+    const saveData = this.putData;
+
+    this.addTab({
+      type: TAB_TYPE,
+      init() {
+        this.element.appendChild(tabDiv);
+        if (tabDiv) {
+          const root = ReactDOM.createRoot(tabDiv);
+
+          仓库.set(持久化atom, {
+            加载: getData,
+            保存: saveData,
+          });
+          root.render(
+            <Provider store={仓库}>
+              <App />
+            </Provider>
+          );
+        }
+      },
+      beforeDestroy() {},
+      destroy() {
+        this.element.removeChild(tabDiv);
+      },
+    });
+  }
+
+  添加事件监听() {
+    const 添加新建卡片目录 = ({ detail }) => {
+      const selectedText = window.getSelection().toString();
+      detail.menu.addItem({
+        id: PluginId + "-new-card",
+        label: "喧嚣-新建卡片",
+        submenu: [
+          {
+            label: "新建卡片",
+            click: () => {
+              this.打开新建卡片();
+            },
+          },
+          {
+            label: "新建卡片(选中文本)",
+            click: () => {
+              this.打开新建卡片();
+            },
+            disabled: !selectedText,
+          },
+        ],
+      });
+    };
+
+    this.eventBus.on("open-menu-content", 添加新建卡片目录);
+    this.eventBus.on("click-blockicon", 添加新建卡片目录);
+  }
+
+  添加斜杠命令() {
+    this.protyleSlash = [
+      {
+        filter: ["insert emoji 😊", "插入表情 😊", "crbqwx"],
+        html: `<div class="b3-list-item__first"><span class="b3-list-item__text">${this.i18n.insertEmoji}</span><span class="b3-list-item__meta">😊</span></div>`,
+        id: "insertEmoji",
+        callback(protyle: Protyle) {
+          protyle.insert("😊");
+        },
+      },
+    ];
+  }
+}
+
+function 添加全局样式() {
+  const 卡片样式 = document.createElement("style");
+  document.head.appendChild(卡片样式);
+  卡片样式.innerHTML = `
+    [${E事项属性名称.ID}]:not(.protyle-wysiwyg) {
+      background-color: var(--b3-theme-background);
+
+      padding: 12px !important;
+      margin: 12px 0 !important;
+
+      border: 1px solid var(--b3-theme-on-surface);
+    }
+    [${E卡片属性名称.ID}]:not(.protyle-wysiwyg) {
+      background-color: var(--b3-theme-background);
+
+      padding: 12px !important;
+      margin: 12px 0 !important;
+
+      border: 1px solid var(--b3-theme-on-surface);
+      border-radius: 24px !important;
+    }
+    [${E卡片属性名称.ID}]:hover:not(.protyle-wysiwyg) {
+      background-color: var(--b3-theme-background-light);
+    }
+    [${E卡片属性名称.ID}]>.h6:not(.protyle-wysiwyg) {
+      border-bottom: 1px solid var(--b3-theme-on-surface);
+    }    
+    [${E卡片属性名称.ID}]>.protyle-attr:not(.protyle-wysiwyg) {
+      position: initial;
+    }
+  `;
 }
