@@ -76,12 +76,14 @@ export class SY块 {
    *   - parentID: 父块 ID
    * @returns 插入块的结果
    */
-  public static 插入后置子块(options: {
+  public static async 插入后置子块(options: {
     dataType: "markdown" | "dom";
     data: string;
     parentID: string;
-  }) {
-    return fetchSyncPost(EAPI.插入后置子块, options);
+  }): Promise<string> {
+    const { data } = await fetchSyncPost(EAPI.插入后置子块, options);
+
+    return data[0].doOperations[0].id;
   }
 
   /**

@@ -1,4 +1,5 @@
 import { 卡片块 } from "@/class/卡片/卡片块";
+import { SY块 } from "@/class/思源/块";
 import "@/style/global.less";
 import { 生成块ID } from "@/tools/事项/事项";
 import { E按钮类型 } from "@/基础组件/按钮";
@@ -15,21 +16,46 @@ import {
   Space,
 } from "antd";
 import { pinyin } from "pinyin-pro";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
+import { Protyle } from "siyuan";
 import styles from "../../../components/增改查弹窗表单/index.module.less";
 
 export interface I卡片表单Props {
+  app: any;
   children?: ReactElement;
   父ID: string;
   成功回调?: (文档ID: string, 卡片ID: string) => void;
 }
 
 function 卡片表单(props: I卡片表单Props) {
-  const { children, 父ID: 卡片根文档ID, 成功回调 } = props;
+  const { app, children, 父ID: 卡片根文档ID, 成功回调 } = props;
+  const editorRef = useRef<HTMLDivElement>(null);
+  const protyleRef = useRef<Protyle | null>(null);
   const [formCore] = Form.useForm();
 
   const [别名, 令别名为] = useState([]);
   const [name, setName] = useState("");
+
+  const 创建protyle = async () => {
+    if (!editorRef.current) return;
+
+    const blockID = await SY块.插入后置子块({
+      parentID: 卡片根文档ID,
+      dataType: "markdown",
+      data: "",
+    });
+
+    protyleRef.current = new Protyle(app, editorRef.current, {
+      blockId: blockID,
+      // backlinkData: [],
+      mode: "wysiwyg",
+      rootId: 卡片根文档ID,
+    });
+  };
+
+  useEffect(() => {
+    创建protyle();
+  }, []);
 
   const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -92,7 +118,7 @@ function 卡片表单(props: I卡片表单Props) {
       </Form.Item>
 
       <Form.Item label="内容" name="内容">
-        {children}
+        <div id="protyle" ref={editorRef} />
       </Form.Item>
 
       <Form.Item label="别名" name="别名" dependencies={["标题"]}>
