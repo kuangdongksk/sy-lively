@@ -6,8 +6,14 @@ import { default as KH, default as Kramdown助手 } from "../块/Kramdown助手"
 import SY文档 from "../思源/文档";
 
 export class 卡片块 {
-  private static 生成卡片Kramdown(卡片: I卡片): string {
-    const { 标题, 标题ID } = 卡片;
+  public static 生成卡片Kramdown(
+    卡片: Partial<I卡片> & {
+      ID: string;
+      标题ID: string;
+      标题: string;
+    }
+  ): string {
+    const { ID, 标题, 标题ID } = 卡片;
 
     const 标题块 = KH.生成标题块({
       标题: 标题,
@@ -16,11 +22,7 @@ export class 卡片块 {
     });
     const 段落块 = KH.生成段落块("");
 
-    return KH.为块添加属性(
-      KH.生成超级块([标题块, 段落块]),
-      卡片,
-      E块属性名称.卡片
-    );
+    return KH.生成超级块带属性([标题块, 段落块], ID);
   }
 
   public static async 新建卡片(
