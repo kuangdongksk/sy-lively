@@ -1,4 +1,4 @@
-export const 最新版本号 = "P0.2.1";
+export const 最新版本号 = "P0.2.2";
 
 export enum E功能类型 {
   功能 = "功能",
