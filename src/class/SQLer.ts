@@ -29,14 +29,6 @@ export default class SQLer {
     });
   }
 
-  public static 获取日期对应的日记文档(
-    笔记本ID: string,
-    日期日记路径: string
-  ): Promise<IWebSocketData> {
-    return fetchSyncPost("/api/query/sql", {
-      stmt: `SELECT * FROM blocks WHERE box='${笔记本ID}' AND type='d' AND hpath='${日期日记路径}'`,
-    });
-  }
   //#endregion
 
   //#region 笔记本

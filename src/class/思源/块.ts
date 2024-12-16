@@ -104,12 +104,12 @@ export class SY块 {
 
   /**
    * 删除块
-   * @param options - 包含以下属性的对象：
-   *   - id: 待删除块的 ID
    * @returns 删除块的结果
    */
-  public static 删除块(options: { id: string }) {
-    return fetchSyncPost(EAPI.删除块, options);
+  public static 删除块(ID: string) {
+    return fetchSyncPost(EAPI.删除块, {
+      id: ID,
+    });
   }
 
   /**

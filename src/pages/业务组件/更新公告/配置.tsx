@@ -19,6 +19,15 @@ export const 所有更新公告: {
     Children: [
       {
         type: E功能类型.功能,
+        content: ["新建卡片时使用sy编辑器"],
+      },
+    ],
+  },
+  {
+    key: "P0.2.1",
+    Children: [
+      {
+        type: E功能类型.功能,
         content: ["卡片dock转换为树形结构"],
       },
     ],

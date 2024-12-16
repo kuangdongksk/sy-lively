@@ -1,5 +1,8 @@
+import SQLer from "@/class/SQLer";
+import { 卡片 as 卡片类 } from "@/class/卡片";
 import { 卡片块 } from "@/class/卡片/卡片块";
 import { SY块 } from "@/class/思源/块";
+import { E块属性名称 } from "@/constant/系统码";
 import "@/style/global.less";
 import { 生成块ID } from "@/tools/事项/事项";
 import { E按钮类型 } from "@/基础组件/按钮";
@@ -11,9 +14,11 @@ import {
   Divider,
   Form,
   Input,
+  message,
   Select,
-  Space
+  Space,
 } from "antd";
+import { pinyin } from "pinyin-pro";
 import { useEffect, useRef, useState } from "react";
 import { Protyle } from "siyuan";
 import styles from "../../../components/增改查弹窗表单/index.module.less";
@@ -30,26 +35,40 @@ function 卡片表单(props: I卡片表单Props) {
   const protyleRef = useRef<Protyle | null>(null);
   const [formCore] = Form.useForm();
 
+  const [titleID] = useState(生成块ID());
+  const [cardID] = useState(生成块ID());
+
   const [别名, 令别名为] = useState([]);
   const [name, setName] = useState("");
 
   const 创建protyle = async () => {
     if (!editorRef.current) return;
 
-    const blockID = 生成块ID();
+    const title = "卡片标题";
+    const card = {
+      ID: cardID,
+      标题: title,
+      标题ID: titleID,
+      别名: [],
+    };
+
     await SY块.插入后置子块({
       parentID: 卡片根文档ID,
       dataType: "markdown",
-      data: 卡片块.生成卡片Kramdown({
-        标题: "卡片标题",
-        标题ID: 生成块ID(),
-        ID: blockID,
-      }),
+      data: 卡片块.生成卡片Kramdown(card),
+    });
+
+    await SY块.设置块属性({
+      id: cardID,
+      attrs: {
+        [E块属性名称.名称]: title,
+        [E块属性名称.别名]: 别名.join(","),
+        ...卡片类.卡片转为属性(card),
+      },
     });
 
     protyleRef.current = new Protyle(app, editorRef.current, {
-      blockId: blockID,
-      // backlinkData: [],
+      blockId: cardID,
       mode: "wysiwyg",
       rootId: 卡片根文档ID,
     });
@@ -84,30 +103,43 @@ function 卡片表单(props: I卡片表单Props) {
         嵌入日记: boolean;
         单开一页: boolean;
       }) => {
-        // const { 别名 = [], 单开一页 } = value;
-        // const ID = 生成块ID();
-        // const 最终ID = await 卡片块.新建卡片(
-        //   {
-        //     ...value,
-        //     ID,
-        //     标题ID: 生成块ID(),
-        //     别名: [
-        //       pinyin(标题, {
-        //         pattern: "first",
-        //         type: "array",
-        //       })?.join(""),
-        //       ID.slice(-7),
-        //       ...别名,
-        //     ],
-        //     单开一页: 单开一页,
-        //   },
-        //   卡片根文档ID
-        // );
-        // 成功回调?.(单开一页 ? 最终ID : 卡片根文档ID, 最终ID);
-        // message.success("新建卡片成功，即将跳转");
+        const { 别名 = [], 单开一页 } = value;
+        const cardData = await SQLer.根据ID获取块(cardID);
+        const title = cardData.fcontent;
+        const content = cardData.markdown;
+        let subContent = content.split(`###### ${title}\n\n`)[1];
+        subContent = subContent.endsWith("}}}")
+          ? subContent.slice(0, -3)
+          : subContent;
+
+        const card = {
+          ID: cardID,
+          标题: cardData.fcontent,
+          标题ID: titleID,
+          别名: [
+            pinyin(title, {
+              pattern: "first",
+              type: "array",
+            })?.join(""),
+            cardID.slice(-7),
+            ...别名,
+          ],
+          单开一页: 单开一页,
+          subContent,
+        };
+
+        const 最终ID = await 卡片块.新建卡片(card, 卡片根文档ID);
+
+        成功回调?.(单开一页 ? 最终ID : 卡片根文档ID, 最终ID);
+
+        await navigator.clipboard.writeText(
+          `((${cardID} '${cardData.fcontent}'))`
+        );
+
+        message.success("新建卡片成功，已将引用复制到剪贴板");
       }}
     >
-      <div id="protyle" ref={editorRef} />
+      <div id="protyle" ref={editorRef} style={{ width: "100%" }} />
 
       <Form.Item label="别名" name="别名" dependencies={["标题"]}>
         <Select
