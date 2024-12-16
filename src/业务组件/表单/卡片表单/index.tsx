@@ -11,24 +11,21 @@ import {
   Divider,
   Form,
   Input,
-  message,
   Select,
-  Space,
+  Space
 } from "antd";
-import { pinyin } from "pinyin-pro";
-import { ReactElement, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Protyle } from "siyuan";
 import styles from "../../../components/增改查弹窗表单/index.module.less";
 
 export interface I卡片表单Props {
   app: any;
-  children?: ReactElement;
   父ID: string;
   成功回调?: (文档ID: string, 卡片ID: string) => void;
 }
 
 function 卡片表单(props: I卡片表单Props) {
-  const { app, children, 父ID: 卡片根文档ID, 成功回调 } = props;
+  const { app, 父ID: 卡片根文档ID, 成功回调 } = props;
   const editorRef = useRef<HTMLDivElement>(null);
   const protyleRef = useRef<Protyle | null>(null);
   const [formCore] = Form.useForm();
@@ -39,10 +36,15 @@ function 卡片表单(props: I卡片表单Props) {
   const 创建protyle = async () => {
     if (!editorRef.current) return;
 
-    const blockID = await SY块.插入后置子块({
+    const blockID = 生成块ID();
+    await SY块.插入后置子块({
       parentID: 卡片根文档ID,
       dataType: "markdown",
-      data: "",
+      data: 卡片块.生成卡片Kramdown({
+        标题: "卡片标题",
+        标题ID: 生成块ID(),
+        ID: blockID,
+      }),
     });
 
     protyleRef.current = new Protyle(app, editorRef.current, {
@@ -77,49 +79,35 @@ function 卡片表单(props: I卡片表单Props) {
       className={styles.表单}
       form={formCore}
       labelCol={{ span: 6 }}
-      initialValues={{
-        标题: "卡片标题",
-      }}
       onFinish={async (value: {
-        标题: string;
-        描述: string;
         别名: string[];
         嵌入日记: boolean;
         单开一页: boolean;
       }) => {
-        const { 标题, 别名 = [], 单开一页 } = value;
-
-        const ID = 生成块ID();
-
-        const 最终ID = await 卡片块.新建卡片(
-          {
-            ...value,
-            ID,
-            标题ID: 生成块ID(),
-            别名: [
-              pinyin(标题, {
-                pattern: "first",
-                type: "array",
-              })?.join(""),
-              ID.slice(-7),
-              ...别名,
-            ],
-            单开一页: 单开一页,
-          },
-          卡片根文档ID
-        );
-
-        成功回调?.(单开一页 ? 最终ID : 卡片根文档ID, 最终ID);
-        message.success("新建卡片成功，即将跳转");
+        // const { 别名 = [], 单开一页 } = value;
+        // const ID = 生成块ID();
+        // const 最终ID = await 卡片块.新建卡片(
+        //   {
+        //     ...value,
+        //     ID,
+        //     标题ID: 生成块ID(),
+        //     别名: [
+        //       pinyin(标题, {
+        //         pattern: "first",
+        //         type: "array",
+        //       })?.join(""),
+        //       ID.slice(-7),
+        //       ...别名,
+        //     ],
+        //     单开一页: 单开一页,
+        //   },
+        //   卡片根文档ID
+        // );
+        // 成功回调?.(单开一页 ? 最终ID : 卡片根文档ID, 最终ID);
+        // message.success("新建卡片成功，即将跳转");
       }}
     >
-      <Form.Item label="标题" name="标题" required>
-        <Input className={E输入类型.默认} />
-      </Form.Item>
-
-      <Form.Item label="内容" name="内容">
-        <div id="protyle" ref={editorRef} />
-      </Form.Item>
+      <div id="protyle" ref={editorRef} />
 
       <Form.Item label="别名" name="别名" dependencies={["标题"]}>
         <Select
