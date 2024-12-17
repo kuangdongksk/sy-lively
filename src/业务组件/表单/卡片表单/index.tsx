@@ -2,9 +2,11 @@ import SQLer from "@/class/SQLer";
 import { 卡片 as 卡片类 } from "@/class/卡片";
 import { 卡片块 } from "@/class/卡片/卡片块";
 import { SY块 } from "@/class/思源/块";
+import SY文档 from "@/class/思源/文档";
 import { E块属性名称 } from "@/constant/系统码";
 import "@/style/global.less";
 import { 生成块ID } from "@/tools/事项/事项";
+import { 插入到日记 } from "@/tools/事项/事项块";
 import { E按钮类型 } from "@/基础组件/按钮";
 import { E输入类型 } from "@/基础组件/输入";
 import { PlusOutlined } from "@ant-design/icons";
@@ -103,7 +105,7 @@ function 卡片表单(props: I卡片表单Props) {
         嵌入日记: boolean;
         单开一页: boolean;
       }) => {
-        const { 别名 = [], 单开一页 } = value;
+        const { 别名 = [], 嵌入日记, 单开一页 } = value;
         const cardData = await SQLer.根据ID获取块(cardID);
         const title = cardData.fcontent;
         const content = cardData.markdown;
@@ -129,6 +131,11 @@ function 卡片表单(props: I卡片表单Props) {
         };
 
         const 最终ID = await 卡片块.新建卡片(card, 卡片根文档ID);
+        const 插入日记 = async () => {
+          const 笔记本ID = await SY文档.根据ID获取笔记本ID(卡片根文档ID);
+          await 插入到日记(最终ID, 笔记本ID);
+        };
+        嵌入日记 && (await 插入日记());
 
         成功回调?.(单开一页 ? 最终ID : 卡片根文档ID, 最终ID);
 
@@ -175,9 +182,9 @@ function 卡片表单(props: I卡片表单Props) {
         />
       </Form.Item>
 
-      {/* <Form.Item name="嵌入日记" label="嵌入日记" valuePropName="checked">
-        <Checkbox>嵌入到当天的日记中</Checkbox>
-      </Form.Item> */}
+      <Form.Item name="嵌入日记" label="嵌入日记" valuePropName="checked">
+        <Checkbox>嵌入到当天的日记中（卡片文档所在的笔记本的日记）</Checkbox>
+      </Form.Item>
 
       <Form.Item name="单开一页" label="单开一页" valuePropName="checked">
         <Checkbox>为该卡片创建一个文档</Checkbox>

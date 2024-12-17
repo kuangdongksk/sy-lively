@@ -8,16 +8,15 @@ import {
 } from "@/components/模板/Kramdown/超级块";
 import { E时间格式化 } from "@/constant/配置常量";
 import { I事项 } from "@/types/喧嚣/事项";
-import { I用户设置 } from "@/types/喧嚣/设置";
 import dayjs from "dayjs";
 import { 事项转为属性 } from "./事项";
 
-export async function 插入到日记(ID: string, 用户设置: I用户设置) {
-  const 日记文档ID = await SY文档.创建日记文档(用户设置.笔记本ID);
+export async function 插入到日记(源ID: string, 笔记本ID: string) {
+  const 日记文档ID = await SY文档.创建日记文档(笔记本ID);
 
   await SY块.插入前置子块({
     dataType: "markdown",
-    data: Kramdown助手.生成嵌入块(ID),
+    data: Kramdown助手.生成嵌入块(源ID),
     parentID: 日记文档ID,
   });
 }

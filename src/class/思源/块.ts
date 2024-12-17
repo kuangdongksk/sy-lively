@@ -179,4 +179,12 @@ export class SY块 {
     const 结果 = await fetchSyncPost(EAPI.设置块属性, options);
     return 结果;
   }
+
+  public static async 根据ID获取笔记本ID(ID: string): Promise<string> {
+    const { data } = await fetchSyncPost("/api/query/sql", {
+      stmt: `SELECT * FROM blocks WHERE id='${ID}'`,
+    });
+
+    return data[0].box;
+  }
 }

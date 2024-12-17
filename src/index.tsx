@@ -90,8 +90,8 @@ export default class SyLively extends Plugin {
     const 对话框 = new Dialog({
       title: "新建卡片",
       content: `<div id="${rootId}" style="padding: 12px;"></div>`,
-      width: "600px",
-      height: "400px",
+      width: "800px",
+      height: "600px",
       hideCloseIcon: true,
     });
 
