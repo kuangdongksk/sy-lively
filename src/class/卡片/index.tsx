@@ -1,17 +1,21 @@
 import { E块属性名称 } from "@/constant/系统码";
 import { 根据枚举的值获取枚举的键 } from "@/utils/枚举";
 import { fetchSyncPost } from "siyuan";
-import SY文档 from "../思源/文档";
 
 export const 卡片属性前缀 = `${E块属性名称.卡片}-`;
 
 export enum E卡片属性名称 {
-  ID = `${卡片属性前缀}id`,
   标题 = `${卡片属性前缀}name`,
   标题ID = `${卡片属性前缀}titleId`,
-  父项ID = `${卡片属性前缀}parentID`,
-  别名 = `${卡片属性前缀}alias`,
   单开一页 = `${卡片属性前缀}singlePage`,
+  // 删除的属性
+  // "custom-plugin-lively-card": "",
+  // "custom-plugin-lively-card-description": "",
+  // "custom-plugin-lively-card-id": "",
+  // "custom-plugin-lively-card-parentId": "",
+  // "custom-plugin-lively-card-x": "",
+  // "custom-plugin-lively-card-y": "",
+  // "custom-plugin-lively-card-alias": "",
 }
 
 export interface I卡片 {
@@ -43,7 +47,9 @@ export class 卡片 {
             a.block_id,
             b.root_id,
                   '{' || GROUP_CONCAT('"' || a.name || '":"' || a.value || '"', ',') || '
-                  ,"${E卡片属性名称.父项ID}":"' || b.root_id || '"
+                  ,"父项ID":"' || b.root_id || '"
+                  ,"ID":"' || b.id || '"
+                  ,"别名":"' || b.id || '"
                   }' AS 卡片
           FROM
             attributes as a,
@@ -63,17 +69,34 @@ export class 卡片 {
 
   public static 卡片转为属性(卡片: I卡片): { [key in E卡片属性名称]: string } {
     const 卡片属性 = {} as { [key in E卡片属性名称]: string };
+
     Object.keys(卡片).forEach((key) => {
       if (卡片[key] === undefined) {
         return;
       }
+
       卡片属性[E卡片属性名称[key]] = 卡片[key]?.toString();
     });
+
     return 卡片属性;
   }
 
-  private static 属性转为卡片(属性: { [key in E卡片属性名称]: string }): I卡片 {
-    const 卡片 = {} as I卡片;
+  private static 属性转为卡片(
+    属性: {
+      [key in E卡片属性名称]: string;
+    } & {
+      ID: string;
+      父项ID: string;
+      别名: string;
+    }
+  ): I卡片 {
+    const { ID, 父项ID, 别名 } = 属性;
+
+    const 卡片 = {
+      ID: ID,
+      父项ID: 父项ID,
+      别名: 别名.split(","),
+    } as I卡片;
     Object.keys(属性).forEach((key) => {
       if (属性[key] === undefined) {
         return;

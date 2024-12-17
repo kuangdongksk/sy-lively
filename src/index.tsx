@@ -310,7 +310,7 @@ function 添加全局样式() {
 
       border: 1px solid var(--b3-theme-on-surface);
     }
-    [${E卡片属性名称.ID}]:not(.protyle-wysiwyg) {
+    [${E卡片属性名称.标题}]:not(.protyle-wysiwyg) {
       background-color: var(--b3-theme-background);
 
       padding: 12px !important;
@@ -319,13 +319,13 @@ function 添加全局样式() {
       border: 1px solid var(--b3-theme-on-surface);
       border-radius: 24px !important;
     }
-    [${E卡片属性名称.ID}]:hover:not(.protyle-wysiwyg) {
+    [${E卡片属性名称.标题}]:hover:not(.protyle-wysiwyg) {
       background-color: var(--b3-theme-background-light);
     }
-    [${E卡片属性名称.ID}]>.h6:not(.protyle-wysiwyg) {
+    [${E卡片属性名称.标题}]>.h6:not(.protyle-wysiwyg) {
       border-bottom: 1px solid var(--b3-theme-on-surface);
     }    
-    [${E卡片属性名称.ID}]>.protyle-attr:not(.protyle-wysiwyg) {
+    [${E卡片属性名称.标题}]>.protyle-attr:not(.protyle-wysiwyg) {
       position: initial;
     }
   `;

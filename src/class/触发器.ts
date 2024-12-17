@@ -82,12 +82,25 @@ export class 触发器 {
 
       const 所有卡片 = await 卡片类.获取所有卡片();
 
+      const promiseList = [];
       所有卡片.forEach(async (卡片) => {
-        await SY块.设置块属性({
-          id: 卡片.ID,
-          attrs: 卡片类.卡片转为属性(卡片),
-        });
+        promiseList.push(() =>
+          SY块.设置块属性({
+            id: 卡片.ID,
+            // attrs: 卡片类.卡片转为属性(卡片),
+            attrs: {
+              "custom-plugin-lively-card": "",
+              "custom-plugin-lively-card-description": "",
+              "custom-plugin-lively-card-id": "",
+              "custom-plugin-lively-card-parentId": "",
+              "custom-plugin-lively-card-x": "",
+              "custom-plugin-lively-card-y": "",
+              "custom-plugin-lively-card-alias": "",
+            },
+          })
+        );
       });
+      await Promise.all(promiseList.map((fn) => fn()));
 
       await this.保存(E持久化键.数据版本, {
         事项版本,
