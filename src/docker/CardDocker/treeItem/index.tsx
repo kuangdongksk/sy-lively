@@ -1,8 +1,8 @@
 import { 思源协议 } from "@/constant/系统码";
 import {
-	ExpandOutlined,
-	ExportOutlined,
-	LinkOutlined,
+  ExpandOutlined,
+  ExportOutlined,
+  LinkOutlined,
 } from "@ant-design/icons";
 import { message } from "antd";
 import styles from "./index.module.less";
@@ -20,7 +20,8 @@ function TreeItem(props: ITreeItemProps) {
         {label}
       </a>
       <span
-        className={styles.copy}
+        className={styles.copy + " b3-tooltips b3-tooltips__sw"}
+        aria-label="复制为引用"
         onClick={async (e) => {
           e.stopPropagation();
           await navigator.clipboard.writeText(`((${id} '${label}'))`);
@@ -30,7 +31,8 @@ function TreeItem(props: ITreeItemProps) {
         <ExportOutlined />
       </span>
       <span
-        className={styles.copy}
+        className={styles.copy + " b3-tooltips b3-tooltips__sw"}
+        aria-label="复制为嵌入"
         onClick={async (e) => {
           e.stopPropagation();
           await navigator.clipboard.writeText(
@@ -42,7 +44,8 @@ function TreeItem(props: ITreeItemProps) {
         <ExpandOutlined />
       </span>
       <span
-        className={styles.copy}
+        className={styles.copy + " b3-tooltips b3-tooltips__sw"}
+        aria-label="复制块链接"
         onClick={async (e) => {
           e.stopPropagation();
           await navigator.clipboard.writeText(`siyuan://blocks/${id}`);

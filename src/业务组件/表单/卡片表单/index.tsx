@@ -27,18 +27,18 @@ import styles from "../../../components/增改查弹窗表单/index.module.less"
 
 export interface I卡片表单Props {
   app: any;
+  cardID: string;
   父ID: string;
   成功回调?: (文档ID: string, 卡片ID: string) => void;
 }
 
 function 卡片表单(props: I卡片表单Props) {
-  const { app, 父ID: 卡片根文档ID, 成功回调 } = props;
+  const { app, cardID, 父ID: 卡片根文档ID, 成功回调 } = props;
   const editorRef = useRef<HTMLDivElement>(null);
   const protyleRef = useRef<Protyle | null>(null);
   const [formCore] = Form.useForm();
 
   const [titleID] = useState(生成块ID());
-  const [cardID] = useState(生成块ID());
 
   const [别名, 令别名为] = useState([]);
   const [name, setName] = useState("");

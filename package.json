@@ -48,6 +48,7 @@
     "cron-parser": "^4.9.0",
     "dayjs": "^1.11.13",
     "jotai": "^2.10.3",
+    "jshashes": "^1.0.8",
     "nanoid": "^5.0.9",
     "pinyin-pro": "^3.26.0",
     "pixi.js": "^7.4.2",

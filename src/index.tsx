@@ -2,14 +2,24 @@ import { ConfigProvider } from "antd";
 import { Provider } from "jotai";
 import { nanoid } from "nanoid";
 import ReactDOM from "react-dom/client";
-import { Dialog, getFrontend, openTab, Plugin, Protyle } from "siyuan";
+import {
+  Dialog,
+  getFrontend,
+  IEventBusMap,
+  openTab,
+  Plugin,
+  Protyle,
+} from "siyuan";
 import App from "./App";
+import Veil from "./class/veil";
 import { E卡片属性名称 } from "./class/卡片";
+import { SY块 } from "./class/思源/块";
 import { 触发器 } from "./class/触发器";
 import { E事项属性名称, E持久化键 } from "./constant/系统码";
 import CardDocker from "./docker/CardDocker";
 import { 仓库, 持久化atom } from "./store";
 import { 主题 } from "./style/theme";
+import { 生成块ID } from "./tools/事项/事项";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
 import { 睡眠 } from "./utils/异步";
 import 卡片表单 from "./业务组件/表单/卡片表单";
@@ -40,6 +50,7 @@ export default class SyLively extends Plugin {
     }
   };
 
+  private veil = new Veil(this.getData, this.putData);
   private 提示器1: 触发器 = new 触发器(
     this.getData,
     this.putData,
@@ -56,11 +67,13 @@ export default class SyLively extends Plugin {
     this.添加TopBar();
     this.添加Dock();
     this.添加斜杠命令();
+    this.veil.onPlugLoad();
   }
 
   onLayoutReady() {
     this.添加tab();
     this.添加事件监听();
+    this.veil.onPlugLayoutReady();
   }
 
   async onunload() {
@@ -86,6 +99,7 @@ export default class SyLively extends Plugin {
     if (!(await 校验卡片文档是否存在(卡片文档ID))) return;
 
     const rootId = nanoid() + PluginId;
+    const cardID = 生成块ID();
 
     const 对话框 = new Dialog({
       title: "新建卡片",
@@ -93,6 +107,9 @@ export default class SyLively extends Plugin {
       width: "800px",
       height: "600px",
       hideCloseIcon: true,
+      destroyCallback: () => {
+        SY块.删除块(cardID);
+      },
     });
 
     const rootDom = document.getElementById(rootId);
@@ -137,6 +154,7 @@ export default class SyLively extends Plugin {
       <ConfigProvider theme={主题}>
         <卡片表单
           app={app}
+          cardID={cardID}
           父ID={卡片文档ID}
           成功回调={(文档ID, _卡片ID) => {
             对话框.destroy();
@@ -257,9 +275,12 @@ export default class SyLively extends Plugin {
   }
 
   添加事件监听() {
-    const 添加新建卡片目录 = ({ detail }) => {
+    const 添加新建卡片目录 = (
+      event: CustomEvent<IEventBusMap["open-menu-content"]>
+    ) => {
+      const { menu } = event.detail;
       const selectedText = window.getSelection().toString();
-      detail.menu.addItem({
+      menu.addItem({
         id: PluginId + "-new-card",
         label: "喧嚣-新建卡片",
         submenu: [
@@ -282,6 +303,9 @@ export default class SyLively extends Plugin {
 
     this.eventBus.on("open-menu-content", 添加新建卡片目录);
     this.eventBus.on("click-blockicon", 添加新建卡片目录);
+    this.eventBus.on<"open-menu-doctree">("open-menu-doctree", (e) =>
+      this.veil.onOpenMenuDoctree(e)
+    );
   }
 
   添加斜杠命令() {
