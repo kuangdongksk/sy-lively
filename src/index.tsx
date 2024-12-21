@@ -107,9 +107,7 @@ export default class SyLively extends Plugin {
       width: "800px",
       height: "600px",
       hideCloseIcon: true,
-      destroyCallback: () => {
-        SY块.删除块(cardID);
-      },
+      disableClose: true,
     });
 
     const rootDom = document.getElementById(rootId);
@@ -166,6 +164,10 @@ export default class SyLively extends Plugin {
                 },
               });
             });
+          }}
+          onCancel={() => {
+            SY块.删除块(cardID);
+            对话框.destroy();
           }}
         ></卡片表单>
       </ConfigProvider>

@@ -30,10 +30,11 @@ export interface I卡片表单Props {
   cardID: string;
   父ID: string;
   成功回调?: (文档ID: string, 卡片ID: string) => void;
+  onCancel?: () => void;
 }
 
 function 卡片表单(props: I卡片表单Props) {
-  const { app, cardID, 父ID: 卡片根文档ID, 成功回调 } = props;
+  const { app, cardID, 父ID: 卡片根文档ID, 成功回调, onCancel } = props;
   const editorRef = useRef<HTMLDivElement>(null);
   const protyleRef = useRef<Protyle | null>(null);
   const [formCore] = Form.useForm();
@@ -191,6 +192,14 @@ function 卡片表单(props: I卡片表单Props) {
       </Form.Item>
 
       <Form.Item style={{ textAlign: "center" }}>
+        <Button
+          className={E按钮类型.取消}
+          onClick={() => {
+            onCancel?.();
+          }}
+        >
+          取消
+        </Button>
         <Button className={E按钮类型.默认} htmlType="submit">
           确定
         </Button>
