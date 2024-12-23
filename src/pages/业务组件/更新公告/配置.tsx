@@ -1,4 +1,4 @@
-export const 最新版本号 = "P0.2.3";
+export const 最新版本号 = "P0.2.4";
 
 export enum E功能类型 {
   功能 = "功能",
@@ -19,15 +19,32 @@ export const 所有更新公告: {
     Children: [
       {
         type: E功能类型.功能,
+        content: [
+          <>
+            添加加密功能2/5
+            <a href="https://ld246.com/article/1734947243187">
+              喧嚣插件 - 访问控制功能
+            </a>
+          </>,
+        ],
+      },
+    ],
+  },
+  {
+    key: "P0.2.3",
+    Children: [
+      {
+        type: E功能类型.功能,
         content: ["新建卡片时可以直接嵌入到日记"],
-      },      {
+      },
+      {
         type: E功能类型.优化,
         content: ["移除冗余的的卡片属性"],
       },
     ],
   },
   {
-    key: 'P0.2.2',
+    key: "P0.2.2",
     Children: [
       {
         type: E功能类型.功能,
