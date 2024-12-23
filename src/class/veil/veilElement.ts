@@ -1,6 +1,6 @@
 import { MD5 } from "@/constant/三方库";
 import DiaForm from "@/基础组件/弹出表单";
-import FormItem from "@/基础组件/表单/表单项";
+import SYFormItem from "@/基础组件/表单/表单项";
 import SYInput from "@/基础组件/输入";
 import $, { Cash } from "cash-dom";
 
@@ -47,7 +47,7 @@ export default class VeilElement {
           height: "200px",
         },
         formItems: [
-          new FormItem("密码", new SYInput("pwd", "password", "密码")),
+          new SYFormItem("密码", new SYInput("pwd", "password", "密码")),
         ],
         onConfirm: async (formValue) => {
           if (MD5.b64(formValue.pwd) === passwordHash) {

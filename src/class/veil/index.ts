@@ -1,11 +1,12 @@
 import { MD5 } from "@/constant/三方库";
-import { E持久化键 } from "@/constant/系统码";
+import { EVeil属性名称, E持久化键 } from "@/constant/系统码";
 import { PluginId } from "@/index";
-import Button, { E按钮类型 } from "@/基础组件/按钮";
+import DiaForm from "@/基础组件/弹出表单";
+import SYFormItem from "@/基础组件/表单/表单项";
 import SYInput from "@/基础组件/输入";
 import $, { Cash } from "cash-dom";
-import { nanoid } from "nanoid";
-import { Dialog, IEventBusMap } from "siyuan";
+import { IEventBusMap } from "siyuan";
+import { SY块 } from "../思源/块";
 import VeilElement, { TVeilTargetType } from "./veilElement";
 
 export default class Veil {
@@ -56,7 +57,7 @@ export default class Veil {
           },
           {
             label: "移除密码",
-            click: () => {
+            click: async () => {
               this.lockedNotes.delete(currentID);
               this.saveData(E持久化键.上锁的笔记, this.lockedNotes);
             },
@@ -66,7 +67,7 @@ export default class Veil {
           {
             label: "添加密码",
             click: () => {
-              this.addPassword($element, currentID);
+              this.addPassword($element, currentID, "目录");
             },
           },
         ];
@@ -78,6 +79,147 @@ export default class Veil {
     });
   }
 
+  public onOpenMenuContent(
+    event: CustomEvent<IEventBusMap["open-menu-content"]>
+  ) {
+    const { element, menu, protyle } = event.detail;
+    const $protyleEle = $(protyle.element);
+    const protyleID = protyle.block.id;
+
+    const $element = $(element);
+    const blockID = $element.data("nodeId");
+
+    const subMenuP = this.lockedNotes.has(protyleID)
+      ? [
+          {
+            label: "锁定文档",
+            click: () => {
+              this.addVeil($protyleEle, protyleID, "目录");
+            },
+          },
+          {
+            label: "移除文档密码",
+            click: async () => {
+              this.lockedNotes.delete(protyleID);
+              await SY块.设置块属性({
+                id: protyleID,
+                attrs: {
+                  [EVeil属性名称.pwdHash]: null,
+                },
+              });
+              this.saveData(E持久化键.上锁的笔记, this.lockedNotes);
+            },
+          },
+        ]
+      : [
+          {
+            label: "为文档添加密码",
+            click: () => {
+              this.addPassword($protyleEle, protyleID, "块");
+            },
+          },
+        ];
+
+    const subMenuB = this.lockedNotes.has(blockID)
+      ? [
+          {
+            label: "锁定块",
+            click: () => {
+              this.addVeil($element, blockID, "块");
+            },
+          },
+          {
+            label: "移除块密码",
+            click: async () => {
+              this.lockedNotes.delete(blockID);
+              await SY块.设置块属性({
+                id: blockID,
+                attrs: {
+                  [EVeil属性名称.pwdHash]: null,
+                },
+              });
+              this.saveData(E持久化键.上锁的笔记, this.lockedNotes);
+            },
+          },
+        ]
+      : [
+          {
+            label: "为块添加密码",
+            click: () => {
+              this.addPassword($element, blockID, "块");
+            },
+          },
+        ];
+
+    menu.addItem({
+      id: PluginId + "-访问控制",
+      label: "喧嚣-访问控制",
+      submenu: subMenuP.concat(subMenuB),
+    });
+  }
+
+  public onClickBlockIcon(e: CustomEvent<IEventBusMap["click-blockicon"]>) {
+    console.log("🚀 ~ Veil ~ onClickBlockIcon ~ e:", e);
+    const { blockElements, menu } = e.detail;
+    const $element = $(blockElements[0]);
+    const blockID = $element.data("nodeId");
+
+    const subMenu = this.lockedNotes.has(blockID)
+      ? [
+          {
+            label: "锁定块",
+            click: () => {
+              this.addVeil($element, blockID, "块");
+            },
+          },
+          {
+            label: "移除块密码",
+            click: async () => {
+              this.lockedNotes.delete(blockID);
+              await SY块.设置块属性({
+                id: blockID,
+                attrs: {
+                  [EVeil属性名称.pwdHash]: null,
+                },
+              });
+              this.saveData(E持久化键.上锁的笔记, this.lockedNotes);
+            },
+          },
+        ]
+      : [
+          {
+            label: "为块添加密码",
+            click: () => {
+              this.addPassword($element, blockID, "块");
+            },
+          },
+        ];
+
+    menu.addItem({
+      id: PluginId + "-访问控制",
+      label: "喧嚣-访问控制",
+      submenu: subMenu,
+    });
+  }
+
+  public onLoadedProtyleStatic(
+    e: CustomEvent<IEventBusMap["loaded-protyle-static"]>
+  ) {
+    const { protyle } = e.detail;
+    const protyleId = protyle.block.id;
+    const $element = $(protyle.element);
+
+    $element.find(`[${EVeil属性名称.pwdHash}]`).each((_, e) => {
+      const $e = $(e);
+      if ($e.hasClass("protyle-wysiwyg")) {
+        this.addVeil($e.parent().parent(), protyleId, "块");
+        return;
+      }
+      const noteId = $e.data("nodeId");
+      this.addVeil($e, noteId, "块");
+    });
+  }
+
   private async addVeil($element: Cash, noteId: string, type: TVeilTargetType) {
     const pwd = this.lockedNotes.get(noteId);
     if (!pwd) return;
@@ -85,40 +227,46 @@ export default class Veil {
     new VeilElement($element, noteId, MD5.b64(pwd), type);
   }
 
-  private addPassword($element: Cash, noteId: string) {
-    const pwd = new SYInput("pwd", "password", "密码");
-    const pwdc = new SYInput("pwdC", "password", "确认密码");
-    const cbtn = new Button(E按钮类型.默认, "确认");
+  private addPassword($element: Cash, noteId: string, type: TVeilTargetType) {
+    new DiaForm<{
+      pwd: string;
+      pwdC: string;
+    }>({
+      dialogConfig: { title: "添加密码", width: "400px", height: "300px" },
+      formItems: [
+        new SYFormItem("密码", new SYInput("pwd", "password", "密码")),
+        new SYFormItem("确认密码", new SYInput("pwdC", "password", "确认密码")),
+      ],
+      onConfirm: async (value) => {
+        const pwd = value.pwd;
+        if (pwd !== value.pwdC) {
+          alert("两次密码不一致");
+          return;
+        }
+        this.lockedNotes.set(noteId, pwd);
 
-    const formDiv = document.createElement("div");
-    formDiv.appendChild(pwd.dom);
-    formDiv.appendChild(pwdc.dom);
-    formDiv.appendChild(cbtn.button);
+        await this.saveData(
+          E持久化键.上锁的笔记,
+          Object.fromEntries(this.lockedNotes.entries())
+        );
 
-    const formId = nanoid();
+        const pwdHash = MD5.b64(pwd);
 
-    const form = new Dialog({
-      title: "添加密码",
-      width: "800px",
-      height: "600px",
-      content: `<div id="${formId}"></div>`,
-    });
-    $(`#${formId}`).append(formDiv);
+        if (type === "块") {
+          SY块.设置块属性({
+            id: noteId,
+            attrs: {
+              [EVeil属性名称.pwdHash]: pwdHash,
+            },
+          });
+        }
 
-    cbtn.$button.on("click", async () => {
-      if (pwd.value !== pwdc.value) {
-        alert("两次密码不一致");
-        return;
-      }
-      this.lockedNotes.set(noteId, pwd.value);
-
-      await this.saveData(
-        E持久化键.上锁的笔记,
-        Object.fromEntries(this.lockedNotes.entries())
-      );
-
-      new VeilElement($element, noteId, MD5.b64(pwd.value), "目录");
-      form.destroy();
+        new VeilElement($element, noteId, pwdHash, type);
+        return {
+          success: true,
+          message: "添加成功",
+        };
+      },
     });
   }
 

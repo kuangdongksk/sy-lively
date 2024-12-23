@@ -1,16 +1,16 @@
 import $ from "cash-dom";
 import { E按钮类型 } from "../按钮";
-import FormItem from "./表单项";
+import SYFormItem from "./表单项";
 import { IResult } from "../弹出表单";
 
 export default class Form<TFormValue> {
   form = document.createElement("form");
   $form = $(this.form);
-  formItems: FormItem[];
+  formItems: SYFormItem[];
   $error = $(document.createElement("div"));
 
   constructor(
-    formItems: FormItem[],
+    formItems: SYFormItem[],
     onConfirm?: (formValue: TFormValue) => IResult | Promise<IResult>,
     onCancel?: () => void | Promise<void>
   ) {

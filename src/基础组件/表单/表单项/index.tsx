@@ -6,7 +6,7 @@ export interface TInput {
   value: any;
 }
 
-export default class FormItem {
+export default class SYFormItem {
   input: TInput;
   inputWrapper = $(document.createElement("div"));
   itemWrapper = $(document.createElement("div"));
@@ -22,7 +22,7 @@ export default class FormItem {
 
     this.label.text(label);
     this.label.css({
-      width: "100px",
+      width: "60px",
       marginRight: "12px",
     });
 
@@ -31,6 +31,9 @@ export default class FormItem {
     } else {
       this.inputWrapper.append(input.dom);
     }
+    this.inputWrapper.css({
+      flex: 1,
+    });
 
     this.itemWrapper.append(this.label);
     this.itemWrapper.append(this.inputWrapper);

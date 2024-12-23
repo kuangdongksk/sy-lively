@@ -2,7 +2,7 @@ import $ from "cash-dom";
 import { nanoid } from "nanoid";
 import { Dialog } from "siyuan";
 import Form from "../表单";
-import FormItem from "../表单/表单项";
+import SYFormItem from "../表单/表单项";
 
 export interface IResult {
   success: boolean;
@@ -14,7 +14,7 @@ export default class DiaForm<TFormValue> {
 
   constructor(props: {
     dialogConfig: { title: string; width: string; height: string };
-    formItems: FormItem[];
+    formItems: SYFormItem[];
     onConfirm?: (formValue: TFormValue) => IResult | Promise<IResult>;
     onCancel?: () => void | Promise<void>;
   }) {

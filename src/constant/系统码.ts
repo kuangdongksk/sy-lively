@@ -51,6 +51,12 @@ export enum E事项属性名称 {
   更新时间 = `${事项属性前缀}updateTime`,
 }
 
+const EVeil属性前缀 = `${属性前缀}veil-`;
+
+export enum EVeil属性名称 {
+  pwdHash = EVeil属性前缀 + "pwdHash",
+}
+
 export enum E持久化键 {
   用户设置 = "用户设置",
   当前版本 = "当前版本",

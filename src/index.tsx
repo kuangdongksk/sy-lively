@@ -304,11 +304,26 @@ export default class SyLively extends Plugin {
     };
     const that = this;
 
-    this.eventBus.on("open-menu-content", 添加新建卡片目录);
-    this.eventBus.on("click-blockicon", 添加新建卡片目录);
+    this.eventBus.on("open-menu-content", (e) => {
+      // 添加新建卡片目录(e);
+      that.veil.onOpenMenuContent(e);
+    });
+    this.eventBus.on("click-blockicon", (e) => {
+      // 添加新建卡片目录(e);
+      that.veil.onClickBlockIcon(e);
+    });
     this.eventBus.on("open-menu-doctree", (e) =>
       that.veil.onOpenMenuDoctree(e)
     );
+    this.eventBus.on("loaded-protyle-dynamic", (e) => {
+      console.log("🚀 ~ SyLively ~ dynamic ~ e:", e);
+    });
+    this.eventBus.on("loaded-protyle-static", (e) => {
+      that.veil.onLoadedProtyleStatic(e);
+    });
+    // this.eventBus.on("ws-main", (e) => {
+    //   console.log("🚀 ~ SyLively ~ main ~ e:", e);
+    // });
   }
 
   添加斜杠命令() {
