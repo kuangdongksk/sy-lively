@@ -302,11 +302,12 @@ export default class SyLively extends Plugin {
         ],
       });
     };
+    const that = this;
 
     this.eventBus.on("open-menu-content", 添加新建卡片目录);
     this.eventBus.on("click-blockicon", 添加新建卡片目录);
-    this.eventBus.on<"open-menu-doctree">("open-menu-doctree", (e) =>
-      this.veil.onOpenMenuDoctree(e)
+    this.eventBus.on("open-menu-doctree", (e) =>
+      that.veil.onOpenMenuDoctree(e)
     );
   }
 

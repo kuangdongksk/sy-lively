@@ -5,20 +5,31 @@ export enum E输入类型 {
   默认 = "b3-text-field",
 }
 
-export default class Input {
-  public value = "";
-  public input = document.createElement("input");
-  private $input: Cash;
+export default class SYInput {
+  public dom = document.createElement("input");
+  private cash: Cash;
 
-  constructor(type: HTMLInputTypeAttribute, placeholder: string) {
-    this.$input = $(this.input);
-    this.$input.attr("type", type);
-    this.$input.attr("placeholder", placeholder);
-    this.$input.addClass(E输入类型.默认);
+  constructor(name: string, type: HTMLInputTypeAttribute, placeholder: string) {
+    this.cash = $(this.dom);
 
-    this.$input.on("input", (e) => {
-      this.value = e.target.value;
-      console.log("🚀 ~ Input ~ this.$input.on ~ e.target.value:", e.target.value)
+    this.cash.attr("name", name);
+    this.cash.attr("type", type);
+    this.cash.attr("placeholder", placeholder);
+    this.cash.addClass(E输入类型.默认);
+
+    this.cash.on("input", (e) => {
+      console.log(
+        "🚀 ~ Input ~ this.$input.on ~ e.target.value:",
+        e.target.value
+      );
     });
+  }
+
+  get name() {
+    return this.cash.attr("name");
+  }
+
+  get value() {
+    return this.cash.val() as string;
   }
 }
