@@ -234,8 +234,22 @@ export default class Veil {
     }>({
       dialogConfig: { title: "添加密码", width: "400px", height: "300px" },
       formItems: [
-        new SYFormItem("密码", new SYInput("pwd", "password", "密码")),
-        new SYFormItem("确认密码", new SYInput("pwdC", "password", "确认密码")),
+        new SYFormItem({
+          label: "密码",
+          input: new SYInput({
+            name: "pwd",
+            type: "password",
+            placeholder: "密码",
+          }),
+        }),
+        new SYFormItem({
+          label: "确认密码",
+          input: new SYInput({
+            name: "pwdC",
+            type: "password",
+            placeholder: "确认密码",
+          }),
+        }),
       ],
       onConfirm: async (value) => {
         const pwd = value.pwd;

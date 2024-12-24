@@ -12,7 +12,9 @@ export default class SYFormItem {
   itemWrapper = $(document.createElement("div"));
   label = $(document.createElement("span"));
 
-  constructor(label: string, input: TInput) {
+  constructor(props: { label: string; input: TInput }) {
+    const { label, input } = props;
+
     this.input = input;
     this.itemWrapper.css({
       display: "flex",

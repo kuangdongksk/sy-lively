@@ -32,11 +32,14 @@ export class 卡片块 {
     if (卡片.单开一页) {
       return await this.新建卡片文档(卡片, 卡片文档ID);
     } else {
-      return await this.新建卡片块(卡片);
+      return await this.新建卡片块(卡片, 卡片文档ID);
     }
   }
 
-  public static async 新建卡片块(卡片: I卡片): Promise<string> {
+  public static async 新建卡片块(
+    卡片: I卡片,
+    卡片文档ID: string
+  ): Promise<string> {
     const { ID, 标题, 别名 } = 卡片;
 
     await SY块.设置块属性({
@@ -46,6 +49,11 @@ export class 卡片块 {
         [E块属性名称.别名]: 别名.join(","),
         ...卡片类.卡片转为属性(卡片),
       },
+    });
+
+    await SY块.移动块({
+      id: ID,
+      parentID: 卡片文档ID,
     });
 
     return ID;

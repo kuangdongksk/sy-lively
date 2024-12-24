@@ -1,12 +1,12 @@
 import $ from "cash-dom";
 import { nanoid } from "nanoid";
 import { Dialog } from "siyuan";
-import Form from "../表单";
+import SYForm from "../表单";
 import SYFormItem from "../表单/表单项";
 
 export interface IResult {
   success: boolean;
-  message: string;
+  message?: string;
 }
 
 export default class DiaForm<TFormValue> {
@@ -15,26 +15,28 @@ export default class DiaForm<TFormValue> {
   constructor(props: {
     dialogConfig: { title: string; width: string; height: string };
     formItems: SYFormItem[];
-    onConfirm?: (formValue: TFormValue) => IResult | Promise<IResult>;
+    onConfirm?: (
+      formValue: TFormValue
+    ) => IResult | Promise<IResult | undefined> | undefined;
     onCancel?: () => void | Promise<void>;
   }) {
     const { dialogConfig, formItems, onConfirm, onCancel } = props;
 
-    const form = new Form<TFormValue>(
+    const form = new SYForm<TFormValue>({
       formItems,
-      async (formValue) => {
+      onConfirm: async (formValue) => {
         const result = await onConfirm?.(formValue);
-        if (result.success) {
+        if (result?.success) {
           this.dialog.destroy();
         }
 
         return result;
       },
-      async () => {
+      onCancel: async () => {
         await onCancel?.();
         this.dialog.destroy();
-      }
-    );
+      },
+    });
     const $formWrapper = form.$form;
 
     const formId = nanoid();

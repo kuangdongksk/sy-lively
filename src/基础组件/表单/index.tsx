@@ -3,17 +3,22 @@ import { E按钮类型 } from "../按钮";
 import SYFormItem from "./表单项";
 import { IResult } from "../弹出表单";
 
-export default class Form<TFormValue> {
+export default class SYForm<TFormValue> {
   form = document.createElement("form");
   $form = $(this.form);
   formItems: SYFormItem[];
   $error = $(document.createElement("div"));
 
-  constructor(
-    formItems: SYFormItem[],
-    onConfirm?: (formValue: TFormValue) => IResult | Promise<IResult>,
-    onCancel?: () => void | Promise<void>
-  ) {
+  constructor(props: {
+    formItems: SYFormItem[];
+    labelWidth?: number;
+    onConfirm?: (
+      formValue: TFormValue
+    ) => IResult | void | Promise<IResult | void>;
+    onCancel?: () => void | Promise<void>;
+  }) {
+    const { formItems, labelWidth, onConfirm, onCancel } = props;
+
     this.formItems = formItems;
     this.$form.css({
       padding: "12px",
@@ -26,6 +31,7 @@ export default class Form<TFormValue> {
 
     const $footer = this.initFooter(onConfirm, onCancel);
     formItems.forEach((item) => {
+      labelWidth && item.label.css({ width: `${labelWidth}px` });
       this.$form.append(item.itemWrapper);
     });
     this.$form.append($footer);
@@ -33,7 +39,9 @@ export default class Form<TFormValue> {
   }
 
   initFooter(
-    onConfirm: (formValue: TFormValue) => IResult | Promise<IResult>,
+    onConfirm: (
+      formValue: TFormValue
+    ) => IResult | void | Promise<IResult | void>,
     onCancel: () => void | Promise<void>
   ) {
     const $footer = $(document.createElement("div"));
@@ -49,7 +57,9 @@ export default class Form<TFormValue> {
       marginRight: "12px",
     });
     $cancelBtn.addClass(E按钮类型.取消);
-    $cancelBtn.on("click", async () => {
+    $cancelBtn.on("click", async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       await onCancel?.();
     });
 
@@ -59,7 +69,7 @@ export default class Form<TFormValue> {
       e.preventDefault();
       e.stopPropagation();
       const result = await onConfirm?.(this.formValues);
-      if (!result.success) {
+      if (result && !result.success) {
         this.$error.text(result.message);
       }
     });

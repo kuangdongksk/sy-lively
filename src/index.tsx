@@ -1,11 +1,10 @@
 import { ConfigProvider } from "antd";
 import { Provider } from "jotai";
-import { nanoid } from "nanoid";
 import ReactDOM from "react-dom/client";
 import {
-  Dialog,
   getFrontend,
   IEventBusMap,
+  IProtyle,
   openTab,
   Plugin,
   Protyle,
@@ -13,16 +12,13 @@ import {
 import App from "./App";
 import Veil from "./class/veil";
 import { E卡片属性名称 } from "./class/卡片";
-import { SY块 } from "./class/思源/块";
 import { 触发器 } from "./class/触发器";
 import { E事项属性名称, E持久化键 } from "./constant/系统码";
 import CardDocker from "./docker/CardDocker";
 import { 仓库, 持久化atom } from "./store";
 import { 主题 } from "./style/theme";
-import { 生成块ID } from "./tools/事项/事项";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
-import { 睡眠 } from "./utils/异步";
-import 卡片表单 from "./业务组件/表单/卡片表单";
+import LYCard from "./业务组件/表单/卡片表单";
 
 export const PluginId = "livelySaSa";
 
@@ -93,85 +89,16 @@ export default class SyLively extends Plugin {
     });
   }
 
-  async 打开新建卡片() {
+  async 打开新建卡片(protyle?: IProtyle) {
     const 卡片文档ID = await this.getData(E持久化键.卡片文档ID);
 
     if (!(await 校验卡片文档是否存在(卡片文档ID))) return;
 
-    const rootId = nanoid() + PluginId;
-    const cardID = 生成块ID();
-
-    const 对话框 = new Dialog({
-      title: "新建卡片",
-      content: `<div id="${rootId}" style="padding: 12px;"></div>`,
-      width: "800px",
-      height: "600px",
-      hideCloseIcon: true,
-      disableClose: true,
+    LYCard.createCard({
+      app: this.app,
+      cardDocID: 卡片文档ID,
+      protyle,
     });
-
-    const rootDom = document.getElementById(rootId);
-    const root = ReactDOM.createRoot(rootDom);
-    const app = this.app;
-
-    this.protyleOptions = {
-      toolbar: [
-        "block-ref",
-        "a",
-        "|",
-        "text",
-        "strong",
-        "em",
-        "u",
-        "s",
-        "mark",
-        "sup",
-        "sub",
-        "clear",
-        "|",
-        "code",
-        "kbd",
-        "tag",
-        "inline-math",
-        "inline-memo",
-        "|",
-        {
-          name: "insert-smail-emoji",
-          icon: "iconEmoji",
-          hotkey: "⇧⌘I",
-          tipPosition: "n",
-          tip: this.i18n.insertEmoji,
-          click(protyle: Protyle) {
-            protyle.insert("😊");
-          },
-        },
-      ],
-    };
-
-    root.render(
-      <ConfigProvider theme={主题}>
-        <卡片表单
-          app={app}
-          cardID={cardID}
-          父ID={卡片文档ID}
-          成功回调={(文档ID, _卡片ID) => {
-            对话框.destroy();
-            睡眠(1000).then(() => {
-              openTab({
-                app: this.app,
-                doc: {
-                  id: 文档ID,
-                },
-              });
-            });
-          }}
-          onCancel={() => {
-            SY块.删除块(cardID);
-            对话框.destroy();
-          }}
-        ></卡片表单>
-      </ConfigProvider>
-    );
   }
 
   添加图标() {
@@ -198,6 +125,9 @@ export default class SyLively extends Plugin {
       hotkey: "⌥Q",
       callback: () => {
         this.打开新建卡片();
+      },
+      editorCallback: (protyle) => {
+        this.打开新建卡片(protyle);
       },
     });
   }
