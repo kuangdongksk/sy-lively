@@ -37,33 +37,47 @@ export default class VeilElement {
 
     $parent.append(this.$veil);
 
-    this.$veil.on("click", () => {
-      new DiaForm<{
-        pwd: string;
-      }>({
-        dialogConfig: {
-          title: "输入密码",
-          width: "400px",
-          height: "200px",
-        },
-        formItems: [
-          new SYFormItem("密码", new SYInput("pwd", "password", "密码")),
-        ],
-        onConfirm: async (formValue) => {
-          if (MD5.b64(formValue.pwd) === passwordHash) {
-            this.$veil.remove();
-            return {
-              success: true,
-              message: "密码正确",
-            };
-          } else {
-            return {
-              success: false,
-              message: "密码错误",
-            };
-          }
-        },
-      });
+    // this.$veil.on("click", (e) => this.unlock());
+    this.$veil.on("mouseup", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.unlock(passwordHash);
+    });
+  }
+
+  unlock(passwordHash: string) {
+    new DiaForm<{
+      pwd: string;
+    }>({
+      dialogConfig: {
+        title: "输入密码",
+        width: "400px",
+        height: "200px",
+      },
+      formItems: [
+        new SYFormItem({
+          label: "密码",
+          input: new SYInput({
+            type: "password",
+            name: "pwd",
+            placeholder: "请输入密码",
+          }),
+        }),
+      ],
+      onConfirm: async (formValue) => {
+        if (MD5.b64(formValue.pwd) === passwordHash) {
+          this.$veil.remove();
+          return {
+            success: true,
+            message: "密码正确",
+          };
+        } else {
+          return {
+            success: false,
+            message: "密码错误",
+          };
+        }
+      },
     });
   }
 }
