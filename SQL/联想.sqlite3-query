@@ -73,3 +73,14 @@ WHERE
   r.type = 'textmark'
   AND r.def_block_id = a.block_id
   AND a.name LIKE '%custom-plugin-lively-card-relation%';
+
+SELECT
+  *
+FROM
+  blocks
+WHERE
+  root_id = '20241225113119-clg47ri'
+ORDER BY
+  sort DESC
+LIMIT
+  1

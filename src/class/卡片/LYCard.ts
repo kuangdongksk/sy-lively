@@ -94,6 +94,7 @@ export default class LYCard {
           input: new SYSwitch({
             name: "insertToCurrent",
             placeholder: "插入到当前文档",
+            defaultValue: true,
             disabled: !currentID,
           }),
         }),
@@ -114,16 +115,14 @@ export default class LYCard {
           insertToCurrent,
         } = values;
 
-        const card = await generatorCard(alias, singlePage);
-
+        const card = await generatorCard(alias, cardID, titleID, singlePage);
         const parentID = insertToCurrent ? currentID : cardDocID;
-
         const 最终ID = await 卡片块.新建卡片(card, parentID);
-        const 插入日记 = async () => {
+
+        if (insetToDailyNote) {
           const 笔记本ID = await SY文档.根据ID获取笔记本ID(parentID);
           await 插入到日记(最终ID, 笔记本ID);
-        };
-        insetToDailyNote && (await 插入日记());
+        }
 
         message.success("新建卡片成功，已将引用复制到剪贴板");
         if (!insertToCurrent) {
@@ -148,24 +147,30 @@ export default class LYCard {
 
     $root.append($pe);
     $root.append(form.$form);
-
-    async function generatorCard(aliasStr: string, singlePage: boolean) {
-      const cardData = await SQLer.根据ID获取块(cardID);
-      const title = cardData.fcontent;
-      const content = cardData.markdown;
-      let subContent = content.split(`###### ${title}\n\n`)[1];
-      subContent = subContent.endsWith("}}}")
-        ? subContent.slice(0, -3)
-        : subContent;
-
-      return {
-        ID: cardID,
-        标题: cardData.fcontent,
-        标题ID: titleID,
-        别名: toAlias(title, aliasStr),
-        单开一页: singlePage,
-        subContent,
-      };
-    }
   }
+}
+
+//#region 生成卡片
+async function generatorCard(
+  aliasStr: string,
+  cardID: string,
+  titleID: string,
+  singlePage: boolean
+) {
+  const cardData = await SQLer.根据ID获取块(cardID);
+  const title = cardData.fcontent;
+  const content = cardData.markdown;
+  let subContent = content.split(`###### ${title}\n\n`)[1];
+  subContent = subContent.endsWith("}}}")
+    ? subContent.slice(0, -3)
+    : subContent;
+
+  return {
+    ID: cardID,
+    标题: cardData.fcontent,
+    标题ID: titleID,
+    别名: toAlias(title, aliasStr),
+    单开一页: singlePage,
+    subContent,
+  };
 }

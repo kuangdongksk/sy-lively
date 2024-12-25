@@ -9,7 +9,7 @@ function 错误页面() {
     data: string;
   };
 
-  console.log("🚀 ~ ErrorPage ~ error:", error);
+  console.log("~ ErrorPage ~ error:", error);
 
   return (
     <div id="error-page" className={styles.错误页面}>

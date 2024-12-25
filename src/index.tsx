@@ -18,7 +18,7 @@ import CardDocker from "./docker/CardDocker";
 import { 仓库, 持久化atom } from "./store";
 import { 主题 } from "./style/theme";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
-import LYCard from "./业务组件/表单/卡片表单";
+import LYCard from "./class/卡片/LYCard";
 
 export const PluginId = "livelySaSa";
 
@@ -31,7 +31,7 @@ export default class SyLively extends Plugin {
     try {
       data = await this.loadData(key);
     } catch (error) {
-      console.log("🚀 ~ 喧嚣 ~ getData ~ error:", error);
+      console.log("~ 喧嚣 ~ getData ~ error:", error);
       return null;
     }
     return data;
@@ -41,7 +41,7 @@ export default class SyLively extends Plugin {
       await this.saveData(key, value);
       return true;
     } catch (error) {
-      console.log("🚀 ~ 喧嚣 ~ saveData ~ error:", error);
+      console.log("~ 喧嚣 ~ saveData ~ error:", error);
       return false;
     }
   };

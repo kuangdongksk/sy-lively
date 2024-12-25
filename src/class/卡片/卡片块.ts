@@ -51,9 +51,12 @@ export class 卡片块 {
       },
     });
 
+    const { data } = await SY块.获取子块(卡片文档ID);
+
     await SY块.移动块({
       id: ID,
       parentID: 卡片文档ID,
+      previousID: data[data.length - 1]?.id ?? undefined,
     });
 
     return ID;

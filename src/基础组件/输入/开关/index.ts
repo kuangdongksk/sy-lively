@@ -9,16 +9,22 @@ export default class SYSwitch {
   constructor(props: {
     name: string;
     placeholder: string;
+    defaultValue?: boolean;
     disabled?: boolean;
     onClick?: (e: Event) => void;
   }) {
-    const { name, placeholder, disabled, onClick } = props;
+    const { name, placeholder, defaultValue, disabled, onClick } = props;
     this.cash = $(this.dom);
 
     this.cash.attr("name", name);
     this.cash.attr("type", "checkbox");
     this.cash.attr("aria-label", placeholder);
-    disabled && this.cash.attr("disabled");
+
+    disabled && this.cash.attr("disabled", String(Boolean(disabled)));
+    if (defaultValue) {
+      this.cash.attr("checked", String(Boolean(defaultValue)));
+      this._value = true;
+    }
 
     this.cash.addClass(E输入类型.开关);
 

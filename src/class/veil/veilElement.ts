@@ -43,6 +43,12 @@ export default class VeilElement {
       e.stopPropagation();
       this.unlock(passwordHash);
     });
+    this.$veil.on("select", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.unlock(passwordHash);
+    });
+    // this.veil.addEventListener("select");
   }
 
   unlock(passwordHash: string) {
