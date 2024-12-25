@@ -66,7 +66,7 @@ export class 卡片块 {
     卡片: I卡片 & { subContent: string },
     卡片文档ID: string
   ): Promise<string> {
-    const { 标题, 别名, ID } = 卡片;
+    const { 标题, 别名 } = 卡片;
     const 块数据 = await SQLer.根据ID获取块(卡片文档ID);
 
     const { data: 文档ID } = await SY文档.通过Markdown创建(
@@ -93,7 +93,6 @@ export class 卡片块 {
       }),
     ]);
 
-    await SY块.删除块(ID);
     return 文档ID;
   }
 }

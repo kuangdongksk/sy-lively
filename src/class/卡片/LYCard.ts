@@ -94,7 +94,7 @@ export default class LYCard {
           input: new SYSwitch({
             name: "insertToCurrent",
             placeholder: "插入到当前文档",
-            defaultValue: true,
+            defaultValue: Boolean(currentID),
             disabled: !currentID,
           }),
         }),
@@ -118,6 +118,9 @@ export default class LYCard {
         const card = await generatorCard(alias, cardID, titleID, singlePage);
         const parentID = insertToCurrent ? currentID : cardDocID;
         const 最终ID = await 卡片块.新建卡片(card, parentID);
+        if (singlePage) {
+          await SY块.删除块(cardID);
+        }
 
         if (insetToDailyNote) {
           const 笔记本ID = await SY文档.根据ID获取笔记本ID(parentID);
@@ -125,6 +128,7 @@ export default class LYCard {
         }
 
         message.success("新建卡片成功，已将引用复制到剪贴板");
+
         if (!insertToCurrent) {
           睡眠(1000).then(() => {
             const a = document.createElement("a");
