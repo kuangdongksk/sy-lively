@@ -6,16 +6,24 @@ import { Mesh } from "three";
 
 export const Node = memo(
   (props: {
+    id: string;
     position: [number, number, number];
     title: string;
-    id: string;
+    handlePointerOver: () => void;
+    handlePointerOut: () => void;
   }) => {
-    const { position, title, id } = props;
+    const { position, title, id, handlePointerOver, handlePointerOut } = props;
     const meshRef = useRef<Mesh>(null);
     const [hovered, setHover] = useState(false);
 
-    const handlePointerOver = useCallback(() => setHover(true), []);
-    const handlePointerOut = useCallback(() => setHover(false), []);
+    const handlePointerOverInner = useCallback(() => {
+      setHover(true);
+      handlePointerOver();
+    }, []);
+    const handlePointerOutInner = useCallback(() => {
+      setHover(false);
+      handlePointerOut();
+    }, []);
 
     useFrame((state, delta) => {
       if (meshRef.current) {
@@ -30,8 +38,8 @@ export const Node = memo(
           position={position}
           scale={hovered ? 1.2 : 1}
           onPointerDown={() => console.log("click")}
-          onPointerOver={handlePointerOver}
-          onPointerOut={handlePointerOut}
+          onPointerOver={handlePointerOverInner}
+          onPointerOut={handlePointerOutInner}
         >
           <boxGeometry args={[2, 1, 0.1]} />
           <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
