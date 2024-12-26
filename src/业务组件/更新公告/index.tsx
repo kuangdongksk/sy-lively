@@ -39,7 +39,7 @@ function 更新公告() {
           ghost
           items={所有更新公告.map((公告) => ({
             key: 公告.key,
-            label: `${公告.key}更新公告`,
+            label: 公告.key,
             children: 公告.Children.map(
               (child: { type: string; content: React.ReactNode[] }) => (
                 <div>

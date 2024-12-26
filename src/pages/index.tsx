@@ -28,6 +28,7 @@ const { Header, Footer, Sider, Content } = Layout;
 const C目录 = [
   { key: "主页", icon: <HomeOutlined />, label: "主页" },
   { key: "领域", icon: <HeatMapOutlined />, label: "领域" },
+  { key: "Excalidraw", icon: <HeatMapOutlined />, label: "Excalidraw" },
   { key: "日历", icon: <CalendarOutlined />, label: "日历" },
   { key: "卡片", icon: <CreditCardOutlined />, label: "卡片" },
   { key: "关系", icon: <ShareAltOutlined />, label: "关系" },

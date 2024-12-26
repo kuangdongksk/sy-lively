@@ -1,10 +1,10 @@
+import { 卡片 } from "@/class/卡片";
 import SY文档 from "@/class/思源/文档";
+import Link from "@/基础组件/link";
 import { Tree } from "antd";
 import { DataNode } from "antd/es/tree";
 import { useEffect, useState } from "react";
 import styles from "./index.module.less";
-import TreeItem from "./treeItem";
-import { 卡片 } from "@/class/卡片";
 
 function CardDocker(props: { 卡片文档ID: string }) {
   const { 卡片文档ID } = props;
@@ -20,13 +20,23 @@ function CardDocker(props: { 卡片文档ID: string }) {
     设置树形卡片列表(
       files
         .map(({ name1, id }) => ({
-          title: <TreeItem id={id} label={name1} />,
+          title: (
+            <Link
+              block={{ id, label: name1 }}
+              iconType={["ref", "link", "inset"]}
+            />
+          ),
           key: id,
           isLeaf: false,
         }))
         .concat(
           data.map((item) => ({
-            title: <TreeItem id={item.ID} label={item.标题} />,
+            title: (
+              <Link
+                block={{ id: item.ID, label: item.标题 }}
+                iconType={["ref", "link", "inset"]}
+              />
+            ),
             key: item.ID,
             isLeaf: true,
           }))
@@ -45,13 +55,23 @@ function CardDocker(props: { 卡片文档ID: string }) {
 
     const 子树 = files
       .map(({ name1, id }) => ({
-        title: <TreeItem id={id} label={name1} />,
+        title: (
+          <Link
+            block={{ id, label: name1 }}
+            iconType={["ref", "link", "inset"]}
+          />
+        ),
         key: id,
         isLeaf: false,
       }))
       .concat(
         data.map((item) => ({
-          title: <TreeItem id={item.ID} label={item.标题} />,
+          title: (
+            <Link
+              block={{ id: item.ID, label: item.标题 }}
+              iconType={["ref", "link", "inset"]}
+            />
+          ),
           key: item.ID,
           isLeaf: true,
         }))
