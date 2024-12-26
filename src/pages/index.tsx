@@ -20,7 +20,7 @@ import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import 更新公告 from "./业务组件/更新公告";
+import 更新公告 from "../业务组件/更新公告";
 import styles from "./index.module.less";
 
 const { Header, Footer, Sider, Content } = Layout;

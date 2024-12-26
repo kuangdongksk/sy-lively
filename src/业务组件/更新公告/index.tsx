@@ -3,9 +3,7 @@ import { 持久化atom } from "@/store";
 import { Collapse, Modal, Typography } from "antd";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import { 所有更新公告, 最新版本号 } from "./配置";
-
-const { Text } = Typography;
+import { 所有更新公告, latestVersion } from "./配置";
 
 function 更新公告() {
   const [持久化] = useAtom(持久化atom);
@@ -15,9 +13,9 @@ function 更新公告() {
 
   const 加载版本号 = async () => {
     const 当前版本号 = await 加载(E持久化键.当前版本);
-    if (当前版本号 !== 最新版本号) {
+    if (当前版本号 !== latestVersion) {
       设置展示更新公告(true);
-      保存(E持久化键.当前版本, 最新版本号);
+      保存(E持久化键.当前版本, latestVersion);
     }
   };
 
@@ -37,7 +35,7 @@ function 更新公告() {
     >
       <Typography>
         <Collapse
-          defaultActiveKey={[最新版本号]}
+          defaultActiveKey={[latestVersion]}
           ghost
           items={所有更新公告.map((公告) => ({
             key: 公告.key,
