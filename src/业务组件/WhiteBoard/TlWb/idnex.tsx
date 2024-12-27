@@ -9,11 +9,11 @@ import {
   Tldraw,
 } from "tldraw";
 import "tldraw/tldraw.css";
-export interface IExcalidrawProps {}
 
-function Excalidraw(props: IExcalidrawProps) {
+export interface ITlWbProps {}
+
+function TlWb(props: ITlWbProps) {
   const {} = props;
-
   const externalContentHandlerCom = useCallback((info) => {
     console.log("🚀 ~ externalContentHandlerCom ~ info:", info);
   }, []);
@@ -51,9 +51,31 @@ function Excalidraw(props: IExcalidrawProps) {
     );
   }, []);
 
-  return <Tldraw shapeUtils={[DangerousHtmlExample]} onMount={handleMount} />;
+  return (
+    <div
+      style={{ height: "100%", width: "100%" }}
+      onDrop={(e) => {
+        e.preventDefault(); 
+        e.stopPropagation();
+        console.log("🚀 ~ TlWb ~ e:", e);
+      }}
+      
+      onDragOver={(e) => {
+        e.preventDefault();
+        console.log("🚀 ~ TlWb ~ e:", e);
+      }}
+    >
+      <Tldraw
+        shapeUtils={[DangerousHtmlExample]}
+        onUiEvent={(e, data) => {
+          console.log("🚀 ~ e:", e, data);
+        }}
+        onMount={handleMount}
+      />
+    </div>
+  );
 }
-export default Excalidraw;
+export default TlWb;
 
 type myShape = TLBaseShape<
   "html",

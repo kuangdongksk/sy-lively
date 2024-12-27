@@ -28,7 +28,7 @@ const { Header, Footer, Sider, Content } = Layout;
 const C目录 = [
   { key: "主页", icon: <HomeOutlined />, label: "主页" },
   { key: "领域", icon: <HeatMapOutlined />, label: "领域" },
-  { key: "Excalidraw", icon: <HeatMapOutlined />, label: "Excalidraw" },
+  { key: "白板", icon: <HeatMapOutlined />, label: "白板" },
   { key: "日历", icon: <CalendarOutlined />, label: "日历" },
   { key: "卡片", icon: <CreditCardOutlined />, label: "卡片" },
   { key: "关系", icon: <ShareAltOutlined />, label: "关系" },
@@ -42,6 +42,8 @@ function App() {
 
   const 事项Ref = useRef<I增改查弹窗表单Ref>();
   const [目录, 设置目录] = useState([C目录[3]]);
+
+  const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
     持久化.加载(E持久化键.用户设置).then((启用的用户设置) => {
@@ -69,19 +71,23 @@ function App() {
       style={{ backgroundColor: "var(--b3-theme-surface)", height: "100%" }}
     >
       <Layout className={styles.App}>
-        <Sider className={styles.侧栏}>
+        <Sider
+          className={styles.slider}
+          collapsible
+          collapsed={collapsed}
+          onCollapse={setCollapsed}
+        >
           <div className={styles.logo}>
             <Button
               className={E按钮类型.默认}
               icon={<PlusCircleOutlined />}
               onClick={() => 事项Ref.current?.令表单状态为("添加")}
             >
-              <h3>喧嚣</h3>
+              {collapsed ? null : <h3>喧嚣</h3>}
             </Button>
           </div>
           <Menu
             mode="inline"
-            inlineCollapsed={true}
             items={目录}
             onSelect={(data) => {
               导航到("/" + data.key);

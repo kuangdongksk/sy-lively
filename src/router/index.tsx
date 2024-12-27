@@ -1,5 +1,5 @@
 import App from "@/pages";
-import Excalidraw from "@/pages/Excalidraw";
+import WhiteBoard from "@/pages/白板";
 import 主页 from "@/pages/主页";
 import 关系 from "@/pages/关系";
 import 卡片 from "@/pages/卡片";
@@ -34,8 +34,8 @@ const router = createHashRouter([
         ],
       },
       {
-        path: "Excalidraw",
-        element: <Excalidraw />,
+        path: "白板",
+        element: <WhiteBoard />,
       },
       {
         path: "日历",

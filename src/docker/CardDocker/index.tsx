@@ -1,10 +1,9 @@
 import { 卡片 } from "@/class/卡片";
 import SY文档 from "@/class/思源/文档";
 import Link from "@/基础组件/link";
-import { Tree } from "antd";
-import { DataNode } from "antd/es/tree";
 import { useEffect, useState } from "react";
 import styles from "./index.module.less";
+import ListItem from "./ListItem";
 
 function CardDocker(props: { 卡片文档ID: string }) {
   const { 卡片文档ID } = props;
@@ -44,42 +43,6 @@ function CardDocker(props: { 卡片文档ID: string }) {
     );
   };
 
-  const 加载数据 = async (treeNode: DataNode) => {
-    const 笔记本ID = await SY文档.根据ID获取笔记本ID(treeNode.key as string);
-
-    const { files } = await SY文档.根据ID列出文档(
-      笔记本ID,
-      treeNode.key as string
-    );
-    const data = await 卡片.获取指定文档下的卡片(treeNode.key as string);
-
-    const 子树 = files
-      .map(({ name1, id }) => ({
-        title: (
-          <Link
-            block={{ id, label: name1 }}
-            iconType={["ref", "link", "inset"]}
-          />
-        ),
-        key: id,
-        isLeaf: false,
-      }))
-      .concat(
-        data.map((item) => ({
-          title: (
-            <Link
-              block={{ id: item.ID, label: item.标题 }}
-              iconType={["ref", "link", "inset"]}
-            />
-          ),
-          key: item.ID,
-          isLeaf: true,
-        }))
-      );
-
-    设置树形卡片列表((origin) => updateTreeData(origin, treeNode.key, 子树));
-  };
-
   useEffect(() => {
     获取卡片();
   }, []);
@@ -88,38 +51,21 @@ function CardDocker(props: { 卡片文档ID: string }) {
     <div className={styles.cardDocker}>
       <div className={styles.title}>喧嚣卡片</div>
 
-      <div className={styles.content}>
-        <Tree
-          defaultExpandAll
-          loadData={加载数据}
-          selectable={false}
-          showLine
-          treeData={树形卡片列表}
-        />
-      </div>
+      <ul className={"b3-list b3-list--background " + styles.content}>
+        {树形卡片列表.map((item) => {
+          return (
+            <ListItem
+              key={item.key}
+              id={item.key}
+              title={item.title}
+              index={1}
+              isLeaf={item.isLeaf}
+            />
+          );
+        })}
+      </ul>
     </div>
   );
 }
 
 export default CardDocker;
-
-const updateTreeData = (
-  list: DataNode[],
-  key: React.Key,
-  children: DataNode[]
-): DataNode[] =>
-  list.map((node) => {
-    if (node.key === key) {
-      return {
-        ...node,
-        children,
-      };
-    }
-    if (node.children) {
-      return {
-        ...node,
-        children: updateTreeData(node.children, key, children),
-      };
-    }
-    return node;
-  });
