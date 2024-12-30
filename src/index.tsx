@@ -6,19 +6,19 @@ import {
   IEventBusMap,
   IProtyle,
   openTab,
-  Plugin,
-  Protyle,
+  Plugin
 } from "siyuan";
 import App from "./App";
 import Veil from "./class/veil";
 import { E卡片属性名称 } from "./class/卡片";
+import LYCard from "./class/卡片/LYCard";
 import { 触发器 } from "./class/触发器";
 import { E事项属性名称, E持久化键 } from "./constant/系统码";
 import CardDocker from "./docker/CardDocker";
 import { 仓库, 持久化atom } from "./store";
 import { 主题 } from "./style/theme";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
-import LYCard from "./class/卡片/LYCard";
+import { createWhiteBoard } from "./tools/白板";
 
 export const PluginId = "livelySaSa";
 
@@ -236,37 +236,41 @@ export default class SyLively extends Plugin {
 
     this.eventBus.on("open-menu-content", (e) => {
       // 添加新建卡片目录(e);
+      createWhiteBoard(e);
       that.veil.onOpenMenuContent(e);
     });
     this.eventBus.on("click-blockicon", (e) => {
       // 添加新建卡片目录(e);
+      createWhiteBoard(e);
       that.veil.onClickBlockIcon(e);
     });
     this.eventBus.on("open-menu-doctree", (e) =>
       that.veil.onOpenMenuDoctree(e)
     );
-    this.eventBus.on("loaded-protyle-dynamic", (e) => {
-      console.log("🚀 ~ SyLively ~ dynamic ~ e:", e);
-    });
+    this.eventBus.on("loaded-protyle-dynamic", (e) => {});
     this.eventBus.on("loaded-protyle-static", (e) => {
       that.veil.onLoadedProtyleStatic(e);
     });
     // this.eventBus.on("ws-main", (e) => {
     //   console.log("🚀 ~ SyLively ~ main ~ e:", e);
     // });
+
+    this.eventBus.on("open-siyuan-url-plugin", (e) => {
+      console.log("🚀 ~ SyLively ~ open-siyuan-url-plugin ~ e:", e);
+    });
   }
 
   添加斜杠命令() {
-    this.protyleSlash = [
-      {
-        filter: ["insert emoji 😊", "插入表情 😊", "crbqwx"],
-        html: `<div class="b3-list-item__first"><span class="b3-list-item__text">${this.i18n.insertEmoji}</span><span class="b3-list-item__meta">😊</span></div>`,
-        id: "insertEmoji",
-        callback(protyle: Protyle) {
-          protyle.insert("😊");
-        },
-      },
-    ];
+    // this.protyleSlash = [
+    //   {
+    //     filter: ["insert whiteBoard", "插入白板", "crbb"],
+    //     html: `<div class="b3-list-item__first"><span class="b3-list-item__text">插入白板</span><span class="b3-list-item__meta"></span></div>`,
+    //     id: PluginId + "-insert-whiteBoard",
+    //     callback(protyle: Protyle) {
+    //       protyle.insert("/html\n\n", true);
+    //     },
+    //   },
+    // ];
   }
 }
 

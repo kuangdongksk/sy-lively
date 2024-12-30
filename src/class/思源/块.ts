@@ -15,14 +15,15 @@ export class SY块 {
    * 优先级为 nextID > previousID > parentID
    * @returns 插入块的结果
    */
-  public static 插入块(options: {
+  public static async 插入块(options: {
     dataType: "markdown" | "dom";
     data: string;
     nextID?: string;
     previousID?: string;
     parentID?: string;
   }) {
-    return fetchSyncPost(EAPI.插入块, options);
+    const { data } = await fetchSyncPost(EAPI.插入块, options);
+    return data[0].doOperations[0].id;
   }
 
   /**

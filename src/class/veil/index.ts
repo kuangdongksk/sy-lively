@@ -159,7 +159,6 @@ export default class Veil {
   }
 
   public onClickBlockIcon(e: CustomEvent<IEventBusMap["click-blockicon"]>) {
-    console.log("🚀 ~ Veil ~ onClickBlockIcon ~ e:", e);
     const { blockElements, menu } = e.detail;
     const $element = $(blockElements[0]);
     const blockID = $element.data("nodeId");

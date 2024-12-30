@@ -1,5 +1,6 @@
 export const 自定义 = "custom";
 export const 思源协议 = "siyuan://blocks/";
+export const 思源插件协议 = "siyuan://plugins/sy-lively/";
 
 export const 喧嚣 = "lively";
 export const C领域 = "domain";
