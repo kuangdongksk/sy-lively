@@ -1,19 +1,42 @@
+import { SY块 } from "@/class/思源/块";
 import { 思源协议 } from "@/constant/系统码";
 import { strIsRef } from "@/tools/SY/link";
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
   BaseBoxShapeUtil,
+  createTLStore,
   Editor,
   HTMLContainer,
   TLBaseShape,
   Tldraw,
+  TLStore,
+  useEditor,
 } from "tldraw";
 import "tldraw/tldraw.css";
 
-export interface ITlWbProps {}
+export interface ITlWbProps {
+  blockId: string;
+}
 
 function TlWb(props: ITlWbProps) {
-  const {} = props;
+  const { blockId } = props;
+
+  const storeRef = useRef<TLStore>();
+  const editorRef = useRef<Editor | null>(useEditor());
+
+  const getData = useCallback(async () => {
+    const initData = await SY块.获取块Kramdown源码(blockId);
+    storeRef.current = createTLStore({ id: blockId, initialData: "" });
+  }, []);
+
+  const saveData = useCallback(async () => {
+    editorRef.current.store.serialize("document");
+  }, [editorRef.current]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   const externalContentHandlerCom = useCallback((info) => {
     console.log("🚀 ~ externalContentHandlerCom ~ info:", info);
   }, []);
@@ -55,11 +78,10 @@ function TlWb(props: ITlWbProps) {
     <div
       style={{ height: "100%", width: "100%" }}
       onDrop={(e) => {
-        e.preventDefault(); 
+        e.preventDefault();
         e.stopPropagation();
         console.log("🚀 ~ TlWb ~ e:", e);
       }}
-      
       onDragOver={(e) => {
         e.preventDefault();
         console.log("🚀 ~ TlWb ~ e:", e);
@@ -67,10 +89,11 @@ function TlWb(props: ITlWbProps) {
     >
       <Tldraw
         shapeUtils={[DangerousHtmlExample]}
+        store={storeRef.current}
+        onMount={handleMount}
         onUiEvent={(e, data) => {
           console.log("🚀 ~ e:", e, data);
         }}
-        onMount={handleMount}
       />
     </div>
   );

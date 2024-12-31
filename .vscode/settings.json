@@ -18,7 +18,8 @@
     "antd",
     "Excalidraw",
     "Sider",
-    "siyuan"
+    "siyuan",
+    "Tldraw"
   ],
   "npm.packageManager": "pnpm"
 }

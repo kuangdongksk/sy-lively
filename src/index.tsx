@@ -1,28 +1,21 @@
 import { ConfigProvider } from "antd";
 import { Provider } from "jotai";
 import ReactDOM from "react-dom/client";
-import {
-  getFrontend,
-  IEventBusMap,
-  IProtyle,
-  openTab,
-  Plugin
-} from "siyuan";
+import { getFrontend, IEventBusMap, IProtyle, openTab, Plugin } from "siyuan";
 import App from "./App";
 import Veil from "./class/veil";
 import { E卡片属性名称 } from "./class/卡片";
 import LYCard from "./class/卡片/LYCard";
 import { 触发器 } from "./class/触发器";
-import { E事项属性名称, E持久化键 } from "./constant/系统码";
+import { EPluginPath, E事项属性名称, E持久化键 } from "./constant/系统码";
 import CardDocker from "./docker/CardDocker";
 import { 仓库, 持久化atom } from "./store";
 import { 主题 } from "./style/theme";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
 import { createWhiteBoard } from "./tools/白板";
+import TlWb from "./业务组件/WhiteBoard/TlWb/idnex";
 
 export const PluginId = "livelySaSa";
-
-const TAB_TYPE = "lively_tab";
 
 export default class SyLively extends Plugin {
   private isMobile: boolean;
@@ -78,13 +71,21 @@ export default class SyLively extends Plugin {
 
   uninstall() {}
 
-  打开页签() {
+  打开页签(param: {
+    id: EPluginPath;
+    data?: {
+      blockId: string;
+    };
+  }) {
+    const { data, id } = param;
+
     openTab({
       app: this.app,
       custom: {
         icon: "iconCalendar",
         title: "喧嚣",
-        id: this.name + TAB_TYPE,
+        id: this.name + id,
+        data,
       },
     });
   }
@@ -115,7 +116,9 @@ export default class SyLively extends Plugin {
       langKey: "喧嚣-打开喧嚣",
       hotkey: "⇧⌥X",
       callback: () => {
-        this.打开页签();
+        this.打开页签({
+          id: EPluginPath.SYLively,
+        });
       },
     });
 
@@ -141,7 +144,9 @@ export default class SyLively extends Plugin {
         if (this.isMobile) {
           return;
         } else {
-          this.打开页签();
+          this.打开页签({
+            id: EPluginPath.SYLively,
+          });
         }
       },
     });
@@ -181,8 +186,9 @@ export default class SyLively extends Plugin {
     const getData = this.getData;
     const saveData = this.putData;
 
+    //#region 添加插件主页面
     this.addTab({
-      type: TAB_TYPE,
+      type: EPluginPath.SYLively,
       init() {
         this.element.appendChild(tabDiv);
         if (tabDiv) {
@@ -204,6 +210,34 @@ export default class SyLively extends Plugin {
         this.element.removeChild(tabDiv);
       },
     });
+    //#endregion
+
+    //#region 添加白板编辑页面
+    this.addTab({
+      type: EPluginPath.EditWhiteBoard,
+      init() {
+        const blockId = this.data?.blockId;
+        this.element.appendChild(tabDiv);
+        if (tabDiv) {
+          const root = ReactDOM.createRoot(tabDiv);
+
+          仓库.set(持久化atom, {
+            加载: getData,
+            保存: saveData,
+          });
+          root.render(
+            <Provider store={仓库}>
+              <TlWb blockId={blockId} />
+            </Provider>
+          );
+        }
+      },
+      beforeDestroy() {},
+      destroy() {
+        this.element.removeChild(tabDiv);
+      },
+    });
+    //#endregion
   }
 
   添加事件监听() {
@@ -256,7 +290,17 @@ export default class SyLively extends Plugin {
     // });
 
     this.eventBus.on("open-siyuan-url-plugin", (e) => {
-      console.log("🚀 ~ SyLively ~ open-siyuan-url-plugin ~ e:", e);
+      const url = new URL(e.detail.url);
+      const path = url.pathname;
+      const params = new URLSearchParams(url.search);
+      const blockID = params.get("blockID");
+
+      if (path.includes(EPluginPath.EditWhiteBoard)) {
+        this.打开页签({
+          id: EPluginPath.EditWhiteBoard,
+          data: { blockId: blockID },
+        });
+      }
     });
   }
 

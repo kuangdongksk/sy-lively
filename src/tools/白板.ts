@@ -1,6 +1,6 @@
 import { SY块 } from "@/class/思源/块";
 import { $, Cash } from "@/constant/三方库";
-import { 思源插件协议 } from "@/constant/系统码";
+import { EPluginPath, 思源插件协议 } from "@/constant/系统码";
 import { IEventBusMap } from "siyuan";
 import { 生成块ID } from "./事项/事项";
 import Kramdown助手 from "@/class/块/Kramdown助手";
@@ -28,7 +28,7 @@ export function createWhiteBoard(
     label: "添加白板",
     click: async () => {
       const id = 生成块ID();
-      const url = 思源插件协议 + "editWhiteBoard&blockID=" + id;
+      const url = 思源插件协议 + EPluginPath.EditWhiteBoard + "&blockID=" + id;
       await SY块.插入块({
         dataType: "markdown",
         data: Kramdown助手.生成段落块("", id),
