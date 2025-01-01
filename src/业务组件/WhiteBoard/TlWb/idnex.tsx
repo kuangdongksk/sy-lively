@@ -10,7 +10,6 @@ import {
   TLBaseShape,
   Tldraw,
   TLStore,
-  useEditor,
 } from "tldraw";
 import "tldraw/tldraw.css";
 
@@ -22,18 +21,13 @@ function TlWb(props: ITlWbProps) {
   const { blockId } = props;
 
   const storeRef = useRef<TLStore>();
-  const editorRef = useRef<Editor | null>(useEditor());
-
   const getData = useCallback(async () => {
     const initData = await SY块.获取块Kramdown源码(blockId);
-    storeRef.current = createTLStore({ id: blockId, initialData: "" });
+    storeRef.current = createTLStore({ id: blockId });
   }, []);
 
-  const saveData = useCallback(async () => {
-    editorRef.current.store.serialize("document");
-  }, [editorRef.current]);
-
   useEffect(() => {
+    console.log("🚀 ~ TlWb ~ blockId:", blockId);
     getData();
   }, []);
 

@@ -28,7 +28,13 @@ export function createWhiteBoard(
     label: "添加白板",
     click: async () => {
       const id = 生成块ID();
-      const url = 思源插件协议 + EPluginPath.EditWhiteBoard + "&blockID=" + id;
+      const params = new URLSearchParams({
+        blockID: id,
+      });
+      const url = `${思源插件协议}${
+        EPluginPath.EditWhiteBoard
+      }?${params.toString()}`;
+
       await SY块.插入块({
         dataType: "markdown",
         data: Kramdown助手.生成段落块("", id),

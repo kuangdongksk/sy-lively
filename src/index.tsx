@@ -1,17 +1,17 @@
 import { ConfigProvider } from "antd";
 import { Provider } from "jotai";
 import ReactDOM from "react-dom/client";
-import { getFrontend, IEventBusMap, IProtyle, openTab, Plugin } from "siyuan";
+import { getFrontend, IProtyle, openTab, Plugin } from "siyuan";
 import App from "./App";
 import Veil from "./class/veil";
-import { E卡片属性名称 } from "./class/卡片";
 import LYCard from "./class/卡片/LYCard";
 import { 触发器 } from "./class/触发器";
-import { EPluginPath, E事项属性名称, E持久化键 } from "./constant/系统码";
+import { EPluginPath, E持久化键 } from "./constant/系统码";
 import CardDocker from "./docker/CardDocker";
 import { 仓库, 持久化atom } from "./store";
 import { 主题 } from "./style/theme";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
+import { 添加全局样式 } from "./tools/样式";
 import { createWhiteBoard } from "./tools/白板";
 import TlWb from "./业务组件/WhiteBoard/TlWb/idnex";
 
@@ -241,31 +241,31 @@ export default class SyLively extends Plugin {
   }
 
   添加事件监听() {
-    const 添加新建卡片目录 = (
-      event: CustomEvent<IEventBusMap["open-menu-content"]>
-    ) => {
-      const { menu } = event.detail;
-      const selectedText = window.getSelection().toString();
-      menu.addItem({
-        id: PluginId + "-new-card",
-        label: "喧嚣-新建卡片",
-        submenu: [
-          {
-            label: "新建卡片",
-            click: () => {
-              this.打开新建卡片();
-            },
-          },
-          {
-            label: "新建卡片(选中文本)",
-            click: () => {
-              this.打开新建卡片();
-            },
-            disabled: !selectedText,
-          },
-        ],
-      });
-    };
+    // const 添加新建卡片目录 = (
+    //   event: CustomEvent<IEventBusMap["open-menu-content"]>
+    // ) => {
+    //   const { menu } = event.detail;
+    //   const selectedText = window.getSelection().toString();
+    //   menu.addItem({
+    //     id: PluginId + "-new-card",
+    //     label: "喧嚣-新建卡片",
+    //     submenu: [
+    //       {
+    //         label: "新建卡片",
+    //         click: () => {
+    //           this.打开新建卡片();
+    //         },
+    //       },
+    //       {
+    //         label: "新建卡片(选中文本)",
+    //         click: () => {
+    //           this.打开新建卡片();
+    //         },
+    //         disabled: !selectedText,
+    //       },
+    //     ],
+    //   });
+    // };
     const that = this;
 
     this.eventBus.on("open-menu-content", (e) => {
@@ -316,37 +316,4 @@ export default class SyLively extends Plugin {
     //   },
     // ];
   }
-}
-
-function 添加全局样式() {
-  const 卡片样式 = document.createElement("style");
-  document.head.appendChild(卡片样式);
-  卡片样式.innerHTML = `
-    [${E事项属性名称.ID}]:not(.protyle-wysiwyg) {
-      background-color: var(--b3-theme-background);
-
-      padding: 12px !important;
-      margin: 12px 0 !important;
-
-      border: 1px solid var(--b3-theme-on-surface);
-    }
-    [${E卡片属性名称.标题}]:not(.protyle-wysiwyg) {
-      background-color: var(--b3-theme-background);
-
-      padding: 12px !important;
-      margin: 12px 0 !important;
-
-      border: 1px solid var(--b3-theme-on-surface);
-      border-radius: 24px !important;
-    }
-    [${E卡片属性名称.标题}]:hover:not(.protyle-wysiwyg) {
-      background-color: var(--b3-theme-background-light);
-    }
-    [${E卡片属性名称.标题}]>.h6:not(.protyle-wysiwyg) {
-      border-bottom: 1px solid var(--b3-theme-on-surface);
-    }    
-    [${E卡片属性名称.标题}]>.protyle-attr:not(.protyle-wysiwyg) {
-      position: initial;
-    }
-  `;
 }
