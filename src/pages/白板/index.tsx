@@ -1,4 +1,4 @@
-import TlWb from "@/业务组件/WhiteBoard/TlWb/idnex";
+import TlWb from "@/业务组件/WhiteBoard/TlWb";
 import "tldraw/tldraw.css";
 export interface IExcalidrawProps {}
 

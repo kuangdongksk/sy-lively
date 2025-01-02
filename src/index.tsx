@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 import { getFrontend, IProtyle, openTab, Plugin } from "siyuan";
 import App from "./App";
 import Veil from "./class/veil";
+import WhiteBoard from "./class/whiteBoard";
 import LYCard from "./class/卡片/LYCard";
 import { 触发器 } from "./class/触发器";
 import { EPluginPath, E持久化键 } from "./constant/系统码";
@@ -12,8 +13,7 @@ import { 仓库, 持久化atom } from "./store";
 import { 主题 } from "./style/theme";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
 import { 添加全局样式 } from "./tools/样式";
-import { createWhiteBoard } from "./tools/白板";
-import TlWb from "./业务组件/WhiteBoard/TlWb/idnex";
+import TlWb from "./业务组件/WhiteBoard/TlWb";
 
 export const PluginId = "livelySaSa";
 
@@ -40,6 +40,7 @@ export default class SyLively extends Plugin {
   };
 
   private veil = new Veil(this.getData, this.putData);
+  private whiteBoard = new WhiteBoard({ app: this.app, pluginName: this.name });
   private 提示器1: 触发器 = new 触发器(
     this.getData,
     this.putData,
@@ -71,21 +72,13 @@ export default class SyLively extends Plugin {
 
   uninstall() {}
 
-  打开页签(param: {
-    id: EPluginPath;
-    data?: {
-      blockId: string;
-    };
-  }) {
-    const { data, id } = param;
-
+  打开页签() {
     openTab({
       app: this.app,
       custom: {
         icon: "iconCalendar",
         title: "喧嚣",
-        id: this.name + id,
-        data,
+        id: this.name + EPluginPath.SYLively,
       },
     });
   }
@@ -116,9 +109,7 @@ export default class SyLively extends Plugin {
       langKey: "喧嚣-打开喧嚣",
       hotkey: "⇧⌥X",
       callback: () => {
-        this.打开页签({
-          id: EPluginPath.SYLively,
-        });
+        this.打开页签();
       },
     });
 
@@ -144,9 +135,7 @@ export default class SyLively extends Plugin {
         if (this.isMobile) {
           return;
         } else {
-          this.打开页签({
-            id: EPluginPath.SYLively,
-          });
+          this.打开页签();
         }
       },
     });
@@ -270,38 +259,27 @@ export default class SyLively extends Plugin {
 
     this.eventBus.on("open-menu-content", (e) => {
       // 添加新建卡片目录(e);
-      createWhiteBoard(e);
+      that.whiteBoard.createWhiteBoard(e);
       that.veil.onOpenMenuContent(e);
     });
     this.eventBus.on("click-blockicon", (e) => {
       // 添加新建卡片目录(e);
-      createWhiteBoard(e);
+      that.whiteBoard.createWhiteBoard(e);
       that.veil.onClickBlockIcon(e);
     });
     this.eventBus.on("open-menu-doctree", (e) =>
       that.veil.onOpenMenuDoctree(e)
     );
-    this.eventBus.on("loaded-protyle-dynamic", (e) => {});
+    this.eventBus.on("loaded-protyle-dynamic", () => {});
     this.eventBus.on("loaded-protyle-static", (e) => {
       that.veil.onLoadedProtyleStatic(e);
+      that.whiteBoard.onLoadedProtyleStatic();
     });
     // this.eventBus.on("ws-main", (e) => {
     //   console.log("🚀 ~ SyLively ~ main ~ e:", e);
     // });
 
-    this.eventBus.on("open-siyuan-url-plugin", (e) => {
-      const url = new URL(e.detail.url);
-      const path = url.pathname;
-      const params = new URLSearchParams(url.search);
-      const blockID = params.get("blockID");
-
-      if (path.includes(EPluginPath.EditWhiteBoard)) {
-        this.打开页签({
-          id: EPluginPath.EditWhiteBoard,
-          data: { blockId: blockID },
-        });
-      }
-    });
+    this.eventBus.on("open-siyuan-url-plugin", () => {});
   }
 
   添加斜杠命令() {

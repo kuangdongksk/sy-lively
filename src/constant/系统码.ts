@@ -63,6 +63,12 @@ export enum EVeil属性名称 {
   pwdHash = EVeil属性前缀 + "pwdHash",
 }
 
+const EWhiteBoard属性前缀 = `${属性前缀}whiteBoard-`;
+
+export enum EWhiteBoard属性名称 {
+  WhiteBoard = EWhiteBoard属性前缀 + "WhiteBoard",
+}
+
 export enum E持久化键 {
   用户设置 = "用户设置",
   当前版本 = "当前版本",

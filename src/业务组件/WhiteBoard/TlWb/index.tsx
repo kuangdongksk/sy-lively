@@ -1,34 +1,33 @@
-import { SY块 } from "@/class/思源/块";
 import { 思源协议 } from "@/constant/系统码";
 import { strIsRef } from "@/tools/SY/link";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 import {
   BaseBoxShapeUtil,
   createTLStore,
   Editor,
   HTMLContainer,
   TLBaseShape,
-  Tldraw,
-  TLStore,
+  Tldraw
 } from "tldraw";
 import "tldraw/tldraw.css";
+import ActionsMenu from "./components/menu/ActionsMenu";
+import QuickActions from "./components/menu/QuickActions";
 
 export interface ITlWbProps {
-  blockId: string;
+  blockId?: string;
 }
 
 function TlWb(props: ITlWbProps) {
   const { blockId } = props;
 
-  const storeRef = useRef<TLStore>();
   const getData = useCallback(async () => {
-    const initData = await SY块.获取块Kramdown源码(blockId);
-    storeRef.current = createTLStore({ id: blockId });
+    // const initData = await SY块.获取块Kramdown源码(blockId);
   }, []);
 
   useEffect(() => {
-    console.log("🚀 ~ TlWb ~ blockId:", blockId);
-    getData();
+    if (blockId) {
+      getData();
+    }
   }, []);
 
   const externalContentHandlerCom = useCallback((info) => {
@@ -82,8 +81,12 @@ function TlWb(props: ITlWbProps) {
       }}
     >
       <Tldraw
+        components={{ ActionsMenu: ActionsMenu, QuickActions: QuickActions }}
         shapeUtils={[DangerousHtmlExample]}
-        store={storeRef.current}
+        store={createTLStore({
+          id: blockId || undefined,
+          defaultName: blockId || undefined,
+        })}
         onMount={handleMount}
         onUiEvent={(e, data) => {
           console.log("🚀 ~ e:", e, data);
