@@ -1,8 +1,5 @@
-import { I卡片 } from "@/class/卡片";
-import NodeCanvas from "@/业务组件/关系图/Pixi";
+import { I卡片, 卡片 as 卡片类 } from "@/class/卡片";
 import { useEffect, useState } from "react";
-import { 卡片 as 卡片类 } from "@/class/卡片";
-import TF from "@/业务组件/关系图/TF";
 
 export interface I卡片Props {}
 
@@ -25,11 +22,6 @@ function 卡片(props: I卡片Props) {
     获取所有卡片();
   }, []);
 
-  return (
-    <>
-      {/* <NodeCanvas nodes={所有卡片} /> */}
-      <TF 卡片列表={所有卡片} />
-    </>
-  );
+  return <>{/* <NodeCanvas nodes={所有卡片} /> */}</>;
 }
 export default 卡片;

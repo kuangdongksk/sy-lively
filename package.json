@@ -3,9 +3,7 @@
   "version": "0.3.5",
   "type": "module",
   "description": "这是喧嚣的思源插件",
-  "repository": "",
-  "homepage": "",
-  "author": "frostime",
+  "author": "kuangdongksk",
   "license": "MIT",
   "scripts": {
     "ml": "node --no-warnings ./scripts/make_dev_link.js",
@@ -16,12 +14,11 @@
     "make-install": "vite build && node --no-warnings ./scripts/make_install.js"
   },
   "devDependencies": {
-    "@types/node": "^22.10.3",
+    "@types/node": "^22.10.4",
     "fast-glob": "^3.3.2",
     "glob": "11.0.0",
     "less": "^4.2.1",
     "minimist": "^1.2.8",
-    "postcss": "^8.4.49",
     "rollup-plugin-livereload": "^2.0.5",
     "siyuan": "1.0.6",
     "ts-node": "^10.9.2",
@@ -34,15 +31,7 @@
     "@ant-design/colors": "^7.2.0",
     "@ant-design/icons": "^5.5.2",
     "@ant-design/pro-components": "^2.8.2",
-    "@antv/g": "^6.1.18",
-    "@antv/g6": "^5.0.39",
-    "@antv/g6-extension-react": "^0.1.14",
-    "@excalidraw/excalidraw": "^0.17.6",
-    "@pixi/react": "^7.1.2",
-    "@react-three/drei": "^9.120.5",
-    "@react-three/fiber": "^8.17.10",
     "@types/react": "^18.3.18",
-    "@types/three": "^0.171.0",
     "@vitejs/plugin-react": "^4.3.4",
     "ahooks": "^3.8.4",
     "antd": "^5.22.7",
@@ -53,15 +42,9 @@
     "jshashes": "^1.0.8",
     "nanoid": "^5.0.9",
     "pinyin-pro": "^3.26.0",
-    "pixi.js": "^7.4.2",
-    "prop-types": "^15.8.1",
-    "rc-field-form": "^2.7.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.1",
-    "three": "^0.171.0",
-    "tldraw": "^3.6.1",
-    "webpack": "^5.97.1",
-    "workerize-loader": "^2.0.2"
+    "tldraw": "^3.6.1"
   }
 }

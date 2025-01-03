@@ -1,4 +1,3 @@
-import 关系图 from "@/业务组件/关系图";
 import styles from "./index.module.less";
 import { Spin } from "antd";
 import { useEffect, useState } from "react";
@@ -25,11 +24,7 @@ function 关系(props: I关系Props) {
   return (
     <div className={styles.撑满}>
       <Spin spinning={加载中}>
-        {卡片文档ID ? (
-          <关系图 卡片文档ID={卡片文档ID} />
-        ) : (
-          <div>请先到设置中生成卡片文档</div>
-        )}
+        {卡片文档ID ? <></> : <div>请先到设置中生成卡片文档</div>}
       </Spin>
     </div>
   );
