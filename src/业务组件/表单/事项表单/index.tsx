@@ -1,10 +1,9 @@
-import { OptionsHelper } from "@/class/OptionsHelper";
+import { OptionsHelper } from "@/class/helper/OptionsHelper";
 import 增改查弹窗表单, {
   I增改查弹窗表单Ref,
   T增改查,
 } from "@/components/增改查弹窗表单";
-import { E事项状态, E提醒 } from "@/constant/状态配置";
-import { E时间格式化 } from "@/constant/配置常量";
+import { E事项状态, E提醒, E时间格式化 } from "@/constant/syLively";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 生成事项 } from "@/tools/事项/事项";
 import {
@@ -15,7 +14,7 @@ import {
 } from "@/tools/事项/事项块";
 import { I事项, T层级 } from "@/types/喧嚣/事项";
 import Cron输入 from "@/业务组件/表单项/Cron输入";
-import { E按钮类型 } from "@/基础组件/按钮";
+import { E按钮类型 } from "@/components/base/sy/按钮";
 import { Button, Form, Input, message, Select } from "antd";
 import Checkbox from "antd/es/checkbox/Checkbox";
 import dayjs from "dayjs";

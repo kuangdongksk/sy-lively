@@ -1,15 +1,19 @@
-import { 系统推送消息 } from "@/API/推送消息";
+import MsgSender from "@/class/helper/MsgSender";
 import { SY块 } from "@/class/思源/块";
-import { E事项状态, E提醒, 获取提醒参数 } from "@/constant/状态配置";
+import {
+  E事项状态,
+  E提醒,
+  E时间格式化,
+  获取提醒参数,
+} from "@/constant/syLively";
 import { E持久化键 } from "@/constant/系统码";
-import { E时间格式化 } from "@/constant/配置常量";
 import { 事项转为属性 } from "@/tools/事项/事项";
 import { 更新事项块 } from "@/tools/事项/事项块";
 import { I事项 } from "@/types/喧嚣/事项";
 import CronParser from "cron-parser";
 import dayjs from "dayjs";
 import SQLer from "./SQLer";
-import { 卡片 as 卡片类 } from "./卡片";
+import { 卡片 as 卡片类 } from "@/class/卡片/index";
 
 const 最新数据版本 = {
   事项数据版本: 1,
@@ -54,7 +58,7 @@ export class 触发器 {
     const { 事项数据版本, 卡片数据版本 } = 最新数据版本;
 
     if (事项版本 !== 事项数据版本) {
-      系统推送消息({
+      MsgSender.sySendMsg({
         msg: "数据版本不一致，正在进行数据升级",
         timeout: 20000,
       });
@@ -75,7 +79,7 @@ export class 触发器 {
     }
 
     if (卡片版本 !== 卡片数据版本) {
-      系统推送消息({
+      MsgSender.sySendMsg({
         msg: "数据版本不一致，正在进行数据升级",
         timeout: 20000,
       });
@@ -140,7 +144,7 @@ export class 触发器 {
       return;
     }
 
-    系统推送消息({
+    MsgSender.sySendMsg({
       msg: `有${this.即将开始事项.join(",")}等${
         this.即将开始事项.length
       }个事项即将开始，${this.逾期事项.join(",")}等${

@@ -1,6 +1,6 @@
 import { 卡片 } from "@/class/卡片";
 import SY文档 from "@/class/思源/文档";
-import Link from "@/基础组件/link";
+import Link from "@/components/base/rc/Link";
 import { DownOutlined, RightOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 

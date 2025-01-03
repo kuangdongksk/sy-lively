@@ -5,7 +5,7 @@ import { 持久化atom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 开启调试, 调试 } from "@/tools/调试";
 import 事项表单 from "@/业务组件/表单/事项表单";
-import { E按钮类型 } from "@/基础组件/按钮";
+import { E按钮类型 } from "@/components/base/sy/按钮";
 import {
   CalendarOutlined,
   CreditCardOutlined,

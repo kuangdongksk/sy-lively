@@ -1,9 +1,9 @@
 import { MD5 } from "@/constant/三方库";
 import { EVeil属性名称, E持久化键 } from "@/constant/系统码";
 import { PluginId } from "@/index";
-import DiaForm from "@/基础组件/弹出表单";
-import SYFormItem from "@/基础组件/表单/表单项";
-import SYInput from "@/基础组件/输入";
+import SYDiaForm from "@/components/base/sy/弹出表单";
+import SYFormItem from "@/components/base/sy/表单/表单项";
+import SYInput from "@/components/base/sy/输入";
 import $, { Cash } from "cash-dom";
 import { IEventBusMap } from "siyuan";
 import { SY块 } from "../思源/块";
@@ -227,7 +227,7 @@ export default class Veil {
   }
 
   private addPassword($element: Cash, noteId: string, type: TVeilTargetType) {
-    new DiaForm<{
+    new SYDiaForm<{
       pwd: string;
       pwdC: string;
     }>({

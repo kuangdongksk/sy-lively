@@ -1,4 +1,4 @@
-import SQLer from "@/class/SQLer";
+import SQLer from "@/class/helper/SQLer";
 import { SY块 } from "@/class/思源/块";
 
 export const 开启调试 = false;

@@ -1,7 +1,7 @@
 import { MD5 } from "@/constant/三方库";
-import DiaForm from "@/基础组件/弹出表单";
-import SYFormItem from "@/基础组件/表单/表单项";
-import SYInput from "@/基础组件/输入";
+import SYDiaForm from "@/components/base/sy/弹出表单";
+import SYFormItem from "@/components/base/sy/表单/表单项";
+import SYInput from "@/components/base/sy/输入";
 import $, { Cash } from "cash-dom";
 
 export type TVeilTargetType = "目录" | "页签" | "内容区" | "块";
@@ -52,7 +52,7 @@ export default class VeilElement {
   }
 
   unlock(passwordHash: string) {
-    new DiaForm<{
+    new SYDiaForm<{
       pwd: string;
     }>({
       dialogConfig: {

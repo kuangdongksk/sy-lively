@@ -1,6 +1,6 @@
 import { Button } from "antd";
 import { useNavigate, useRouteError } from "react-router-dom";
-import { E按钮类型 } from "@/基础组件/按钮";
+import { E按钮类型 } from "@/components/base/sy/按钮";
 import styles from "./index.module.less";
 
 function 错误页面() {

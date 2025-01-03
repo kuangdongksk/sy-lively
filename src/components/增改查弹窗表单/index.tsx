@@ -1,4 +1,4 @@
-import { E按钮类型 } from "@/基础组件/按钮";
+import { E按钮类型 } from "@/components/base/sy/按钮";
 import { Button, Form, Modal } from "antd";
 import { forwardRef, Ref, useImperativeHandle, useState } from "react";
 import styles from "./index.module.less";

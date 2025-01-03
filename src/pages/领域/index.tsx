@@ -1,4 +1,4 @@
-import SQLer from "@/class/SQLer";
+import SQLer from "@/class/helper/SQLer";
 import { 用户设置Atom } from "@/store/用户设置";
 import { I领域 } from "@/types/喧嚣/事项";
 import { useAtom } from "jotai";

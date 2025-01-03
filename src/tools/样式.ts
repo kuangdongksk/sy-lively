@@ -2,9 +2,9 @@ import { E卡片属性名称 } from "@/class/卡片";
 import { E事项属性名称 } from "@/constant/系统码";
 
 export function 添加全局样式() {
-  const 卡片样式 = document.createElement("style");
-  document.head.appendChild(卡片样式);
-  卡片样式.innerHTML = `
+  const styleTag = document.createElement("style");
+  document.head.appendChild(styleTag);
+  styleTag.innerHTML = `
     [${E事项属性名称.ID}]:not(.protyle-wysiwyg) {
       background-color: var(--b3-theme-background);
 

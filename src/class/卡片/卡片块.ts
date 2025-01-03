@@ -1,8 +1,8 @@
 import { SY块 } from "@/class/思源/块";
 import { E块属性名称 } from "@/constant/系统码";
 import { I卡片, 卡片 as 卡片类 } from ".";
-import SQLer from "../SQLer";
-import { default as KH } from "../块/Kramdown助手";
+import SQLer from "../helper/SQLer";
+import { default as KH } from "../helper/Kramdown助手";
 import SY文档 from "../思源/文档";
 
 export class 卡片块 {

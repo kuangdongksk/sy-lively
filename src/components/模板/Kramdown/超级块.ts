@@ -1,6 +1,6 @@
-import Kramdown助手 from "@/class/块/Kramdown助手";
+import Kramdown助手 from "@/class/helper/Kramdown助手";
 import { E块属性名称 } from "@/constant/系统码";
-import { E时间格式化 } from "@/constant/配置常量";
+import { E时间格式化 } from "@/constant/syLively";
 import { I事项 } from "@/types/喧嚣/事项";
 import dayjs from "dayjs";
 

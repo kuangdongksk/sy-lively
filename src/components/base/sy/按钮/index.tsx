@@ -8,7 +8,7 @@ export enum E按钮类型 {
   删除 = "b3-button b3-button--remove",
 }
 
-export default class Button {
+export default class SYBtn {
   public button = document.createElement("button");
   public $button: Cash;
 

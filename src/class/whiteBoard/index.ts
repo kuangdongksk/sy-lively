@@ -2,7 +2,7 @@ import { $, Cash } from "@/constant/三方库";
 import { EPluginPath, EWhiteBoard属性名称 } from "@/constant/系统码";
 import { 生成块ID } from "@/tools/事项/事项";
 import { App, IEventBusMap, openTab } from "siyuan";
-import Kramdown助手 from "../块/Kramdown助手";
+import Kramdown助手 from "../helper/Kramdown助手";
 import { SY块 } from "../思源/块";
 
 export default class WhiteBoard {

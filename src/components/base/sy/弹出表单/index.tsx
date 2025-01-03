@@ -9,7 +9,7 @@ export interface IResult {
   message?: string;
 }
 
-export default class DiaForm<TFormValue> {
+export default class SYDiaForm<TFormValue> {
   dialog: Dialog;
 
   constructor(props: {

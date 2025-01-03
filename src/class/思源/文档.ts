@@ -1,6 +1,6 @@
 import { EAPI } from "@/constant/API路径";
 import { fetchSyncPost } from "siyuan";
-import SQLer from "../SQLer";
+import SQLer from "../helper/SQLer";
 import { SY笔记本 } from "./笔记本";
 
 export default class SY文档 {

@@ -1,6 +1,5 @@
-import { E事项状态, E提醒 } from "@/constant/状态配置";
 import { E事项属性名称 } from "@/constant/系统码";
-import { E时间格式化 } from "@/constant/配置常量";
+import { E事项状态, E提醒, E时间格式化 } from "@/constant/syLively";
 import { I事项, T层级 } from "@/types/喧嚣/事项";
 import { 根据枚举的值获取枚举的键 } from "@/utils/枚举";
 import dayjs from "dayjs";

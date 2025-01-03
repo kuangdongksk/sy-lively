@@ -1,5 +1,5 @@
 import { E块属性名称 } from "@/constant/系统码";
-import { E时间格式化 } from "@/constant/配置常量";
+import { E时间格式化 } from "@/constant/syLively";
 import { 属性转化为事项 } from "@/tools/事项/事项";
 import { 为事项添加领域分类, 整理事项, 组合领域分类 } from "@/tools/结构转换";
 import {

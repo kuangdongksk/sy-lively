@@ -1,12 +1,11 @@
-import SQLer from "@/class/SQLer";
+import SQLer from "@/class/helper/SQLer";
 import 进度条 from "@/components/基础/进度条";
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
-import { E事项状态 } from "@/constant/状态配置";
 import { E持久化键 } from "@/constant/系统码";
 import { 持久化atom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
 import { I事项, I分类, I领域 } from "@/types/喧嚣/事项";
-import { E按钮类型 } from "@/基础组件/按钮";
+import { E按钮类型 } from "@/components/base/sy/按钮";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Dropdown, List, message, Tooltip } from "antd";
 import { useAtom } from "jotai";
@@ -15,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { 添加领域 } from "../..";
 import 分类表单 from "../../../../业务组件/表单/分类表单";
 import styles from "./index.module.less";
+import { E事项状态 } from "@/constant/syLively";
 
 function 领域卡片(props: { 领域: I领域 }) {
   const 导航到 = useNavigate();

@@ -1,12 +1,12 @@
-import SQLer from "@/class/SQLer";
-import Kramdown助手 from "@/class/块/Kramdown助手";
+import SQLer from "@/class/helper/SQLer";
+import Kramdown助手 from "@/class/helper/Kramdown助手";
 import { SY块 } from "@/class/思源/块";
 import SY文档 from "@/class/思源/文档";
 import {
   根据事项生成信息块,
   生成事项块Kramdown,
 } from "@/components/模板/Kramdown/超级块";
-import { E时间格式化 } from "@/constant/配置常量";
+import { E时间格式化 } from "@/constant/syLively";
 import { I事项 } from "@/types/喧嚣/事项";
 import dayjs from "dayjs";
 import { 事项转为属性 } from "./事项";

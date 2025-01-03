@@ -1,7 +1,6 @@
 import 进度条 from "@/components/基础/进度条";
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
 import { 事项列配置 } from "@/constant/columns/事项";
-import { E事项状态 } from "@/constant/状态配置";
 import 删除事项 from "@/pages/领域/components/删除事项";
 import { I事项 } from "@/types/喧嚣/事项";
 import 事项表单 from "@/业务组件/表单/事项表单";
@@ -11,7 +10,8 @@ import { Button } from "antd";
 import dayjs from "dayjs";
 import { MutableRefObject, useRef, useState } from "react";
 import style from "./index.module.less";
-import { E按钮类型 } from "@/基础组件/按钮";
+import { E按钮类型 } from "@/components/base/sy/按钮";
+import { E事项状态 } from "@/constant/syLively";
 
 export interface I事项表格Props<T事项> {
   标题?: React.ReactNode;

@@ -2,9 +2,8 @@ import 数字标签 from "@/components/基础/数字标签";
 import { green, red } from "@ant-design/colors";
 import { ProColumns } from "@ant-design/pro-components";
 import dayjs from "dayjs";
-import { E事项状态 } from "../状态配置";
 import { 思源协议 } from "../系统码";
-import { E时间格式化 } from "../配置常量";
+import { E事项状态, E时间格式化 } from "../syLively";
 
 const 程度 = {
   0: 0,

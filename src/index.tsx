@@ -6,14 +6,14 @@ import App from "./App";
 import Veil from "./class/veil";
 import WhiteBoard from "./class/whiteBoard";
 import LYCard from "./class/卡片/LYCard";
-import { 触发器 } from "./class/触发器";
 import { EPluginPath, E持久化键 } from "./constant/系统码";
 import CardDocker from "./docker/CardDocker";
 import { 仓库, 持久化atom } from "./store";
 import { 主题 } from "./style/theme";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
 import { 添加全局样式 } from "./tools/样式";
-import TlWb from "./业务组件/WhiteBoard/TlWb";
+import TlWb from "./业务组件/TlWb";
+import { 触发器 } from "./class/helper/触发器";
 
 export const PluginId = "livelySaSa";
 

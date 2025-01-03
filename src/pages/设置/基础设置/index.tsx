@@ -1,4 +1,4 @@
-import SQLer from "@/class/SQLer";
+import SQLer from "@/class/helper/SQLer";
 import { SY块 } from "@/class/思源/块";
 import SY文档 from "@/class/思源/文档";
 import { SY笔记本 } from "@/class/思源/笔记本";
@@ -6,7 +6,7 @@ import { E块属性名称, E持久化键, 思源协议 } from "@/constant/系统
 import { 持久化atom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
 import { I用户设置 } from "@/types/喧嚣/设置";
-import { E按钮类型 } from "@/基础组件/按钮";
+import { E按钮类型 } from "@/components/base/sy/按钮";
 import { Button, Form, Modal, Select, message } from "antd";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";

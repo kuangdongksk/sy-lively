@@ -40,7 +40,7 @@ function O弹窗<T弹窗标识 extends string>(
     if (isRecord<T弹窗标识, object>(内容, "object")) {
       return <>{内容?.[弹窗标识]}</>;
     }
-    return <>{内容}</>;
+    return <></>;
   }, [内容, 弹窗标识]);
 
   return (

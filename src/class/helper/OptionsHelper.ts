@@ -1,4 +1,4 @@
-import { E事项状态, E提醒, E重复 } from "@/constant/状态配置";
+import { E提醒, E事项状态, E重复 } from "@/constant/syLively";
 
 export class OptionsHelper {
   public static 程度 = Array.from({ length: 10 }).map((_, i) => ({

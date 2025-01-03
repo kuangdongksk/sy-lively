@@ -1,4 +1,4 @@
-import { E提醒 } from "@/constant/状态配置";
+import { E提醒 } from "@/constant/syLively";
 import { DatePicker, Form } from "antd";
 import dayjs from "dayjs";
 
