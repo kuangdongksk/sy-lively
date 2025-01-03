@@ -29,7 +29,6 @@ export default class DiaForm<TFormValue> {
         if (result?.success) {
           this.dialog.destroy();
         }
-
         return result;
       },
       onCancel: async () => {

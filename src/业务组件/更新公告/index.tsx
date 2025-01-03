@@ -42,14 +42,14 @@ function 更新公告() {
             label: 公告.key,
             children: 公告.Children.map(
               (child: { type: string; content: React.ReactNode[] }) => (
-                <div>
-                  <h4>{child.type}</h4>
+                <>
+                  <h5>{child.type}</h5>
                   <ol>
                     {child.content.map((item) => (
                       <li>{item}</li>
                     ))}
                   </ol>
-                </div>
+                </>
               )
             ),
           }))}

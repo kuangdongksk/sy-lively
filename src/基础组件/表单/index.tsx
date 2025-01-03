@@ -1,13 +1,15 @@
 import $ from "cash-dom";
-import { E按钮类型 } from "../按钮";
-import SYFormItem from "./表单项";
+import { KeyboardEvent } from "react";
 import { IResult } from "../弹出表单";
+import SYFooter from "./Footer";
+import SYFormItem from "./表单项";
 
 export default class SYForm<TFormValue> {
+  footer: SYFooter;
   form = document.createElement("form");
-  $form = $(this.form);
   formItems: SYFormItem[];
   $error = $(document.createElement("div"));
+  $form = $(this.form);
 
   constructor(props: {
     formItems: SYFormItem[];
@@ -29,13 +31,26 @@ export default class SYForm<TFormValue> {
       textAlign: "center",
     });
 
-    const $footer = this.initFooter(onConfirm, onCancel);
+    this.initFooter(onConfirm, onCancel);
     formItems.forEach((item) => {
       labelWidth && item.label.css({ width: `${labelWidth}px` });
       this.$form.append(item.itemWrapper);
     });
-    this.$form.append($footer);
     this.$form.append(this.$error);
+    this.$form.append(this.footer.$footer);
+    this.initEvent();
+  }
+
+  initEvent() {
+    this.$form.on("keydown", (e: KeyboardEvent) => {
+      if (e.code === "Enter") {
+        if (e.target === this.formItems[this.formItems.length - 1].input.dom) {
+          this.footer.$confirmBtn.trigger("click");
+        }
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    });
   }
 
   initFooter(
@@ -44,40 +59,12 @@ export default class SYForm<TFormValue> {
     ) => IResult | void | Promise<IResult | void>,
     onCancel: () => void | Promise<void>
   ) {
-    const $footer = $(document.createElement("div"));
-    $footer.css({
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    });
-
-    const $cancelBtn = $(document.createElement("button"));
-    $cancelBtn.text("取消");
-    $cancelBtn.css({
-      marginRight: "12px",
-    });
-    $cancelBtn.addClass(E按钮类型.取消);
-    $cancelBtn.on("click", async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      await onCancel?.();
-    });
-
-    const $confirmBtn = $(document.createElement("button"));
-    $confirmBtn.text("确认");
-    $confirmBtn.on("click", async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+    this.footer = new SYFooter(onCancel, async () => {
       const result = await onConfirm?.(this.formValues);
       if (result && !result.success) {
         this.$error.text(result.message);
       }
     });
-    $confirmBtn.addClass(E按钮类型.默认);
-    $footer.append($cancelBtn);
-    $footer.append($confirmBtn);
-
-    return $footer;
   }
 
   get formValues(): TFormValue {
