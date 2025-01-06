@@ -1,4 +1,4 @@
-export const latestVersion = "P0.2.4-2";
+export const latestVersion = "P0.2.4-3";
 
 export enum E功能类型 {
   功能 = "功能",
@@ -16,6 +16,15 @@ export const 所有更新公告: {
 }[] = [
   {
     key: latestVersion,
+    Children: [
+      {
+        type: E功能类型.优化,
+        content: ["优化部分样式，移除不用的包"],
+      },
+    ],
+  },
+  {
+    key: "P0.2.4-2",
     Children: [
       {
         type: E功能类型.优化,
