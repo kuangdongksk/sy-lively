@@ -2,9 +2,16 @@
   "name": "sy-lively",
   "author": "kuangdongksk",
   "url": "https://github.com/kuangdongksk/sy-lively",
-  "version": "P0.2.4-2",
+  "version": "P0.2.5",
   "minAppVersion": "3.0.18",
-  "backends": ["windows", "linux", "darwin", "docker", "ios", "android"],
+  "backends": [
+    "windows",
+    "linux",
+    "darwin",
+    "docker",
+    "ios",
+    "android"
+  ],
   "frontends": [
     "desktop",
     "mobile",
@@ -25,7 +32,15 @@
     "zh_CN": "README_zh_CN.md"
   },
   "funding": {
-    "custom": ["https://afdian.com/a/kuangdongksk","https://afdian.com/item/570e0312ce4d11efbad75254001e7c00"]
+    "custom": [
+      "https://afdian.com/a/kuangdongksk",
+      "https://afdian.com/item/570e0312ce4d11efbad75254001e7c00"
+    ]
   },
-  "keywords": ["plugin", "日程", "日程管理", "卡片"]
+  "keywords": [
+    "plugin",
+    "日程",
+    "日程管理",
+    "卡片"
+  ]
 }

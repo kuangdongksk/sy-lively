@@ -1,6 +1,6 @@
-import { CardQueryService } from "@/module/card/CardQueryService";
+import { CardQueryService } from "@/module/card/service/CardQueryService";
 import SY文档 from "@/class/思源/文档";
-import Link from "@/components/base/rc/Link";
+import BlockLink from "@/components/base/rc/BlockLink";
 import { DownOutlined, RightOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 
@@ -27,7 +27,7 @@ function ListItem(props: IListItemProps) {
       files
         .map(({ name1, id }) => ({
           title: (
-            <Link
+            <BlockLink
               block={{ id, label: name1 }}
               iconType={["ref", "link", "inset"]}
             />
@@ -39,7 +39,7 @@ function ListItem(props: IListItemProps) {
         .concat(
           data.map((item) => ({
             title: (
-              <Link
+              <BlockLink
                 block={{ id: item.ID, label: item.标题 }}
                 iconType={["ref", "link", "inset"]}
               />

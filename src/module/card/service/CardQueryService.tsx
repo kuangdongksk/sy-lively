@@ -124,7 +124,7 @@ export class CardQueryService {
     return 卡片列表;
   }
 
-  public static async 获取所有卡片(): Promise<I卡片[]> {
+  public static async getAll(): Promise<I卡片[]> {
     const { data } = await fetchSyncPost("/api/query/sql", {
       stmt: this.生成卡片SQL(),
     });

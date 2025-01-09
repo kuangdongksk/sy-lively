@@ -1,19 +1,17 @@
-import { ConfigProvider } from "antd";
 import { Provider } from "jotai";
 import ReactDOM from "react-dom/client";
 import { getFrontend, IProtyle, openTab, Plugin } from "siyuan";
 import App from "./App";
 import { 触发器 } from "./class/helper/触发器";
+import { EPluginPath, E持久化键 } from "./constant/系统码";
+import { CardPlugin } from "./module/card/plugin";
+import { generateCreateCardForm } from "./module/card/plugin/NewCardForm";
 import Veil from "./module/veil";
 import WhiteBoard from "./module/whiteBoard";
-import { generateCreateCardForm } from "./module/card/NewCardForm";
-import { EPluginPath, E持久化键 } from "./constant/系统码";
-import CardDocker from "./module/card/docker";
+import TlWb from "./module/whiteBoard/TlWb";
 import { 仓库, 持久化atom } from "./store";
-import { 主题 } from "./style/theme";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
 import { 添加全局样式 } from "./tools/样式";
-import TlWb from "./module/whiteBoard/TlWb";
 
 export const PluginId = "livelySaSa";
 
@@ -39,6 +37,9 @@ export default class SyLively extends Plugin {
     }
   };
 
+  private cardPlugin = new CardPlugin({
+    getData: this.getData,
+  });
   private veil = new Veil(this.getData, this.putData);
   private whiteBoard = new WhiteBoard({ app: this.app, pluginName: this.name });
   private 提示器1: 触发器 = new 触发器(
@@ -55,9 +56,10 @@ export default class SyLively extends Plugin {
     this.添加图标();
     this.添加快捷键();
     this.添加TopBar();
-    this.添加Dock();
     this.添加斜杠命令();
     this.veil.onPlugLoad();
+
+    this.setAllDock();
   }
 
   onLayoutReady() {
@@ -141,32 +143,6 @@ export default class SyLively extends Plugin {
     });
   }
 
-  async 添加Dock() {
-    const 卡片文档ID = await this.getData(E持久化键.卡片文档ID);
-    if (卡片文档ID) {
-      this.addDock({
-        config: {
-          icon: "iconSyLivelyCard",
-          title: "喧嚣卡片",
-          position: "RightTop",
-          size: { width: 284, height: 600 },
-        },
-        data: {},
-        type: "喧嚣卡片",
-        init() {
-          const rootDom = this.element;
-          const root = ReactDOM.createRoot(rootDom);
-
-          root.render(
-            <ConfigProvider theme={主题}>
-              <CardDocker 卡片文档ID={卡片文档ID} />
-            </ConfigProvider>
-          );
-        },
-      });
-    }
-  }
-
   添加tab() {
     const tabDiv = document.createElement("div");
     tabDiv.style.width = "100%";
@@ -227,6 +203,13 @@ export default class SyLively extends Plugin {
       },
     });
     //#endregion
+  }
+
+  async setAllDock() {
+    const cardDock = await this.cardPlugin.getCardDockConfig();
+    if (cardDock) {
+      this.addDock(cardDock);
+    }
   }
 
   添加事件监听() {

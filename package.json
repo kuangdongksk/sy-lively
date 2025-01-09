@@ -1,6 +1,6 @@
 {
   "name": "sy-lively",
-  "version": "0.3.5",
+  "version": "P0.2.5",
   "type": "module",
   "description": "这是喧嚣的思源插件",
   "author": "kuangdongksk",
@@ -9,7 +9,7 @@
     "ml": "node --no-warnings ./scripts/make_dev_link.js",
     "mlw": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/elevate.ps1 -scriptPath ./scripts/make_dev_link.js",
     "dev": "vite build --watch",
-    "update-version": "node --no-warnings ./scripts/update_version.js",
+    "uv": "node --no-warnings ./scripts/update_version.js",
     "build": "vite build",
     "make-install": "vite build && node --no-warnings ./scripts/make_install.js"
   },
@@ -32,6 +32,7 @@
     "@ant-design/icons": "^5.5.2",
     "@ant-design/pro-components": "^2.8.3",
     "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
     "ahooks": "^3.8.4",
     "antd": "^5.23.0",

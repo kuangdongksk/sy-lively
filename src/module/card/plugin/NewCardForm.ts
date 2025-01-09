@@ -1,6 +1,6 @@
 import SQLer from "@/class/helper/SQLer";
-import { CardGenerateService } from "@/module/card/CardGenerateService";
-import { CardQueryService as 卡片类 } from "@/module/card/CardQueryService";
+import { CardGenerateService } from "@/module/card/service/CardGenerateService";
+import { CardQueryService as 卡片类 } from "@/module/card/service/CardQueryService";
 import { SY块 } from "@/class/思源/块";
 import SY文档 from "@/class/思源/文档";
 import SYForm from "@/components/base/sy/表单";
@@ -14,7 +14,7 @@ import { 插入到日记 } from "@/tools/事项/事项块";
 import { sleep } from "@/utils/异步";
 import { message } from "antd";
 import { App, Dialog, IProtyle, Protyle } from "siyuan";
-import { toAlias } from "./tool";
+import { toAlias } from "../tool";
 
 export async function generateCreateCardForm(data: {
   app: App;

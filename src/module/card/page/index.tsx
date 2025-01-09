@@ -1,4 +1,4 @@
-import { I卡片, CardQueryService as 卡片类 } from "@/module/card/CardQueryService";
+import { CardQueryService, I卡片 } from "@/module/card/service/CardQueryService";
 import { useEffect, useState } from "react";
 
 export interface I卡片Props {}
@@ -12,7 +12,7 @@ function 卡片(props: I卡片Props) {
 
   const 获取所有卡片 = async () => {
     令加载中为(true);
-    const 所有卡片 = await 卡片类.获取所有卡片();
+    const 所有卡片 = await CardQueryService.getAll();
 
     设置所有卡片(所有卡片);
     令加载中为(false);

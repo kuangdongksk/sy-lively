@@ -7,7 +7,7 @@ import {
 import { message } from "antd";
 import styles from "./index.module.less";
 
-export interface ILinkProps {
+export interface IBlockLinkProps {
   block: {
     id: string;
     label: string;
@@ -15,7 +15,7 @@ export interface ILinkProps {
   iconType?: ("ref" | "link" | "inset")[];
 }
 
-function Link(props: ILinkProps) {
+function BlockLink(props: IBlockLinkProps) {
   const { block, iconType } = props;
   const { id, label } = block;
 
@@ -54,4 +54,4 @@ function Link(props: ILinkProps) {
     </>
   );
 }
-export default Link;
+export default BlockLink;

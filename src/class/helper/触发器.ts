@@ -13,7 +13,7 @@ import { I事项 } from "@/types/喧嚣/事项";
 import CronParser from "cron-parser";
 import dayjs from "dayjs";
 import SQLer from "./SQLer";
-import { CardQueryService as 卡片类 } from "@/module/card/CardQueryService";
+import { CardQueryService as 卡片类 } from "@/module/card/service/CardQueryService";
 
 const 最新数据版本 = {
   事项数据版本: 1,
@@ -84,7 +84,7 @@ export class 触发器 {
         timeout: 20000,
       });
 
-      const 所有卡片 = await 卡片类.获取所有卡片();
+      const 所有卡片 = await 卡片类.getAll();
 
       const promiseList = [];
       所有卡片.forEach(async (卡片) => {

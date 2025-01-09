@@ -1,6 +1,6 @@
 import SY文档 from "@/class/思源/文档";
-import Link from "@/components/base/rc/Link";
-import { CardQueryService } from "@/module/card/CardQueryService";
+import BlockLink from "@/components/base/rc/BlockLink";
+import { CardQueryService } from "@/module/card/service/CardQueryService";
 import { useEffect, useState } from "react";
 import ListItem from "./ListItem";
 
@@ -19,7 +19,7 @@ function CardDocker(props: { 卡片文档ID: string }) {
       files
         .map(({ name1, id }) => ({
           title: (
-            <Link
+            <BlockLink
               block={{ id, label: name1 }}
               iconType={["ref", "link", "inset"]}
             />
@@ -30,7 +30,7 @@ function CardDocker(props: { 卡片文档ID: string }) {
         .concat(
           data.map((item) => ({
             title: (
-              <Link
+              <BlockLink
                 block={{ id: item.ID, label: item.标题 }}
                 iconType={["ref", "link", "inset"]}
               />
