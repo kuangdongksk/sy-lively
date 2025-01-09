@@ -259,12 +259,12 @@ export default class SyLively extends Plugin {
 
     this.eventBus.on("open-menu-content", (e) => {
       // 添加新建卡片目录(e);
-      that.whiteBoard.createWhiteBoard(e);
+      // that.whiteBoard.createWhiteBoard(e);
       that.veil.onOpenMenuContent(e);
     });
     this.eventBus.on("click-blockicon", (e) => {
       // 添加新建卡片目录(e);
-      that.whiteBoard.createWhiteBoard(e);
+      // that.whiteBoard.createWhiteBoard(e);
       that.veil.onClickBlockIcon(e);
     });
     this.eventBus.on("open-menu-doctree", (e) =>

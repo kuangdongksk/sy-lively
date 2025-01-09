@@ -13,3 +13,6 @@ dev
 dist
 build
 tmp
+
+# other
+env.ts

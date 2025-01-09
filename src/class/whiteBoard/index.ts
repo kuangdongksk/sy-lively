@@ -61,7 +61,7 @@ export default class WhiteBoard {
       click: async () => {
         const id = 生成块ID();
 
-        await SY块.插入块({
+        await SY块.insertBlock({
           dataType: "markdown",
           data: Kramdown助手.生成段落块(
             `<div><svg width="200" height="100" xmlns="http://www.w3.org/2000/svg">

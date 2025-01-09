@@ -13,9 +13,9 @@ export class SY块 {
    *
    * nextID、previousID、parentID 三个参数必须至少存在一个有值，
    * 优先级为 nextID > previousID > parentID
-   * @returns 插入块的结果
+   * @returns 插入块的id
    */
-  public static async 插入块(options: {
+  public static async insertBlock(options: {
     dataType: "markdown" | "dom";
     data: string;
     nextID?: string;
