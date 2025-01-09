@@ -1,12 +1,12 @@
 import { SY块 } from "@/class/思源/块";
 import { E块属性名称 } from "@/constant/系统码";
-import { I卡片, 卡片 as 卡片类 } from ".";
+import { I卡片, CardQueryService as 卡片类 } from "./CardQueryService";
 import SQLer from "../helper/SQLer";
 import { default as KH } from "../helper/Kramdown助手";
 import SY文档 from "../思源/文档";
 
-export class 卡片块 {
-  public static 生成卡片Kramdown(
+export class CardGenerateService {
+  public static generateCardKramdown(
     卡片: Partial<I卡片> & {
       ID: string;
       标题ID: string;
@@ -25,7 +25,7 @@ export class 卡片块 {
     return KH.生成超级块带属性([标题块, 段落块], ID);
   }
 
-  public static async 新建卡片(
+  public static async createCard(
     卡片: I卡片 & { subContent: string },
     卡片文档ID: string
   ): Promise<string> {
@@ -36,7 +36,7 @@ export class 卡片块 {
     }
   }
 
-  public static async 新建卡片块(
+  private static async 新建卡片块(
     卡片: I卡片,
     卡片文档ID: string
   ): Promise<string> {
@@ -62,7 +62,7 @@ export class 卡片块 {
     return ID;
   }
 
-  public static async 新建卡片文档(
+  private static async 新建卡片文档(
     卡片: I卡片 & { subContent: string },
     卡片文档ID: string
   ): Promise<string> {

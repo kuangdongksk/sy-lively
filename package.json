@@ -14,15 +14,15 @@
     "make-install": "vite build && node --no-warnings ./scripts/make_install.js"
   },
   "devDependencies": {
-    "@types/node": "^22.10.4",
-    "fast-glob": "^3.3.2",
+    "@types/node": "^22.10.5",
+    "fast-glob": "^3.3.3",
     "glob": "11.0.0",
     "less": "^4.2.1",
     "minimist": "^1.2.8",
     "rollup-plugin-livereload": "^2.0.5",
-    "siyuan": "1.0.6",
+    "siyuan": "^1.0.8",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.2",
+    "typescript": "^5.7.3",
     "vite": "^5.4.11",
     "vite-plugin-static-copy": "^2.2.0",
     "vite-plugin-zip-pack": "^1.2.4"
@@ -30,11 +30,11 @@
   "dependencies": {
     "@ant-design/colors": "^7.2.0",
     "@ant-design/icons": "^5.5.2",
-    "@ant-design/pro-components": "^2.8.2",
+    "@ant-design/pro-components": "^2.8.3",
     "@types/react": "^18.3.18",
     "@vitejs/plugin-react": "^4.3.4",
     "ahooks": "^3.8.4",
-    "antd": "^5.22.7",
+    "antd": "^5.23.0",
     "cash-dom": "^8.1.5",
     "cron-parser": "^4.9.0",
     "dayjs": "^1.11.13",
@@ -44,7 +44,7 @@
     "pinyin-pro": "^3.26.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.28.1",
-    "tldraw": "^3.6.1"
+    "react-router-dom": "^7.1.1",
+    "tldraw": "^3.7.0"
   }
 }

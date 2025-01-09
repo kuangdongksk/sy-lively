@@ -3,9 +3,10 @@ import { Provider } from "jotai";
 import ReactDOM from "react-dom/client";
 import { getFrontend, IProtyle, openTab, Plugin } from "siyuan";
 import App from "./App";
+import { 触发器 } from "./class/helper/触发器";
 import Veil from "./class/veil";
 import WhiteBoard from "./class/whiteBoard";
-import LYCard from "./class/卡片/LYCard";
+import { generateCreateCardForm } from "./class/卡片/NewCardForm";
 import { EPluginPath, E持久化键 } from "./constant/系统码";
 import CardDocker from "./docker/CardDocker";
 import { 仓库, 持久化atom } from "./store";
@@ -13,7 +14,6 @@ import { 主题 } from "./style/theme";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
 import { 添加全局样式 } from "./tools/样式";
 import TlWb from "./业务组件/TlWb";
-import { 触发器 } from "./class/helper/触发器";
 
 export const PluginId = "livelySaSa";
 
@@ -88,7 +88,7 @@ export default class SyLively extends Plugin {
 
     if (!(await 校验卡片文档是否存在(卡片文档ID))) return;
 
-    LYCard.createCard({
+    generateCreateCardForm({
       app: this.app,
       cardDocID: 卡片文档ID,
       protyle,

@@ -1,4 +1,4 @@
-import { E卡片属性名称 } from "@/class/卡片";
+import { E卡片属性名称 } from "@/class/卡片/CardQueryService";
 import { E事项属性名称 } from "@/constant/系统码";
 
 export function 添加全局样式() {

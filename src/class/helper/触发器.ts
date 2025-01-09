@@ -13,7 +13,7 @@ import { I事项 } from "@/types/喧嚣/事项";
 import CronParser from "cron-parser";
 import dayjs from "dayjs";
 import SQLer from "./SQLer";
-import { 卡片 as 卡片类 } from "@/class/卡片/index";
+import { CardQueryService as 卡片类 } from "@/class/卡片/CardQueryService";
 
 const 最新数据版本 = {
   事项数据版本: 1,

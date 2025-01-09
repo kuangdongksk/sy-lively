@@ -1,4 +1,4 @@
-import { 卡片 } from "@/class/卡片";
+import { CardQueryService } from "@/class/卡片/CardQueryService";
 import SY文档 from "@/class/思源/文档";
 import Link from "@/components/base/rc/Link";
 import { DownOutlined, RightOutlined } from "@ant-design/icons";
@@ -21,7 +21,7 @@ function ListItem(props: IListItemProps) {
     const 笔记本ID = await SY文档.根据ID获取笔记本ID(id);
 
     const { files } = await SY文档.根据ID列出文档(笔记本ID, id);
-    const data = await 卡片.获取指定文档下的卡片(id);
+    const data = await CardQueryService.获取指定文档下的卡片(id);
 
     setChildren(
       files

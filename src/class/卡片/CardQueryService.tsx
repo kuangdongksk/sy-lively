@@ -34,7 +34,7 @@ export interface I卡片 {
 
 const 布尔类型属性 = [E卡片属性名称.单开一页];
 
-export class 卡片 {
+export class CardQueryService {
   private static 生成卡片SQL(条件数组?: string[]) {
     const 条件 = 条件数组 ? "AND " + 条件数组.join(" AND ") : "";
 
