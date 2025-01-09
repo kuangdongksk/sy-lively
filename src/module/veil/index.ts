@@ -6,7 +6,7 @@ import SYFormItem from "@/components/base/sy/表单/表单项";
 import SYInput from "@/components/base/sy/输入";
 import $, { Cash } from "cash-dom";
 import { IEventBusMap } from "siyuan";
-import { SY块 } from "../思源/块";
+import { SY块 } from "../../class/思源/块";
 import VeilElement, { TVeilTargetType } from "./veilElement";
 
 export default class Veil {

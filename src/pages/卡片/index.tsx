@@ -1,4 +1,4 @@
-import { I卡片, CardQueryService as 卡片类 } from "@/class/卡片/CardQueryService";
+import { I卡片, CardQueryService as 卡片类 } from "@/module/card/CardQueryService";
 import { useEffect, useState } from "react";
 
 export interface I卡片Props {}

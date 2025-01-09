@@ -1,8 +1,7 @@
-import { CardQueryService } from "@/class/卡片/CardQueryService";
 import SY文档 from "@/class/思源/文档";
 import Link from "@/components/base/rc/Link";
+import { CardQueryService } from "@/module/card/CardQueryService";
 import { useEffect, useState } from "react";
-import styles from "./index.module.less";
 import ListItem from "./ListItem";
 
 function CardDocker(props: { 卡片文档ID: string }) {
@@ -48,12 +47,11 @@ function CardDocker(props: { 卡片文档ID: string }) {
   }, []);
 
   return (
-    <div className={styles.cardDocker}>
-      <div className={styles.title}>喧嚣卡片</div>
-
-      <ul className={"b3-list b3-list--background " + styles.content}>
-        {树形卡片列表.map((item) => {
-          return (
+    <div className="fn__flex-1 fn__flex-column">
+      <div className="block__icons">喧嚣卡片</div>
+      <div className="fn__flex-1">
+        <ul className={"b3-list b3-list--background"}>
+          {树形卡片列表.map((item) => (
             <ListItem
               key={item.key}
               id={item.key}
@@ -61,9 +59,9 @@ function CardDocker(props: { 卡片文档ID: string }) {
               index={1}
               isLeaf={item.isLeaf}
             />
-          );
-        })}
-      </ul>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

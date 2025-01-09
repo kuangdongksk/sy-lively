@@ -4,16 +4,16 @@ import ReactDOM from "react-dom/client";
 import { getFrontend, IProtyle, openTab, Plugin } from "siyuan";
 import App from "./App";
 import { 触发器 } from "./class/helper/触发器";
-import Veil from "./class/veil";
-import WhiteBoard from "./class/whiteBoard";
-import { generateCreateCardForm } from "./class/卡片/NewCardForm";
+import Veil from "./module/veil";
+import WhiteBoard from "./module/whiteBoard";
+import { generateCreateCardForm } from "./module/card/NewCardForm";
 import { EPluginPath, E持久化键 } from "./constant/系统码";
-import CardDocker from "./docker/CardDocker";
+import CardDocker from "./module/card/docker";
 import { 仓库, 持久化atom } from "./store";
 import { 主题 } from "./style/theme";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
 import { 添加全局样式 } from "./tools/样式";
-import TlWb from "./业务组件/TlWb";
+import TlWb from "./module/whiteBoard/TlWb";
 
 export const PluginId = "livelySaSa";
 

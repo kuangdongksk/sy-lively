@@ -1,9 +1,9 @@
 import { SY块 } from "@/class/思源/块";
 import { E块属性名称 } from "@/constant/系统码";
 import { I卡片, CardQueryService as 卡片类 } from "./CardQueryService";
-import SQLer from "../helper/SQLer";
-import { default as KH } from "../helper/Kramdown助手";
-import SY文档 from "../思源/文档";
+import SQLer from "../../class/helper/SQLer";
+import { default as KH } from "../../class/helper/Kramdown助手";
+import SY文档 from "../../class/思源/文档";
 
 export class CardGenerateService {
   public static generateCardKramdown(

@@ -1,4 +1,4 @@
-import { CardQueryService } from "@/class/卡片/CardQueryService";
+import { CardQueryService } from "@/module/card/CardQueryService";
 import SY文档 from "@/class/思源/文档";
 import Link from "@/components/base/rc/Link";
 import { DownOutlined, RightOutlined } from "@ant-design/icons";

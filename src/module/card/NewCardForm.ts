@@ -1,6 +1,6 @@
 import SQLer from "@/class/helper/SQLer";
-import { CardGenerateService } from "@/class/卡片/CardGenerateService";
-import { CardQueryService as 卡片类 } from "@/class/卡片/CardQueryService";
+import { CardGenerateService } from "@/module/card/CardGenerateService";
+import { CardQueryService as 卡片类 } from "@/module/card/CardQueryService";
 import { SY块 } from "@/class/思源/块";
 import SY文档 from "@/class/思源/文档";
 import SYForm from "@/components/base/sy/表单";
