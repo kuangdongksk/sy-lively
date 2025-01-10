@@ -1,7 +1,7 @@
-import { CardQueryService } from "@/module/card/service/CardQueryService";
 import SY文档 from "@/class/思源/文档";
 import BlockLink from "@/components/base/rc/BlockLink";
-import { DownOutlined, RightOutlined } from "@ant-design/icons";
+import SvgIcon, { SyIconEnum } from "@/components/base/sy/svgIcon";
+import { CardQueryService } from "@/module/card/service/CardQueryService";
 import { useEffect, useState } from "react";
 
 export interface IListItemProps {
@@ -23,33 +23,7 @@ function ListItem(props: IListItemProps) {
     const { files } = await SY文档.根据ID列出文档(笔记本ID, id);
     const data = await CardQueryService.获取指定文档下的卡片(id);
 
-    setChildren(
-      files
-        .map(({ name1, id }) => ({
-          title: (
-            <BlockLink
-              block={{ id, label: name1 }}
-              iconType={["ref", "link", "inset"]}
-            />
-          ),
-          key: id,
-          isLeaf: false,
-          index: index + 1,
-        }))
-        .concat(
-          data.map((item) => ({
-            title: (
-              <BlockLink
-                block={{ id: item.ID, label: item.标题 }}
-                iconType={["ref", "link", "inset"]}
-              />
-            ),
-            key: item.ID,
-            isLeaf: true,
-            index: index + 1,
-          }))
-        )
-    );
+    setChildren(generateChildren(files, data, index));
   };
 
   useEffect(() => {
@@ -78,7 +52,14 @@ function ListItem(props: IListItemProps) {
             setShowChildren(!showChildren);
           }}
         >
-          {showChildren ? <DownOutlined /> : <RightOutlined />}
+          {showChildren ? (
+            <SvgIcon
+              className="b3-list-item__arrow b3-list-item__arrow--open"
+              icon={SyIconEnum.Right}
+            />
+          ) : (
+            <SvgIcon className="b3-list-item__arrow" icon={SyIconEnum.Right} />
+          )}
         </span>
         <span className="b3-list-item__text ariaLabel">{title}</span>
       </li>
@@ -102,3 +83,38 @@ function ListItem(props: IListItemProps) {
   );
 }
 export default ListItem;
+
+export function generateChildren(
+  files: { name1: string; id: string }[],
+  data: {
+    ID: string;
+    标题: string;
+  }[],
+  index: number
+) {
+  return files
+    .map(({ name1, id }) => ({
+      title: (
+        <BlockLink
+          block={{ id, label: name1 }}
+          iconType={["ref", "link", "inset"]}
+        />
+      ),
+      key: id,
+      isLeaf: false,
+      index: index + 1,
+    }))
+    .concat(
+      data.map((item) => ({
+        title: (
+          <BlockLink
+            block={{ id: item.ID, label: item.标题 }}
+            iconType={["ref", "link", "inset"]}
+          />
+        ),
+        key: item.ID,
+        isLeaf: true,
+        index: index + 1,
+      }))
+    );
+}

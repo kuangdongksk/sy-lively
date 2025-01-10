@@ -1,8 +1,9 @@
 import SY文档 from "@/class/思源/文档";
-import BlockLink from "@/components/base/rc/BlockLink";
+import { SyIconEnum } from "@/components/base/sy/svgIcon";
+import Docker from "@/components/docker";
 import { CardQueryService } from "@/module/card/service/CardQueryService";
 import { useEffect, useState } from "react";
-import ListItem from "./ListItem";
+import ListItem, { generateChildren } from "./ListItem";
 
 function CardDocker(props: { 卡片文档ID: string }) {
   const { 卡片文档ID } = props;
@@ -15,31 +16,7 @@ function CardDocker(props: { 卡片文档ID: string }) {
     const { files } = await SY文档.根据ID列出文档(笔记本ID, 卡片文档ID);
     const data = await CardQueryService.获取指定文档下的卡片(卡片文档ID);
 
-    设置树形卡片列表(
-      files
-        .map(({ name1, id }) => ({
-          title: (
-            <BlockLink
-              block={{ id, label: name1 }}
-              iconType={["ref", "link", "inset"]}
-            />
-          ),
-          key: id,
-          isLeaf: false,
-        }))
-        .concat(
-          data.map((item) => ({
-            title: (
-              <BlockLink
-                block={{ id: item.ID, label: item.标题 }}
-                iconType={["ref", "link", "inset"]}
-              />
-            ),
-            key: item.ID,
-            isLeaf: true,
-          }))
-        )
-    );
+    设置树形卡片列表(generateChildren(files, data, 1));
   };
 
   useEffect(() => {
@@ -47,22 +24,32 @@ function CardDocker(props: { 卡片文档ID: string }) {
   }, []);
 
   return (
-    <div className="fn__flex-1 fn__flex-column">
-      <div className="block__icons">喧嚣卡片</div>
-      <div className="fn__flex-1">
-        <ul className={"b3-list b3-list--background"}>
-          {树形卡片列表.map((item) => (
-            <ListItem
-              key={item.key}
-              id={item.key}
-              title={item.title}
-              index={1}
-              isLeaf={item.isLeaf}
-            />
-          ))}
-        </ul>
-      </div>
-    </div>
+    <Docker
+      customButtons={[
+        {
+          ariaLabel: "刷新",
+          dataType: "refresh",
+          icon: SyIconEnum.Refresh,
+          onClick: () => {
+            获取卡片();
+          },
+        },
+      ]}
+      minButton
+      title={"喧嚣卡片"}
+    >
+      <ul className={"b3-list b3-list--background"}>
+        {树形卡片列表.map((item) => (
+          <ListItem
+            key={item.key}
+            id={item.key}
+            title={item.title}
+            index={1}
+            isLeaf={item.isLeaf}
+          />
+        ))}
+      </ul>
+    </Docker>
   );
 }
 
