@@ -1,3 +1,4 @@
+import { E按钮类型 } from "@/components/base/sy/按钮";
 import 面包屑 from "@/components/基础/面包屑";
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
 import { E持久化键 } from "@/constant/系统码";
@@ -5,7 +6,6 @@ import { 持久化atom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 开启调试, 调试 } from "@/tools/调试";
 import 事项表单 from "@/业务组件/表单/事项表单";
-import { E按钮类型 } from "@/components/base/sy/按钮";
 import {
   CalendarOutlined,
   CreditCardOutlined,
@@ -28,10 +28,11 @@ const { Header, Footer, Sider, Content } = Layout;
 const C目录 = [
   { key: "主页", icon: <HomeOutlined />, label: "主页" },
   { key: "领域", icon: <HeatMapOutlined />, label: "领域" },
+  { key: "工作流", icon: <HeatMapOutlined />, label: "工作流" },
   { key: "白板", icon: <HeatMapOutlined />, label: "白板" },
-  { key: "日历", icon: <CalendarOutlined />, label: "日历" },
   { key: "卡片", icon: <CreditCardOutlined />, label: "卡片" },
   { key: "关系", icon: <ShareAltOutlined />, label: "关系" },
+  { key: "日历", icon: <CalendarOutlined />, label: "日历" },
   { key: "设置", icon: <SettingOutlined />, label: "设置" },
 ];
 

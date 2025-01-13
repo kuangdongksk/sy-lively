@@ -7,7 +7,7 @@ import { EPluginPath, E持久化键 } from "./constant/系统码";
 import { CardPlugin } from "./module/card/plugin";
 import { generateCreateCardForm } from "./module/card/plugin/NewCardForm";
 import Veil from "./module/veil";
-import WhiteBoard from "./module/whiteBoard";
+import WhiteBoard from "./module/whiteBoard/plugin";
 import TlWb from "./module/whiteBoard/TlWb";
 import { 仓库, 持久化atom } from "./store";
 import { 校验卡片文档是否存在 } from "./tools/卡片";

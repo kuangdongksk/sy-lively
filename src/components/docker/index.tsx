@@ -37,22 +37,22 @@ function Docker(props: IDockerProps) {
         ))}
 
         {onClickMore && (
-          <IconButton
-            ariaLabel="更多"
-            dataType="more"
-            icon={SyIconEnum.More}
-            onClick={onClickMore}
-          />
+          <>
+            <IconButton
+              ariaLabel="更多"
+              dataType="more"
+              icon={SyIconEnum.More}
+              onClick={onClickMore}
+            />
+            {minButton && <span className="fn__space"></span>}
+          </>
         )}
         {minButton && (
-          <>
-            <span className="fn__space"></span>
-            <IconButton
-              ariaLabel={"最小化 Ctrl+W"}
-              dataType={"min"}
-              icon={SyIconEnum.Min}
-            />
-          </>
+          <IconButton
+            ariaLabel={"最小化 Ctrl+W"}
+            dataType={"min"}
+            icon={SyIconEnum.Min}
+          />
         )}
       </div>
       <div className="fn__flex-1">{children}</div>

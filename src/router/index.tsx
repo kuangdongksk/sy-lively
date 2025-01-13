@@ -1,9 +1,10 @@
-import 卡片 from "@/module/card/page";
+import 卡片 from "@/module/card";
+import WhiteBoard from "@/module/whiteBoard";
+import WorkFlow from "@/module/workFlow";
 import App from "@/pages";
 import 主页 from "@/pages/主页";
 import 关系 from "@/pages/关系";
 import 日历 from "@/pages/日历";
-import WhiteBoard from "@/pages/白板";
 import 设置 from "@/pages/设置";
 import 错误页面 from "@/pages/错误页面";
 import 领域 from "@/pages/领域";
@@ -37,10 +38,7 @@ const router = createHashRouter([
         path: "白板",
         element: <WhiteBoard />,
       },
-      {
-        path: "日历",
-        element: <日历 />,
-      },
+      { path: "工作流", element: <WorkFlow /> },
       {
         path: "关系",
         element: <关系 />,
@@ -48,6 +46,10 @@ const router = createHashRouter([
       {
         path: "卡片",
         element: <卡片 />,
+      },
+      {
+        path: "日历",
+        element: <日历 />,
       },
       {
         path: "设置",
