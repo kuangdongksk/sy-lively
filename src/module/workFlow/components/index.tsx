@@ -1,6 +1,7 @@
 import {
   Background,
   Controls,
+  FinalConnectionState,
   MiniMap,
   ReactFlow,
   addEdge,
@@ -42,7 +43,7 @@ function Flow(props: IFlowProps) {
   );
 
   const onConnectEnd = useCallback(
-    (event, connectionState) => {
+    (event: MouseEvent | TouchEvent, connectionState: FinalConnectionState) => {
       // when a connection is dropped on the pane it's not valid
       if (!connectionState.isValid) {
         // we need to remove the wrapper bounds, in order to get the correct position
