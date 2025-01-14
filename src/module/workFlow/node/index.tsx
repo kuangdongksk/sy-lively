@@ -4,6 +4,7 @@ import {
   HandleProps,
   Position,
   useReactFlow,
+  Node,
 } from "@xyflow/react";
 import {
   EPluginLifeCycleNode,
@@ -59,3 +60,25 @@ export const nodeTypes = {
   [EPluginLifeCycleNode.OnUninstallNode]: PluginLifeCycleNode.OnUninstallNode,
   [ESyFeatureNode.AddStyleNode]: SyFeatureNode.AddStyleNode,
 };
+
+export function isAllowConnection(source: Node, target: Node) {
+  const sourceType = source.type;
+  const targetType = target.type as keyof typeof nodeTypes;
+
+  switch (sourceType) {
+    case EPluginLifeCycleNode.OnLoadNode:
+      if (targetType === EPluginLifeCycleNode.OnLoadNode) {
+        return false;
+      }
+      return true;
+    case EPluginLifeCycleNode.OnLayoutReadyNode:
+      return [
+        EPluginLifeCycleNode.OnUninstallNode,
+        EPluginLifeCycleNode.OnUnloadNode,
+        ESyFeatureNode.AddStyleNode,
+      ].includes(targetType);
+
+    default:
+      return true;
+  }
+}

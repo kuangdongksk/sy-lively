@@ -23,7 +23,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import 更新公告 from "../业务组件/更新公告";
 import styles from "./index.module.less";
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 const C目录 = [
   { key: "主页", icon: <HomeOutlined />, label: "主页" },
@@ -96,13 +96,13 @@ function App() {
           />
         </Sider>
         <Layout className={styles.主体}>
-          <Header className={styles.顶栏}>
+          <div>
             <面包屑 />
-          </Header>
+          </div>
           <Content className={styles.内容}>
             <Outlet />
           </Content>
-          <Footer>{dayjs().format("YYYY年MM月DD日")}</Footer>
+          <div>{dayjs().format("YYYY年MM月DD日")}</div>
         </Layout>
       </Layout>
       <事项表单 ref={事项Ref} />

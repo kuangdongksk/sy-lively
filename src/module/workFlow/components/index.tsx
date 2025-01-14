@@ -1,6 +1,8 @@
 import {
   Background,
+  Connection,
   Controls,
+  Edge,
   FinalConnectionState,
   MiniMap,
   ReactFlow,
@@ -9,11 +11,12 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 import { nanoid } from "nanoid";
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Menu } from "siyuan";
-import { nodeTypes } from "../node";
+import { isAllowConnection, nodeTypes } from "../node";
 import { EPluginLifeCycleNode } from "../node/PluginLifeCycle/OnLoadNode";
 import { ESyFeatureNode } from "../node/SyFeature";
+import { NodeType } from "../types";
 import styles from "./index.module.less";
 
 export interface IFlowProps {}
@@ -33,73 +36,37 @@ function Flow(props: IFlowProps) {
 
   const menuRef = useRef<Menu>(new Menu(nanoid()));
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, setNodes, onNodesChange] =
+    useNodesState<NodeType>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const { screenToFlowPosition } = useReactFlow();
+  const { screenToFlowPosition, getEdge, getEdges, getNode, getNodes } =
+    useReactFlow();
+
+  const [lifeCycleNodeCount, setLifeCycleNodeCount] = useState([1, 0, 0, 0]);
+
+  const isValidConnection = useCallback((edge: Edge | Connection) => {
+    const source = getNode(edge.source);
+    const target = getNode(edge.target);
+
+    return isAllowConnection(source, target);
+  }, []);
 
   const onConnectEnd = useCallback(
     (event: MouseEvent, connectionState: FinalConnectionState) => {
-      console.log("🚀 ~ Flow ~ event:", event, menuRef);
-      // when a connection is dropped on the pane it's not valid
       if (!connectionState.isValid) {
-        // we need to remove the wrapper bounds, in order to get the correct position
-        const menu = new Menu(nanoid());
-        menu.addSeparator();
-        menu.addItem({
-          label: "添加生命周期",
-          click: () => {},
-        });
-        menu.open({
-          x: event.clientX,
-          y: event.clientY,
-        });
-        console.log("🚀 ~ Flow ~ menu:", menu);
-
-        menuRef.current.addItem({
-          label: "添加全局样式",
-          click: () => {
-            const id = nanoid();
-            const { clientX, clientY } =
-              "changedTouches" in event ? event.changedTouches[0] : event;
-            const newNode = {
-              id,
-              position: screenToFlowPosition({
-                x: clientX,
-                y: clientY,
-              }),
-              data: { label: `Node ${id}` },
-              type: ESyFeatureNode.AddStyleNode,
-              origin: [0.5, 0.0],
-            };
-
-            setNodes((nds) => nds.concat(newNode));
-            setEdges((eds) =>
-              eds.concat({
-                id,
-                source: connectionState.fromNode.id,
-                target: id,
-              })
-            );
-          },
-        });
-
-        menuRef.current.open({
-          x: event.clientX,
-          y: event.clientY,
-        });
-        console.log("🚀 ~ Flow ~ menuRef.current:", menuRef.current);
       }
     },
     [screenToFlowPosition]
   );
 
   return (
-    <ReactFlow
+    <ReactFlow<NodeType>
       className={styles.xyFlow}
       edges={edges}
       fitView
       nodes={nodes}
       nodeTypes={nodeTypes}
+      isValidConnection={isValidConnection}
       onConnectEnd={onConnectEnd}
       onEdgesChange={onEdgesChange}
       onNodesChange={onNodesChange}
@@ -110,6 +77,7 @@ function Flow(props: IFlowProps) {
           submenu: [
             {
               label: "添加布局完成节点",
+              disabled: lifeCycleNodeCount[1] > 0,
               click: () => {
                 const id = nanoid();
                 const { clientX, clientY } =
@@ -126,10 +94,15 @@ function Flow(props: IFlowProps) {
                 };
 
                 setNodes((nds) => nds.concat(newNode));
+                setLifeCycleNodeCount((count) => {
+                  count[1]++;
+                  return count;
+                });
               },
             },
             {
               label: "添加卸载节点",
+              disabled: lifeCycleNodeCount[2] > 0,
               click: () => {
                 const id = nanoid();
                 const { clientX, clientY } =
@@ -146,10 +119,15 @@ function Flow(props: IFlowProps) {
                 };
 
                 setNodes((nds) => nds.concat(newNode));
+                setLifeCycleNodeCount((count) => {
+                  count[2]++;
+                  return count;
+                });
               },
             },
             {
               label: "添加删除节点",
+              disabled: lifeCycleNodeCount[3] > 0,
               click: () => {
                 const id = nanoid();
                 const { clientX, clientY } =
@@ -166,6 +144,10 @@ function Flow(props: IFlowProps) {
                 };
 
                 setNodes((nds) => nds.concat(newNode));
+                setLifeCycleNodeCount((count) => {
+                  count[3]++;
+                  return count;
+                });
               },
             },
           ],
