@@ -6,6 +6,8 @@ export interface TInput {
   value: any;
 }
 
+export type TInputType = "text" | "number" | "password" | "textarea";
+
 export default class SYFormItem {
   input: TInput;
   inputWrapper = $(document.createElement("div"));

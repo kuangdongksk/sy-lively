@@ -1,6 +1,7 @@
 import 卡片 from "@/module/card";
 import WhiteBoard from "@/module/whiteBoard";
 import WorkFlow from "@/module/workFlow";
+import WorkFlowDetail from "@/module/workFlow/pages/WorkflowDetail";
 import App from "@/pages";
 import 主页 from "@/pages/主页";
 import 关系 from "@/pages/关系";
@@ -38,7 +39,19 @@ const router = createHashRouter([
         path: "白板",
         element: <WhiteBoard />,
       },
-      { path: "工作流", element: <WorkFlow /> },
+      {
+        path: "工作流",
+        children: [
+          {
+            index: true,
+            element: <WorkFlow />,
+          },
+          {
+            path: "detail",
+            element: <WorkFlowDetail />,
+          },
+        ],
+      },
       {
         path: "关系",
         element: <关系 />,
