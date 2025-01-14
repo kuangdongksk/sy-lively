@@ -10,7 +10,7 @@ import { Button } from "antd";
 import dayjs from "dayjs";
 import { MutableRefObject, useRef, useState } from "react";
 import style from "./index.module.less";
-import { E按钮类型 } from "@/components/base/sy/按钮";
+import { EBtnClass } from "@/components/base/sy/按钮";
 import { E事项状态 } from "@/constant/syLively";
 
 export interface I事项表格Props<T事项> {
@@ -55,7 +55,7 @@ function 事项表格<T事项 extends I事项>(props: I事项表格Props<T事项
             render: (_text, record) => [
               // <Button key="添加子项" icon={<PlusCircleOutlined />} />,
               <Button
-                className={E按钮类型.文本}
+                className={EBtnClass.文本}
                 key="编辑"
                 icon={<EditOutlined />}
                 onClick={() => {
@@ -70,7 +70,7 @@ function 事项表格<T事项 extends I事项>(props: I事项表格Props<T事项
               />,
               <删除事项 事项={record} 完成回调={() => {}}>
                 <Button
-                  className={E按钮类型.删除}
+                  className={EBtnClass.删除}
                   key="delete"
                   type="link"
                   icon={<DeleteOutlined />}
@@ -96,7 +96,7 @@ function 事项表格<T事项 extends I事项>(props: I事项表格Props<T事项
         toolbar={{
           actions: [
             <Button
-              className={E按钮类型.默认}
+              className={EBtnClass.默认}
               onClick={() => {
                 if (新建事项) 新建事项(事项Ref);
                 else {

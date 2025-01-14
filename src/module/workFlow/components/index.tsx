@@ -1,3 +1,4 @@
+import { EBtnClass } from "@/components/base/sy/按钮";
 import {
   Background,
   Connection,
@@ -5,6 +6,7 @@ import {
   Edge,
   FinalConnectionState,
   MiniMap,
+  Panel,
   ReactFlow,
   useEdgesState,
   useNodesState,
@@ -36,6 +38,8 @@ function Flow(props: IFlowProps) {
 
   const menuRef = useRef<Menu>(new Menu(nanoid()));
 
+  const [instance, setInstance] = useState(null);
+
   const [nodes, setNodes, onNodesChange] =
     useNodesState<NodeType>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -59,6 +63,13 @@ function Flow(props: IFlowProps) {
     [screenToFlowPosition]
   );
 
+  const onSave = useCallback(() => {
+    if (instance) {
+      const data = instance.toObject();
+      console.log("🚀 ~ onSave ~ data:", data)
+    }
+  }, [instance]);
+
   return (
     <ReactFlow<NodeType>
       className={styles.xyFlow}
@@ -69,6 +80,7 @@ function Flow(props: IFlowProps) {
       isValidConnection={isValidConnection}
       onConnectEnd={onConnectEnd}
       onEdgesChange={onEdgesChange}
+      onInit={setInstance}
       onNodesChange={onNodesChange}
       onContextMenu={(e) => {
         if (menuRef.current.isOpen) return;
@@ -187,6 +199,11 @@ function Flow(props: IFlowProps) {
       <Background />
       <Controls />
       <MiniMap />
+      <Panel position="top-center">
+        <button className={EBtnClass.默认} onClick={onSave}>
+          保存
+        </button>
+      </Panel>
     </ReactFlow>
   );
 }

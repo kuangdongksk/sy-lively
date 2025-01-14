@@ -2,18 +2,18 @@ import SQLer from "@/class/helper/SQLer";
 import { SY块 } from "@/class/思源/块";
 import SY文档 from "@/class/思源/文档";
 import { SY笔记本 } from "@/class/思源/笔记本";
-import { E块属性名称, E持久化键, 思源协议 } from "@/constant/系统码";
-import { 持久化atom } from "@/store";
+import { E块属性名称, EStoreKey, 思源协议 } from "@/constant/系统码";
+import { storeAtom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
 import { I用户设置 } from "@/types/喧嚣/设置";
-import { E按钮类型 } from "@/components/base/sy/按钮";
+import { EBtnClass } from "@/components/base/sy/按钮";
 import { Button, Form, Modal, Select, message } from "antd";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 
 function 用户设置() {
   const [用户设置, 设置用户设置] = useAtom(用户设置Atom);
-  const [持久化] = useAtom(持久化atom);
+  const [持久化] = useAtom(storeAtom);
 
   const [笔记本列表, 令笔记本列表为] = useState([]);
   const [卡片文档ID, 令卡片文档ID为] = useState<string>();
@@ -28,11 +28,11 @@ function 用户设置() {
       );
     });
 
-    持久化.加载(E持久化键.卡片文档ID).then((id) => {
+    持久化.load(EStoreKey.卡片文档ID).then((id) => {
       if (!id) return;
       SY文档.检验文档是否存在(id).then((是否存在) => {
         if (!是否存在) {
-          持久化.保存(E持久化键.卡片文档ID, null);
+          持久化.save(EStoreKey.卡片文档ID, null);
         } else {
           令卡片文档ID为(id);
         }
@@ -70,7 +70,7 @@ function 用户设置() {
               });
             }
 
-            await 持久化.保存(E持久化键.用户设置, JSON.stringify(新的用户设置));
+            await 持久化.save(EStoreKey.用户设置, JSON.stringify(新的用户设置));
             设置用户设置(新的用户设置);
 
             message.success("切换笔记本成功");
@@ -89,13 +89,13 @@ function 用户设置() {
           </a>
         ) : (
           <Button
-            className={E按钮类型.默认}
+            className={EBtnClass.默认}
             onClick={async () => {
               if (!用户设置.笔记本ID) return message.error("请先选择笔记本");
 
               const { id } = await SY文档.创建卡片文档(用户设置.笔记本ID);
 
-              await 持久化.保存(E持久化键.卡片文档ID, id);
+              await 持久化.save(EStoreKey.卡片文档ID, id);
               令卡片文档ID为(id);
               Modal.success({
                 title: "卡片文档生成成功",

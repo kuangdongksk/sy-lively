@@ -2,7 +2,7 @@ import SQLer from "@/class/helper/SQLer";
 import SY文档 from "@/class/思源/文档";
 import { 思源协议 } from "@/constant/系统码";
 import { 用户设置Atom } from "@/store/用户设置";
-import { E按钮类型 } from "@/components/base/sy/按钮";
+import { EBtnClass } from "@/components/base/sy/按钮";
 import { Badge, Button, Calendar, List, Tooltip } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { useAtom } from "jotai";
@@ -37,7 +37,7 @@ function 日历() {
             <div className={styles.天头部}>
               <Tooltip title="跳转到日记">
                 <Button
-                  className={E按钮类型.文本}
+                  className={EBtnClass.文本}
                   onClick={() => {
                     SY文档.创建日记文档(用户设置.笔记本ID).then((id) =>
                       window.open(思源协议 + id)

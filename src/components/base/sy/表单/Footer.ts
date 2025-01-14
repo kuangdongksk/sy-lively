@@ -1,5 +1,5 @@
 import { $ } from "@/constant/三方库";
-import { E按钮类型 } from "../按钮";
+import { EBtnClass } from "../按钮";
 
 export default class SYFooter {
   cancelBtn: HTMLButtonElement = document.createElement("button");
@@ -23,7 +23,7 @@ export default class SYFooter {
     this.$cancelBtn.css({
       marginRight: "12px",
     });
-    this.$cancelBtn.addClass(E按钮类型.取消);
+    this.$cancelBtn.addClass(EBtnClass.取消);
     this.$cancelBtn.on("click", async (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -37,7 +37,7 @@ export default class SYFooter {
       e.stopPropagation();
       await onConfirm?.();
     });
-    $confirmBtn.addClass(E按钮类型.默认);
+    $confirmBtn.addClass(EBtnClass.默认);
 
     this.$footer.append(this.$cancelBtn);
     this.$footer.append(this.$confirmBtn);

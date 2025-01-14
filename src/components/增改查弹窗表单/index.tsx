@@ -1,4 +1,4 @@
-import { E按钮类型 } from "@/components/base/sy/按钮";
+import { EBtnClass } from "@/components/base/sy/按钮";
 import { Button, Form, Modal } from "antd";
 import { forwardRef, Ref, useImperativeHandle, useState } from "react";
 import styles from "./index.module.less";
@@ -68,7 +68,7 @@ function O增改查弹窗表单(
             }}
           >
             <Button
-              className={styles.取消按钮 + " " + E按钮类型.取消}
+              className={styles.取消按钮 + " " + EBtnClass.取消}
               onClick={async () => {
                 await 弹窗取消?.();
                 令表单状态为(undefined);
@@ -76,7 +76,7 @@ function O增改查弹窗表单(
             >
               取消
             </Button>
-            <Button className={E按钮类型.默认} htmlType="submit">
+            <Button className={EBtnClass.默认} htmlType="submit">
               {确认按钮文本}
             </Button>
           </Form.Item>

@@ -1,6 +1,7 @@
 import { useState } from "react";
-import NodeWrapper from "../..";
+import NodeWrapper from "..";
 import { Dialog } from "siyuan";
+import { useNodeId, useReactFlow } from "@xyflow/react";
 
 export interface IAddStyleNodeProps {}
 
@@ -8,6 +9,9 @@ function AddStyleNode(props: IAddStyleNodeProps) {
   const {} = props;
 
   const [styleStr, setStyleStr] = useState("");
+
+  const nodeId = useNodeId();
+  const { updateNodeData } = useReactFlow();
 
   return (
     <NodeWrapper>
@@ -26,6 +30,7 @@ function AddStyleNode(props: IAddStyleNodeProps) {
             content: "",
             destroyCallback() {
               setStyleStr(textArea.value);
+              updateNodeData(nodeId, { style: textArea.value });
               textArea.remove();
             },
           });

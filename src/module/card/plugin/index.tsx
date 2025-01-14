@@ -1,4 +1,4 @@
-import { E持久化键 } from "@/constant/系统码";
+import { EStoreKey } from "@/constant/系统码";
 import { 主题 } from "@/style/theme";
 import { ConfigProvider } from "antd";
 import ReactDOM from "react-dom/client";
@@ -6,9 +6,9 @@ import { Dock, IPluginDockTab } from "siyuan";
 import CardDocker from "../docker";
 
 export class CardPlugin {
-  getData: (key: E持久化键) => Promise<any>;
+  getData: (key: EStoreKey) => Promise<any>;
 
-  constructor(props: { getData: (key: E持久化键) => Promise<any> }) {
+  constructor(props: { getData: (key: EStoreKey) => Promise<any> }) {
     const { getData } = props;
 
     this.getData = getData;
@@ -28,7 +28,7 @@ export class CardPlugin {
       }
     | false
   > {
-    const 卡片文档ID = await this.getData(E持久化键.卡片文档ID);
+    const 卡片文档ID = await this.getData(EStoreKey.卡片文档ID);
     if (卡片文档ID) {
       return {
         config: {

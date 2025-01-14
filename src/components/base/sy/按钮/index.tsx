@@ -1,6 +1,6 @@
 import $, { Cash } from "cash-dom";
 
-export enum E按钮类型 {
+export enum EBtnClass {
   默认 = "b3-button",
   文本 = "b3-button b3-button--text",
   轮廓 = "b3-button b3-button--outline",
@@ -12,7 +12,7 @@ export default class SYBtn {
   public button = document.createElement("button");
   public $button: Cash;
 
-  constructor(type: E按钮类型, text: string, onClick?: () => void) {
+  constructor(type: EBtnClass, text: string, onClick?: () => void) {
     this.$button = $(this.button);
     this.$button.text(text);
     this.$button.addClass(type);

@@ -1,5 +1,5 @@
 import { MD5 } from "@/constant/三方库";
-import { EVeil属性名称, E持久化键 } from "@/constant/系统码";
+import { EVeil属性名称, EStoreKey } from "@/constant/系统码";
 import { PluginId } from "@/index";
 import SYDiaForm from "@/components/base/sy/弹出表单";
 import SYFormItem from "@/components/base/sy/表单/表单项";
@@ -10,13 +10,13 @@ import { SY块 } from "../../class/思源/块";
 import VeilElement, { TVeilTargetType } from "./veilElement";
 
 export default class Veil {
-  private loadData: (key: E持久化键.上锁的笔记) => Promise<any>;
-  private saveData: (key: E持久化键.上锁的笔记, value: any) => Promise<boolean>;
+  private loadData: (key: EStoreKey.上锁的笔记) => Promise<any>;
+  private saveData: (key: EStoreKey.上锁的笔记, value: any) => Promise<boolean>;
   private lockedNotes: Map<string, string>;
 
   constructor(
-    loadData: (key: E持久化键.上锁的笔记) => Promise<any>,
-    saveData: (key: E持久化键.上锁的笔记, value: any) => Promise<boolean>
+    loadData: (key: EStoreKey.上锁的笔记) => Promise<any>,
+    saveData: (key: EStoreKey.上锁的笔记, value: any) => Promise<boolean>
   ) {
     this.loadData = loadData;
     this.saveData = saveData;
@@ -24,7 +24,7 @@ export default class Veil {
 
   public async onPlugLoad() {
     this.lockedNotes = new Map(
-      Object.entries((await this.loadData(E持久化键.上锁的笔记)) || {})
+      Object.entries((await this.loadData(EStoreKey.上锁的笔记)) || {})
     );
   }
 
@@ -59,7 +59,7 @@ export default class Veil {
             label: "移除密码",
             click: async () => {
               this.lockedNotes.delete(currentID);
-              this.saveData(E持久化键.上锁的笔记, this.lockedNotes);
+              this.saveData(EStoreKey.上锁的笔记, this.lockedNotes);
             },
           },
         ]
@@ -107,7 +107,7 @@ export default class Veil {
                   [EVeil属性名称.pwdHash]: null,
                 },
               });
-              this.saveData(E持久化键.上锁的笔记, this.lockedNotes);
+              this.saveData(EStoreKey.上锁的笔记, this.lockedNotes);
             },
           },
         ]
@@ -138,7 +138,7 @@ export default class Veil {
                   [EVeil属性名称.pwdHash]: null,
                 },
               });
-              this.saveData(E持久化键.上锁的笔记, this.lockedNotes);
+              this.saveData(EStoreKey.上锁的笔记, this.lockedNotes);
             },
           },
         ]
@@ -181,7 +181,7 @@ export default class Veil {
                   [EVeil属性名称.pwdHash]: null,
                 },
               });
-              this.saveData(E持久化键.上锁的笔记, this.lockedNotes);
+              this.saveData(EStoreKey.上锁的笔记, this.lockedNotes);
             },
           },
         ]
@@ -259,7 +259,7 @@ export default class Veil {
         this.lockedNotes.set(noteId, pwd);
 
         await this.saveData(
-          E持久化键.上锁的笔记,
+          EStoreKey.上锁的笔记,
           Object.fromEntries(this.lockedNotes.entries())
         );
 

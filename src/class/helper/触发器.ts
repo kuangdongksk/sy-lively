@@ -6,7 +6,7 @@ import {
   E时间格式化,
   获取提醒参数,
 } from "@/constant/syLively";
-import { E持久化键 } from "@/constant/系统码";
+import { EStoreKey } from "@/constant/系统码";
 import { 事项转为属性 } from "@/tools/事项/事项";
 import { 更新事项块 } from "@/tools/事项/事项块";
 import { I事项 } from "@/types/喧嚣/事项";
@@ -23,8 +23,8 @@ const 最新数据版本 = {
 export class 触发器 {
   private 计时器: NodeJS.Timeout | null = null;
 
-  private 加载: (key: E持久化键) => Promise<any>;
-  private 保存: (key: E持久化键, value: any) => Promise<boolean>;
+  private 加载: (key: EStoreKey) => Promise<any>;
+  private 保存: (key: EStoreKey, value: any) => Promise<boolean>;
   private 添加状态栏: (options: {
     element: HTMLElement;
     position?: "right" | "left";
@@ -34,8 +34,8 @@ export class 触发器 {
   private 逾期事项 = [];
 
   constructor(
-    加载: (key: E持久化键) => Promise<any>,
-    保存: (key: E持久化键, value: any) => Promise<boolean>,
+    加载: (key: EStoreKey) => Promise<any>,
+    保存: (key: EStoreKey, value: any) => Promise<boolean>,
     添加状态栏: (options: {
       element: HTMLElement;
       position?: "right" | "left";
@@ -54,7 +54,7 @@ export class 触发器 {
   }
 
   async 数据处理() {
-    const { 事项版本, 卡片版本 } = await this.加载(E持久化键.数据版本);
+    const { 事项版本, 卡片版本 } = await this.加载(EStoreKey.数据版本);
     const { 事项数据版本, 卡片数据版本 } = 最新数据版本;
 
     if (事项版本 !== 事项数据版本) {
@@ -72,7 +72,7 @@ export class 触发器 {
         });
       });
 
-      await this.保存(E持久化键.数据版本, {
+      await this.保存(EStoreKey.数据版本, {
         事项版本: 事项数据版本,
         卡片版本,
       });
@@ -106,7 +106,7 @@ export class 触发器 {
       });
       await Promise.all(promiseList.map((fn) => fn()));
 
-      await this.保存(E持久化键.数据版本, {
+      await this.保存(EStoreKey.数据版本, {
         事项版本,
         卡片版本: 卡片数据版本,
       });

@@ -3,8 +3,8 @@ import SY文档 from "@/class/思源/文档";
 import 增改查弹窗表单, {
   I增改查弹窗表单Ref,
 } from "@/components/增改查弹窗表单";
-import { E块属性名称, E持久化键 } from "@/constant/系统码";
-import { 持久化atom } from "@/store";
+import { E块属性名称, EStoreKey } from "@/constant/系统码";
+import { storeAtom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
 import { I分类, I领域 } from "@/types/喧嚣/事项";
 import { Checkbox, Form, Input } from "antd";
@@ -17,7 +17,7 @@ export interface I领域表单Props {
 
 function O领域表单(props: I领域表单Props, ref: Ref<I增改查弹窗表单Ref>) {
   const [用户设置, 设置用户设置] = useAtom(用户设置Atom);
-  const [持久化] = useAtom(持久化atom);
+  const [持久化] = useAtom(storeAtom);
 
   const { 完成回调 } = props;
   const 表单Ref = useRef<I增改查弹窗表单Ref>(null);
@@ -69,7 +69,7 @@ function O领域表单(props: I领域表单Props, ref: Ref<I增改查弹窗表�
         );
 
         if (设置为默认领域) {
-          await 持久化.保存(E持久化键.用户设置, {
+          await 持久化.save(EStoreKey.用户设置, {
             ...用户设置,
             默认领域: 领域文档ID,
           });

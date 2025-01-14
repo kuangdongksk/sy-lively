@@ -1,7 +1,7 @@
 import { Position } from "@xyflow/react";
 import NodeWrapper from "..";
 import OnUninstallNode from "./OnUninstallNode";
-import OnUnloadNode from "./onUnloadNode";
+import OnUnloadNode from "./OnUnloadNode";
 import OnLayoutReadyNode from "./OnLayoutReadyNode";
 
 export interface IOnLoadNodeProps {}

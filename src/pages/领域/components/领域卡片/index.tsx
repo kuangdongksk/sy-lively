@@ -1,11 +1,11 @@
 import SQLer from "@/class/helper/SQLer";
 import 进度条 from "@/components/基础/进度条";
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
-import { E持久化键 } from "@/constant/系统码";
-import { 持久化atom } from "@/store";
+import { EStoreKey } from "@/constant/系统码";
+import { storeAtom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
 import { I事项, I分类, I领域 } from "@/types/喧嚣/事项";
-import { E按钮类型 } from "@/components/base/sy/按钮";
+import { EBtnClass } from "@/components/base/sy/按钮";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Dropdown, List, message, Tooltip } from "antd";
 import { useAtom } from "jotai";
@@ -19,7 +19,7 @@ import { E事项状态 } from "@/constant/syLively";
 function 领域卡片(props: { 领域: I领域 }) {
   const 导航到 = useNavigate();
   const [用户设置, 令用户设置为] = useAtom(用户设置Atom);
-  const [持久化] = useAtom(持久化atom);
+  const [持久化] = useAtom(storeAtom);
 
   const { 领域 } = props;
   const { ID, 名称, 描述 } = 领域;
@@ -88,7 +88,7 @@ function 领域卡片(props: { 领域: I领域 }) {
               }}
             >
               <Button
-                className={E按钮类型.文本}
+                className={EBtnClass.文本}
                 icon={<PlusCircleOutlined />}
               />
             </Dropdown>
@@ -101,7 +101,7 @@ function 领域卡片(props: { 领域: I领域 }) {
                   onClick={async (e) => {
                     e.stopPropagation();
 
-                    await 持久化.保存(E持久化键.用户设置, {
+                    await 持久化.save(EStoreKey.用户设置, {
                       ...用户设置,
                       默认领域: ID,
                     });

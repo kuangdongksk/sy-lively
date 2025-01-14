@@ -14,7 +14,7 @@ import {
 } from "@/tools/事项/事项块";
 import { I事项, T层级 } from "@/types/喧嚣/事项";
 import Cron输入 from "@/业务组件/表单项/Cron输入";
-import { E按钮类型 } from "@/components/base/sy/按钮";
+import { EBtnClass } from "@/components/base/sy/按钮";
 import { Button, Form, Input, message, Select } from "antd";
 import Checkbox from "antd/es/checkbox/Checkbox";
 import dayjs from "dayjs";
@@ -86,7 +86,7 @@ function O事项表单(props: I事项表单Props, ref: Ref<I增改查弹窗表�
 
             <Form.Item>
               <Button
-                className={E按钮类型.文本}
+                className={EBtnClass.文本}
                 onClick={() => 令展开更多为(!展开更多)}
               >
                 {展开更多 ? "收起" : "展开更多"}

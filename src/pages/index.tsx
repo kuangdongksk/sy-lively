@@ -1,8 +1,8 @@
-import { E按钮类型 } from "@/components/base/sy/按钮";
+import { EBtnClass } from "@/components/base/sy/按钮";
 import 面包屑 from "@/components/基础/面包屑";
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
-import { E持久化键 } from "@/constant/系统码";
-import { 持久化atom } from "@/store";
+import { EStoreKey } from "@/constant/系统码";
+import { storeAtom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
 import { 开启调试, 调试 } from "@/tools/调试";
 import 事项表单 from "@/业务组件/表单/事项表单";
@@ -39,7 +39,7 @@ const C目录 = [
 function App() {
   const 导航到 = useNavigate();
   const [用户设置, 设置用户设置] = useAtom(用户设置Atom);
-  const [持久化] = useAtom(持久化atom);
+  const [持久化] = useAtom(storeAtom);
 
   const 事项Ref = useRef<I增改查弹窗表单Ref>();
   const [目录, 设置目录] = useState([C目录[3]]);
@@ -47,7 +47,7 @@ function App() {
   const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
-    持久化.加载(E持久化键.用户设置).then((启用的用户设置) => {
+    持久化.load(EStoreKey.用户设置).then((启用的用户设置) => {
       if (启用的用户设置) {
         设置用户设置(启用的用户设置);
         导航到("/领域");
@@ -80,7 +80,7 @@ function App() {
         >
           <div className={styles.logo}>
             <Button
-              className={E按钮类型.默认}
+              className={EBtnClass.默认}
               icon={<PlusCircleOutlined />}
               onClick={() => 事项Ref.current?.令表单状态为("添加")}
             >

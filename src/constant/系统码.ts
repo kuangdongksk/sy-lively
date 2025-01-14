@@ -70,12 +70,13 @@ export enum EWhiteBoard属性名称 {
   WhiteBoard = EWhiteBoard属性前缀 + "WhiteBoard",
 }
 
-export enum E持久化键 {
+export enum EStoreKey {
   用户设置 = "用户设置",
   当前版本 = "当前版本",
   数据版本 = "数据版本",
   卡片文档ID = "卡片文档ID",
   上锁的笔记 = "上锁的笔记",
+  WorkFlow = "WorkFlow",
 }
 
 export enum E数据索引 {

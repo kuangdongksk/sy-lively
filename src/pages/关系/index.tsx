@@ -1,21 +1,21 @@
 import styles from "./index.module.less";
 import { Spin } from "antd";
 import { useEffect, useState } from "react";
-import { 持久化atom } from "@/store";
+import { storeAtom } from "@/store";
 import { useAtom } from "jotai";
-import { E持久化键 } from "@/constant/系统码";
+import { EStoreKey } from "@/constant/系统码";
 
 export interface I关系Props {}
 
 function 关系(props: I关系Props) {
   const {} = props;
-  const [{ 加载 }] = useAtom(持久化atom);
+  const [{ load: 加载 }] = useAtom(storeAtom);
 
   const [加载中, 设置加载中] = useState(true);
   const [卡片文档ID, 设置卡片文档ID] = useState<string>();
 
   useEffect(() => {
-    加载(E持久化键.卡片文档ID).then((id) => {
+    加载(EStoreKey.卡片文档ID).then((id) => {
       设置卡片文档ID(id);
       设置加载中(false);
     });

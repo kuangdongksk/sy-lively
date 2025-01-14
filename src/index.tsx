@@ -3,13 +3,13 @@ import ReactDOM from "react-dom/client";
 import { getFrontend, IProtyle, openTab, Plugin } from "siyuan";
 import App from "./App";
 import { 触发器 } from "./class/helper/触发器";
-import { EPluginPath, E持久化键 } from "./constant/系统码";
+import { EPluginPath, EStoreKey } from "./constant/系统码";
 import { CardPlugin } from "./module/card/plugin";
 import { generateCreateCardForm } from "./module/card/plugin/NewCardForm";
 import Veil from "./module/veil";
 import WhiteBoard from "./module/whiteBoard/plugin";
 import TlWb from "./module/whiteBoard/TlWb";
-import { 仓库, 持久化atom } from "./store";
+import { 仓库, storeAtom } from "./store";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
 import { 添加全局样式 } from "./tools/样式";
 
@@ -17,7 +17,7 @@ export const PluginId = "livelySaSa";
 
 export default class SyLively extends Plugin {
   private isMobile: boolean;
-  private getData = async (key: E持久化键) => {
+  private getData = async (key: EStoreKey) => {
     let data: any;
     try {
       data = await this.loadData(key);
@@ -27,7 +27,7 @@ export default class SyLively extends Plugin {
     }
     return data;
   };
-  private putData = async (key: E持久化键, value: any) => {
+  private putData = async (key: EStoreKey, value: any) => {
     try {
       await this.saveData(key, value);
       return true;
@@ -86,7 +86,7 @@ export default class SyLively extends Plugin {
   }
 
   async 打开新建卡片(protyle?: IProtyle) {
-    const 卡片文档ID = await this.getData(E持久化键.卡片文档ID);
+    const 卡片文档ID = await this.getData(EStoreKey.卡片文档ID);
 
     if (!(await 校验卡片文档是否存在(卡片文档ID))) return;
 
@@ -159,9 +159,9 @@ export default class SyLively extends Plugin {
         if (tabDiv) {
           const root = ReactDOM.createRoot(tabDiv);
 
-          仓库.set(持久化atom, {
-            加载: getData,
-            保存: saveData,
+          仓库.set(storeAtom, {
+            load: getData,
+            save: saveData,
           });
           root.render(
             <Provider store={仓库}>
@@ -186,9 +186,9 @@ export default class SyLively extends Plugin {
         if (tabDiv) {
           const root = ReactDOM.createRoot(tabDiv);
 
-          仓库.set(持久化atom, {
-            加载: getData,
-            保存: saveData,
+          仓库.set(storeAtom, {
+            load: getData,
+            save: saveData,
           });
           root.render(
             <Provider store={仓库}>
