@@ -20,6 +20,10 @@ import { EPluginLifeCycleNode } from "../node/PluginLifeCycle/OnLoadNode";
 import { ESyFeatureNode } from "../node/SyFeature";
 import { NodeType } from "../types";
 import styles from "./index.module.less";
+import { useLocation } from "react-router-dom";
+import { useAtom } from "jotai";
+import { storeAtom } from "@/store";
+import { EStoreKey } from "@/constant/系统码";
 
 export interface IFlowProps {}
 
@@ -35,6 +39,8 @@ const initialEdges = [];
 
 function Flow(props: IFlowProps) {
   const {} = props;
+  const { state } = useLocation();
+  const [{ save }] = useAtom(storeAtom);
 
   const menuRef = useRef<Menu>(new Menu(nanoid()));
 
@@ -63,10 +69,10 @@ function Flow(props: IFlowProps) {
     [screenToFlowPosition]
   );
 
-  const onSave = useCallback(() => {
+  const onSave = useCallback(async () => {
     if (instance) {
       const data = instance.toObject();
-      console.log("🚀 ~ onSave ~ data:", data)
+      await save(EStoreKey.WorkFlow,{})
     }
   }, [instance]);
 

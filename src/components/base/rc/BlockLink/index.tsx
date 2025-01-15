@@ -4,7 +4,7 @@ import {
   ExportOutlined,
   LinkOutlined,
 } from "@ant-design/icons";
-import { message } from "antd";
+import { message } from "@/components/base/rc/Message";
 import styles from "./index.module.less";
 
 export interface IBlockLinkProps {

@@ -14,7 +14,7 @@
     "make-install": "vite build && node --no-warnings ./scripts/make_install.js"
   },
   "devDependencies": {
-    "@types/node": "^22.10.5",
+    "@types/node": "^22.10.6",
     "fast-glob": "^3.3.3",
     "glob": "11.0.0",
     "less": "^4.2.1",
@@ -36,7 +36,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "@xyflow/react": "^12.3.6",
     "ahooks": "^3.8.4",
-    "antd": "^5.23.0",
+    "antd": "^5.23.1",
     "axios": "^1.7.9",
     "cash-dom": "^8.1.5",
     "cron-parser": "^4.9.0",
@@ -48,6 +48,6 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.1.1",
-    "tldraw": "^3.7.0"
+    "tldraw": "^3.7.1"
   }
 }

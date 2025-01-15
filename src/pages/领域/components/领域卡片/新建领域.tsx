@@ -1,8 +1,8 @@
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
 import 领域表单 from "@/业务组件/表单/领域表单";
-import { message } from "antd";
 import { useRef } from "react";
 import styles from "./index.module.less";
+import { message } from "@/components/base/rc/Message";
 
 function 新建领域(props: { 完成回调?: () => void }) {
   const { 完成回调 } = props;

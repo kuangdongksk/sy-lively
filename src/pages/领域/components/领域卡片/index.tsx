@@ -1,20 +1,21 @@
 import SQLer from "@/class/helper/SQLer";
-import 进度条 from "@/components/基础/进度条";
+import { EBtnClass } from "@/components/base/sy/按钮";
+import ProcessLine from "@/components/基础/进度条";
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
+import { E事项状态 } from "@/constant/syLively";
 import { EStoreKey } from "@/constant/系统码";
 import { storeAtom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
 import { I事项, I分类, I领域 } from "@/types/喧嚣/事项";
-import { EBtnClass } from "@/components/base/sy/按钮";
 import { PlusCircleOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Dropdown, List, message, Tooltip } from "antd";
+import { Checkbox, Dropdown, List, Tooltip } from "antd";
 import { useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 添加领域 } from "../..";
 import 分类表单 from "../../../../业务组件/表单/分类表单";
 import styles from "./index.module.less";
-import { E事项状态 } from "@/constant/syLively";
+import { message } from "@/components/base/rc/Message";
 
 function 领域卡片(props: { 领域: I领域 }) {
   const 导航到 = useNavigate();
@@ -87,10 +88,9 @@ function 领域卡片(props: { 领域: I领域 }) {
                 ],
               }}
             >
-              <Button
-                className={EBtnClass.文本}
-                icon={<PlusCircleOutlined />}
-              />
+              <button className={EBtnClass.文本}>
+                <PlusCircleOutlined />
+              </button>
             </Dropdown>
             <span>{名称}</span>
             <span>
@@ -120,8 +120,8 @@ function 领域卡片(props: { 领域: I领域 }) {
           <span>{描述}</span>
         </div>
         <div className={styles.卡片内容}>
-          <进度条
-            进度={
+          <ProcessLine
+            process={
               事项列表.filter((事项) => 事项.状态 === E事项状态.已完成).length /
               事项列表.length
             }

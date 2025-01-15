@@ -1,17 +1,16 @@
-import 进度条 from "@/components/基础/进度条";
+import { EBtnClass } from "@/components/base/sy/按钮";
+import ProcessLine from "@/components/基础/进度条";
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
 import { 事项列配置 } from "@/constant/columns/事项";
+import { E事项状态 } from "@/constant/syLively";
 import 删除事项 from "@/pages/领域/components/删除事项";
 import { I事项 } from "@/types/喧嚣/事项";
 import 事项表单 from "@/业务组件/表单/事项表单";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { ProTable } from "@ant-design/pro-components";
-import { Button } from "antd";
 import dayjs from "dayjs";
 import { MutableRefObject, useRef, useState } from "react";
 import style from "./index.module.less";
-import { EBtnClass } from "@/components/base/sy/按钮";
-import { E事项状态 } from "@/constant/syLively";
 
 export interface I事项表格Props<T事项> {
   标题?: React.ReactNode;
@@ -38,8 +37,8 @@ function 事项表格<T事项 extends I事项>(props: I事项表格Props<T事项
 
   return (
     <>
-      <进度条
-        进度={
+      <ProcessLine
+        process={
           事项列表.filter((事项) => 事项.状态 === E事项状态.已完成).length /
           事项列表.length
         }
@@ -53,11 +52,9 @@ function 事项表格<T事项 extends I事项>(props: I事项表格Props<T事项
             valueType: "option",
             fixed: "right",
             render: (_text, record) => [
-              // <Button key="添加子项" icon={<PlusCircleOutlined />} />,
-              <Button
+              <button
                 className={EBtnClass.文本}
                 key="编辑"
-                icon={<EditOutlined />}
                 onClick={() => {
                   令被修改的事项为(record);
                   事项Ref.current.令表单状态为("编辑");
@@ -67,14 +64,13 @@ function 事项表格<T事项 extends I事项>(props: I事项表格Props<T事项
                     起止时间: [dayjs(record.开始时间), dayjs(record.结束时间)],
                   });
                 }}
-              />,
+              >
+                <EditOutlined />
+              </button>,
               <删除事项 事项={record} 完成回调={() => {}}>
-                <Button
-                  className={EBtnClass.删除}
-                  key="delete"
-                  type="link"
-                  icon={<DeleteOutlined />}
-                />
+                <button className={EBtnClass.删除} key="delete">
+                  <DeleteOutlined />
+                </button>
               </删除事项>,
             ],
           },
@@ -95,7 +91,7 @@ function 事项表格<T事项 extends I事项>(props: I事项表格Props<T事项
         headerTitle={标题}
         toolbar={{
           actions: [
-            <Button
+            <button
               className={EBtnClass.默认}
               onClick={() => {
                 if (新建事项) 新建事项(事项Ref);
@@ -105,7 +101,7 @@ function 事项表格<T事项 extends I事项>(props: I事项表格Props<T事项
               }}
             >
               新建
-            </Button>,
+            </button>,
           ],
         }}
       />

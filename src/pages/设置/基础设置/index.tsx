@@ -7,9 +7,10 @@ import { storeAtom } from "@/store";
 import { 用户设置Atom } from "@/store/用户设置";
 import { I用户设置 } from "@/types/喧嚣/设置";
 import { EBtnClass } from "@/components/base/sy/按钮";
-import { Button, Form, Modal, Select, message } from "antd";
+import { Button, Form, Modal, Select } from "antd";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
+import { message } from "@/components/base/rc/Message";
 
 function 用户设置() {
   const [用户设置, 设置用户设置] = useAtom(用户设置Atom);

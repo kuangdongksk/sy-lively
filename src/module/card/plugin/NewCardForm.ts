@@ -12,9 +12,9 @@ import { E块属性名称 } from "@/constant/系统码";
 import { 生成块ID } from "@/tools/事项/事项";
 import { 插入到日记 } from "@/tools/事项/事项块";
 import { sleep } from "@/utils/异步";
-import { message } from "antd";
 import { App, Dialog, IProtyle, Protyle } from "siyuan";
 import { toAlias } from "../tool";
+import { message } from "@/components/base/rc/Message";
 
 export async function generateCreateCardForm(data: {
   app: App;
