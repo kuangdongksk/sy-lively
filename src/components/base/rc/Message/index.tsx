@@ -7,13 +7,18 @@ function showMessage(
   const $message = $(document.createElement("div"));
   $message.text(msg);
   $message.css({
+    position: "fixed",
+    top: "16px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    zIndex: 5,
+
     display: "inline-block",
     padding: "9px 12px",
     background: "var(--b3-theme-surface)",
     borderRadius: "8px",
     boxShadow:
       "0 6px 16px 0 rgba(0, 0, 0, 0.08),0 3px 6px -4px rgba(0, 0, 0, 0.12),0 9px 28px 8px rgba(0, 0, 0, 0.05)",
-    pointerEvents: "all",
   });
   document.body.appendChild($message[0]);
 
