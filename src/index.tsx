@@ -29,7 +29,12 @@ export default class SyLively extends Plugin {
   };
   private putData = async (key: EStoreKey, value: any) => {
     try {
-      await this.saveData(key, value);
+      const result = (await this.saveData(key, value)) as unknown as {
+        code: number;
+        data: any;
+        message: string;
+      };
+      if (result?.code !== 0) return false;
       return true;
     } catch (error) {
       console.log("~ 喧嚣 ~ saveData ~ error:", error);

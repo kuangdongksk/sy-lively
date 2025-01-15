@@ -4,24 +4,37 @@ import SYFormItem from "@/components/base/sy/表单/表单项";
 import SYInput from "@/components/base/sy/输入";
 import { EStoreKey } from "@/constant/系统码";
 import { storeAtom } from "@/store";
+import { ReactFlowJsonObject } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useAtom } from "jotai";
 import { nanoid } from "nanoid";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { NodeType } from "./types";
+import Card from "@/components/base/rc/Card";
 
 export interface IWorkFlowProps {}
+
+export interface IWorkFlowData {
+  checkPasses: boolean;
+  data: ReactFlowJsonObject<NodeType>;
+  enabled: boolean;
+  id: string;
+  name: string;
+}
 
 function WorkFlow(props: IWorkFlowProps) {
   const {} = props;
   const navigate = useNavigate();
 
-  const [{ load, save }] = useAtom(storeAtom);
-  const [data, setData] = useState<any>([]);
+  const [{ load }] = useAtom(storeAtom);
+  const [data, setData] = useState<Map<string, IWorkFlowData>>(new Map());
 
   const getData = useCallback(async () => {
-    const data = await load(EStoreKey.WorkFlow);
-    setData(data || []);
+    const data = new Map<string, IWorkFlowData>(
+      Object.entries((await load(EStoreKey.WorkFlow)) || {})
+    );
+    setData(data);
   }, []);
 
   useEffect(() => {
@@ -34,7 +47,7 @@ function WorkFlow(props: IWorkFlowProps) {
         <button
           className={EBtnClass.默认}
           onClick={() => {
-            const form = new SYDiaForm<{
+            new SYDiaForm<{
               name: string;
             }>({
               dialogConfig: {
@@ -57,6 +70,7 @@ function WorkFlow(props: IWorkFlowProps) {
                   state: {
                     name: values.name,
                     id: nanoid(),
+                    enabled: false,
                   },
                 });
 
@@ -70,9 +84,27 @@ function WorkFlow(props: IWorkFlowProps) {
           添加
         </button>
       </div>
-      {data.map((item: any) => (
-        <div key={item.id}>{item}</div>
-      ))}
+      <div>
+        {Array.from(data.values()).map((item) => (
+          <Card
+            title={item.name}
+            action={
+              <input
+                className="b3-switch"
+                type="checkbox"
+                checked={item.enabled}
+                onChange={(e) => {}}
+                disabled={!item.checkPasses}
+                onClick={(e) => e.stopPropagation()}
+              />
+            }
+            onClick={() => {
+              navigate("/工作流/detail", { state: item });
+              console.log("🚀 ~ WorkFlow ~ item:", item);
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }
