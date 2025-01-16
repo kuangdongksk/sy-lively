@@ -25,7 +25,7 @@ import { Menu } from "siyuan";
 import { IWorkFlowData } from "..";
 import { isAllowConnection, nodeTypes } from "../node";
 import { EPluginLifeCycleNode } from "../node/PluginLifeCycle/OnLoadNode";
-import { ESyFeatureNode } from "../node/SyFeature";
+import { ContextMenuConfig } from "../node/SyFeature";
 import { NodeType } from "../types";
 import styles from "./index.module.less";
 
@@ -75,7 +75,9 @@ function Flow(props: IFlowProps) {
     return isAllowConnection(source, target);
   }, []);
 
-  const onCheck = useCallback(() => {}, []);
+  const onCheck = useCallback(() => {
+    setCheckPasses(true);
+  }, []);
 
   const onConnectEnd = useCallback(
     (event: MouseEvent, connectionState: FinalConnectionState) => {
@@ -189,27 +191,25 @@ function Flow(props: IFlowProps) {
         });
         menuRef.current.addItem({
           label: "添加思源功能节点",
-          submenu: [
-            {
-              label: "添加样式节点",
-              click: () => {
-                const id = nanoid();
-                const { clientX, clientY } = "changedTouches" in e ? e.changedTouches[0] : e;
-                const newNode = {
-                  id,
-                  position: screenToFlowPosition({
-                    x: clientX,
-                    y: clientY,
-                  }),
-                  data: { label: `Node ${id}` },
-                  type: ESyFeatureNode.AddStyleNode,
-                  origin: [0.5, 0.0],
-                };
+          submenu: ContextMenuConfig.map((config) => ({
+            label: config.label,
+            click: () => {
+              const id = nanoid();
+              const { clientX, clientY } = "changedTouches" in e ? e.changedTouches[0] : e;
+              const newNode = {
+                id,
+                position: screenToFlowPosition({
+                  x: clientX,
+                  y: clientY,
+                }),
+                data: { label: `Node ${id}` },
+                type: config.node,
+                origin: [0.5, 0.0],
+              };
 
-                setNodes((nds) => nds.concat(newNode));
-              },
+              setNodes((nds) => nds.concat(newNode));
             },
-          ],
+          })),
         });
 
         menuRef.current.open({
@@ -220,7 +220,7 @@ function Flow(props: IFlowProps) {
     >
       <Background />
       <Controls />
-      <MiniMap />
+      <MiniMap<NodeType> />
       <Panel position="top-center">
         <button className={EBtnClass.默认} onClick={onSave}>
           保存
