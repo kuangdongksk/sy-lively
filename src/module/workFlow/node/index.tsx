@@ -74,6 +74,12 @@ export function isAllowConnection(source: Node, target: Node) {
         ESyFeatureNode.AddStyleNode,
       ].includes(targetType);
 
+    case EPluginLifeCycleNode.OnUnloadNode:
+      return [EPluginLifeCycleNode.OnUninstallNode as string].includes(targetType);
+
+    case EPluginLifeCycleNode.OnUninstallNode:
+      return false;
+
     default:
       return true;
   }

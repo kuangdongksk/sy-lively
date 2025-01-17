@@ -1,18 +1,17 @@
-import { i18n, I18nPath } from "@/constant/i18n";
+import { i18n } from "@/constant/i18n";
+import { I18nPath } from "@/constant/i18n/zh";
 import NodeWrapper from "..";
 
 export interface ILoadDataNodeProps {}
 
 function LoadDataNode(props: ILoadDataNodeProps) {
   const {} = props;
-  const t = i18n.t;
-  console.log("🚀 ~ LoadDataNode ~ i18n:", i18n)
 
   return (
     <NodeWrapper>
       <div>
-        <span>{t(I18nPath.workFlow.syFeature.LoadDataNode.this)}</span>
-        <span>{t(I18nPath.workFlow.syFeature.LoadDataNode.des)}</span>
+        <span>{i18n.t(I18nPath.workFlow.syFeature.LoadDataNode.this)}</span>
+        <span>{i18n.t(I18nPath.workFlow.syFeature.LoadDataNode.des)}</span>
       </div>
     </NodeWrapper>
   );

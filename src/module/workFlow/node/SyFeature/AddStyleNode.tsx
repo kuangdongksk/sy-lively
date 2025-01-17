@@ -1,7 +1,9 @@
-import { useState } from "react";
-import NodeWrapper from "..";
-import { Dialog } from "siyuan";
+import { i18n } from "@/constant/i18n";
+import { I18nPath } from "@/constant/i18n/zh";
 import { useNodeId, useReactFlow } from "@xyflow/react";
+import { useState } from "react";
+import { Dialog } from "siyuan";
+import NodeWrapper from "..";
 
 export interface IAddStyleNodeProps {}
 
@@ -38,7 +40,7 @@ function AddStyleNode(props: IAddStyleNodeProps) {
           dialog.element.querySelector(".b3-dialog__body").append(textArea);
         }}
       >
-        添加样式
+        {i18n.t(I18nPath.workFlow.syFeature.AddStyleNode.this)}
         <div
           style={{
             maxWidth: "200px",
