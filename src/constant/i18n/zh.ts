@@ -6,8 +6,35 @@ export const I18nPath = {
   },
   workFlow: {
     this: "workFlow.this",
+    components: {
+      this: "workFlow.components.this",
+      node: "workFlow.components.node",
+      CalendarNode: {
+        this: "workFlow.components.CalendarNode.this",
+      },
+      PopPanelNode: {
+        this: "workFlow.components.PopPanelNode.this",
+      },
+    },
+    pluginLifeCycle: {
+      this: "workFlow.pluginLifeCycle.this",
+      node: "workFlow.pluginLifeCycle.node",
+      OnLoadNode: {
+        this: "workFlow.pluginLifeCycle.OnLoadNode.this",
+      },
+      OnLayoutReadyNode: {
+        this: "workFlow.pluginLifeCycle.OnLayoutReadyNode.this",
+      },
+      OnUnloadNode: {
+        this: "workFlow.pluginLifeCycle.OnUnloadNode.this",
+      },
+      OnUninstallNode: {
+        this: "workFlow.pluginLifeCycle.OnUninstallNode.this",
+      },
+    },
     syFeature: {
       this: "workFlow.syFeature.this",
+      node: "workFlow.syFeature.node",
       AddCommandNode: {
         this: "workFlow.syFeature.AddCommandNode.this",
       },
@@ -43,8 +70,35 @@ const ZH = {
   },
   workFlow: {
     this: "工作流",
+    components: {
+      this: "组件",
+      node: "组件节点",
+      CalendarNode: {
+        this: "日历",
+      },
+      PopPanelNode: {
+        this: "弹出面板",
+      },
+    },
+    pluginLifeCycle: {
+      this: "插件生命周期",
+      node: "插件生命周期节点",
+      OnLoadNode: {
+        this: "加载",
+      },
+      OnLayoutReadyNode: {
+        this: "布局完成",
+      },
+      OnUnloadNode: {
+        this: "卸载",
+      },
+      OnUninstallNode: {
+        this: "删除",
+      },
+    },
     syFeature: {
       this: "系统功能",
+      node: "系统功能节点",
       AddCommandNode: {
         this: "添加快捷键",
       },

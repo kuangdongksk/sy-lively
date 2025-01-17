@@ -1,7 +1,6 @@
-import { addEdge, Handle, HandleProps, Position, useReactFlow, Node } from "@xyflow/react";
-import { EPluginLifeCycleNode, PluginLifeCycleNode } from "./PluginLifeCycle/OnLoadNode";
-import { ESyFeatureNode, SyFeatureNode } from "./SyFeature";
-import styles from "./index.module.less";
+import { addEdge, Handle, HandleProps, Node, Position, useReactFlow } from "@xyflow/react";
+import { EPluginLifeCycleNode } from "./PluginLifeCycle/OnLoadNode";
+import { ESyFeatureNode } from "./SyFeature";
 
 export interface INodeWrapperProps {
   children: React.ReactNode;
@@ -27,7 +26,7 @@ function NodeWrapper(props: INodeWrapperProps) {
   const { setEdges } = useReactFlow();
 
   return (
-    <div className={styles.nodeWrapper}>
+    <div className="p-[12px] border-[1px] border-solid">
       {children}
       {handle?.map((item: HandleProps) => (
         <Handle
@@ -42,24 +41,9 @@ function NodeWrapper(props: INodeWrapperProps) {
 }
 export default NodeWrapper;
 
-export const nodeTypes = {
-  [EPluginLifeCycleNode.OnLoadNode]: PluginLifeCycleNode.OnLoadNode,
-  [EPluginLifeCycleNode.OnLayoutReadyNode]: PluginLifeCycleNode.OnLayoutReadyNode,
-  [EPluginLifeCycleNode.OnUnloadNode]: PluginLifeCycleNode.OnUnloadNode,
-  [EPluginLifeCycleNode.OnUninstallNode]: PluginLifeCycleNode.OnUninstallNode,
-  // SyFeature
-  [ESyFeatureNode.AddCommandNode]: SyFeatureNode.AddCommandNode,
-  [ESyFeatureNode.AddSlashCommandNode]: SyFeatureNode.AddSlashCommandNode,
-  [ESyFeatureNode.AddStyleNode]: SyFeatureNode.AddStyleNode,
-  [ESyFeatureNode.AddTabNode]: SyFeatureNode.AddTabNode,
-  [ESyFeatureNode.AddTopBarNode]: SyFeatureNode.AddTopBarNode,
-  [ESyFeatureNode.LoadDataNode]: SyFeatureNode.LoadDataNode,
-  [ESyFeatureNode.SaveDataNode]: SyFeatureNode.SaveDataNode,
-};
-
 export function isAllowConnection(source: Node, target: Node) {
   const sourceType = source.type;
-  const targetType = target.type as keyof typeof nodeTypes;
+  const targetType = target.type as any; //as keyof typeof nodeTypes;
 
   switch (sourceType) {
     case EPluginLifeCycleNode.OnLoadNode:
@@ -75,7 +59,7 @@ export function isAllowConnection(source: Node, target: Node) {
       ].includes(targetType);
 
     case EPluginLifeCycleNode.OnUnloadNode:
-      return [EPluginLifeCycleNode.OnUninstallNode as string].includes(targetType);
+      return [EPluginLifeCycleNode.OnUninstallNode].includes(targetType);
 
     case EPluginLifeCycleNode.OnUninstallNode:
       return false;

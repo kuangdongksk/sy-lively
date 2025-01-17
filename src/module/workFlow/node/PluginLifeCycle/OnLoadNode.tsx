@@ -1,8 +1,8 @@
 import { Position } from "@xyflow/react";
 import NodeWrapper from "..";
+import OnLayoutReadyNode from "./OnLayoutReadyNode";
 import OnUninstallNode from "./OnUninstallNode";
 import OnUnloadNode from "./OnUnloadNode";
-import OnLayoutReadyNode from "./OnLayoutReadyNode";
 
 export interface IOnLoadNodeProps {}
 
@@ -25,10 +25,10 @@ function OnLoadNode(props: IOnLoadNodeProps) {
 export default OnLoadNode;
 
 export enum EPluginLifeCycleNode {
-  OnLoadNode = "PluginLifeCycle_onLoad",
-  OnLayoutReadyNode = "PluginLifeCycle_onLayoutReady",
-  OnUninstallNode = "PluginLifeCycle_onUninstall",
-  OnUnloadNode = "PluginLifeCycle_onUnload",
+  OnLoadNode = "OnLoadNode",
+  OnLayoutReadyNode = "OnLayoutReadyNode",
+  OnUninstallNode = "OnUninstallNode",
+  OnUnloadNode = "OnUnloadNode",
 }
 
 export const PluginLifeCycleNode = {

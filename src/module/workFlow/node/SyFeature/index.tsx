@@ -1,4 +1,3 @@
-import { i18n } from "@/constant/i18n";
 import AddCommandNode from "./AddCommandNode";
 import AddSlashCommandNode from "./AddSlashCommandNode";
 import AddStyleNode from "./AddStyleNode";
@@ -26,8 +25,3 @@ export const SyFeatureNode = {
   LoadDataNode,
   SaveDataNode,
 };
-
-export const ContextMenuConfig = Object.values(ESyFeatureNode).map((node) => ({
-  label: i18n.t("workFlow.syFeature." + node + ".this"),
-  node,
-}));

@@ -23,9 +23,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Menu } from "siyuan";
 import { IWorkFlowData } from "..";
-import { isAllowConnection, nodeTypes } from "../node";
+import { ContextMenuConfig, nodeTypes } from "../constant";
+import { isAllowConnection } from "../node";
 import { EPluginLifeCycleNode } from "../node/PluginLifeCycle/OnLoadNode";
-import { ContextMenuConfig } from "../node/SyFeature";
 import { NodeType } from "../types";
 import styles from "./index.module.less";
 
@@ -35,7 +35,7 @@ const initialNodes = [
   {
     id: nanoid(),
     position: { x: 0, y: 0 },
-    type: EPluginLifeCycleNode.OnLoadNode as keyof typeof nodeTypes,
+    type: EPluginLifeCycleNode.OnLoadNode,
     data: { label: "OnLoad" },
   },
 ];
@@ -60,8 +60,6 @@ function Flow(props: IFlowProps) {
   const [nodes, setNodes, onNodesChange] = useNodesState<NodeType>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const { screenToFlowPosition, getEdge, getEdges, getNode, getNodes } = useReactFlow();
-
-  const [lifeCycleNodeCount, setLifeCycleNodeCount] = useState([1, 0, 0, 0]);
 
   useEffect(() => {
     const data = state.data;
@@ -112,104 +110,30 @@ function Flow(props: IFlowProps) {
       onNodesChange={onNodesChange}
       onContextMenu={(e) => {
         if (menuRef.current.isOpen) return;
-        menuRef.current.addItem({
-          label: "添加生命周期节点",
-          submenu: [
-            {
-              label: "添加布局完成节点",
-              disabled: lifeCycleNodeCount[1] > 0,
-              click: () => {
-                const id = nanoid();
-                const { clientX, clientY } = "changedTouches" in e ? e.changedTouches[0] : e;
-                const newNode = {
-                  id,
-                  position: screenToFlowPosition({
-                    x: clientX,
-                    y: clientY,
-                  }),
-                  data: { label: `Node ${id}` },
-                  type: EPluginLifeCycleNode.OnLayoutReadyNode,
-                  origin: [0.5, 0.0],
-                };
 
-                setNodes((nds) => nds.concat(newNode));
-                setLifeCycleNodeCount((count) => {
-                  count[1]++;
-                  return count;
-                });
-              },
-            },
-            {
-              label: "添加卸载节点",
-              disabled: lifeCycleNodeCount[2] > 0,
-              click: () => {
-                const id = nanoid();
-                const { clientX, clientY } = "changedTouches" in e ? e.changedTouches[0] : e;
-                const newNode = {
-                  id,
-                  position: screenToFlowPosition({
-                    x: clientX,
-                    y: clientY,
-                  }),
-                  data: { label: `Node ${id}` },
-                  type: EPluginLifeCycleNode.OnUnloadNode,
-                  origin: [0.5, 0.0],
-                };
-
-                setNodes((nds) => nds.concat(newNode));
-                setLifeCycleNodeCount((count) => {
-                  count[2]++;
-                  return count;
-                });
-              },
-            },
-            {
-              label: "添加删除节点",
-              disabled: lifeCycleNodeCount[3] > 0,
-              click: () => {
-                const id = nanoid();
-                const { clientX, clientY } = "changedTouches" in e ? e.changedTouches[0] : e;
-                const newNode = {
-                  id,
-                  position: screenToFlowPosition({
-                    x: clientX,
-                    y: clientY,
-                  }),
-                  data: { label: `Node ${id}` },
-                  type: EPluginLifeCycleNode.OnUninstallNode,
-                  origin: [0.5, 0.0],
-                };
-
-                setNodes((nds) => nds.concat(newNode));
-                setLifeCycleNodeCount((count) => {
-                  count[3]++;
-                  return count;
-                });
-              },
-            },
-          ],
-        });
-        menuRef.current.addItem({
-          label: "添加思源功能节点",
-          submenu: ContextMenuConfig.map((config) => ({
+        ContextMenuConfig.forEach((config) => {
+          menuRef.current.addItem({
             label: config.label,
-            click: () => {
-              const id = nanoid();
-              const { clientX, clientY } = "changedTouches" in e ? e.changedTouches[0] : e;
-              const newNode = {
-                id,
-                position: screenToFlowPosition({
-                  x: clientX,
-                  y: clientY,
-                }),
-                data: { label: `Node ${id}` },
-                type: config.node,
-                origin: [0.5, 0.0],
-              };
+            submenu: config.submenu.map((submenu) => ({
+              label: submenu.label,
+              click: () => {
+                const id = nanoid();
+                const { clientX, clientY } = "changedTouches" in e ? e.changedTouches[0] : e;
+                const newNode = {
+                  id,
+                  position: screenToFlowPosition({
+                    x: clientX,
+                    y: clientY,
+                  }),
+                  data: { label: `Node ${id}` },
+                  type: submenu.node,
+                  origin: [0.5, 0.0],
+                };
 
-              setNodes((nds) => nds.concat(newNode));
-            },
-          })),
+                setNodes((nds) => nds.concat(newNode));
+              },
+            })),
+          });
         });
 
         menuRef.current.open({
