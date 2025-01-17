@@ -1,6 +1,6 @@
 import SQLer from "@/class/helper/SQLer";
 import { EBtnClass } from "@/components/base/sy/按钮";
-import ProcessLine from "@/components/基础/进度条";
+import ProcessLine from "@/components/base/rc/ProcessLine";
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
 import { E事项状态 } from "@/constant/syLively";
 import { EStoreKey } from "@/constant/系统码";

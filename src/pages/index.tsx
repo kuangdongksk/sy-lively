@@ -1,5 +1,5 @@
 import { EBtnClass } from "@/components/base/sy/按钮";
-import 面包屑 from "@/components/基础/面包屑";
+import RoutePath from "@/components/基础/RoutePath";
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
 import { EStoreKey } from "@/constant/系统码";
 import { storeAtom } from "@/store";
@@ -97,7 +97,7 @@ function App() {
         </Sider>
         <Layout className={styles.主体}>
           <div>
-            <面包屑 />
+            <RoutePath />
           </div>
           <Content className={styles.内容}>
             <Outlet />

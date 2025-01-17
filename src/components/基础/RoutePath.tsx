@@ -1,9 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 
-export interface I面包屑Props {}
-
-function 面包屑(props: I面包屑Props) {
-  const {} = props;
+function RoutePath() {
   const 当前位置 = useLocation();
   const 导航到 = useNavigate();
 
@@ -33,4 +30,4 @@ function 面包屑(props: I面包屑Props) {
     </span>
   );
 }
-export default 面包屑;
+export default RoutePath;

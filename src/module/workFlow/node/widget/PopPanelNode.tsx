@@ -1,27 +1,34 @@
+import RcSelect from "@/components/base/rc/Select";
 import { i18n } from "@/constant/i18n";
 import { I18nPath } from "@/constant/i18n/zh";
-import { nanoid } from "nanoid";
 import NodeWrapper from "..";
+import { useState } from "react";
 
 export interface IPopPanelNodeProps {}
 
 function PopPanelNode(props: IPopPanelNodeProps) {
   const {} = props;
 
-  const positionSelectId = nanoid();
+  const [position, setPosition] = useState<"mousePosition" | "screenCenter" | "elementPosition">(
+    "mousePosition"
+  );
 
   return (
     <NodeWrapper>
       <div>{i18n.t(I18nPath.workFlow.components.PopPanelNode.this)}</div>
-      <div className="flex items-center justify-center">
-        <label htmlFor={positionSelectId}>打开位置：</label>
-        <select className="b3-select fn__flex-center" id={positionSelectId}>
-          <option value="0" selected={true}>
-            居中
-          </option>
-          <option value="1">触发元素</option>
-          <option value="2">鼠标处</option>
-        </select>
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex items-center">
+          打开位置：
+          <RcSelect
+            options={[
+              { value: "mousePosition", label: "鼠标位置" },
+              { value: "screenCenter", label: "屏幕中间" },
+              { value: "elementPosition", label: "元素位置" },
+            ]}
+          />
+        </div>
+
+        <div>请接入触发元素</div>
       </div>
     </NodeWrapper>
   );
