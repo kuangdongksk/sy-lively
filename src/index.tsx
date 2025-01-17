@@ -4,12 +4,13 @@ import { getFrontend, IProtyle, openTab, Plugin } from "siyuan";
 import App from "./App";
 import { 触发器 } from "./class/helper/触发器";
 import { EPluginPath, EStoreKey } from "./constant/系统码";
+import "./index.less";
 import { CardPlugin } from "./module/card/plugin";
 import { generateCreateCardForm } from "./module/card/plugin/NewCardForm";
 import Veil from "./module/veil";
 import WhiteBoard from "./module/whiteBoard/plugin";
 import TlWb from "./module/whiteBoard/TlWb";
-import { 仓库, storeAtom } from "./store";
+import { storeAtom, 仓库 } from "./store";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
 import { 添加全局样式 } from "./tools/样式";
 
@@ -47,15 +48,10 @@ export default class SyLively extends Plugin {
   });
   private veil = new Veil(this.getData, this.putData);
   private whiteBoard = new WhiteBoard({ app: this.app, pluginName: this.name });
-  private 提示器1: 触发器 = new 触发器(
-    this.getData,
-    this.putData,
-    this.addStatusBar
-  );
+  private 提示器1: 触发器 = new 触发器(this.getData, this.putData, this.addStatusBar);
 
   async onload() {
-    this.isMobile =
-      getFrontend() === "mobile" || getFrontend() === "browser-mobile";
+    this.isMobile = getFrontend() === "mobile" || getFrontend() === "browser-mobile";
 
     添加全局样式();
     this.添加图标();
@@ -255,9 +251,7 @@ export default class SyLively extends Plugin {
       // that.whiteBoard.createWhiteBoard(e);
       that.veil.onClickBlockIcon(e);
     });
-    this.eventBus.on("open-menu-doctree", (e) =>
-      that.veil.onOpenMenuDoctree(e)
-    );
+    this.eventBus.on("open-menu-doctree", (e) => that.veil.onOpenMenuDoctree(e));
     this.eventBus.on("loaded-protyle-dynamic", () => {});
     this.eventBus.on("loaded-protyle-static", (e) => {
       that.veil.onLoadedProtyleStatic(e);
