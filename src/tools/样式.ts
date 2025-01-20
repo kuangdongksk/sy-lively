@@ -9,7 +9,7 @@ export function 添加全局样式() {
       background-color: var(--b3-theme-background);
 
       padding: 12px !important;
-      margin: 12px 0 !important;
+      margin-bottom: 12px;
 
       border: 1px solid var(--b3-theme-on-surface);
     }
@@ -17,7 +17,7 @@ export function 添加全局样式() {
       background-color: var(--b3-theme-background);
 
       padding: 12px !important;
-      margin: 12px 0 !important;
+      margin-bottom: 12px;
 
       border: 1px solid var(--b3-theme-on-surface);
       border-radius: 24px !important;
