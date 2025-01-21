@@ -1,4 +1,4 @@
-export const latestVersion = "P0.2.4-3";
+export const latestVersion = "P0.2.4-4";
 
 export enum E功能类型 {
   功能 = "功能",
@@ -16,6 +16,15 @@ export const 所有更新公告: {
 }[] = [
   {
     key: latestVersion,
+    Children: [
+      {
+        type: E功能类型.修复,
+        content: ["修复新建卡片，因为标题不是纯文本所以无法新建"],
+      },
+    ],
+  },
+  {
+    key: "P0.2.4-3",
     Children: [
       {
         type: E功能类型.优化,
@@ -40,9 +49,7 @@ export const 所有更新公告: {
         content: [
           <>
             添加加密功能2/5
-            <a href="https://ld246.com/article/1734947243187">
-              喧嚣插件 - 访问控制功能
-            </a>
+            <a href="https://ld246.com/article/1734947243187">喧嚣插件 - 访问控制功能</a>
           </>,
         ],
       },
@@ -132,10 +139,7 @@ export const 所有更新公告: {
     Children: [
       {
         type: "功能",
-        content: [
-          "右上Dock添加卡片侧栏 （alt+q 可以新增卡片）",
-          "添加数据升级逻辑",
-        ],
+        content: ["右上Dock添加卡片侧栏 （alt+q 可以新增卡片）", "添加数据升级逻辑"],
       },
     ],
   },
@@ -181,10 +185,7 @@ export const 所有更新公告: {
     Children: [
       {
         type: "功能",
-        content: [
-          "添加数据修复：单开一页如果不是布尔值会重置为false",
-          "更新失败添加控制台报错",
-        ],
+        content: ["添加数据修复：单开一页如果不是布尔值会重置为false", "更新失败添加控制台报错"],
       },
       {
         type: "优化",
@@ -201,9 +202,7 @@ export const 所有更新公告: {
     Children: [
       {
         type: "功能",
-        content: [
-          "对事项中的错误的字段增加判断，目前会将无法识别的提醒和重复重置为不提醒和不重复",
-        ],
+        content: ["对事项中的错误的字段增加判断，目前会将无法识别的提醒和重复重置为不提醒和不重复"],
       },
       {
         type: "优化",
