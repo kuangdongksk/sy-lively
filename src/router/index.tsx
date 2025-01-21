@@ -1,4 +1,3 @@
-import 卡片 from "@/module/card";
 import WhiteBoard from "@/module/whiteBoard";
 import WorkFlow from "@/module/workFlow";
 import WorkFlowDetail from "@/module/workFlow/pages/WorkflowDetail";
@@ -58,7 +57,7 @@ const router = createHashRouter([
       },
       {
         path: "卡片",
-        element: <卡片 />,
+        element: <></>,
       },
       {
         path: "日历",

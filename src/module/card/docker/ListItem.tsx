@@ -20,7 +20,7 @@ function ListItem(props: IListItemProps) {
   const 获取卡片 = async () => {
     const 笔记本ID = await SY文档.根据ID获取笔记本ID(id);
 
-    const { files } = await SY文档.根据ID列出文档(笔记本ID, id);
+    const { files } = await SY文档.获取指定文档下的子文档(笔记本ID, id);
     const data = await CardQueryService.获取指定文档下的卡片(id);
 
     setChildren(generateChildren(files, data, index));
@@ -42,11 +42,7 @@ function ListItem(props: IListItemProps) {
         }}
       >
         <span
-          className={
-            isLeaf
-              ? "fn__hidden"
-              : "b3-list-item__toggle b3-list-item__toggle--hl "
-          }
+          className={isLeaf ? "fn__hidden" : "b3-list-item__toggle b3-list-item__toggle--hl "}
           style={{ paddingLeft: `${(index - 1) * 18 + 10}px` }}
           onClick={() => {
             setShowChildren(!showChildren);
@@ -88,18 +84,13 @@ export function generateChildren(
   files: { name1: string; id: string }[],
   data: {
     ID: string;
-    标题: string;
+    name: string;
   }[],
   index: number
 ) {
   return files
     .map(({ name1, id }) => ({
-      title: (
-        <BlockLink
-          block={{ id, label: name1 }}
-          iconType={["ref", "link", "inset"]}
-        />
-      ),
+      title: <BlockLink block={{ id, label: name1 }} iconType={["ref", "link", "inset"]} />,
       key: id,
       isLeaf: false,
       index: index + 1,
@@ -108,7 +99,7 @@ export function generateChildren(
       data.map((item) => ({
         title: (
           <BlockLink
-            block={{ id: item.ID, label: item.标题 }}
+            block={{ id: item.ID, label: item.name }}
             iconType={["ref", "link", "inset"]}
           />
         ),
@@ -117,4 +108,21 @@ export function generateChildren(
         index: index + 1,
       }))
     );
+}
+
+export function LeafItem({ id, name }: { id: string; name: string }) {
+  return (
+    <li
+      className="b3-list-item b3-list-item--hide-action"
+      draggable
+      onDragStart={(e) => {
+        e.dataTransfer.setData("text/plain", id);
+      }}
+    >
+      <span className={"fn__hidden"} style={{ paddingLeft: `${1 * 18 + 10}px` }}></span>
+      <span className="b3-list-item__text ariaLabel">
+        <BlockLink block={{ id, label: name }} iconType={["ref", "link", "inset"]} />
+      </span>
+    </li>
+  );
 }

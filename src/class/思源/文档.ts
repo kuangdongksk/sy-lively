@@ -68,7 +68,7 @@ export default class SY文档 {
     });
   }
 
-  public static async 根据ID列出文档(
+  public static async 获取指定文档下的子文档(
     笔记本ID: string,
     ID: string
   ): Promise<{
@@ -97,17 +97,14 @@ export default class SY文档 {
     return data.id;
   }
 
-  public static async 获取日记根文档(
-    笔记本ID: string
-  ): Promise<{ id: string }> {
+  public static async 获取日记根文档(笔记本ID: string): Promise<{ id: string }> {
     const value = await SY笔记本.获取笔记本配置(笔记本ID);
     const 日记文档名称 = value.data.conf.dailyNoteSavePath.split("/")[1];
     const { data } = await SQLer.获取日记根文档(笔记本ID, 日记文档名称);
 
     if (data.length === 0) {
       return {
-        id: (await this.通过Markdown创建(笔记本ID, `/${日记文档名称}`, ""))
-          .data,
+        id: (await this.通过Markdown创建(笔记本ID, `/${日记文档名称}`, "")).data,
       };
     }
     return data[0];

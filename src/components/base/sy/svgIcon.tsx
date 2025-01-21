@@ -6,6 +6,7 @@ export enum SyIconEnum {
   More = "More",
   Min = "Min",
   Refresh = "Refresh",
+  Search = "Search",
 }
 
 export interface ISvgIconProps {

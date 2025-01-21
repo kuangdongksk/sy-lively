@@ -1,47 +1,32 @@
 -- database: ../../../Data/思源/工作/temp/siyuan.db
 -- 要运行整个文件，请按窗口右上角的▷按钮。
 SELECT
-  卡片,
-  block_id
+  card
 FROM
   (
     SELECT
       a.block_id,
       b.root_id,
-      '{' || GROUP_CONCAT('"' || a.name || '":"' || a.value || '"', ',') || '
-                  ,"${E卡片属性名称.父项ID}":"' || b.root_id || '"
-                  }' AS 卡片
+      '{' || GROUP_CONCAT('"' || a.name || '":"' || a.value || '"', ',') || ',"父项ID":"' || b.root_id || '","ID":"' || b.id || '"}' as card
     FROM
       attributes as a,
       blocks as b
     WHERE
-      a.name LIKE '%custom-plugin-lively-card-%'
+      (
+        a.name LIKE '%custom-plugin-lively-card-%'
+        OR a.name = 'name'
+        OR a.name = 'alias'
+      )
       AND a.block_id = b.id
-      AND b.root_id LIKE '%20241122180922-6bepld8%'
     GROUP BY
-      block_id
+      a.block_id
   )
+WHERE
+  card LIKE '%张%'
 LIMIT
   1024
 OFFSET
   0;
-
--- WHERE
---   卡片 LIKE '%海康威视%';
-SELECT
-  卡片
-FROM
-  (
-    SELECT
-      block_id,
-      '{' || GROUP_CONCAT('"' || name || '":"' || value || '"', ',') || '}' AS 卡片
-    FROM
-      attributes
-    WHERE
-      name LIKE '%custom-plugin-lively-card-%'
-    GROUP BY
-      block_id
-  );
 
 SELECT
   value
