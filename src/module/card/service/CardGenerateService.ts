@@ -25,10 +25,7 @@ export class CardGenerateService {
     return KH.生成超级块带属性([标题块, 段落块], ID);
   }
 
-  public static async createCard(
-    卡片: I卡片 & { subContent: string },
-    卡片文档ID: string
-  ): Promise<string> {
+  public static async createCard(卡片: I卡片, 卡片文档ID: string): Promise<string> {
     if (卡片.单开一页) {
       return await this.新建卡片文档(卡片, 卡片文档ID);
     } else {
@@ -36,10 +33,7 @@ export class CardGenerateService {
     }
   }
 
-  private static async 新建卡片块(
-    卡片: I卡片,
-    卡片文档ID: string
-  ): Promise<string> {
+  private static async 新建卡片块(卡片: I卡片, 卡片文档ID: string): Promise<string> {
     const { ID, 标题, 别名 } = 卡片;
 
     await SY块.设置块属性({
@@ -62,12 +56,11 @@ export class CardGenerateService {
     return ID;
   }
 
-  private static async 新建卡片文档(
-    卡片: I卡片 & { subContent: string },
-    卡片文档ID: string
-  ): Promise<string> {
-    const { 标题, 别名 } = 卡片;
+  private static async 新建卡片文档(卡片: I卡片, 卡片文档ID: string): Promise<string> {
+    const { ID, 标题, 别名 } = 卡片;
     const 块数据 = await SQLer.根据ID获取块(卡片文档ID);
+    const { data: subBlocks } = (await SY块.获取子块(ID)) as { data: { markdown: string }[] };
+    subBlocks?.shift();
 
     const { data: 文档ID } = await SY文档.通过Markdown创建(
       块数据.box,
@@ -80,7 +73,7 @@ export class CardGenerateService {
     await Promise.all([
       await SY块.插入前置子块({
         dataType: "markdown",
-        data: 卡片.subContent,
+        data: subBlocks?.map((v) => v.markdown).join("\n\n") || "",
         parentID: 文档ID,
       }),
       await SY块.设置块属性({

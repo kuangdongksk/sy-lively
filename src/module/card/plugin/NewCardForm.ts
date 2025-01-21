@@ -86,12 +86,7 @@ export async function generateCreateCardForm(data: {
     ],
     labelWidth: 100,
     onConfirm: async (values) => {
-      const {
-        alias = "",
-        insetToDailyNote,
-        singlePage,
-        insertToCurrent,
-      } = values;
+      const { alias = "", insetToDailyNote, singlePage, insertToCurrent } = values;
 
       const card = await generateCardObj(alias, cardID, titleID, singlePage);
       const parentID = insertToCurrent ? currentID : cardDocID;
@@ -167,11 +162,6 @@ async function generateCardObj(
 ) {
   const cardData = await SQLer.根据ID获取块(cardID);
   const title = cardData.fcontent;
-  const content = cardData.markdown;
-  let subContent = content.split(`###### ${title}\n\n`)[1];
-  subContent = subContent.endsWith("}}}")
-    ? subContent.slice(0, -3)
-    : subContent;
 
   return {
     ID: cardID,
@@ -179,6 +169,5 @@ async function generateCardObj(
     标题ID: titleID,
     别名: toAlias(title, aliasStr),
     单开一页: singlePage,
-    subContent,
   };
 }
