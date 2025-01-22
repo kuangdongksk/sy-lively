@@ -110,18 +110,18 @@ export function generateChildren(
     );
 }
 
-export function LeafItem({ id, name }: { id: string; name: string }) {
+export function LeafItem({ ID, name }: { ID: string; name: string }) {
   return (
     <li
       className="b3-list-item b3-list-item--hide-action"
       draggable
       onDragStart={(e) => {
-        e.dataTransfer.setData("text/plain", id);
+        e.dataTransfer.setData("text/plain", ID);
       }}
     >
       <span className={"fn__hidden"} style={{ paddingLeft: `${1 * 18 + 10}px` }}></span>
       <span className="b3-list-item__text ariaLabel">
-        <BlockLink block={{ id, label: name }} iconType={["ref", "link", "inset"]} />
+        <BlockLink block={{ id: ID, label: name }} iconType={["ref", "link", "inset"]} />
       </span>
     </li>
   );

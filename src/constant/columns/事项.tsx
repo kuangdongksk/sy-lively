@@ -1,4 +1,4 @@
-import 数字标签 from "@/components/基础/数字标签";
+import NumberTag from "@/components/base/rc/NumberTag";
 import { green, red } from "@ant-design/colors";
 import { ProColumns } from "@ant-design/pro-components";
 import dayjs from "dayjs";
@@ -141,7 +141,7 @@ export const 事项列配置: ProColumns[] = [
     valueType: "select",
     width: 100,
     render: (_dom, record) => {
-      return <数字标签 num={record.重要程度} 颜色数组={red} />;
+      return <NumberTag num={record.重要程度} 颜色数组={red} />;
     },
     sorter: (a, b) => a.重要程度 - b.重要程度,
   },
@@ -153,7 +153,7 @@ export const 事项列配置: ProColumns[] = [
     valueEnum: 程度,
     width: 100,
     render: (_dom, record) => {
-      return <数字标签 num={record.紧急程度} 颜色数组={green} />;
+      return <NumberTag num={record.紧急程度} 颜色数组={green} />;
     },
     sorter: (a, b) => a.紧急程度 - b.紧急程度,
   },

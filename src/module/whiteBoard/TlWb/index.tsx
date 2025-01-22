@@ -7,7 +7,7 @@ import {
   Editor,
   HTMLContainer,
   TLBaseShape,
-  Tldraw
+  Tldraw,
 } from "tldraw";
 import "tldraw/tldraw.css";
 import ActionsMenu from "./components/menu/ActionsMenu";
@@ -30,9 +30,7 @@ function TlWb(props: ITlWbProps) {
     }
   }, []);
 
-  const externalContentHandlerCom = useCallback((info) => {
-    console.log("🚀 ~ externalContentHandlerCom ~ info:", info);
-  }, []);
+  const externalContentHandlerCom = useCallback((info) => {}, []);
 
   const handleMount = useCallback((editor: Editor) => {
     editor.registerExternalContentHandler("embed", externalContentHandlerCom);
@@ -42,11 +40,7 @@ function TlWb(props: ITlWbProps) {
 
       const center = point ?? editor.getViewportPageBounds().center;
       const { id, title } = strIsRef(text) || {};
-      console.log(
-        "🚀 ~ editor.registerExternalContentHandler ~ id, title:",
-        id,
-        title
-      );
+      console.log("🚀 ~ editor.registerExternalContentHandler ~ id, title:", id, title);
       if (id) {
         editor.createShape({
           type: "html",
@@ -61,10 +55,7 @@ function TlWb(props: ITlWbProps) {
       }
     });
     editor.registerExternalContentHandler("url", externalContentHandlerCom);
-    editor.registerExternalContentHandler(
-      "svg-text",
-      externalContentHandlerCom
-    );
+    editor.registerExternalContentHandler("svg-text", externalContentHandlerCom);
   }, []);
 
   return (

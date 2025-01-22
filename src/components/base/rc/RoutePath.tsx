@@ -1,10 +1,10 @@
 import { useLocation, useNavigate } from "react-router-dom";
 
 function RoutePath() {
-  const 当前位置 = useLocation();
+  const location = useLocation();
   const 导航到 = useNavigate();
 
-  const 路径 = decodeURI(当前位置.pathname).split("/");
+  const 路径 = decodeURI(location.pathname).split("/");
 
   return (
     <span>

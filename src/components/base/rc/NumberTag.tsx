@@ -1,10 +1,10 @@
 import { Palette, red } from "@ant-design/colors";
 
-export interface I数字标签Props {
+export interface INumberTagProps {
   num: number;
   颜色数组: Palette;
 }
-function 数字标签(props: I数字标签Props) {
+function NumberTag(props: INumberTagProps) {
   const { num, 颜色数组 = red } = props;
 
   return (
@@ -24,4 +24,4 @@ function 数字标签(props: I数字标签Props) {
     </div>
   );
 }
-export default 数字标签;
+export default NumberTag;

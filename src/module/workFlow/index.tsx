@@ -100,7 +100,6 @@ function WorkFlow(props: IWorkFlowProps) {
             }
             onClick={() => {
               navigate("/工作流/detail", { state: item });
-              console.log("🚀 ~ WorkFlow ~ item:", item);
             }}
           />
         ))}

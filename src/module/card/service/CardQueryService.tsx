@@ -144,7 +144,6 @@ export class CardQueryService {
     })) as {
       data: { card: string }[];
     };
-    console.log("🚀 ~ CardQueryService ~ data:", data);
 
     const result = (await this.原始结果转为卡片(data)).filter((card) => card.ID !== 文档ID);
 

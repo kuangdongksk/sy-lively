@@ -6,7 +6,6 @@ let locale = "zh";
 fetch("http://ip-api.com/json/?lang=zh-CN")
   .then((response) => response.json())
   .then((data) => {
-    console.log("🚀 ~ .then ~ data:", data);
     locale = data.countryCode === "CN" ? "zh" : "en";
   })
   .catch((error) => {

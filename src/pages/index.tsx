@@ -1,5 +1,5 @@
 import { EBtnClass } from "@/components/base/sy/按钮";
-import RoutePath from "@/components/基础/RoutePath";
+import RoutePath from "@/components/base/rc/RoutePath";
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
 import { EStoreKey } from "@/constant/系统码";
 import { storeAtom } from "@/store";
