@@ -1,5 +1,5 @@
 import SY文档 from "@/class/思源/文档";
-import RcInput from "@/components/base/rc/Input";
+import SearchInput from "@/components/base/rc/Input/SearchInput";
 import { SyIconEnum } from "@/components/base/sy/svgIcon";
 import Docker from "@/components/docker";
 import { CardQueryService } from "@/module/card/service/CardQueryService";
@@ -62,15 +62,12 @@ function CardDocker(props: { 卡片文档ID: string }) {
       minButton
       title={"喧嚣卡片"}
     >
-      <RcInput
-        variant="search"
+      <SearchInput
         htmlAttrs={{
-          onChange: (e) => {
-            setSearchValue(e.target.value);
-          },
           value: searchValue,
           placeholder: "搜索",
         }}
+        onChange={setSearchValue}
       />
       <ul className={"b3-list b3-list--background"}>
         {searchValue ? searchResultList.map((item) => <LeafItem {...item} />) : treeList}
