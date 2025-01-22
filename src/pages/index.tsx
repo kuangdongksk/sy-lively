@@ -1,5 +1,5 @@
-import { EBtnClass } from "@/components/base/sy/按钮";
 import RoutePath from "@/components/base/rc/RoutePath";
+import { EBtnClass } from "@/components/base/sy/按钮";
 import { I增改查弹窗表单Ref } from "@/components/增改查弹窗表单";
 import { EStoreKey } from "@/constant/系统码";
 import { storeAtom } from "@/store";
@@ -20,7 +20,6 @@ import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import 更新公告 from "../业务组件/更新公告";
 import styles from "./index.module.less";
 
 const { Sider, Content } = Layout;
@@ -68,9 +67,7 @@ function App() {
   });
 
   return (
-    <AntdApp
-      style={{ backgroundColor: "var(--b3-theme-surface)", height: "100%" }}
-    >
+    <AntdApp style={{ backgroundColor: "var(--b3-theme-surface)", height: "100%" }}>
       <Layout className={styles.App}>
         <Sider
           className={styles.slider}
@@ -106,7 +103,6 @@ function App() {
         </Layout>
       </Layout>
       <事项表单 ref={事项Ref} />
-      <更新公告 />
     </AntdApp>
   );
 }

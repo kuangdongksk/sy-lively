@@ -13,6 +13,7 @@ import TlWb from "./module/whiteBoard/TlWb";
 import { storeAtom, 仓库 } from "./store";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
 import { 添加全局样式 } from "./tools/样式";
+import UpdateNotice from "./module/update";
 
 export const PluginId = "livelySaSa";
 
@@ -67,6 +68,7 @@ export default class SyLively extends Plugin {
     this.添加tab();
     this.添加事件监听();
     this.veil.onPlugLayoutReady();
+    new UpdateNotice().showUpdateNotice()
   }
 
   async onunload() {
