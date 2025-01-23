@@ -43,33 +43,33 @@ export default class Veil {
     const currentID = noteBookID || docID;
     const subMenu = this.lockedNotes.has(currentID)
       ? [
-          {
-            label: "锁定目录",
-            click: () => {
-              this.addVeil($element, currentID, "目录");
-            },
-          },
-          {
-            label: "锁定目录及内容区",
-            click: () => {
-              this.addVeil($element, currentID, "目录");
-            },
-          },
-          {
-            label: "移除密码",
-            click: async () => {
-              this.lockedNotes.delete(currentID);
-              this.saveData(EStoreKey.上锁的笔记, this.lockedNotes);
-            },
-          },
+          // {
+          //   label: "锁定目录",
+          //   click: () => {
+          //     this.addVeil($element, currentID, "目录");
+          //   },
+          // },
+          // {
+          //   label: "锁定目录及内容区",
+          //   click: () => {
+          //     this.addVeil($element, currentID, "目录");
+          //   },
+          // },
+          // {
+          //   label: "移除密码",
+          //   click: async () => {
+          //     this.lockedNotes.delete(currentID);
+          //     this.saveData(EStoreKey.上锁的笔记, this.lockedNotes);
+          //   },
+          // },
         ]
       : [
-          {
-            label: "添加密码",
-            click: () => {
-              this.addPassword($element, currentID, "目录");
-            },
-          },
+          // {
+          //   label: "添加密码",
+          //   click: () => {
+          //     this.addPassword($element, currentID, "目录");
+          //   },
+          // },
         ];
 
     menu.addItem({

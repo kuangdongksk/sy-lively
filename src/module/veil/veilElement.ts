@@ -12,12 +12,7 @@ export default class VeilElement {
   private veil = document.createElement("div");
   private $veil = $(this.veil);
 
-  constructor(
-    $parent: Cash,
-    id: string,
-    passwordHash: string,
-    targetType: TVeilTargetType
-  ) {
+  constructor($parent: Cash, id: string, passwordHash: string, targetType: TVeilTargetType) {
     $parent.css("position", "relative");
 
     this.$veil.css({
@@ -37,12 +32,8 @@ export default class VeilElement {
 
     $parent.append(this.$veil);
 
-    // this.$veil.on("click", (e) => this.unlock());
-    this.$veil.on("mouseup", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      this.unlock(passwordHash);
-    });
+    this.$veil.on("click", (e) => this.unlock(passwordHash));
+
     this.$veil.on("select", (e) => {
       e.preventDefault();
       e.stopPropagation();
