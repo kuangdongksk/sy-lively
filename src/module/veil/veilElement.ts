@@ -4,7 +4,19 @@ import SYFormItem from "@/components/base/sy/表单/表单项";
 import SYInput from "@/components/base/sy/输入";
 import $, { Cash } from "cash-dom";
 
-export type TVeilTargetType = "目录" | "页签" | "内容区" | "块";
+export enum EMenuVeil {
+  Notebook = "notebook",
+  Doc = "doc",
+  Docs = "docs",
+}
+
+export enum EContentVeil {
+  Page = "page",
+  Block = "block",
+  SuperBlock = "superBlock",
+}
+
+export type TVeilTargetType = EMenuVeil | EContentVeil;
 export const veilZIndex = 5;
 export const blur = "blur(5px)";
 

@@ -259,9 +259,9 @@ export default class SyLively extends Plugin {
       that.veil.onLoadedProtyleStatic(e);
       that.whiteBoard.onLoadedProtyleStatic();
     });
-    // this.eventBus.on("ws-main", (e) => {
-    //   console.log("🚀 ~ SyLively ~ main ~ e:", e);
-    // });
+    this.eventBus.on("ws-main", (e) => {
+      that.veil.onWSMain(e);
+    });
 
     this.eventBus.on("open-siyuan-url-plugin", () => {});
   }
