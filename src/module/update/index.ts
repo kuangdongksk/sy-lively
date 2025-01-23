@@ -1,5 +1,6 @@
 import SYFile from "@/class/思源/file";
 import { EStoreKey } from "@/constant/系统码";
+import { sleep } from "@/utils/异步";
 import { Dialog } from "siyuan";
 
 export default class UpdateNotice {
@@ -14,16 +15,30 @@ export default class UpdateNotice {
 
   async showUpdateNotice() {
     const data = await SYFile.getFile(EStoreKey.currentVersion);
-    if (data === this.latestVersion) return;
+    if (data.currentVersion === this.latestVersion) return;
 
     new Dialog({
       title: `更新公告：${this.latestVersion}`,
       content: `
-        <h3>${this.EUpdateType.修复}</h3>
+      <div style="padding: 12px;">
+        <h3>${this.EUpdateType.功能}</h3>
         <ul>
-          <li>搜索后不能跳转</li>
+          <li>可以锁定笔记本</li>
         </ul>
+      <div>
       `,
+    });
+
+    const blob = new Blob([JSON.stringify({ currentVersion: this.latestVersion })], {
+      type: "application/json",
+    })
+
+    await sleep(1000);
+
+    SYFile.putFile({
+      path: EStoreKey.currentVersion,
+      file: blob,
+      isDir: false,
     });
   }
 }

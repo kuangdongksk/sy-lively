@@ -1,14 +1,15 @@
-import { MD5 } from "@/constant/三方库";
-import { EVeil属性名称, EStoreKey } from "@/constant/系统码";
-import { PluginId } from "@/index";
+import { message } from "@/components/base/rc/Message";
 import SYDiaForm from "@/components/base/sy/弹出表单";
 import SYFormItem from "@/components/base/sy/表单/表单项";
 import SYInput from "@/components/base/sy/输入";
+import { MD5 } from "@/constant/三方库";
+import { EStoreKey, EVeil属性名称 } from "@/constant/系统码";
+import { PluginId } from "@/index";
+import { sleep } from "@/utils/异步";
 import $, { Cash } from "cash-dom";
 import { IEventBusMap } from "siyuan";
 import { SY块 } from "../../class/思源/块";
 import VeilElement, { EContentVeil, EMenuVeil, TVeilTargetType } from "./veilElement";
-import { sleep } from "@/utils/异步";
 
 export default class Veil {
   private loadData: (key: EStoreKey.上锁的笔记) => Promise<any>;
@@ -28,8 +29,8 @@ export default class Veil {
       label: "移除密码",
       click: async () => {
         this.lockedNotes.delete(id);
-        const result = this.saveData(EStoreKey.上锁的笔记, this.lockedNotes);
-        console.log("🚀 ~ Veil ~ click: ~ result:", result);
+        const result = await this.saveData(EStoreKey.上锁的笔记, this.lockedNotes);
+        result && message.success("移除成功");
       },
     };
   }
@@ -92,7 +93,6 @@ export default class Veil {
   public onOpenMenuDoctree(event: CustomEvent<IEventBusMap["open-menu-doctree"]>) {
     const { elements, menu, type } = event.detail;
     const $element = $(elements[0]);
-    console.log("🚀 ~ Veil ~ onOpenMenuDoctree ~ $element:", $element);
     const docID = $element.data("nodeId");
 
     const that = this;
@@ -103,11 +103,9 @@ export default class Veil {
         subMenu = getNotebookSubmenu($element);
         break;
       case "docs":
-        // addMenuForDoc($element, menu, noteBookID, docID);
-        break;
+        return;
       case "doc":
-        // addMenuForBlock($element, menu, docID);
-        break;
+        return;
     }
 
     function getNotebookSubmenu($element: Cash) {

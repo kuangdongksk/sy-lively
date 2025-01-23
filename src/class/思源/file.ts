@@ -16,9 +16,10 @@ export default class SYFile {
 
   public static async putFile(param: { path: string; file?: BlobPart | File; isDir: boolean }) {
     const { path, file, isDir } = param;
+    const prePath = this.basePath + this.pluginPath;
 
     return await fetchSyncPost(EAPI.写入文件, {
-      path,
+      path: `${prePath}${path}`,
       isDir,
       file,
     });
