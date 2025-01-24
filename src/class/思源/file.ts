@@ -18,10 +18,14 @@ export default class SYFile {
     const { path, file, isDir } = param;
     const prePath = this.basePath + this.pluginPath;
 
-    return await fetchSyncPost(EAPI.写入文件, {
-      path: `${prePath}${path}`,
-      isDir,
-      file,
+    const blob = new Blob([file], {
+      type: "application/json",
     });
+    const formData = new FormData();
+    formData.append("file", blob);
+    formData.append("isDir", isDir.toString());
+    formData.append("path", `${prePath}${path}`);
+
+    return await fetchSyncPost(EAPI.写入文件, formData);
   }
 }

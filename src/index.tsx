@@ -68,7 +68,7 @@ export default class SyLively extends Plugin {
     this.添加tab();
     this.添加事件监听();
     this.veil.onPlugLayoutReady();
-    // new UpdateNotice().showUpdateNotice()
+    new UpdateNotice().showUpdateNotice()
   }
 
   async onunload() {

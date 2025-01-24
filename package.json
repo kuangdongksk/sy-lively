@@ -14,7 +14,7 @@
     "make-install": "vite build && node --no-warnings ./scripts/make_install.js"
   },
   "devDependencies": {
-    "@types/node": "^22.10.8",
+    "@types/node": "^22.10.10",
     "autoprefixer": "^10.4.20",
     "fast-glob": "^3.3.3",
     "glob": "11.0.0",

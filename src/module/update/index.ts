@@ -1,6 +1,5 @@
 import SYFile from "@/class/思源/file";
 import { EStoreKey } from "@/constant/系统码";
-import { sleep } from "@/utils/异步";
 import { Dialog } from "siyuan";
 
 export default class UpdateNotice {
@@ -29,15 +28,9 @@ export default class UpdateNotice {
       `,
     });
 
-    const blob = new Blob([JSON.stringify({ currentVersion: this.latestVersion })], {
-      type: "application/json",
-    })
-
-    await sleep(1000);
-
     SYFile.putFile({
       path: EStoreKey.currentVersion,
-      file: blob,
+      file: JSON.stringify({ currentVersion: this.latestVersion }),
       isDir: false,
     });
   }

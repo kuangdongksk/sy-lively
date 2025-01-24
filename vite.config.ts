@@ -87,7 +87,19 @@ export default defineConfig({
     rollupOptions: {
       plugins: [
         ...(isWatch
-          ? [livereload(devDistDir)]
+          ? [
+              livereload(devDistDir),
+              {
+                //监听静态资源文件
+                name: "watch-external",
+                async buildStart() {
+                  const files = await fg(["public/i18n/**", "./README*.md", "./plugin.json"]);
+                  for (let file of files) {
+                    this.addWatchFile(file);
+                  }
+                },
+              },
+            ]
           : [
               zipPack({
                 inDir: "./dist",
