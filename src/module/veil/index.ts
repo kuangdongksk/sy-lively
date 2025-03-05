@@ -54,34 +54,34 @@ export default class Veil {
 
     const subMenu = blockPwd
       ? [
-          {
-            label: "锁定块",
-            click: () => {
-              new VeilElement($element, blockID, MD5.b64(blockPwd), EContentVeil.Block);
-            },
+        {
+          label: "锁定块",
+          click: () => {
+            new VeilElement($element, blockID, MD5.b64(blockPwd), EContentVeil.Block);
           },
-          {
-            label: "移除块密码",
-            click: async () => {
-              this.lockedNotes.delete(blockID);
-              await SY块.设置块属性({
-                id: blockID,
-                attrs: {
-                  [EVeil属性名称.pwdHash]: null,
-                },
-              });
-              this.saveData(EStoreKey.上锁的笔记, this.lockedNotes);
-            },
+        },
+        {
+          label: "移除块密码",
+          click: async () => {
+            this.lockedNotes.delete(blockID);
+            await SY块.设置块属性({
+              id: blockID,
+              attrs: {
+                [EVeil属性名称.pwdHash]: null,
+              },
+            });
+            this.saveData(EStoreKey.上锁的笔记, this.lockedNotes);
           },
-        ]
+        },
+      ]
       : [
-          {
-            label: "为块添加密码",
-            click: () => {
-              this.addPassword($element, blockID, EContentVeil.Block);
-            },
+        {
+          label: "为块添加密码",
+          click: () => {
+            this.addPassword($element, blockID, EContentVeil.Block);
           },
-        ];
+        },
+      ];
 
     menu.addItem({
       id: PluginId + "-访问控制",
@@ -113,22 +113,22 @@ export default class Veil {
       const pwd = that.lockedNotes.get(noteBookID);
       return pwd
         ? [
-            {
-              label: "锁定笔记本",
-              click: () => {
-                new VeilElement($element.parent(), noteBookID, MD5.b64(pwd), EMenuVeil.Notebook);
-              },
+          {
+            label: "锁定笔记本",
+            click: () => {
+              new VeilElement($element.parent(), noteBookID, MD5.b64(pwd), EMenuVeil.Notebook);
             },
-            that.getDoctreeRemovePasswordSubmenuConfig(noteBookID),
-          ]
+          },
+          that.getDoctreeRemovePasswordSubmenuConfig(noteBookID),
+        ]
         : [
-            {
-              label: "添加密码",
-              click: () => {
-                that.addPassword($element, noteBookID, EMenuVeil.Notebook);
-              },
+          {
+            label: "添加密码",
+            click: () => {
+              that.addPassword($element, noteBookID, EMenuVeil.Notebook);
             },
-          ];
+          },
+        ];
     }
 
     menu.addItem({
@@ -142,73 +142,73 @@ export default class Veil {
     const { element, menu, protyle } = event.detail;
     const $protyleEle = $(protyle.element);
     const protyleID = protyle.block.id;
+    const protylePwd = this.lockedNotes.get(protyleID);
 
     const $element = $(element);
     const blockID = $element.data("nodeId");
-    const protylePwd = this.lockedNotes.get(blockID);
     const blockPwd = this.lockedNotes.get(blockID);
 
     const subMenuP = protylePwd
       ? [
-          {
-            label: "锁定文档",
-            click: () => {
-              new VeilElement($protyleEle, protyleID, MD5.b64(protylePwd), EContentVeil.Page);
-            },
+        {
+          label: "锁定文档",
+          click: () => {
+            new VeilElement($protyleEle, protyleID, MD5.b64(protylePwd), EContentVeil.Page);
           },
-          {
-            label: "移除文档密码",
-            click: async () => {
-              this.lockedNotes.delete(protyleID);
-              await SY块.设置块属性({
-                id: protyleID,
-                attrs: {
-                  [EVeil属性名称.pwdHash]: null,
-                },
-              });
-              this.saveData(EStoreKey.上锁的笔记, this.lockedNotes);
-            },
+        },
+        {
+          label: "移除文档密码",
+          click: async () => {
+            this.lockedNotes.delete(protyleID);
+            await SY块.设置块属性({
+              id: protyleID,
+              attrs: {
+                [EVeil属性名称.pwdHash]: null,
+              },
+            });
+            this.saveData(EStoreKey.上锁的笔记, this.lockedNotes);
           },
-        ]
+        },
+      ]
       : [
-          {
-            label: "为文档添加密码",
-            click: () => {
-              this.addPassword($protyleEle, protyleID, EContentVeil.Page);
-            },
+        {
+          label: "为文档添加密码",
+          click: () => {
+            this.addPassword($protyleEle, protyleID, EContentVeil.Page);
           },
-        ];
+        },
+      ];
 
     const subMenuB = blockPwd
       ? [
-          {
-            label: "锁定块",
-            click: () => {
-              new VeilElement($element, blockID, MD5.b64(blockPwd), EContentVeil.Block);
-            },
+        {
+          label: "锁定块",
+          click: () => {
+            new VeilElement($element, blockID, MD5.b64(blockPwd), EContentVeil.Block);
           },
-          {
-            label: "移除块密码",
-            click: async () => {
-              this.lockedNotes.delete(blockID);
-              await SY块.设置块属性({
-                id: blockID,
-                attrs: {
-                  [EVeil属性名称.pwdHash]: null,
-                },
-              });
-              this.saveData(EStoreKey.上锁的笔记, this.lockedNotes);
-            },
+        },
+        {
+          label: "移除块密码",
+          click: async () => {
+            this.lockedNotes.delete(blockID);
+            await SY块.设置块属性({
+              id: blockID,
+              attrs: {
+                [EVeil属性名称.pwdHash]: null,
+              },
+            });
+            this.saveData(EStoreKey.上锁的笔记, this.lockedNotes);
           },
-        ]
+        },
+      ]
       : [
-          {
-            label: "为块添加密码",
-            click: () => {
-              this.addPassword($element, blockID, EContentVeil.Block);
-            },
+        {
+          label: "为块添加密码",
+          click: () => {
+            this.addPassword($element, blockID, EContentVeil.Block);
           },
-        ];
+        },
+      ];
 
     menu.addItem({
       id: PluginId + "-访问控制",
@@ -225,12 +225,13 @@ export default class Veil {
     $element.find(`[${EVeil属性名称.pwdHash}]`).each((_, e) => {
       const $e = $(e);
       const pwdHash = $e.attr(EVeil属性名称.pwdHash);
+
       if ($e.hasClass("protyle-wysiwyg")) {
         new VeilElement($element, protyleId, pwdHash, EContentVeil.Page);
-        return;
+      } else {
+        const noteId = $e.data("nodeId");
+        new VeilElement($e, noteId, pwdHash, EContentVeil.Block);
       }
-      const noteId = $e.data("nodeId");
-      new VeilElement($element, noteId, pwdHash, EContentVeil.Block);
     });
   }
 
@@ -241,7 +242,7 @@ export default class Veil {
 
       if (openNotebook || newDocOrRenameDoc) return "Leave it unlocked";
       this.checkAllNotebookAndLock();
-      await sleep(100);
+      // await sleep(100);
       // this.checkAllPageAndLock();
     }
   }

@@ -68,7 +68,7 @@ export default class SyLively extends Plugin {
     this.添加tab();
     this.添加事件监听();
     this.veil.onPlugLayoutReady();
-    new UpdateNotice().showUpdateNotice()
+    new UpdateNotice().showUpdateNotice();
   }
 
   async onunload() {
@@ -259,6 +259,10 @@ export default class SyLively extends Plugin {
       that.veil.onLoadedProtyleStatic(e);
       that.whiteBoard.onLoadedProtyleStatic();
     });
+    // this.eventBus.on("loaded-protyle-dynamic", (e) => {
+    //   console.log("🚀 ~ SyLively ~ this.eventBus.on ~ e:", e)
+    //   that.veil.onLoadedProtyleStatic(e);
+    // });
     this.eventBus.on("ws-main", (e) => {
       that.veil.onWSMain(e);
     });

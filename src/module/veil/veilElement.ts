@@ -43,6 +43,7 @@ export default class VeilElement {
     this.$veil.data("veilType", targetType);
 
     $parent.append(this.$veil);
+    $parent.append($(document.createElement("div")).css({ display: "none" }));
 
     this.$veil.on("click", (e) => this.unlock(passwordHash));
 
@@ -51,7 +52,6 @@ export default class VeilElement {
       e.stopPropagation();
       this.unlock(passwordHash);
     });
-    // this.veil.addEventListener("select");
   }
 
   unlock(passwordHash: string) {
