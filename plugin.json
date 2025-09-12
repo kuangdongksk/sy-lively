@@ -4,6 +4,7 @@
   "url": "https://github.com/kuangdongksk/sy-lively",
   "version": "P0.2.5",
   "minAppVersion": "3.0.18",
+  "disabledInPublish": true,
   "backends": [
     "windows",
     "linux",

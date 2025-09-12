@@ -7,13 +7,13 @@ import { EPluginPath, EStoreKey } from "./constant/系统码";
 import "./index.less";
 import { CardPlugin } from "./module/card/plugin";
 import { generateCreateCardForm } from "./module/card/plugin/NewCardForm";
+import UpdateNotice from "./module/update";
 import Veil from "./module/veil";
 import WhiteBoard from "./module/whiteBoard/plugin";
 import TlWb from "./module/whiteBoard/TlWb";
 import { storeAtom, 仓库 } from "./store";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
 import { 添加全局样式 } from "./tools/样式";
-import UpdateNotice from "./module/update";
 
 export const PluginId = "livelySaSa";
 

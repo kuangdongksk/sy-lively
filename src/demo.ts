@@ -4,7 +4,7 @@ import {
   Dialog,
   getBackend,
   getFrontend,
-  IModel,
+  Model,
   lockScreen,
   Menu,
   openMobileFileById,
@@ -18,7 +18,7 @@ const STORAGE_NAME = "menu-config";
 const TAB_TYPE = "custom_tab";
 
 export default class PluginSample extends Plugin {
-  customTab: () => IModel;
+  customTab: () => Model;
   private isMobile: boolean;
   private settingUtils: SettingUtils;
 
@@ -203,12 +203,12 @@ export default class PluginSample extends Plugin {
 
     console.log(
       "Official settings value calling example:\n" +
-        this.settingUtils.get("InputArea") +
-        "\n" +
-        this.settingUtils.get("Slider") +
-        "\n" +
-        this.settingUtils.get("Select") +
-        "\n"
+      this.settingUtils.get("InputArea") +
+      "\n" +
+      this.settingUtils.get("Slider") +
+      "\n" +
+      this.settingUtils.get("Select") +
+      "\n"
     );
 
     let tabDiv = document.createElement("div");
