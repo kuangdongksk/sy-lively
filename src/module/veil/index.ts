@@ -5,7 +5,6 @@ import SYInput from "@/components/base/sy/输入";
 import { MD5 } from "@/constant/三方库";
 import { EStoreKey, EVeil属性名称 } from "@/constant/系统码";
 import { PluginId } from "@/index";
-import { sleep } from "@/utils/异步";
 import $, { Cash } from "cash-dom";
 import { IEventBusMap } from "siyuan";
 import { SY块 } from "../../class/思源/块";
@@ -93,7 +92,6 @@ export default class Veil {
   public onOpenMenuDoctree(event: CustomEvent<IEventBusMap["open-menu-doctree"]>) {
     const { elements, menu, type } = event.detail;
     const $element = $(elements[0]);
-    const docID = $element.data("nodeId");
 
     const that = this;
 

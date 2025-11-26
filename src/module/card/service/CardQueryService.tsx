@@ -21,9 +21,9 @@ export enum E卡片属性名称 {
 
 export interface I卡片 {
   ID: string;
-  name: string;
+  标题: string;
   标题ID: string;
-  alias: string[];
+  别名: string[];
   单开一页?: boolean;
   父项ID?: string;
 }
@@ -96,7 +96,7 @@ export class CardQueryService {
     const 卡片 = {
       ID: ID,
       父项ID: 父项ID,
-      alias: alias.split(","),
+      别名: alias.split(","),
     } as I卡片;
     Object.keys(属性).forEach((key) => {
       if (属性[key] === undefined) {

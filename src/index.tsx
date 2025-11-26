@@ -1,6 +1,6 @@
 import { Provider } from "jotai";
 import ReactDOM from "react-dom/client";
-import { getFrontend, IProtyle, openTab, Plugin } from "siyuan";
+import { getFrontend, IProtyle, Plugin } from "siyuan";
 import App from "./App";
 import { 触发器 } from "./class/helper/触发器";
 import { EPluginPath, EStoreKey } from "./constant/系统码";
@@ -39,7 +39,7 @@ export default class SyLively extends Plugin {
       if (result?.code !== 0) return false;
       return true;
     } catch (error) {
-      console.log("~ 喧嚣 ~ saveData ~ error:", error);
+      console.error("~ 喧嚣 ~ saveData ~ error:", error);
       return false;
     }
   };
@@ -65,7 +65,7 @@ export default class SyLively extends Plugin {
   }
 
   onLayoutReady() {
-    this.添加tab();
+    // this.添加tab();
     this.添加事件监听();
     this.veil.onPlugLayoutReady();
     new UpdateNotice().showUpdateNotice();
@@ -78,14 +78,14 @@ export default class SyLively extends Plugin {
   uninstall() {}
 
   打开页签() {
-    openTab({
-      app: this.app,
-      custom: {
-        icon: "iconCalendar",
-        title: "喧嚣",
-        id: this.name + EPluginPath.SYLively,
-      },
-    });
+    // openTab({
+    //   app: this.app,
+    //   custom: {
+    //     icon: "iconCalendar",
+    //     title: "喧嚣",
+    //     id: this.name + EPluginPath.SYLively,
+    //   },
+    // });
   }
 
   async 打开新建卡片(protyle?: IProtyle) {
@@ -109,14 +109,15 @@ export default class SyLively extends Plugin {
   }
 
   添加快捷键() {
-    //#region 添加打开喧嚣快捷键
-    this.addCommand({
-      langKey: "喧嚣-打开喧嚣",
-      hotkey: "⇧⌥X",
-      callback: () => {
-        this.打开页签();
-      },
-    });
+    // #region 添加打开喧嚣快捷键
+    // this.addCommand({
+    //   langKey: "喧嚣-打开喧嚣",
+    //   hotkey: "⇧⌥X",
+    //   callback: () => {
+    //     this.打开页签();
+    //   },
+    // });
+    // #endregion
 
     //#region 添加打开新建卡片快捷键
     this.addCommand({
@@ -132,18 +133,18 @@ export default class SyLively extends Plugin {
   }
 
   添加TopBar() {
-    this.addTopBar({
-      icon: "iconCalendar", // 使用图标库中的图标，可以在工作空间/conf/appearance/icons/index.html中查看内置图标
-      title: "喧嚣-日程管理",
-      position: "left",
-      callback: () => {
-        if (this.isMobile) {
-          return;
-        } else {
-          this.打开页签();
-        }
-      },
-    });
+    // this.addTopBar({
+    //   icon: "iconCalendar", // 使用图标库中的图标，可以在工作空间/conf/appearance/icons/index.html中查看内置图标
+    //   title: "喧嚣-日程管理",
+    //   position: "left",
+    //   callback: () => {
+    //     if (this.isMobile) {
+    //       return;
+    //     } else {
+    //       this.打开页签();
+    //     }
+    //   },
+    // });
   }
 
   添加tab() {
@@ -216,41 +217,12 @@ export default class SyLively extends Plugin {
   }
 
   添加事件监听() {
-    // const 添加新建卡片目录 = (
-    //   event: CustomEvent<IEventBusMap["open-menu-content"]>
-    // ) => {
-    //   const { menu } = event.detail;
-    //   const selectedText = window.getSelection().toString();
-    //   menu.addItem({
-    //     id: PluginId + "-new-card",
-    //     label: "喧嚣-新建卡片",
-    //     submenu: [
-    //       {
-    //         label: "新建卡片",
-    //         click: () => {
-    //           this.打开新建卡片();
-    //         },
-    //       },
-    //       {
-    //         label: "新建卡片(选中文本)",
-    //         click: () => {
-    //           this.打开新建卡片();
-    //         },
-    //         disabled: !selectedText,
-    //       },
-    //     ],
-    //   });
-    // };
     const that = this;
 
     this.eventBus.on("open-menu-content", (e) => {
-      // 添加新建卡片目录(e);
-      // that.whiteBoard.createWhiteBoard(e);
       that.veil.onOpenMenuContent(e);
     });
     this.eventBus.on("click-blockicon", (e) => {
-      // 添加新建卡片目录(e);
-      // that.whiteBoard.createWhiteBoard(e);
       that.veil.onClickBlockIcon(e);
     });
     this.eventBus.on("open-menu-doctree", (e) => that.veil.onOpenMenuDoctree(e));
@@ -259,10 +231,6 @@ export default class SyLively extends Plugin {
       that.veil.onLoadedProtyleStatic(e);
       that.whiteBoard.onLoadedProtyleStatic();
     });
-    // this.eventBus.on("loaded-protyle-dynamic", (e) => {
-    //   console.log("🚀 ~ SyLively ~ this.eventBus.on ~ e:", e)
-    //   that.veil.onLoadedProtyleStatic(e);
-    // });
     this.eventBus.on("ws-main", (e) => {
       that.veil.onWSMain(e);
     });
@@ -270,16 +238,5 @@ export default class SyLively extends Plugin {
     this.eventBus.on("open-siyuan-url-plugin", () => {});
   }
 
-  添加斜杠命令() {
-    // this.protyleSlash = [
-    //   {
-    //     filter: ["insert whiteBoard", "插入白板", "crbb"],
-    //     html: `<div class="b3-list-item__first"><span class="b3-list-item__text">插入白板</span><span class="b3-list-item__meta"></span></div>`,
-    //     id: PluginId + "-insert-whiteBoard",
-    //     callback(protyle: Protyle) {
-    //       protyle.insert("/html\n\n", true);
-    //     },
-    //   },
-    // ];
-  }
+  添加斜杠命令() {}
 }

@@ -2,7 +2,7 @@ import { EStoreKey } from "@/constant/系统码";
 import { 主题 } from "@/style/theme";
 import { ConfigProvider } from "antd";
 import ReactDOM from "react-dom/client";
-import { Dock, IPluginDockTab } from "siyuan";
+import { Custom, IPluginDockTab, MobileCustom } from "siyuan";
 import CardDocker from "../docker";
 
 export class CardPlugin {
@@ -21,10 +21,10 @@ export class CardPlugin {
         config: IPluginDockTab;
         data: any;
         type: string;
-        destroy?: (this: Dock) => void;
-        resize?: (this: Dock) => void;
-        update?: (this: Dock) => void;
-        init: (this: Dock, dock: Dock) => void;
+        destroy?: (this: Custom | MobileCustom) => void;
+        resize?: (this: Custom | MobileCustom) => void;
+        update?: (this: Custom | MobileCustom) => void;
+        init: (this: Custom | MobileCustom, dock: Custom | MobileCustom) => void;
       }
     | false
   > {

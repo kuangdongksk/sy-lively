@@ -1,20 +1,21 @@
 import SQLer from "@/class/helper/SQLer";
-import { CardGenerateService } from "@/module/card/service/CardGenerateService";
-import { CardQueryService as 卡片类 } from "@/module/card/service/CardQueryService";
 import { SY块 } from "@/class/思源/块";
 import SY文档 from "@/class/思源/文档";
+import { message } from "@/components/base/rc/Message";
 import SYForm from "@/components/base/sy/表单";
 import SYFormItem from "@/components/base/sy/表单/表单项";
 import SYInput from "@/components/base/sy/输入";
 import SYSwitch from "@/components/base/sy/输入/开关";
 import { $ } from "@/constant/三方库";
 import { E块属性名称 } from "@/constant/系统码";
+import { CardGenerateService } from "@/module/card/service/CardGenerateService";
+import { CardQueryService as 卡片类 } from "@/module/card/service/CardQueryService";
 import { 生成块ID } from "@/tools/事项/事项";
 import { 插入到日记 } from "@/tools/事项/事项块";
 import { sleep } from "@/utils/异步";
 import { App, Dialog, IProtyle, Protyle } from "siyuan";
 import { toAlias } from "../tool";
-import { message } from "@/components/base/rc/Message";
+import { I卡片 } from "../service/CardQueryService";
 
 export async function generateCreateCardForm(data: {
   app: App;
@@ -91,6 +92,7 @@ export async function generateCreateCardForm(data: {
       const card = await generateCardObj(alias, cardID, titleID, singlePage);
       const parentID = insertToCurrent ? currentID : cardDocID;
       const 最终ID = await CardGenerateService.createCard(card, parentID);
+
       if (singlePage) {
         await SY块.删除块(cardID);
       }
@@ -159,7 +161,7 @@ async function generateCardObj(
   cardID: string,
   titleID: string,
   singlePage: boolean
-) {
+): Promise<I卡片> {
   const cardData = await SQLer.根据ID获取块(cardID);
   const title = cardData.fcontent;
 

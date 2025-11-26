@@ -6,13 +6,7 @@ import { default as KH } from "../../../class/helper/Kramdown助手";
 import SY文档 from "../../../class/思源/文档";
 
 export class CardGenerateService {
-  public static generateCardKramdown(
-    卡片: Partial<I卡片> & {
-      ID: string;
-      标题ID: string;
-      标题: string;
-    }
-  ): string {
+  public static generateCardKramdown(卡片: I卡片): string {
     const { ID, 标题, 标题ID } = 卡片;
 
     const 标题块 = KH.生成标题块({
