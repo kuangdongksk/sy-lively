@@ -91,13 +91,15 @@ export class CardQueryService {
       父项ID: string;
     }
   ): I卡片 {
-    const { ID, 父项ID, alias } = 属性;
+    const { ID, 父项ID, alias, name } = 属性;
 
     const 卡片 = {
       ID: ID,
       父项ID: 父项ID,
+      标题: name,
       别名: alias.split(","),
     } as I卡片;
+
     Object.keys(属性).forEach((key) => {
       if (属性[key] === undefined) {
         return;

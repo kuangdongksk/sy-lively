@@ -2,27 +2,33 @@ import SY文档 from "@/class/思源/文档";
 import SearchInput from "@/components/base/rc/Input/SearchInput";
 import { SyIconEnum } from "@/components/base/sy/svgIcon";
 import Docker from "@/components/docker";
-import { CardQueryService } from "@/module/card/service/CardQueryService";
-import { useDebounce } from "ahooks";
+import { CardQueryService, I卡片 } from "@/module/card/service/CardQueryService";
+import { useDebounce, useDebounceFn } from "ahooks";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import ListItem, { generateChildren, LeafItem } from "./ListItem";
 
 function CardDocker(props: { 卡片文档ID: string }) {
   const { 卡片文档ID } = props;
 
+  // const [是否仅搜索卡片文档内的卡片, 设置是否仅搜索卡片文档内的卡片] = useState(false);
   const [树形卡片列表, 设置树形卡片列表] = useState([]);
   const [searchValue, setSearchValue] = useState("");
-  const [searchResultList, setSearchResultList] = useState([]);
+  const [searchResultList, setSearchResultList] = useState<I卡片[]>([]);
   const debouncedSearchValue = useDebounce<string>(searchValue, { wait: 500 });
 
-  const 获取卡片 = async () => {
-    const 笔记本ID = await SY文档.根据ID获取笔记本ID(卡片文档ID);
+  const { run: 获取卡片 } = useDebounceFn(
+    async () => {
+      const 笔记本ID = await SY文档.根据ID获取笔记本ID(卡片文档ID);
 
-    const { files } = await SY文档.获取指定文档下的子文档(笔记本ID, 卡片文档ID);
-    const data = await CardQueryService.获取指定文档下的卡片(卡片文档ID);
+      const { files } = await SY文档.获取指定文档下的子文档(笔记本ID, 卡片文档ID);
+      const data = await CardQueryService.获取指定文档下的卡片(卡片文档ID);
 
-    设置树形卡片列表(generateChildren(files, data, 1));
-  };
+      设置树形卡片列表(generateChildren(files, data, 1));
+    },
+    {
+      wait: 500,
+    }
+  );
 
   const handleSearch = useCallback(async (value: string) => {
     const data = await CardQueryService.getCardsByKeyword(value);
@@ -60,18 +66,44 @@ function CardDocker(props: { 卡片文档ID: string }) {
         },
       ]}
       minButton
-      title={"喧嚣卡片"}
+      title={<span>喧嚣卡片</span>}
     >
-      <SearchInput
-        htmlAttrs={{
-          value: searchValue,
-          placeholder: "搜索",
-        }}
-        onChange={setSearchValue}
-      />
-      <ul className={"b3-list b3-list--background"}>
-        {searchValue ? searchResultList.map((item) => <LeafItem {...item} />) : treeList}
-      </ul>
+      <div style={{ padding: "0 12px" }}>
+        <SearchInput
+          htmlAttrs={{
+            value: searchValue,
+            placeholder: "搜索",
+          }}
+          onChange={setSearchValue}
+        />
+        {/* <div>
+        <Checkbox
+          type="checkbox"
+          checked={是否仅搜索卡片文档内的卡片}
+          onChange={(e) => {
+            设置是否仅搜索卡片文档内的卡片(e.target.checked);
+          }}
+        >
+          仅搜索卡片文档内的卡片
+        </Checkbox>
+      </div> */}
+        <div style={{ marginBottom: "12px" }}>
+          {/* <div style={{ marginBottom: "6px" }}>卡片文档内的</div> */}
+          <ul className={"b3-list b3-list--background"}>
+            {searchValue ? searchResultList.map((item) => <LeafItem {...item} />) : treeList}
+          </ul>
+        </div>
+        {/* {searchValue && (
+          <div>
+            <div style={{ marginBottom: "6px" }}>卡片文档外的</div>
+            <ul className={"b3-list b3-list--background"}>
+              {searchResultList.map((item) => (
+                <LeafItem {...item} />
+              ))}
+            </ul>
+          </div>
+        )} */}
+      </div>
     </Docker>
   );
 }

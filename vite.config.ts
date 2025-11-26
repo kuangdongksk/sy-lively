@@ -1,3 +1,4 @@
+import tailwindcss from '@tailwindcss/vite';
 import react from "@vitejs/plugin-react";
 import fg from "fast-glob";
 import jotaiDebugLabel from "jotai/babel/plugin-debug-label";
@@ -23,7 +24,7 @@ export default defineConfig({
 
   plugins: [
     react({ babel: { plugins: [jotaiDebugLabel, jotaiReactRefresh] } }),
-
+    tailwindcss(),
     viteStaticCopy({
       targets: [
         {

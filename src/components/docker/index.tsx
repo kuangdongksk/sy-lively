@@ -55,7 +55,7 @@ function Docker(props: IDockerProps) {
           />
         )}
       </div>
-      <div className="fn__flex-1">{children}</div>
+      <div className="fn__flex-1 px-3">{children}</div>
     </div>
   );
 }

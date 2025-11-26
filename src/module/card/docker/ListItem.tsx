@@ -84,7 +84,7 @@ export function generateChildren(
   files: { name1: string; id: string }[],
   data: {
     ID: string;
-    name: string;
+    标题: string;
   }[],
   index: number
 ) {
@@ -99,7 +99,7 @@ export function generateChildren(
       data.map((item) => ({
         title: (
           <BlockLink
-            block={{ id: item.ID, label: item.name }}
+            block={{ id: item.ID, label: item.标题 }}
             iconType={["ref", "link", "inset"]}
           />
         ),
@@ -110,7 +110,7 @@ export function generateChildren(
     );
 }
 
-export function LeafItem({ ID, name }: { ID: string; name: string }) {
+export function LeafItem({ ID, 标题 }: { ID: string; 标题: string }) {
   return (
     <li
       className="b3-list-item b3-list-item--hide-action"
@@ -121,7 +121,7 @@ export function LeafItem({ ID, name }: { ID: string; name: string }) {
     >
       <span className={"fn__hidden"} style={{ paddingLeft: `${1 * 18 + 10}px` }}></span>
       <span className="b3-list-item__text ariaLabel">
-        <BlockLink block={{ id: ID, label: name }} iconType={["ref", "link", "inset"]} />
+        <BlockLink block={{ id: ID, label: 标题 }} iconType={["ref", "link", "inset"]} />
       </span>
     </li>
   );

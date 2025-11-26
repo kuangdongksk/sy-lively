@@ -4,6 +4,7 @@ import { ConfigProvider } from "antd";
 import ReactDOM from "react-dom/client";
 import { Custom, IPluginDockTab, MobileCustom } from "siyuan";
 import CardDocker from "../docker";
+import "@/index.less";
 
 export class CardPlugin {
   getData: (key: EStoreKey) => Promise<any>;
