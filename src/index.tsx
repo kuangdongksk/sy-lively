@@ -14,11 +14,13 @@ import TlWb from "./module/whiteBoard/TlWb";
 import { storeAtom, 仓库 } from "./store";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
 import { 添加全局样式 } from "./tools/样式";
+import { $ } from "./constant/三方库";
 
 export const PluginId = "livelySaSa";
 
 export default class SyLively extends Plugin {
   private isMobile: boolean;
+  private focusedBlockId: string | null = null;
   private getData = async (key: EStoreKey) => {
     let data: any;
     try {
@@ -88,7 +90,7 @@ export default class SyLively extends Plugin {
     // });
   }
 
-  async 打开新建卡片(protyle?: IProtyle) {
+  async 打开新建卡片(protyle: IProtyle, focusedBlockId: string | null) {
     const 卡片文档ID = await this.getData(EStoreKey.卡片文档ID);
 
     if (!(await 校验卡片文档是否存在(卡片文档ID))) return;
@@ -96,6 +98,7 @@ export default class SyLively extends Plugin {
     generateCreateCardForm({
       app: this.app,
       cardDocID: 卡片文档ID,
+      focusedBlockId,
       protyle,
     });
   }
@@ -123,11 +126,8 @@ export default class SyLively extends Plugin {
     this.addCommand({
       langKey: "喧嚣-新建卡片",
       hotkey: "⌥Q",
-      callback: () => {
-        this.打开新建卡片();
-      },
       editorCallback: (protyle) => {
-        this.打开新建卡片(protyle);
+        this.打开新建卡片(protyle, this.focusedBlockId);
       },
     });
   }
@@ -224,6 +224,15 @@ export default class SyLively extends Plugin {
     });
     this.eventBus.on("click-blockicon", (e) => {
       that.veil.onClickBlockIcon(e);
+    });
+    this.eventBus.on("click-editorcontent", (e) => {
+      let target = $(e.detail.event.target as HTMLElement);
+
+      // 找到第一个有data-node-id的父元素
+      while (target.length > 0 && !target.attr("data-node-id")) {
+        target = target.parent();
+      }
+      this.focusedBlockId = target.attr("data-node-id");
     });
     this.eventBus.on("open-menu-doctree", (e) => that.veil.onOpenMenuDoctree(e));
     this.eventBus.on("loaded-protyle-dynamic", () => {});

@@ -20,9 +20,10 @@ import { I卡片 } from "../service/CardQueryService";
 export async function generateCreateCardForm(data: {
   app: App;
   cardDocID: string;
+  focusedBlockId: string | null;
   protyle?: IProtyle;
 }) {
-  const { app, cardDocID, protyle } = data;
+  const { app, cardDocID, focusedBlockId, protyle } = data;
 
   const cardID = 生成块ID();
   const title = "卡片标题";
@@ -91,7 +92,7 @@ export async function generateCreateCardForm(data: {
 
       const card = await generateCardObj(alias, cardID, titleID, singlePage);
       const parentID = insertToCurrent ? currentID : cardDocID;
-      const 最终ID = await CardGenerateService.createCard(card, parentID);
+      const 最终ID = await CardGenerateService.createCard(card, parentID, focusedBlockId);
 
       if (singlePage) {
         await SY块.删除块(cardID);

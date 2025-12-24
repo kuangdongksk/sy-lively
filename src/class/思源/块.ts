@@ -95,11 +95,7 @@ export class SY块 {
    *   - data: 待更新的数据
    * @returns 更新块的结果
    */
-  public static 更新块(options: {
-    id: string;
-    dataType: "markdown" | "dom";
-    data: string;
-  }) {
+  public static 更新块(options: { id: string; dataType: "markdown" | "dom"; data: string }) {
     return fetchSyncPost(EAPI.更新块, options);
   }
 
@@ -118,14 +114,10 @@ export class SY块 {
    * @param options - 包含以下属性的对象：
    *   - id: 待移动块的 ID
    *   - parentID: 父块的 ID，用于锚定插入位置
-   *   - previousID: 后一个块的 ID，用于锚定插入位置（可选）
+   *   - previousID: 前一个块的 ID，用于锚定插入位置（可选）
    * @returns 移动块的结果
    */
-  public static 移动块(options: {
-    id: string;
-    previousID?: string;
-    parentID?: string;
-  }) {
+  public static 移动块(options: { id: string; previousID?: string; parentID?: string }) {
     return fetchSyncPost(EAPI.移动块, options);
   }
 
@@ -146,7 +138,7 @@ export class SY块 {
    * 标题下方块也算作子块
    * @returns 子块列表
    */
-  public static 获取子块(id: string) {
+  public static 获取子块(id: string): Promise<{ data: any[] }> {
     return fetchSyncPost(EAPI.获取子块, { id });
   }
 
@@ -158,11 +150,7 @@ export class SY块 {
    *   - refIDs: 指向定义块 ID 的引用所在块 ID，可选，如果不指定，所有指向定义块 ID 的引用块 ID 都会被转移
    * @returns 转移块引用的结果
    */
-  public static 转移块引用(options: {
-    fromID: string;
-    toID: string;
-    refIDs?: string[];
-  }) {
+  public static 转移块引用(options: { fromID: string; toID: string; refIDs?: string[] }) {
     return fetchSyncPost(EAPI.转移块引用, options);
   }
 
@@ -173,10 +161,7 @@ export class SY块 {
    *   - attrs: 待设置的属性
    * @returns 设置块属性的结果
    */
-  public static async 设置块属性(options: {
-    id: string;
-    attrs: { [key: string]: string };
-  }) {
+  public static async 设置块属性(options: { id: string; attrs: { [key: string]: string } }) {
     const 结果 = await fetchSyncPost(EAPI.设置块属性, options);
     return 结果;
   }
