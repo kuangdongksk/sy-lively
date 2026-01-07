@@ -3,7 +3,7 @@ import { EStoreKey } from "@/constant/系统码";
 import { Dialog } from "siyuan";
 
 export default class UpdateNotice {
-  private latestVersion: string = "P0.2.6";
+  private latestVersion: string = "P0.2.6-1";
 
   private EUpdateType = {
     功能: "功能",
@@ -20,9 +20,9 @@ export default class UpdateNotice {
       title: `更新公告：${this.latestVersion}`,
       content: `
       <div style="padding: 12px;">
-        <h3>${this.EUpdateType.功能}</h3>
+        <h3>${this.EUpdateType.修复}</h3>
         <ul>
-          <li>创建卡片默认在光标所在块的下方</li>
+          <li>修复无法在dock中展示卡片文档下的所有卡片</li>
         </ul>
       <div>
       `,

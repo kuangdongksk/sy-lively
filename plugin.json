@@ -2,7 +2,7 @@
   "name": "sy-lively",
   "author": "kuangdongksk",
   "url": "https://github.com/kuangdongksk/sy-lively",
-  "version": "P0.2.6",
+  "version": "P0.2.6-1",
   "minAppVersion": "3.0.18",
   "disabledInPublish": true,
   "backends": [
