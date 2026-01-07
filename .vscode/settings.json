@@ -1,5 +1,5 @@
 {
-  "editor.fontSize": 14,
+  "editor.fontSize": 16,
   "workbench.editor.customLabels.patterns": {
     "**/src/**/业务组件/**/index.tsx": "${dirname} - 业务组件",
 

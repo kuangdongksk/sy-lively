@@ -10,9 +10,8 @@ import ListItem, { generateChildren, LeafItem } from "./ListItem";
 function CardDocker(props: { 卡片文档ID: string }) {
   const { 卡片文档ID } = props;
 
-  // const [是否仅搜索卡片文档内的卡片, 设置是否仅搜索卡片文档内的卡片] = useState(false);
   const [树形卡片列表, 设置树形卡片列表] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState<string>();
   const [searchResultList, setSearchResultList] = useState<I卡片[]>([]);
   const debouncedSearchValue = useDebounce<string>(searchValue, { wait: 500 });
 
@@ -76,33 +75,12 @@ function CardDocker(props: { 卡片文档ID: string }) {
           }}
           onChange={setSearchValue}
         />
-        {/* <div>
-        <Checkbox
-          type="checkbox"
-          checked={是否仅搜索卡片文档内的卡片}
-          onChange={(e) => {
-            设置是否仅搜索卡片文档内的卡片(e.target.checked);
-          }}
-        >
-          仅搜索卡片文档内的卡片
-        </Checkbox>
-      </div> */}
+        <div></div>
         <div style={{ marginBottom: "12px" }}>
-          {/* <div style={{ marginBottom: "6px" }}>卡片文档内的</div> */}
           <ul className={"b3-list b3-list--background"}>
             {searchValue ? searchResultList.map((item) => <LeafItem {...item} />) : treeList}
           </ul>
         </div>
-        {/* {searchValue && (
-          <div>
-            <div style={{ marginBottom: "6px" }}>卡片文档外的</div>
-            <ul className={"b3-list b3-list--background"}>
-              {searchResultList.map((item) => (
-                <LeafItem {...item} />
-              ))}
-            </ul>
-          </div>
-        )} */}
       </div>
     </Docker>
   );

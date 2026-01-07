@@ -91,7 +91,7 @@ export class CardQueryService {
       父项ID: string;
     }
   ): I卡片 {
-    const { ID, 父项ID, alias, name } = 属性;
+    const { ID, 父项ID, alias = "", name } = 属性;
 
     const 卡片 = {
       ID: ID,

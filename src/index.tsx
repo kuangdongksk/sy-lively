@@ -1,8 +1,9 @@
 import { Provider } from "jotai";
 import ReactDOM from "react-dom/client";
-import { getFrontend, IProtyle, Plugin } from "siyuan";
+import { getFrontend, IProtyle, openTab, Plugin } from "siyuan";
 import App from "./App";
 import { 触发器 } from "./class/helper/触发器";
+import { $ } from "./constant/三方库";
 import { EPluginPath, EStoreKey } from "./constant/系统码";
 import "./index.less";
 import { CardPlugin } from "./module/card/plugin";
@@ -14,7 +15,6 @@ import TlWb from "./module/whiteBoard/TlWb";
 import { storeAtom, 仓库 } from "./store";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
 import { 添加全局样式 } from "./tools/样式";
-import { $ } from "./constant/三方库";
 
 export const PluginId = "livelySaSa";
 
@@ -67,7 +67,7 @@ export default class SyLively extends Plugin {
   }
 
   onLayoutReady() {
-    // this.添加tab();
+    this.添加tab();
     this.添加事件监听();
     this.veil.onPlugLayoutReady();
     new UpdateNotice().showUpdateNotice();
@@ -80,14 +80,14 @@ export default class SyLively extends Plugin {
   uninstall() {}
 
   打开页签() {
-    // openTab({
-    //   app: this.app,
-    //   custom: {
-    //     icon: "iconCalendar",
-    //     title: "喧嚣",
-    //     id: this.name + EPluginPath.SYLively,
-    //   },
-    // });
+    openTab({
+      app: this.app,
+      custom: {
+        icon: "iconCalendar",
+        title: "喧嚣",
+        id: this.name + EPluginPath.SYLively,
+      },
+    });
   }
 
   async 打开新建卡片(protyle: IProtyle, focusedBlockId: string | null) {
@@ -113,13 +113,13 @@ export default class SyLively extends Plugin {
 
   添加快捷键() {
     // #region 添加打开喧嚣快捷键
-    // this.addCommand({
-    //   langKey: "喧嚣-打开喧嚣",
-    //   hotkey: "⇧⌥X",
-    //   callback: () => {
-    //     this.打开页签();
-    //   },
-    // });
+    this.addCommand({
+      langKey: "喧嚣-打开喧嚣",
+      hotkey: "⇧⌥X",
+      callback: () => {
+        this.打开页签();
+      },
+    });
     // #endregion
 
     //#region 添加打开新建卡片快捷键
@@ -133,18 +133,18 @@ export default class SyLively extends Plugin {
   }
 
   添加TopBar() {
-    // this.addTopBar({
-    //   icon: "iconCalendar", // 使用图标库中的图标，可以在工作空间/conf/appearance/icons/index.html中查看内置图标
-    //   title: "喧嚣-日程管理",
-    //   position: "left",
-    //   callback: () => {
-    //     if (this.isMobile) {
-    //       return;
-    //     } else {
-    //       this.打开页签();
-    //     }
-    //   },
-    // });
+    this.addTopBar({
+      icon: "iconCalendar", // 使用图标库中的图标，可以在工作空间/conf/appearance/icons/index.html中查看内置图标
+      title: "喧嚣-日程管理",
+      position: "left",
+      callback: () => {
+        if (this.isMobile) {
+          return;
+        } else {
+          this.打开页签();
+        }
+      },
+    });
   }
 
   添加tab() {

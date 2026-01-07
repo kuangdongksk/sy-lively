@@ -9,7 +9,7 @@ fetch("http://ip-api.com/json/?lang=zh-CN")
     locale = data.countryCode === "CN" ? "zh" : "en";
   })
   .catch((error) => {
-    console.log("🚀 ~ error:", error);
+    console.error("🚀 ~ error:", error);
   });
 
 export const i18n = new I18n(
