@@ -12,6 +12,7 @@ import UpdateNotice from "./module/update";
 import Veil from "./module/veil";
 import WhiteBoard from "./module/whiteBoard/plugin";
 import TlWb from "./module/whiteBoard/TlWb";
+import { SettingManager } from "./module/setting";
 import { storeAtom, 仓库 } from "./store";
 import { 校验卡片文档是否存在 } from "./tools/卡片";
 import { 添加全局样式 } from "./tools/样式";
@@ -21,6 +22,7 @@ export const PluginId = "livelySaSa";
 export default class SyLively extends Plugin {
   private isMobile: boolean;
   private focusedBlockId: string | null = null;
+
   private getData = async (key: EStoreKey) => {
     let data: any;
     try {
@@ -64,6 +66,7 @@ export default class SyLively extends Plugin {
     this.veil.onPlugLoad();
 
     this.setAllDock();
+    this.初始化设置();
   }
 
   onLayoutReady() {
@@ -78,6 +81,11 @@ export default class SyLively extends Plugin {
   }
 
   uninstall() {}
+
+  初始化设置() {
+    const settingManager = new SettingManager(this.getData, this.putData);
+    this.setting = settingManager.init();
+  }
 
   打开页签() {
     openTab({
@@ -130,6 +138,7 @@ export default class SyLively extends Plugin {
         this.打开新建卡片(protyle, this.focusedBlockId);
       },
     });
+    //#endregion
   }
 
   添加TopBar() {
@@ -170,7 +179,7 @@ export default class SyLively extends Plugin {
           root.render(
             <Provider store={仓库}>
               <App />
-            </Provider>
+            </Provider>,
           );
         }
       },
@@ -197,7 +206,7 @@ export default class SyLively extends Plugin {
           root.render(
             <Provider store={仓库}>
               <TlWb blockId={blockId} />
-            </Provider>
+            </Provider>,
           );
         }
       },
