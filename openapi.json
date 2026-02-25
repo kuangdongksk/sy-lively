@@ -1,0 +1,2577 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "sy-lively",
+    "description": "这是喧嚣的思源插件 - API文档",
+    "version": "P0.2.6-2"
+  },
+  "tags": [
+    {
+      "name": "资源文件"
+    },
+    {
+      "name": "属性"
+    },
+    {
+      "name": "块"
+    },
+    {
+      "name": "转换"
+    },
+    {
+      "name": "导出"
+    },
+    {
+      "name": "文件"
+    },
+    {
+      "name": "文档"
+    },
+    {
+      "name": "笔记本"
+    },
+    {
+      "name": "通知"
+    },
+    {
+      "name": "SQL"
+    },
+    {
+      "name": "系统"
+    },
+    {
+      "name": "模板"
+    }
+  ],
+  "paths": {
+    "/api/asset/upload": {
+      "post": {
+        "summary": "上传资源文件",
+        "deprecated": false,
+        "description": "上传资源文件到指定目录",
+        "tags": [
+          "资源文件"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "assetsDirPath": {
+                    "description": "资源文件存放的文件夹路径，以 data 文件夹作为根路径，例如：/assets/ 或 /assets/sub/",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "file[]": {
+                    "description": "上传的文件列表",
+                    "type": "array",
+                    "items": {
+                      "type": "file"
+                    },
+                    "example": ""
+                  }
+                },
+                "required": [
+                  "assetsDirPath",
+                  "file[]"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetUploadResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/attr/setBlockAttrs": {
+      "post": {
+        "summary": "设置块属性",
+        "deprecated": false,
+        "description": "设置指定块的属性，自定义属性必须以 custom- 作为前缀",
+        "tags": [
+          "属性"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetBlockAttrsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/attr/getBlockAttrs": {
+      "post": {
+        "summary": "获取块属性",
+        "deprecated": false,
+        "description": "获取指定块的所有属性",
+        "tags": [
+          "属性"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetBlockAttrsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBlockAttrsResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/block/insertBlock": {
+      "post": {
+        "summary": "插入块",
+        "deprecated": false,
+        "description": "在指定位置插入一个块",
+        "tags": [
+          "块"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InsertBlockRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlockOperationResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/block/prependBlock": {
+      "post": {
+        "summary": "插入前置子块",
+        "deprecated": false,
+        "description": "在父块的开头插入一个子块",
+        "tags": [
+          "块"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrependBlockRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlockOperationResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/block/appendBlock": {
+      "post": {
+        "summary": "插入后置子块",
+        "deprecated": false,
+        "description": "在父块的末尾插入一个子块",
+        "tags": [
+          "块"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppendBlockRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlockOperationResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/block/updateBlock": {
+      "post": {
+        "summary": "更新块",
+        "deprecated": false,
+        "description": "更新指定块的内容",
+        "tags": [
+          "块"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBlockRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlockOperationResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/block/deleteBlock": {
+      "post": {
+        "summary": "删除块",
+        "deprecated": false,
+        "description": "删除指定的块",
+        "tags": [
+          "块"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteBlockRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlockOperationResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/block/moveBlock": {
+      "post": {
+        "summary": "移动块",
+        "deprecated": false,
+        "description": "移动块到指定位置",
+        "tags": [
+          "块"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoveBlockRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlockOperationResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/block/getBlockKramdown": {
+      "post": {
+        "summary": "获取块 kramdown 源码",
+        "deprecated": false,
+        "description": "获取指定块的 kramdown 源码",
+        "tags": [
+          "块"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetBlockRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBlockKramdownResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/block/getChildBlocks": {
+      "post": {
+        "summary": "获取子块",
+        "deprecated": false,
+        "description": "获取指定父块的所有子块",
+        "tags": [
+          "块"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetBlockRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetChildBlocksResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/block/transferBlockRef": {
+      "post": {
+        "summary": "转移块引用",
+        "deprecated": false,
+        "description": "将块引用从一个定义块转移到另一个目标块",
+        "tags": [
+          "块"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferBlockRefRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/convert/pandoc": {
+      "post": {
+        "summary": "Pandoc 转换",
+        "deprecated": false,
+        "description": "使用 Pandoc 进行文件格式转换，工作目录为 工作空间/temp/convert/pandoc/",
+        "tags": [
+          "转换"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PandocRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/export/exportMdContent": {
+      "post": {
+        "summary": "导出 Markdown 文本",
+        "deprecated": false,
+        "description": "将指定文档导出为 Markdown 文本",
+        "tags": [
+          "导出"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportMdRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportMdResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/file/getFile": {
+      "post": {
+        "summary": "获取文件",
+        "deprecated": false,
+        "description": "获取工作空间路径下的文件内容",
+        "tags": [
+          "文件"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilePathRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/FilePathRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/file/putFile": {
+      "post": {
+        "summary": "写入文件",
+        "deprecated": false,
+        "description": "上传文件到工作空间路径",
+        "tags": [
+          "文件"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "description": "工作空间路径下的文件路径",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "isDir": {
+                    "description": "是否为创建文件夹，为true时仅创建文件夹，忽略file",
+                    "type": "boolean",
+                    "example": ""
+                  },
+                  "modTime": {
+                    "description": "最近访问和修改时间，Unix time",
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "file": {
+                    "description": "上传的文件",
+                    "type": "string",
+                    "format": "binary",
+                    "example": ""
+                  }
+                },
+                "required": [
+                  "path"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/file/removeFile": {
+      "post": {
+        "summary": "删除文件",
+        "deprecated": false,
+        "description": "删除工作空间路径下的文件",
+        "tags": [
+          "文件"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilePathRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/FilePathRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/file/renameFile": {
+      "post": {
+        "summary": "重命名文件",
+        "deprecated": false,
+        "description": "重命名工作空间路径下的文件",
+        "tags": [
+          "文件"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenameFileRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/RenameFileRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/file/readDir": {
+      "post": {
+        "summary": "列出文件",
+        "deprecated": false,
+        "description": "列出工作空间路径下的文件和文件夹",
+        "tags": [
+          "文件"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilePathRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/FilePathRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadDirResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/filetree/createDocWithMd": {
+      "post": {
+        "summary": "通过 Markdown 创建文档",
+        "deprecated": false,
+        "description": "使用 GFM Markdown 内容创建文档",
+        "tags": [
+          "文档"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDocWithMdRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateDocWithMdResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/filetree/renameDoc": {
+      "post": {
+        "summary": "重命名文档",
+        "deprecated": false,
+        "description": "重命名指定文档",
+        "tags": [
+          "文档"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenameDocRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/filetree/removeDoc": {
+      "post": {
+        "summary": "删除文档",
+        "deprecated": false,
+        "description": "删除指定文档",
+        "tags": [
+          "文档"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveDocRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/filetree/moveDocs": {
+      "post": {
+        "summary": "移动文档",
+        "deprecated": false,
+        "description": "移动文档到指定位置",
+        "tags": [
+          "文档"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoveDocsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/filetree/getHPathByPath": {
+      "post": {
+        "summary": "根据路径获取人类可读路径",
+        "deprecated": false,
+        "description": "将系统路径转换为人类可读路径",
+        "tags": [
+          "文档"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetHPathByPathRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HPathResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/filetree/getHPathByID": {
+      "post": {
+        "summary": "根据 ID 获取人类可读路径",
+        "deprecated": false,
+        "description": "根据块ID获取人类可读路径",
+        "tags": [
+          "文档"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetHPathByIDRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HPathResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/notebook/lsNotebooks": {
+      "post": {
+        "summary": "列出笔记本",
+        "deprecated": false,
+        "description": "获取所有笔记本列表",
+        "tags": [
+          "笔记本"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotebooksResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/notebook/openNotebook": {
+      "post": {
+        "summary": "打开笔记本",
+        "deprecated": false,
+        "description": "打开指定的笔记本",
+        "tags": [
+          "笔记本"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotebookRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/notebook/closeNotebook": {
+      "post": {
+        "summary": "关闭笔记本",
+        "deprecated": false,
+        "description": "关闭指定的笔记本",
+        "tags": [
+          "笔记本"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotebookRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/notebook/renameNotebook": {
+      "post": {
+        "summary": "重命名笔记本",
+        "deprecated": false,
+        "description": "重命名指定的笔记本",
+        "tags": [
+          "笔记本"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenameNotebookRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/notebook/createNotebook": {
+      "post": {
+        "summary": "创建笔记本",
+        "deprecated": false,
+        "description": "创建一个新的笔记本",
+        "tags": [
+          "笔记本"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNotebookRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateNotebookResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/notebook/removeNotebook": {
+      "post": {
+        "summary": "删除笔记本",
+        "deprecated": false,
+        "description": "删除指定的笔记本",
+        "tags": [
+          "笔记本"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotebookRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StandardResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/notebook/getNotebookConf": {
+      "post": {
+        "summary": "获取笔记本配置",
+        "deprecated": false,
+        "description": "获取指定笔记本的配置信息",
+        "tags": [
+          "笔记本"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotebookRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotebookConfResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/notebook/setNotebookConf": {
+      "post": {
+        "summary": "保存笔记本配置",
+        "deprecated": false,
+        "description": "保存指定笔记本的配置信息",
+        "tags": [
+          "笔记本"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetNotebookConfRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetNotebookConfResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/notification/pushMsg": {
+      "post": {
+        "summary": "推送消息",
+        "deprecated": false,
+        "description": "推送一条普通消息到思源笔记界面",
+        "tags": [
+          "通知"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PushMsgRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PushMsgResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/notification/pushErrMsg": {
+      "post": {
+        "summary": "推送报错消息",
+        "deprecated": false,
+        "description": "推送一条错误消息到思源笔记界面",
+        "tags": [
+          "通知"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PushMsgRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PushMsgResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/query/sql": {
+      "post": {
+        "summary": "执行 SQL 查询",
+        "deprecated": false,
+        "description": "执行 SQL 脚本查询块数据",
+        "tags": [
+          "SQL"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SqlQueryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SqlQueryResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/system/bootProgress": {
+      "post": {
+        "summary": "获取启动进度",
+        "deprecated": false,
+        "description": "获取思源笔记的启动进度信息",
+        "tags": [
+          "系统"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BootProgressResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/system/version": {
+      "post": {
+        "summary": "获取系统版本",
+        "deprecated": false,
+        "description": "获取思源笔记的版本号",
+        "tags": [
+          "系统"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VersionResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/system/currentTime": {
+      "post": {
+        "summary": "获取系统当前时间",
+        "deprecated": false,
+        "description": "获取思源笔记服务器的当前时间（毫秒精度）",
+        "tags": [
+          "系统"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentTimeResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/template/render": {
+      "post": {
+        "summary": "渲染模板",
+        "deprecated": false,
+        "description": "渲染指定的模板文件",
+        "tags": [
+          "模板"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenderTemplateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RenderTemplateResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/template/renderSprig": {
+      "post": {
+        "summary": "渲染 Sprig 模板",
+        "deprecated": false,
+        "description": "渲染 Sprig 模板字符串",
+        "tags": [
+          "模板"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenderSprigRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RenderSprigResponse"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AssetUploadResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "状态码，0表示成功，非0表示异常"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应消息"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "errFiles": {
+                "type": "array",
+                "description": "处理时遇到错误的文件名",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "succMap": {
+                "type": "object",
+                "description": "处理成功的文件，key为上传时的文件名，value为上传后的路径",
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "properties": {}
+              }
+            }
+          }
+        }
+      },
+      "StandardResponse": {
+        "type": "object",
+        "description": "标准响应格式",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "状态码，0表示成功，非0表示异常"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应消息"
+          },
+          "data": {
+            "type": "object",
+            "description": "响应数据",
+            "properties": {},
+            "nullable": true
+          }
+        }
+      },
+      "ExportMdRequest": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "要导出的文档块ID"
+          }
+        }
+      },
+      "PushMsgRequest": {
+        "type": "object",
+        "required": [
+          "msg"
+        ],
+        "properties": {
+          "msg": {
+            "type": "string",
+            "description": "消息内容"
+          },
+          "timeout": {
+            "type": "integer",
+            "description": "消息持续显示时间，单位为毫秒，默认为7000毫秒",
+            "default": 7000
+          }
+        }
+      },
+      "SqlQueryRequest": {
+        "type": "object",
+        "required": [
+          "stmt"
+        ],
+        "properties": {
+          "stmt": {
+            "type": "string",
+            "description": "SQL脚本"
+          }
+        }
+      },
+      "BootProgressResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "状态码，0表示成功，非0表示异常"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应消息"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "details": {
+                "type": "string",
+                "description": "启动详情描述"
+              },
+              "progress": {
+                "type": "integer",
+                "description": "启动进度百分比（0-100）"
+              }
+            }
+          }
+        }
+      },
+      "RenderTemplateRequest": {
+        "type": "object",
+        "required": [
+          "id",
+          "path"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "调用渲染所在的文档ID"
+          },
+          "path": {
+            "type": "string",
+            "description": "模板文件绝对路径"
+          }
+        }
+      },
+      "SetBlockAttrsRequest": {
+        "type": "object",
+        "required": [
+          "id",
+          "attrs"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "块ID"
+          },
+          "attrs": {
+            "type": "object",
+            "description": "块属性，自定义属性必须以 custom- 作为前缀",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "properties": {}
+          }
+        }
+      },
+      "InsertBlockRequest": {
+        "type": "object",
+        "required": [
+          "dataType",
+          "data"
+        ],
+        "properties": {
+          "dataType": {
+            "type": "string",
+            "description": "待插入数据类型，值可选择 markdown 或者 dom",
+            "enum": [
+              "markdown",
+              "dom"
+            ]
+          },
+          "data": {
+            "type": "string",
+            "description": "待插入的数据"
+          },
+          "nextID": {
+            "type": "string",
+            "description": "后一个块的ID，用于锚定插入位置"
+          },
+          "previousID": {
+            "type": "string",
+            "description": "前一个块的ID，用于锚定插入位置"
+          },
+          "parentID": {
+            "type": "string",
+            "description": "父块ID，用于锚定插入位置"
+          }
+        }
+      },
+      "PandocRequest": {
+        "type": "object",
+        "required": [
+          "args"
+        ],
+        "properties": {
+          "args": {
+            "type": "array",
+            "description": "Pandoc命令行参数",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "--to",
+              "markdown_strict-raw_html",
+              "foo.epub",
+              "-o",
+              "foo.md"
+            ]
+          }
+        }
+      },
+      "ExportMdResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "状态码，0表示成功，非0表示异常"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应消息"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "hPath": {
+                "type": "string",
+                "description": "人类可读的路径"
+              },
+              "content": {
+                "type": "string",
+                "description": "Markdown内容"
+              }
+            }
+          }
+        }
+      },
+      "FilePathRequest": {
+        "type": "object",
+        "required": [
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "工作空间路径下的文件路径"
+          }
+        }
+      },
+      "CreateDocWithMdRequest": {
+        "type": "object",
+        "required": [
+          "notebook",
+          "path",
+          "markdown"
+        ],
+        "properties": {
+          "notebook": {
+            "type": "string",
+            "description": "笔记本ID"
+          },
+          "path": {
+            "type": "string",
+            "description": "文档路径，需要以 / 开头，中间使用 / 分隔层级（对应数据库 hpath 字段）"
+          },
+          "markdown": {
+            "type": "string",
+            "description": "GFM Markdown 内容"
+          }
+        }
+      },
+      "Notebook": {
+        "type": "object",
+        "description": "笔记本信息",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "笔记本ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "笔记本名称"
+          },
+          "icon": {
+            "type": "string",
+            "description": "笔记本图标"
+          },
+          "sort": {
+            "type": "integer",
+            "description": "排序"
+          },
+          "closed": {
+            "type": "boolean",
+            "description": "是否已关闭"
+          }
+        }
+      },
+      "PushMsgResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "状态码，0表示成功，非0表示异常"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应消息"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "消息ID"
+              }
+            }
+          }
+        }
+      },
+      "SqlQueryResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "状态码，0表示成功，非0表示异常"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应消息"
+          },
+          "data": {
+            "type": "array",
+            "description": "查询结果列表",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {}
+            }
+          }
+        }
+      },
+      "VersionResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string",
+            "description": "版本号，如 1.3.5"
+          }
+        }
+      },
+      "RenderTemplateResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "状态码，0表示成功，非0表示异常"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应消息"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "content": {
+                "type": "string",
+                "description": "渲染后的DOM内容"
+              },
+              "path": {
+                "type": "string",
+                "description": "模板文件路径"
+              }
+            }
+          }
+        }
+      },
+      "GetBlockAttrsRequest": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "块ID"
+          }
+        }
+      },
+      "PrependBlockRequest": {
+        "type": "object",
+        "required": [
+          "dataType",
+          "data",
+          "parentID"
+        ],
+        "properties": {
+          "dataType": {
+            "type": "string",
+            "description": "待插入数据类型，值可选择 markdown 或者 dom",
+            "enum": [
+              "markdown",
+              "dom"
+            ]
+          },
+          "data": {
+            "type": "string",
+            "description": "待插入的数据"
+          },
+          "parentID": {
+            "type": "string",
+            "description": "父块的ID，用于锚定插入位置"
+          }
+        }
+      },
+      "RenameFileRequest": {
+        "type": "object",
+        "required": [
+          "path",
+          "newPath"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "工作空间路径下的文件路径"
+          },
+          "newPath": {
+            "type": "string",
+            "description": "新的文件路径"
+          }
+        }
+      },
+      "CreateDocWithMdResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string",
+            "description": "创建好的文档ID"
+          }
+        }
+      },
+      "NotebooksResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "notebooks": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Notebook"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CurrentTimeResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "integer",
+            "description": "当前时间戳（毫秒精度）"
+          }
+        }
+      },
+      "RenderSprigRequest": {
+        "type": "object",
+        "required": [
+          "template"
+        ],
+        "properties": {
+          "template": {
+            "type": "string",
+            "description": "模板内容"
+          }
+        }
+      },
+      "GetBlockAttrsResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "description": "块属性集合",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "properties": {}
+          }
+        }
+      },
+      "AppendBlockRequest": {
+        "type": "object",
+        "required": [
+          "dataType",
+          "data",
+          "parentID"
+        ],
+        "properties": {
+          "dataType": {
+            "type": "string",
+            "description": "待插入数据类型，值可选择 markdown 或者 dom",
+            "enum": [
+              "markdown",
+              "dom"
+            ]
+          },
+          "data": {
+            "type": "string",
+            "description": "待插入的数据"
+          },
+          "parentID": {
+            "type": "string",
+            "description": "父块的ID，用于锚定插入位置"
+          }
+        }
+      },
+      "DirEntry": {
+        "type": "object",
+        "properties": {
+          "isDir": {
+            "type": "boolean",
+            "description": "是否为文件夹"
+          },
+          "name": {
+            "type": "string",
+            "description": "文件或文件夹名称"
+          }
+        }
+      },
+      "RenameDocRequest": {
+        "type": "object",
+        "required": [
+          "notebook",
+          "path",
+          "title"
+        ],
+        "properties": {
+          "notebook": {
+            "type": "string",
+            "description": "笔记本ID"
+          },
+          "path": {
+            "type": "string",
+            "description": "文档路径"
+          },
+          "title": {
+            "type": "string",
+            "description": "文档新标题"
+          }
+        }
+      },
+      "NotebookRequest": {
+        "type": "object",
+        "required": [
+          "notebook"
+        ],
+        "properties": {
+          "notebook": {
+            "type": "string",
+            "description": "笔记本ID"
+          }
+        }
+      },
+      "RenderSprigResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "状态码，0表示成功，非0表示异常"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应消息"
+          },
+          "data": {
+            "type": "string",
+            "description": "渲染后的内容"
+          }
+        }
+      },
+      "UpdateBlockRequest": {
+        "type": "object",
+        "required": [
+          "dataType",
+          "data",
+          "id"
+        ],
+        "properties": {
+          "dataType": {
+            "type": "string",
+            "description": "待更新数据类型，值可选择 markdown 或者 dom",
+            "enum": [
+              "markdown",
+              "dom"
+            ]
+          },
+          "data": {
+            "type": "string",
+            "description": "待更新的数据"
+          },
+          "id": {
+            "type": "string",
+            "description": "待更新块的ID"
+          }
+        }
+      },
+      "ReadDirResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "description": "文件和文件夹列表",
+            "items": {
+              "$ref": "#/components/schemas/DirEntry"
+            }
+          }
+        }
+      },
+      "RemoveDocRequest": {
+        "type": "object",
+        "required": [
+          "notebook",
+          "path"
+        ],
+        "properties": {
+          "notebook": {
+            "type": "string",
+            "description": "笔记本ID"
+          },
+          "path": {
+            "type": "string",
+            "description": "文档路径"
+          }
+        }
+      },
+      "RenameNotebookRequest": {
+        "type": "object",
+        "required": [
+          "notebook",
+          "name"
+        ],
+        "properties": {
+          "notebook": {
+            "type": "string",
+            "description": "笔记本ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "笔记本的新名称"
+          }
+        }
+      },
+      "DeleteBlockRequest": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "待删除块的ID"
+          }
+        }
+      },
+      "MoveDocsRequest": {
+        "type": "object",
+        "required": [
+          "fromPaths",
+          "toNotebook",
+          "toPath"
+        ],
+        "properties": {
+          "fromPaths": {
+            "type": "array",
+            "description": "源路径列表",
+            "items": {
+              "type": "string"
+            }
+          },
+          "toNotebook": {
+            "type": "string",
+            "description": "目标笔记本ID"
+          },
+          "toPath": {
+            "type": "string",
+            "description": "目标路径"
+          }
+        }
+      },
+      "CreateNotebookRequest": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "笔记本的名称"
+          }
+        }
+      },
+      "MoveBlockRequest": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "待移动块ID"
+          },
+          "previousID": {
+            "type": "string",
+            "description": "前一个块的ID，用于锚定插入位置"
+          },
+          "parentID": {
+            "type": "string",
+            "description": "父块的ID，用于锚定插入位置"
+          }
+        }
+      },
+      "GetHPathByPathRequest": {
+        "type": "object",
+        "required": [
+          "notebook",
+          "path"
+        ],
+        "properties": {
+          "notebook": {
+            "type": "string",
+            "description": "笔记本ID"
+          },
+          "path": {
+            "type": "string",
+            "description": "路径"
+          }
+        }
+      },
+      "CreateNotebookResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "notebook": {
+                "$ref": "#/components/schemas/Notebook"
+              }
+            }
+          }
+        }
+      },
+      "GetBlockRequest": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "块ID"
+          }
+        }
+      },
+      "GetHPathByIDRequest": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "块ID"
+          }
+        }
+      },
+      "NotebookConfData": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "closed": {
+            "type": "boolean"
+          },
+          "refCreateSavePath": {
+            "type": "string"
+          },
+          "createDocNameTemplate": {
+            "type": "string"
+          },
+          "dailyNoteSavePath": {
+            "type": "string"
+          },
+          "dailyNoteTemplatePath": {
+            "type": "string"
+          }
+        }
+      },
+      "TransferBlockRefRequest": {
+        "type": "object",
+        "required": [
+          "fromID",
+          "toID"
+        ],
+        "properties": {
+          "fromID": {
+            "type": "string",
+            "description": "定义块ID"
+          },
+          "toID": {
+            "type": "string",
+            "description": "目标块ID"
+          },
+          "refIDs": {
+            "type": "array",
+            "description": "指向定义块ID的引用所在块ID，可选，如果不指定，所有指向定义块ID的引用块ID都会被转移",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "HPathResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string",
+            "description": "人类可读路径"
+          }
+        }
+      },
+      "NotebookConfResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "box": {
+                "type": "string"
+              },
+              "conf": {
+                "$ref": "#/components/schemas/NotebookConfData"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "BlockOperation": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "description": "操作类型：insert/update/delete/move"
+          },
+          "data": {
+            "type": "string",
+            "description": "块生成的DOM（插入/更新时）"
+          },
+          "id": {
+            "type": "string",
+            "description": "块ID"
+          },
+          "parentID": {
+            "type": "string",
+            "description": "父块ID"
+          },
+          "previousID": {
+            "type": "string",
+            "description": "前一个块ID"
+          },
+          "retData": {
+            "type": "object",
+            "description": "返回数据",
+            "properties": {},
+            "nullable": true
+          }
+        }
+      },
+      "SetNotebookConfRequest": {
+        "type": "object",
+        "required": [
+          "notebook",
+          "conf"
+        ],
+        "properties": {
+          "notebook": {
+            "type": "string",
+            "description": "笔记本ID"
+          },
+          "conf": {
+            "$ref": "#/components/schemas/NotebookConfData"
+          }
+        }
+      },
+      "BlockOperations": {
+        "type": "object",
+        "properties": {
+          "doOperations": {
+            "type": "array",
+            "description": "执行的操作列表",
+            "items": {
+              "$ref": "#/components/schemas/BlockOperation"
+            }
+          },
+          "undoOperations": {
+            "type": "array",
+            "description": "撤销的操作列表",
+            "items": {
+              "$ref": "#/components/schemas/BlockOperation"
+            }
+          }
+        }
+      },
+      "SetNotebookConfResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/NotebookConfData"
+          }
+        }
+      },
+      "BlockOperationResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "description": "块操作结果",
+            "items": {
+              "$ref": "#/components/schemas/BlockOperations"
+            }
+          }
+        }
+      },
+      "GetBlockKramdownResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "块ID"
+              },
+              "kramdown": {
+                "type": "string",
+                "description": "kramdown源码"
+              }
+            }
+          }
+        }
+      },
+      "ChildBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "块ID"
+          },
+          "type": {
+            "type": "string",
+            "description": "块类型"
+          },
+          "subType": {
+            "type": "string",
+            "description": "子类型"
+          }
+        }
+      },
+      "GetChildBlocksResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "msg": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "description": "子块列表",
+            "items": {
+              "$ref": "#/components/schemas/ChildBlock"
+            }
+          }
+        }
+      }
+    },
+    "responses": {},
+    "securitySchemes": {}
+  },
+  "servers": [],
+  "security": []
+}
