@@ -3,7 +3,7 @@ import { EStoreKey } from "@/constant/系统码";
 import { Dialog } from "siyuan";
 
 export default class UpdateNotice {
-  private latestVersion: string = "P0.2.6-1";
+  private latestVersion: string = "P0.2.6-2";
 
   private EUpdateType = {
     功能: "功能",
