@@ -1,4 +1,4 @@
-import MsgSender from "@/class/helper/MsgSender";
+import { showMessage } from "siyuan";
 import { SY块 } from "@/class/思源/块";
 import {
   E事项状态,
@@ -58,10 +58,7 @@ export class 触发器 {
     const { 事项数据版本, 卡片数据版本 } = 最新数据版本;
 
     if (事项版本 !== 事项数据版本) {
-      MsgSender.sySendMsg({
-        msg: "数据版本不一致，正在进行数据升级",
-        timeout: 20000,
-      });
+      showMessage("数据版本不一致，正在进行数据升级", 20000, "info");
 
       const 所有事项 = await SQLer.获取所有事项();
 
@@ -79,10 +76,7 @@ export class 触发器 {
     }
 
     if (卡片版本 !== 卡片数据版本) {
-      MsgSender.sySendMsg({
-        msg: "数据版本不一致，正在进行数据升级",
-        timeout: 20000,
-      });
+      showMessage("数据版本不一致，正在进行数据升级", 20000, "info");
 
       const 所有卡片 = await 卡片类.getAll();
 
@@ -144,14 +138,11 @@ export class 触发器 {
       return;
     }
 
-    MsgSender.sySendMsg({
-      msg: `有${this.即将开始事项.join(",")}等${
-        this.即将开始事项.length
-      }个事项即将开始，${this.逾期事项.join(",")}等${
-        this.逾期事项.length
-      }个事项已逾期`,
-      timeout: 20000,
-    });
+    showMessage(
+      `有${this.即将开始事项.join(",")}等${this.即将开始事项.length}个事项即将开始，${this.逾期事项.join(",")}等${this.逾期事项.length}个事项已逾期`,
+      20000,
+      "info"
+    );
 
     this.即将开始事项 = [];
     this.逾期事项 = [];

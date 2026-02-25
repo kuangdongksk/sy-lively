@@ -2,7 +2,7 @@
   "name": "sy-lively",
   "author": "kuangdongksk",
   "url": "https://github.com/kuangdongksk/sy-lively",
-  "version": "P0.2.6-1",
+  "version": "P0.2.7",
   "minAppVersion": "3.0.18",
   "disabledInPublish": true,
   "backends": [
@@ -26,7 +26,7 @@
   },
   "description": {
     "en_US": "Calendar management plugin",
-    "zh_CN": "日程管理插件，同时提供简单的卡片功能"
+    "zh_CN": "日程管理插件，提供AI对话、卡片功能"
   },
   "readme": {
     "en_US": "README.md",

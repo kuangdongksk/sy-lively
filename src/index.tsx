@@ -6,8 +6,10 @@ import { 触发器 } from "./class/helper/触发器";
 import { $ } from "./constant/三方库";
 import { EPluginPath, EStoreKey } from "./constant/系统码";
 import "./index.less";
+import { AIChatPlugin } from "./module/aiChat/plugin";
 import { CardPlugin } from "./module/card/plugin";
 import { generateCreateCardForm } from "./module/card/plugin/NewCardForm";
+import { SettingManager } from "./module/setting";
 import UpdateNotice from "./module/update";
 import Veil from "./module/veil";
 import WhiteBoard from "./module/whiteBoard/plugin";
@@ -21,6 +23,7 @@ export const PluginId = "livelySaSa";
 export default class SyLively extends Plugin {
   private isMobile: boolean;
   private focusedBlockId: string | null = null;
+
   private getData = async (key: EStoreKey) => {
     let data: any;
     try {
@@ -52,6 +55,11 @@ export default class SyLively extends Plugin {
   private veil = new Veil(this.getData, this.putData);
   private whiteBoard = new WhiteBoard({ app: this.app, pluginName: this.name });
   private 提示器1: 触发器 = new 触发器(this.getData, this.putData, this.addStatusBar);
+  private aiChatPlugin: AIChatPlugin = new AIChatPlugin({
+    app: this.app,
+    getData: this.getData,
+    putData: this.putData,
+  });
 
   async onload() {
     this.isMobile = getFrontend() === "mobile" || getFrontend() === "browser-mobile";
@@ -64,6 +72,7 @@ export default class SyLively extends Plugin {
     this.veil.onPlugLoad();
 
     this.setAllDock();
+    this.初始化设置();
   }
 
   onLayoutReady() {
@@ -78,6 +87,11 @@ export default class SyLively extends Plugin {
   }
 
   uninstall() {}
+
+  初始化设置() {
+    const settingManager = new SettingManager(this.getData, this.putData);
+    this.setting = settingManager.init();
+  }
 
   打开页签() {
     openTab({
@@ -112,7 +126,7 @@ export default class SyLively extends Plugin {
   }
 
   添加快捷键() {
-    // #region 添加打开喧嚣快捷键
+    // 添加打开喧嚣快捷键
     this.addCommand({
       langKey: "喧嚣-打开喧嚣",
       hotkey: "⇧⌥X",
@@ -120,14 +134,27 @@ export default class SyLively extends Plugin {
         this.打开页签();
       },
     });
-    // #endregion
 
-    //#region 添加打开新建卡片快捷键
+    // 添加打开新建卡片快捷键
     this.addCommand({
       langKey: "喧嚣-新建卡片",
       hotkey: "⌥Q",
       editorCallback: (protyle) => {
         this.打开新建卡片(protyle, this.focusedBlockId);
+      },
+    });
+
+    // 添加AI聊天快捷键
+    this.addCommand({
+      langKey: "喧嚣-AI聊天",
+      hotkey: "⌥⇧S",
+      editorCallback: (protyle) => {
+        console.log("🚀 ~ SyLively ~ 添加快捷键 ~ this.aiChatPlugin:");
+        if (this.aiChatPlugin) {
+          this.aiChatPlugin.openChat(protyle, this.focusedBlockId);
+        } else {
+          console.error("AI聊天插件未初始化");
+        }
       },
     });
   }
@@ -170,7 +197,7 @@ export default class SyLively extends Plugin {
           root.render(
             <Provider store={仓库}>
               <App />
-            </Provider>
+            </Provider>,
           );
         }
       },
@@ -197,7 +224,7 @@ export default class SyLively extends Plugin {
           root.render(
             <Provider store={仓库}>
               <TlWb blockId={blockId} />
-            </Provider>
+            </Provider>,
           );
         }
       },

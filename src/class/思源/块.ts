@@ -27,6 +27,35 @@ export class SY块 {
   }
 
   /**
+   * 在指定块之后插入新块
+   * 此方法会自动处理超级块等复杂情况
+   * @param options - 包含以下属性的对象：
+   *   - data: 待插入的数据（markdown或dom格式）
+   *   - dataType: 数据类型，默认为 "markdown"
+   *   - afterBlockId: 在此块之后插入，如果为空则插入到文档末尾
+   * @returns 插入块的id
+   */
+  public static async insertBlockAfter(options: {
+    data: string;
+    dataType?: "markdown" | "dom";
+    afterBlockId?: string;
+  }): Promise<string> {
+    const { data, dataType = "markdown", afterBlockId } = options;
+
+    if (afterBlockId) {
+      // 在指定块之后插入
+      return await SY块.insertBlock({
+        dataType,
+        data,
+        previousID: afterBlockId,
+      });
+    } else {
+      // 没有指定块，无法确定插入位置
+      throw new Error("无法确定插入位置：afterBlockId 为空");
+    }
+  }
+
+  /**
    * 插入前置子块
    * @param options - 包含以下属性的对象：
    *   - dataType: 待插入数据类型，值可选择 markdown 或者 dom

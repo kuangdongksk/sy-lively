@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir:*)",
+      "Bash(npm run build:*)",
+      "Bash(ls:*)",
+      "Bash(pnpm run dev:*)",
+      "Bash(npx tsc:*)",
+      "Bash(pnpm run build:*)"
+    ]
+  }
+}
