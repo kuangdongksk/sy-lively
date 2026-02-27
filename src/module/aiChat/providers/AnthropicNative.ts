@@ -1,4 +1,4 @@
-import type { AnthropicRequest, AnthropicResponse } from "../types";
+import type { AnthropicRequest, AnthropicResponse, ChatMessage } from "../types";
 
 /**
  * Anthropic原生API客户端
@@ -9,17 +9,20 @@ export class AnthropicNativeClient {
   private baseUrl: string;
   private model: string;
   private version: string;
+  private maxTokens?: number;
 
   constructor(config: {
     apiKey: string;
     baseUrl: string;
     model: string;
+    maxTokens?: number;
   }) {
     this.apiKey = config.apiKey;
     // Anthropic API的默认base URL
     this.baseUrl = config.baseUrl.replace(/\/$/, "") || "https://api.anthropic.com";
     this.model = config.model;
     this.version = "2023-06-01"; // API版本
+    this.maxTokens = config.maxTokens;
   }
 
   /**
@@ -27,6 +30,7 @@ export class AnthropicNativeClient {
    * @param systemPrompt 系统提示词
    * @param userPrompt 用户提示词
    * @param context 上下文内容
+   * @param messages 对话历史
    * @param stream 是否流式响应
    * @param onChunk 流式响应回调函数
    */
@@ -34,20 +38,22 @@ export class AnthropicNativeClient {
     systemPrompt: string,
     userPrompt: string,
     context: string,
+    messages?: ChatMessage[],
     stream: boolean = false,
-    onChunk?: (chunk: string) => void
-  ): Promise<string> {
-    const { messages, system } = this.buildMessages(
+    onChunk?: (chunk: string, reasoningChunk?: string) => void
+  ): Promise<{ content: string; reasoning?: string }> {
+    const { messages: builtMessages, system } = this.buildMessages(
       systemPrompt,
       userPrompt,
-      context
+      context,
+      messages
     );
 
     if (stream && onChunk) {
-      return this.chatStream(messages, system, onChunk);
+      return this.chatStream(builtMessages, system, onChunk);
     }
 
-    return this.chatNonStream(messages, system);
+    return this.chatNonStream(builtMessages, system);
   }
 
   /**
@@ -56,9 +62,22 @@ export class AnthropicNativeClient {
   private buildMessages(
     systemPrompt: string,
     userPrompt: string,
-    context: string
+    context: string,
+    historyMessages?: ChatMessage[]
   ): { messages: AnthropicRequest["messages"]; system: string } {
     const messages: AnthropicRequest["messages"] = [];
+
+    // 添加对话历史（仅user和assistant消息）
+    if (historyMessages && historyMessages.length > 0) {
+      for (const msg of historyMessages) {
+        if (msg.role === "user" || msg.role === "assistant") {
+          messages.push({
+            role: msg.role,
+            content: msg.content,
+          });
+        }
+      }
+    }
 
     // 构建用户消息
     let userContent = "";
@@ -84,13 +103,13 @@ export class AnthropicNativeClient {
   private async chatNonStream(
     messages: AnthropicRequest["messages"],
     system: string
-  ): Promise<string> {
+  ): Promise<{ content: string }> {
     const requestBody: AnthropicRequest = {
       model: this.model,
       messages,
       system,
       stream: false,
-      max_tokens: 4096,
+      max_tokens: this.maxTokens || 4096,
     };
 
     const response = await fetch(`${this.baseUrl}/v1/messages`, {
@@ -105,9 +124,7 @@ export class AnthropicNativeClient {
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(
-        `API请求失败 (${response.status}): ${errorText}`
-      );
+      throw new Error(`API请求失败 (${response.status}): ${errorText}`);
     }
 
     const data: AnthropicResponse = await response.json();
@@ -116,7 +133,7 @@ export class AnthropicNativeClient {
       // Anthropic API返回的content是一个数组，找到text类型的
       const textBlock = data.content.find((block) => block.type === "text");
       if (textBlock) {
-        return textBlock.text;
+        return { content: textBlock.text };
       }
     }
 
@@ -129,14 +146,14 @@ export class AnthropicNativeClient {
   private async chatStream(
     messages: AnthropicRequest["messages"],
     system: string,
-    onChunk: (chunk: string) => void
-  ): Promise<string> {
+    onChunk: (chunk: string, reasoningChunk?: string) => void
+  ): Promise<{ content: string }> {
     const requestBody: AnthropicRequest = {
       model: this.model,
       messages,
       system,
       stream: true,
-      max_tokens: 4096,
+      max_tokens: this.maxTokens || 4096,
     };
 
     const response = await fetch(`${this.baseUrl}/v1/messages`, {
@@ -151,9 +168,7 @@ export class AnthropicNativeClient {
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(
-        `API请求失败 (${response.status}): ${errorText}`
-      );
+      throw new Error(`API请求失败 (${response.status}): ${errorText}`);
     }
 
     const reader = response.body?.getReader();
@@ -198,6 +213,6 @@ export class AnthropicNativeClient {
       reader.releaseLock();
     }
 
-    return fullContent;
+    return { content: fullContent };
   }
 }

@@ -233,7 +233,14 @@ export class SettingManager {
             color: var(--b3-theme-on-surface);
             margin-top: 4px;
           `;
-          details.textContent = `${provider.model} | ${provider.apiFormat}`;
+          let detailText = `${provider.model} | ${provider.apiFormat}`;
+          if (provider.thinkingModel) {
+            detailText += ` | 思考: ${provider.thinkingModel}`;
+          }
+          if (provider.maxTokens) {
+            detailText += ` | 最大${provider.maxTokens}tokens`;
+          }
+          details.textContent = detailText;
 
           info.appendChild(name);
           info.appendChild(details);
@@ -325,10 +332,24 @@ export class SettingManager {
               placeholder: "gpt-4 或 claude-3-sonnet",
             },
             {
+              label: "思考模型",
+              field: "thinkingModel",
+              type: "text",
+              placeholder: "可选，如: deepseek-reasoner",
+            },
+            {
               label: "系统提示词",
               field: "systemPrompt",
               type: "textarea",
               placeholder: "你是一个有帮助的助手...",
+            },
+            {
+              label: "最大Token数",
+              field: "maxTokens",
+              type: "number",
+              placeholder: "可选，留空使用默认值",
+              min: 1,
+              max: 128000,
             },
           ];
 
@@ -365,6 +386,15 @@ export class SettingManager {
             } else {
               input = document.createElement("input");
               (input as HTMLInputElement).type = item.type;
+              // Handle number input attributes
+              if (item.type === "number" && input instanceof HTMLInputElement) {
+                if ("min" in item && item.min !== undefined) {
+                  input.min = item.min.toString();
+                }
+                if ("max" in item && item.max !== undefined) {
+                  input.max = item.max.toString();
+                }
+              }
             }
 
             // 设置field属性，用于后续查找
@@ -465,6 +495,8 @@ export class SettingManager {
 
           async function saveProvider() {
             try {
+              const maxTokensInput = (form.querySelector('[field="maxTokens"]') as HTMLInputElement)?.value;
+              const thinkingModelInput = (form.querySelector('[field="thinkingModel"]') as HTMLInputElement)?.value;
               const newProvider: IAIProvider = {
                 id: provider?.id || generateId(),
                 name: (form.querySelector('[field="name"]') as HTMLInputElement)?.value || "",
@@ -472,10 +504,12 @@ export class SettingManager {
                 baseUrl: (form.querySelector('[field="baseUrl"]') as HTMLInputElement)?.value || "",
                 apiFormat: (form.querySelector('[field="apiFormat"]') as HTMLSelectElement)?.value as EAPIFormat,
                 model: (form.querySelector('[field="model"]') as HTMLInputElement)?.value || "",
+                thinkingModel: thinkingModelInput?.trim() || undefined,
                 systemPrompt: (form.querySelector('[field="systemPrompt"]') as HTMLTextAreaElement)?.value || "",
                 enabled: enabledCheckbox.checked,
                 isDefault: provider?.isDefault || false,
                 streamResponse: streamCheckbox.checked,
+                maxTokens: maxTokensInput ? parseInt(maxTokensInput, 10) : undefined,
               };
 
               let providers: IAIProvider[] = (await self.getData(EStoreKey.AI提供商)) || [];

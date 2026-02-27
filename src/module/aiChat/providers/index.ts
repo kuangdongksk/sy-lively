@@ -1,4 +1,4 @@
-import type { EAPIFormat, IAIProvider } from "../types";
+import type { EAPIFormat, IAIProvider, ChatMessage } from "../types";
 import { AnthropicNativeClient } from "./AnthropicNative";
 import { OpenAICompatibleClient } from "./OpenAICompatible";
 
@@ -10,9 +10,10 @@ export interface IAIProviderClient {
     systemPrompt: string,
     userPrompt: string,
     context: string,
-    stream: boolean,
-    onChunk?: (chunk: string) => void
-  ): Promise<string>;
+    messages?: ChatMessage[],
+    stream?: boolean,
+    onChunk?: (chunk: string, reasoningChunk?: string) => void
+  ): Promise<{ content: string; reasoning?: string }>;
 }
 
 /**
@@ -27,6 +28,8 @@ export function createProviderClient(
         apiKey: provider.apiKey,
         baseUrl: provider.baseUrl,
         model: provider.model,
+        enableThinking: provider.enableThinking,
+        maxTokens: provider.maxTokens,
       });
 
     case "anthropic-native":
@@ -34,6 +37,7 @@ export function createProviderClient(
         apiKey: provider.apiKey,
         baseUrl: provider.baseUrl,
         model: provider.model,
+        maxTokens: provider.maxTokens,
       });
 
     default:

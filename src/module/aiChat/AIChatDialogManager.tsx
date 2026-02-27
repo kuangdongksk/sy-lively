@@ -2,6 +2,7 @@ import { message } from "@/components/base/rc/Message";
 import { App, Dialog } from "siyuan";
 import type { AIChatContext } from "./types";
 import { AIProviderService } from "./AIProviderService";
+import { PromptTemplateService } from "./PromptTemplateService";
 import { AIResponseRenderer } from "./AIResponseRenderer";
 import { AIChatUI } from "./components/AIChatUI";
 import { AIChatHandlers } from "./components/AIChatHandlers";
@@ -13,6 +14,7 @@ import { AIChatHandlers } from "./components/AIChatHandlers";
 export class AIChatDialogManager {
   private app: App;
   private providerService: AIProviderService;
+  private promptTemplateService: PromptTemplateService;
   private responseRenderer: AIResponseRenderer;
 
   private dialog: Dialog | null = null;
@@ -43,6 +45,11 @@ export class AIChatDialogManager {
       putData: this.putData,
     });
 
+    this.promptTemplateService = new PromptTemplateService({
+      getData: this.getData,
+      putData: this.putData,
+    });
+
     this.responseRenderer = new AIResponseRenderer({
       app: this.app,
       getData: this.getData,
@@ -54,8 +61,10 @@ export class AIChatDialogManager {
    * 打开AI聊天对话框
    */
   async open(context: AIChatContext): Promise<void> {
-    // 初始化提供商服务
+    // 初始化服务
     await this.providerService.init();
+    await this.promptTemplateService.init();
+    await this.promptTemplateService.initDefaultTemplates();
 
     // 检查是否有可用的提供商
     const enabledProviders = this.providerService.getEnabledProviders();
@@ -89,11 +98,17 @@ export class AIChatDialogManager {
   private createUI(): void {
     if (!this.dialog) return;
 
-    AIChatUI.createDialogUI(this.dialog, this.providerService, this.context, {
-      onSend: () => void this.onSend(),
-      onConfirm: () => void this.onConfirm(),
-      onCancel: () => void this.onCancel(),
-    });
+    AIChatUI.createDialogUI(
+      this.dialog,
+      this.providerService,
+      this.promptTemplateService,
+      this.context,
+      {
+        onSend: () => void this.onSend(),
+        onConfirm: () => void this.onConfirm(),
+        onCancel: () => void this.onCancel(),
+      }
+    );
   }
 
   /**
