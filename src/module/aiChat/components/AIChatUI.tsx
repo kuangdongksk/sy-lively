@@ -1,5 +1,5 @@
 import { message } from "@/components/base/rc/Message";
-import { $ } from "@/constant/三方库";
+import { $, Cash } from "@/constant/三方库";
 import { Dialog } from "siyuan";
 import type { AIChatContext, ChatMessage } from "../types";
 import type { AIProviderService } from "../AIProviderService";
@@ -16,14 +16,14 @@ export class AIChatUI {
   private static currentPromptTemplateService: PromptTemplateService | null = null;
   private static currentOnTemplateSelect: ((content: string) => void) | null = null;
   private static currentProviderService: AIProviderService | null = null;
-  private static currentHistoryListElement: JQuery<HTMLElement> | null = null;
+  private static currentHistoryListElement: Cash | null = null;
 
   /**
    * 创建提供商选择器
    */
   static createProviderSelector(
     providerService: AIProviderService
-  ): JQuery<HTMLElement> {
+  ): Cash {
     const $section = $('<div class="ai-provider-selector"></div>');
     $section.css({
       display: "flex",
@@ -79,7 +79,7 @@ export class AIChatUI {
   /**
    * 创建选项区域（思考模式、流式响应）
    */
-  static createOptionsSection(providerService: AIProviderService): JQuery<HTMLElement> {
+  static createOptionsSection(providerService: AIProviderService): Cash {
     const $section = $('<div class="ai-options-section"></div>');
     $section.css({
       display: "flex",
@@ -133,7 +133,7 @@ export class AIChatUI {
   static createPromptTemplateSelector(
     promptTemplateService: PromptTemplateService,
     onTemplateSelect: (content: string) => void
-  ): JQuery<HTMLElement> {
+  ): Cash {
     const $section = $('<div class="ai-prompt-templates"></div>');
     $section.css({
       display: "flex",
@@ -503,7 +503,7 @@ export class AIChatUI {
   /**
    * 创建上下文显示区
    */
-  static createContextDisplay(context: AIChatContext | null): JQuery<HTMLElement> {
+  static createContextDisplay(context: AIChatContext | null): Cash {
     const $section = $('<div class="ai-context-display"></div>');
 
     const $header = $(
@@ -554,7 +554,7 @@ export class AIChatUI {
   /**
    * 创建用户输入区
    */
-  static createUserInput(): JQuery<HTMLElement> {
+  static createUserInput(): Cash {
     const $section = $('<div class="ai-user-input"></div>');
     // 移除 flex:1，改为固定高度，避免被压缩
     $section.css({
@@ -581,7 +581,7 @@ export class AIChatUI {
   /**
    * 创建发送按钮
    */
-  static createSendButton(onClick: () => void): JQuery<HTMLElement> {
+  static createSendButton(onClick: () => void): Cash {
     const $button = $('<button class="b3-button ai-send-button">发送</button>');
     $button.css({
       width: "100%",
@@ -598,7 +598,7 @@ export class AIChatUI {
   /**
    * 创建响应预览区
    */
-  static createResponsePreview(): JQuery<HTMLElement> {
+  static createResponsePreview(): Cash {
     const $section = $('<div class="ai-response-preview" style="display:none;"></div>');
 
     const $header = $('<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"></div>');
@@ -636,7 +636,7 @@ export class AIChatUI {
   static createActionButtons(
     onConfirm: () => void,
     onCancel: () => void
-  ): JQuery<HTMLElement> {
+  ): Cash {
     const $section = $('<div class="ai-action-buttons" style="display:none;gap:8px;"></div>');
     $section.css({
       display: "none",
@@ -666,7 +666,7 @@ export class AIChatUI {
    */
   static createConversationHistorySidebar(
     providerService: AIProviderService
-  ): JQuery<HTMLElement> {
+  ): Cash {
     const $sidebar = $('<div class="ai-history-sidebar"></div>');
     $sidebar.css({
       width: "280px",
@@ -799,7 +799,7 @@ export class AIChatUI {
     // 滚动到底部（使用 setTimeout 确保DOM已更新）
     setTimeout(() => {
       if ($list.length > 0) {
-        const listElement = $list[0] as HTMLElement;
+        const listElement = $list.get(0) as HTMLElement | undefined;
         if (listElement && typeof listElement.scrollTop === "number") {
           listElement.scrollTop = listElement.scrollHeight;
         }

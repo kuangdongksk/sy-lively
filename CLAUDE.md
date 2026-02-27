@@ -265,6 +265,26 @@ To update the version:
 
 5. **Development:** Use `pnpm run dev` for watch mode development. Changes will be built to `dev/` directory.
 
+6. **DOM Manipulation:** The project uses **cash-dom** (NOT jQuery) for DOM manipulation. Always import `$` and `Cash` type from `@/constant/三方库`:
+   ```typescript
+   import { $, Cash } from "@/constant/三方库";
+
+   // Type annotations for functions that return cash-dom collections
+   function createElement(): Cash {
+     return $('<div class="my-element"></div>');
+   }
+
+   // Get raw DOM element from cash-dom collection
+   const $element = $('.my-class');
+   const rawElement = $element.get(0); // Use .get(0) NOT [0]
+   ```
+
+### cash-dom vs jQuery
+- cash-dom is a lightweight jQuery alternative (≈10% of jQuery's size)
+- Most jQuery methods work: `.find()`, `.on()`, `.css()`, `.append()`, `.html()`, `.text()`, `.val()`, `.prop()`, `.attr()`, `.addClass()`, `.removeClass()`, `.show()`, `.hide()`, etc.
+- **Key difference:** Use `.get(index)` instead of `[index]` to access raw DOM elements
+- **Type annotation:** Use `Cash` (from `cash-dom`) NOT `JQuery<HTMLElement>` for return types
+
 ---
 
 ## Links
