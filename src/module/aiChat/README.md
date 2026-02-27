@@ -114,15 +114,18 @@ AI响应内容...
 src/module/aiChat/
 ├── plugin/
 │   └── index.ts           # 插件入口
+├── components/
+│   ├── AIChatUI.tsx         # UI组件创建
+│   └── AIChatHandlers.ts    # 事件处理器
+├── providers/
+│   ├── OpenAICompatible.ts  # OpenAI兼容API客户端
+│   ├── AnthropicNative.ts   # Anthropic原生API客户端
+│   └── index.ts             # 提供商工厂
 ├── types.ts               # 类型定义
 ├── ContextCollector.ts    # 上下文收集
 ├── AIProviderService.ts   # 提供商管理服务
 ├── AIResponseRenderer.tsx # 响应渲染器
 ├── AIChatDialogManager.tsx # 对话框管理
-├── providers/
-│   ├── OpenAICompatible.ts  # OpenAI兼容API客户端
-│   ├── AnthropicNative.ts   # Anthropic原生API客户端
-│   └── index.ts             # 提供商工厂
 └── README.md              # 本文档
 ```
 
