@@ -701,8 +701,10 @@ export class AIChatUI {
     // 保存引用以便刷新
     this.currentHistoryListElement = $list;
 
-    // 初始加载历史
-    this.refreshConversationHistory(providerService);
+    // 延迟加载历史，确保DOM已渲染
+    setTimeout(() => {
+      this.refreshConversationHistory(providerService);
+    }, 50);
 
     return $sidebar;
   }
@@ -794,10 +796,15 @@ export class AIChatUI {
       $list.append($item);
     });
 
-    // 滚动到底部
-    if ($list.length > 0 && $list[0]) {
-      $list.scrollTop($list[0].scrollHeight);
-    }
+    // 滚动到底部（使用 setTimeout 确保DOM已更新）
+    setTimeout(() => {
+      if ($list.length > 0) {
+        const listElement = $list[0] as HTMLElement;
+        if (listElement && typeof listElement.scrollTop === "number") {
+          listElement.scrollTop = listElement.scrollHeight;
+        }
+      }
+    }, 0);
   }
 
   /**
