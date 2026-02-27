@@ -711,7 +711,7 @@ export class AIChatUI {
    * 刷新对话历史列表
    */
   static refreshConversationHistory(providerService: AIProviderService): void {
-    if (!this.currentHistoryListElement) return;
+    if (!this.currentHistoryListElement || this.currentHistoryListElement.length === 0) return;
 
     const $list = this.currentHistoryListElement;
     $list.empty();
@@ -795,7 +795,9 @@ export class AIChatUI {
     });
 
     // 滚动到底部
-    $list.scrollTop($list[0].scrollHeight);
+    if ($list.length > 0 && $list[0]) {
+      $list.scrollTop($list[0].scrollHeight);
+    }
   }
 
   /**
