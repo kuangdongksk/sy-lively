@@ -1,7 +1,7 @@
 import { message } from "@/components/base/rc/Message";
 import { $ } from "@/constant/三方库";
 import { Dialog } from "siyuan";
-import type { AIChatContext } from "../types";
+import type { AIChatContext, ChatMessage } from "../types";
 import type { AIProviderService } from "../AIProviderService";
 import type { PromptTemplateService } from "../PromptTemplateService";
 import type { IAIProvider } from "../types";
@@ -11,10 +11,12 @@ import type { IAIProvider } from "../types";
  * 负责创建对话框中的各个UI部分
  */
 export class AIChatUI {
-  // 保存当前对话框的回调，用于刷新模板列表
+  // 保存当前对话框的回调，用于刷新模板列表和历史列表
   private static currentTemplateDialog: Dialog | null = null;
   private static currentPromptTemplateService: PromptTemplateService | null = null;
   private static currentOnTemplateSelect: ((content: string) => void) | null = null;
+  private static currentProviderService: AIProviderService | null = null;
+  private static currentHistoryListElement: JQuery<HTMLElement> | null = null;
 
   /**
    * 创建提供商选择器
@@ -599,15 +601,30 @@ export class AIChatUI {
   static createResponsePreview(): JQuery<HTMLElement> {
     const $section = $('<div class="ai-response-preview" style="display:none;"></div>');
 
-    const $label = $('<label style="display:block;margin-bottom:8px;">AI响应:</label>');
+    const $header = $('<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"></div>');
+    const $label = $('<label style="margin:0;">AI响应:</label>');
+
+    const $copyButton = $('<button class="b3-button b3-button--text" style="padding:2px 8px;font-size:12px;" title="复制响应">复制</button>');
+    $copyButton.on("click", () => {
+      const $content = $section.find(".ai-response-content");
+      const text = $content.text() || "";
+      if (text) {
+        navigator.clipboard.writeText(text);
+        message.success("已复制到剪贴板");
+      }
+    });
+
+    $header.append($label);
+    $header.append($copyButton);
+
     const $content = $('<div class="ai-response-content"></div>');
     // 设置最大高度和滚动
     $content.css({
-      maxHeight: "400px",
+      maxHeight: "350px",
       overflow: "auto",
     });
 
-    $section.append($label);
+    $section.append($header);
     $section.append($content);
 
     return $section;
@@ -645,7 +662,144 @@ export class AIChatUI {
   }
 
   /**
-   * 创建完整的对话框UI
+   * 创建对话历史侧边栏
+   */
+  static createConversationHistorySidebar(
+    providerService: AIProviderService
+  ): JQuery<HTMLElement> {
+    const $sidebar = $('<div class="ai-history-sidebar"></div>');
+    $sidebar.css({
+      width: "280px",
+      display: "flex",
+      "flex-direction": "column",
+      gap: "8px",
+      "border-right": "1px solid var(--b3-theme-surface)",
+      "padding-right": "12px",
+      "flex-shrink": "0",
+    });
+
+    // 标题和清空按钮
+    const $header = $('<div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;"></div>');
+    const $title = $('<span style="font-size:13px;font-weight:500;">对话历史</span>');
+    const $clearButton = $('<button class="b3-button b3-button--text" title="清空历史" style="padding:2px 6px;font-size:12px;">清空</button>');
+    $clearButton.on("click", async () => {
+      if (confirm("确定要清空当前提供商的对话历史吗？")) {
+        providerService.clearConversationHistory();
+        this.refreshConversationHistory(providerService);
+        message.success("对话历史已清空");
+      }
+    });
+
+    $header.append($title);
+    $header.append($clearButton);
+    $sidebar.append($header);
+
+    // 历史列表
+    const $list = $('<div class="ai-history-list" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:4px;"></div>');
+    $sidebar.append($list);
+
+    // 保存引用以便刷新
+    this.currentHistoryListElement = $list;
+
+    // 初始加载历史
+    this.refreshConversationHistory(providerService);
+
+    return $sidebar;
+  }
+
+  /**
+   * 刷新对话历史列表
+   */
+  static refreshConversationHistory(providerService: AIProviderService): void {
+    if (!this.currentHistoryListElement) return;
+
+    const $list = this.currentHistoryListElement;
+    $list.empty();
+
+    const history = providerService.getConversationHistory();
+
+    if (history.length === 0) {
+      $list.html('<div style="text-align:center;padding:20px;color:var(--b3-theme-on-surface);font-size:12px;">暂无对话历史</div>');
+      return;
+    }
+
+    history.forEach((msg, index) => {
+      const $item = $('<div class="history-item" style="padding:8px;border-radius:4px;background-color:var(--b3-theme-background);border:1px solid var(--b3-theme-surface);transition:background-color 0.2s;"></div>');
+
+      // Hover effect
+      $item.on("mouseenter", function() {
+        $(this).css({ "background-color": "var(--b3-theme-surface)" });
+      });
+      $item.on("mouseleave", function() {
+        $(this).css({ "background-color": "var(--b3-theme-background)" });
+      });
+
+      const $msgHeader = $('<div style="display:flex;align-items:center;gap:4px;margin-bottom:4px;"></div>');
+
+      const roleIcon = msg.role === "user" ? "👤" : "🤖";
+      const roleName = msg.role === "user" ? "用户" : "助手";
+
+      const $role = $(`<span style="font-size:11px;font-weight:500;color:${msg.role === "user" ? "var(--b3-theme-primary)" : "var(--b3-theme-success)"};">${roleIcon} ${roleName}</span>`);
+
+      // 时间戳
+      const timeStr = msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }) : "";
+      const $time = $(`<span style="font-size:10px;color:var(--b3-theme-on-surface);margin-left:auto;">${timeStr}</span>`);
+
+      $msgHeader.append($role);
+      $msgHeader.append($time);
+
+      // 内容预览
+      let content = msg.content;
+      if (msg.reasoning) {
+        content = `[思考过程]\n${msg.reasoning}\n\n[回答]\n${msg.content}`;
+      }
+      const preview = content.length > 100 ? content.slice(0, 100) + "..." : content;
+
+      const $content = $(`<div style="font-size:12px;color:var(--b3-theme-on-surface);white-space:pre-wrap;line-height:1.4;max-height:80px;overflow:hidden;text-overflow:ellipsis;">${this.escapeHtml(preview)}</div>`);
+
+      // 操作按钮（默认隐藏，hover时显示）
+      const $actions = $('<div class="history-actions" style="display:flex;gap:4px;margin-top:6px;opacity:0;transition:opacity 0.2s;"></div>');
+
+      const $copyButton = $('<button class="b3-button b3-button--text" style="padding:2px 6px;font-size:11px;">复制</button>');
+      $copyButton.on("click", () => {
+        navigator.clipboard.writeText(content);
+        message.success("已复制到剪贴板");
+      });
+
+      const $deleteButton = $('<button class="b3-button b3-button--text" style="padding:2px 6px;font-size:11px;color:var(--b3-theme-on-error);">删除</button>');
+      $deleteButton.on("click", () => {
+        if (confirm("确定要删除这条消息吗？")) {
+          // 删除这条及之后的所有消息（保持对话连贯性）
+          providerService.getConversationHistory().splice(index);
+          this.refreshConversationHistory(providerService);
+          message.success("消息已删除");
+        }
+      });
+
+      $actions.append($copyButton);
+      $actions.append($deleteButton);
+
+      // Hover显示操作按钮
+      $item.on("mouseenter", function() {
+        $(this).find(".history-actions").css({ opacity: "1" });
+      });
+      $item.on("mouseleave", function() {
+        $(this).find(".history-actions").css({ opacity: "0" });
+      });
+
+      $item.append($msgHeader);
+      $item.append($content);
+      $item.append($actions);
+
+      $list.append($item);
+    });
+
+    // 滚动到底部
+    $list.scrollTop($list[0].scrollHeight);
+  }
+
+  /**
+   * 创建完整的对话框UI - 左右分栏布局
    */
   static createDialogUI(
     dialog: Dialog,
@@ -658,29 +812,46 @@ export class AIChatUI {
       onCancel: () => void;
     }
   ): void {
+    // 保存providerService引用
+    this.currentProviderService = providerService;
+
     const $body = $(dialog.element).find(".b3-dialog__body");
     $body.css({
       display: "flex",
-      "flex-direction": "column",
-      gap: "12px",
-      padding: "16px",
+      "flex-direction": "row",
+      gap: "0",
+      padding: "0",
+      height: "600px",
+      overflow: "hidden",
     });
 
-    // 创建提供商选择器
+    // 左侧：对话历史
+    const $leftPanel = $('<div class="ai-left-panel" style="display:flex;flex-direction:column;padding:12px;"></div>');
+    const $historySidebar = this.createConversationHistorySidebar(providerService);
+    $leftPanel.append($historySidebar);
+
+    // 右侧：主操作区
+    const $rightPanel = $('<div class="ai-right-panel" style="flex:1;display:flex;flex-direction:column;gap:12px;padding:16px;overflow-y:auto;"></div>');
+
+    // 顶部栏：提供商选择 + 选项
+    const $topBar = $('<div style="display:flex;gap:12px;align-items:flex-start;flex-shrink:0;"></div>');
+
     const $providerSection = this.createProviderSelector(providerService);
-    $body.append($providerSection);
+    $providerSection.css({ flex: "1" });
 
-    // 创建选项区域（思考模式、流式响应）
     const $optionsSection = this.createOptionsSection(providerService);
-    $body.append($optionsSection);
+    $optionsSection.css({ flex: "0" });
 
-    // 创建提示词模板选择器
+    $topBar.append($providerSection);
+    $topBar.append($optionsSection);
+    $rightPanel.append($topBar);
+
+    // 提示词模板选择器
     const $templateSection = this.createPromptTemplateSelector(
       promptTemplateService,
       (content) => {
-        const $textarea = $body.find(".ai-prompt-textarea");
+        const $textarea = $rightPanel.find(".ai-prompt-textarea");
         const currentValue = $textarea.val() as string;
-        // 如果当前有内容且模板内容不同，追加
         if (currentValue && !currentValue.endsWith(content)) {
           $textarea.val(currentValue + "\n" + content);
         } else {
@@ -689,27 +860,32 @@ export class AIChatUI {
         $textarea.trigger("focus");
       }
     );
-    $body.append($templateSection);
+    $rightPanel.append($templateSection);
 
-    // 创建上下文显示区
+    // 上下文显示区（可折叠）
     const $contextSection = this.createContextDisplay(context);
-    $body.append($contextSection);
+    $rightPanel.append($contextSection);
 
-    // 创建用户输入区
+    // 用户输入区 + 发送按钮
+    const $inputContainer = $('<div style="flex-shrink:0;"></div>');
     const $inputSection = this.createUserInput();
-    $body.append($inputSection);
+    $inputContainer.append($inputSection);
 
-    // 创建发送按钮
     const $sendButton = this.createSendButton(handlers.onSend);
-    $body.append($sendButton);
+    $inputContainer.append($sendButton);
 
-    // 创建响应预览区（初始隐藏）
+    $rightPanel.append($inputContainer);
+
+    // 响应预览区（初始隐藏）
     const $responseSection = this.createResponsePreview();
-    $body.append($responseSection);
+    $rightPanel.append($responseSection);
 
-    // 创建操作按钮区（初始隐藏）
+    // 操作按钮区（初始隐藏）
     const $actionSection = this.createActionButtons(handlers.onConfirm, handlers.onCancel);
-    $body.append($actionSection);
+    $rightPanel.append($actionSection);
+
+    $body.append($leftPanel);
+    $body.append($rightPanel);
   }
 
   /**

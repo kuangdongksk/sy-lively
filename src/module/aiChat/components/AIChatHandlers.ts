@@ -131,6 +131,9 @@ export class AIChatHandlers {
       // 显示操作按钮
       $actionButtons.show();
       hasResponse.value = true;
+
+      // 刷新对话历史显示
+      AIChatUI.refreshConversationHistory(providerService);
     } catch (e) {
       message.error(`请求失败: ${(e as Error).message}`);
       $responseContent.html(

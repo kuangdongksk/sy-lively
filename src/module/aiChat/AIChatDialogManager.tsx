@@ -79,8 +79,8 @@ export class AIChatDialogManager {
     this.dialog = new Dialog({
       title: "AI聊天",
       content: "",
-      width: "700px",
-      height: "600px",
+      width: "900px",
+      height: "650px",
       hideCloseIcon: false,
       disableClose: false,
       destroyCallback: () => {
